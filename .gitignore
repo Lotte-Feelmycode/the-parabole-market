@@ -229,6 +229,7 @@ gradle-app.setting
 
 target
 **/*.properties
+**/*.yml
 /target/
 .idea
 .\.idea
