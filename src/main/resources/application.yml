@@ -1,0 +1,13 @@
+server:
+  address: localhost
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.sql : debug
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: parabole

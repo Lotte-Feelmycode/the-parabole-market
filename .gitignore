@@ -235,5 +235,7 @@ target
 .\.idea
 gradle
 .\gradle
+gradlew.bat
+gradlew
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,gradle,macos,windows
