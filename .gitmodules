@@ -1,0 +1,3 @@
+[submodule "src/main/resources/submodule-security"]
+	path = src/main/resources/submodule-security
+	url = https://github.com/Lotte-Feelmycode/submodule-security.git
