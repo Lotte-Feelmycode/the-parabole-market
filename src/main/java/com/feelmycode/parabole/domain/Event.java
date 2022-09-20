@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +32,7 @@ public class Event extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "seller_id")
@@ -68,6 +69,34 @@ public class Event extends BaseEntity {
         eventPrize.setEvent(this);
     }
 
+    @Builder
+    public Event(String createdAt, String updatedAt, String deletedAt, Seller seller,
+        String eventBy,
+        String eventType, String eventTitle, String eventStartAt, String eventEndAt,
+        String eventDescript, EventImage eventImage, List<EventPrize> eventPrizes) {
+        super(createdAt, updatedAt, deletedAt);
+        this.seller = seller;
+        this.eventBy = eventBy;
+        this.eventType = eventType;
+        this.eventTitle = eventTitle;
+        this.eventStartAt = eventStartAt;
+        this.eventEndAt = eventEndAt;
+        this.eventStatus = 0; // 시작전
+        this.eventDescript = eventDescript;
+        this.eventImage = eventImage;
+        this.eventPrizes = eventPrizes;
+        for (EventPrize eventPrize : eventPrizes) {
+            addEventPrize(eventPrize);
+        }
+    }
+
+    //==비즈니스 로직==//
+    /**
+     * 이벤트 삭제
+     */
 
 
+    /**
+     * 이벤트 조회
+     */
 }

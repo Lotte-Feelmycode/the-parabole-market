@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -41,4 +42,17 @@ public class EventPrize {
         this.event = event;
     }
 
+    @Builder
+    public EventPrize(String prizeType, Integer stock, Coupon coupon) {
+        this.prizeType = prizeType;
+        this.stock = stock;
+        this.coupon = coupon;
+    }
+
+    @Builder
+    public EventPrize(String prizeType, Integer stock, Product product) {
+        this.prizeType = prizeType;
+        this.stock = stock;
+        this.product = product;
+    }
 }
