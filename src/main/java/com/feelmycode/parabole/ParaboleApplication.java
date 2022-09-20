@@ -1,4 +1,4 @@
-package com.fellmycode.parabole;
+package com.feelmycode.parabole;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
