@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "event_prize")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventPrize {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

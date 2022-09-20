@@ -6,12 +6,16 @@ import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
+import com.feelmycode.parabole.dto.EventDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.global.error.IdNotFoundException;
+import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
+import com.feelmycode.parabole.repository.SellerRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,38 +29,35 @@ public class EventService {
 
     private final SellerRepository sellerRepository;
 
-    //private final CouponRepository couponRepository;
+    private final CouponRepository couponRepository;
 
     private final ProductRepository productRepository;
 
     /**
-     * 이벤트 생성
-     *
+     *  이벤트 생성
      */
-    //
     @Transactional
     public Long Event(EventCreateRequestDto eventCreateRequestDto, EventPrizeCreateRequestDto eventPrizeCreateRequestDto) {
 
         // 엔티티 조회
-        Seller seller = sellerRepository.findById(eventCreateRequestDto.getSellerId()).orElseThrow();
+        Seller seller = sellerRepository.findById(eventCreateRequestDto.getSellerId()).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 판매자가 없습니다."));
 
         List<Long> productIds = eventPrizeCreateRequestDto.getProductIds();
-        //List<Long> couponIds  = eventPrizeCreateRequestDto.getCouponIds();
+        List<Long> couponIds  = eventPrizeCreateRequestDto.getCouponIds();
 
         List<Product> products = new ArrayList<>();
-        //List<Coupon> coupons = new ArrayList<>();
+        List<Coupon> coupons = new ArrayList<>();
 
         for (Long productId : productIds) {
-            Product product = productRepository.findById(productId).orElseThrow();
+            Product product = productRepository.findById(productId).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 상품이 없습니다."));
             products.add(product);
         }
 
-        /*
         for (Long couponId : couponIds) {
-            Coupon coupon = couponRepository.findById(coupontId).orElseThrow();
+            Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 쿠폰이 없습니다."));
             coupons.add(coupon);
         }
-         */
+
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
@@ -65,14 +66,13 @@ public class EventService {
             EventPrize productPrize = new EventPrize("PRODUCT", eventPrizeCreateRequestDto.getStock(), product);
             eventPrizeList.add(productPrize);
         }
-        /*
+
         for (Coupon coupon : coupons) {
             EventPrize couponPrize = new EventPrize("COUPON", eventPrizeCreateRequestDto.getStock(), coupon);
             eventPrizeList.add(couponPrize);
-
         }
-        */
 
+        // 이벤트 생성
         Event event = Event.builder()
             .seller(seller)
             .eventBy(eventCreateRequestDto.getEventBy())
@@ -85,10 +85,27 @@ public class EventService {
             .eventPrizes(eventPrizeList)
             .build();
 
+        // 이벤트 저장
         eventRepository.save(event);
         return event.getId();
     }
 
+    /**
+     * 이벤트 조회
+     */
+    public EventDto getEvent(Long eventId) {
+        return eventRepository.findById(eventId)
+            .map(EventDto::of)
+            .orElseThrow();
+    }
 
+    /**
+     * 이벤트 전체 조회
+     */
+    public List<EventDto> getEvents(){
+        return eventRepository.findAll().stream()
+            .map(EventDto::of)
+            .collect(Collectors.toList());
+    }
 
 }

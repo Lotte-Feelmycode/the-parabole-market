@@ -26,8 +26,8 @@ import lombok.NoArgsConstructor;
     name = "event_seller_unique",
     columnNames = {"event_id", "seller_id"}
 )})
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
