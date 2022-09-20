@@ -27,6 +27,8 @@ public class EventPrize {
 
     private String prizeType; // [COUPON, PRODUCT]
 
+    private Integer stock;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
