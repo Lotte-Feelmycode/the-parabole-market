@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @Table(name = "products")
+@Getter
 public class Product {
 
     @Id
@@ -19,9 +21,9 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "seller_id")
-    private Seller sellerId;
+    private Seller sellers;
 
     @Column(name = "product_sales_status")
     private Integer productSalesStatus;
@@ -41,5 +43,27 @@ public class Product {
     @Column(name = "product_price")
     private Long productPrice;
 
+    public Product() {
+    }
 
+    public Product(Seller seller, Integer productSalesStatus, Long productRemains,
+        String productCategory, String productThumbnailImg, String productName, Long productPrice) {
+        this.sellers = seller;
+        this.productSalesStatus = productSalesStatus;
+        this.productRemains = productRemains;
+        this.productCategory = productCategory;
+        this.productThumbnailImg = productThumbnailImg;
+        this.productName = productName;
+        this.productPrice = productPrice;
+    }
+
+    public Product(Integer productSalesStatus, Long productRemains, String productCategory,
+        String productThumbnailImg, String productName, Long productPrice) {
+        this.productSalesStatus = productSalesStatus;
+        this.productRemains = productRemains;
+        this.productCategory = productCategory;
+        this.productThumbnailImg = productThumbnailImg;
+        this.productName = productName;
+        this.productPrice = productPrice;
+    }
 }
