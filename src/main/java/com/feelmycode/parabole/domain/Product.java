@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.domain;
 
+import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,24 +27,65 @@ public class Product {
     private Seller sellers;
 
     @Column(name = "product_sales_status")
+    @NotNull
     private Integer productSalesStatus;
 
     @Column(name = "product_remains")
+    @NotNull
     private Long productRemains;
 
     @Column(name = "product_category")
+    @NotNull
     private String productCategory;
 
     @Column(name = "product_thumbnail_img")
+    @NotNull
     private String productThumbnailImg;
 
     @Column(name = "product_name")
+    @NotNull
     private String productName;
 
     @Column(name = "product_price")
+    @NotNull
     private Long productPrice;
 
     public Product() {
+    }
+
+    private void setProductSalesStatus(Integer productSalesStatus) {
+        this.productSalesStatus = productSalesStatus;
+    }
+
+    private void setProductRemains(Long productRemains) {
+        this.productRemains = productRemains;
+    }
+
+    private void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    private void setProductThumbnailImg(String productThumbnailImg) {
+        this.productThumbnailImg = productThumbnailImg;
+    }
+
+    private void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    private void setProductPrice(Long productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public Product setProduct(Product getProduct) {
+        this.setProductName(getProduct.getProductName());
+        this.setProductPrice(getProduct.getProductPrice());
+        this.setProductCategory(getProduct.getProductCategory());
+        this.setProductName(getProduct.getProductName());
+        this.setProductRemains(getProduct.getProductRemains());
+        this.setProductSalesStatus(getProduct.getProductSalesStatus());
+        this.setProductThumbnailImg(getProduct.getProductThumbnailImg());
+        return this;
     }
 
     public Product(Seller seller, Integer productSalesStatus, Long productRemains,
@@ -57,8 +99,10 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public Product(Integer productSalesStatus, Long productRemains, String productCategory,
-        String productThumbnailImg, String productName, Long productPrice) {
+    public Product(Long id, Seller sellers, Integer productSalesStatus, Long productRemains,
+        String productCategory, String productThumbnailImg, String productName, Long productPrice) {
+        this.id = id;
+        this.sellers = sellers;
         this.productSalesStatus = productSalesStatus;
         this.productRemains = productRemains;
         this.productCategory = productCategory;
