@@ -21,7 +21,7 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")
     private Seller sellers;
 
