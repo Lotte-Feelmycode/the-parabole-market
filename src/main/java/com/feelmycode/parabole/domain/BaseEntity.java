@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,5 +26,6 @@ public class BaseEntity {
     private String deletedAt;
 
     @Column(name = "is_deleted")
+    @ColumnDefault("false")
     private boolean isDeleted;
 }

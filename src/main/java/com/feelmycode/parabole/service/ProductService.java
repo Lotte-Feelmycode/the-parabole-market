@@ -2,21 +2,17 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
-
-    @Autowired
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     @Transactional(readOnly = true)
     public Page<Product> getProductList(Long sellerId, String sellerName, String productName, String category, Pageable pageable) {

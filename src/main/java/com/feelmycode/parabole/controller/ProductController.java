@@ -2,7 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
@@ -19,11 +20,6 @@ public class ProductController {
     private final ProductService productService;
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping("/list")
     public ResponseEntity<Page<Product>> getProductList(@RequestParam(required = false) Long sellerId,
