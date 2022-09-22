@@ -24,7 +24,7 @@ public class Product {
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "seller_id")
-//    private Seller sellerId;
+//    private Seller seller;
 
     // TODO: sellerId가 아닌 Seller 자체를 받을 수 있도록 수정할 예정
     @Column(name = "seller_id")
@@ -57,7 +57,6 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
-
     public Product() {
     }
 
@@ -85,6 +84,9 @@ public class Product {
         this.price = price;
     }
 
+    private void setProductDetailList(List<ProductDetail> detailList) {
+        this.productDetailList = detailList;
+    }
     public Product setProduct(Product getProduct) {
         this.setName(getProduct.getName());
         this.setPrice(getProduct.getPrice());
@@ -93,6 +95,7 @@ public class Product {
         this.setRemains(getProduct.getRemains());
         this.setSalesStatus(getProduct.getSalesStatus());
         this.setThumbnailImg(getProduct.getThumbnailImg());
+        this.setProductDetailList(getProduct.getProductDetailList());
         return this;
     }
 
@@ -117,6 +120,18 @@ public class Product {
         this.thumbnailImg = thumbnailImg;
         this.name = name;
         this.price = price;
+    }
+
+    public Product(Long sellerId, String name, Integer salesStatus, Long remains, Long price,
+        String category, String thumbnailImg, List<ProductDetail> productDetailList) {
+        this.sellerId = sellerId;
+        this.name = name;
+        this.salesStatus = salesStatus;
+        this.remains = remains;
+        this.price = price;
+        this.category = category;
+        this.thumbnailImg = thumbnailImg;
+        this.productDetailList = productDetailList;
     }
 
 }

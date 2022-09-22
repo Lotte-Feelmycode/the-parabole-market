@@ -22,8 +22,8 @@ public class ProductDetail {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_detail_id")
-    private ProductDetail productDetailId;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "product_detail_img")
     private String Img;
@@ -34,8 +34,7 @@ public class ProductDetail {
     public ProductDetail() {
     }
 
-    public ProductDetail(ProductDetail productDetailId, String img, String imgCaption) {
-        this.productDetailId = productDetailId;
+    public ProductDetail(String img, String imgCaption) {
         Img = img;
         this.imgCaption = imgCaption;
     }
