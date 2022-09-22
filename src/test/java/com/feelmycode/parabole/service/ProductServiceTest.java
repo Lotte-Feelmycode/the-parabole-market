@@ -4,7 +4,6 @@ package com.feelmycode.parabole.service;
 import static org.junit.Assert.assertEquals;
 
 import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -31,12 +30,12 @@ class ProductServiceTest {
 
         // then
         Product getProduct = productService.getProduct(product.getId());
-        assertEquals("상품 상태", product.getProductSalesStatus(), getProduct.getProductSalesStatus());
-        assertEquals("상품 수량", product.getProductRemains(), getProduct.getProductRemains());
-        assertEquals("상품 카테고리", product.getProductCategory(), getProduct.getProductCategory());
-        assertEquals("상품 썸네일", product.getProductThumbnailImg(), getProduct.getProductThumbnailImg());
-        assertEquals("상품 이름", "순대국밥", getProduct.getProductName());
-        assertEquals("상품 가격", product.getProductPrice(), getProduct.getProductPrice());
+        assertEquals("상품 상태", product.getSalesStatus(), getProduct.getSalesStatus());
+        assertEquals("상품 수량", product.getRemains(), getProduct.getRemains());
+        assertEquals("상품 카테고리", product.getCategory(), getProduct.getCategory());
+        assertEquals("상품 썸네일", product.getThumbnailImg(), getProduct.getThumbnailImg());
+        assertEquals("상품 이름", "순대국밥", getProduct.getName());
+        assertEquals("상품 가격", product.getPrice(), getProduct.getPrice());
     }
 
     @Test
@@ -50,12 +49,12 @@ class ProductServiceTest {
         //then
         Product getProduct = productService.getProduct(getId);
 
-        assertEquals("상품 상태", product.getProductSalesStatus(), getProduct.getProductSalesStatus());
-        assertEquals("상품 수량", product.getProductRemains(), getProduct.getProductRemains());
-        assertEquals("상품 카테고리", product.getProductCategory(), getProduct.getProductCategory());
-        assertEquals("상품 썸네일", product.getProductThumbnailImg(), getProduct.getProductThumbnailImg());
-        assertEquals("상품 이름", "순대국밥", getProduct.getProductName());
-        assertEquals("상품 가격", product.getProductPrice(), getProduct.getProductPrice());
+        assertEquals("상품 상태", product.getSalesStatus(), getProduct.getSalesStatus());
+        assertEquals("상품 수량", product.getRemains(), getProduct.getRemains());
+        assertEquals("상품 카테고리", product.getCategory(), getProduct.getCategory());
+        assertEquals("상품 썸네일", product.getThumbnailImg(), getProduct.getThumbnailImg());
+        assertEquals("상품 이름", "순대국밥", getProduct.getName());
+        assertEquals("상품 가격", product.getPrice(), getProduct.getPrice());
     }
 
 }

@@ -1,14 +1,14 @@
 package com.feelmycode.parabole.domain;
 
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 
@@ -26,91 +26,97 @@ public class Product {
 //    @JoinColumn(name = "seller_id")
 //    private Seller sellerId;
 
+    // TODO: sellerId가 아닌 Seller 자체를 받을 수 있도록 수정할 예정
     @Column(name = "seller_id")
     private Long sellerId;
 
+    @Column(name = "product_name")
+    @NotNull
+    private String name;
+
     @Column(name = "product_sales_status")
     @NotNull
-    private Integer productSalesStatus;
+    private Integer salesStatus;
 
     @Column(name = "product_remains")
     @NotNull
-    private Long productRemains;
-
-    @Column(name = "product_category")
-    @NotNull
-    private String productCategory;
-
-    @Column(name = "product_thumbnail_img")
-    @NotNull
-    private String productThumbnailImg;
-
-    @Column(name = "product_name")
-    @NotNull
-    private String productName;
+    private Long remains;
 
     @Column(name = "product_price")
     @NotNull
-    private Long productPrice;
+    private Long price;
+
+    @Column(name = "product_category")
+    @NotNull
+    private String category;
+
+    @Column(name = "product_thumbnail_img")
+    @NotNull
+    private String thumbnailImg;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductDetail> productDetailList = new ArrayList<>();
+
 
     public Product() {
     }
 
-    private void setProductSalesStatus(Integer productSalesStatus) {
-        this.productSalesStatus = productSalesStatus;
+    private void setSalesStatus(Integer salesStatus) {
+        this.salesStatus = salesStatus;
     }
 
-    private void setProductRemains(Long productRemains) {
-        this.productRemains = productRemains;
+    private void setRemains(Long remains) {
+        this.remains = remains;
     }
 
-    private void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
+    private void setCategory(String category) {
+        this.category = category;
     }
 
-    private void setProductThumbnailImg(String productThumbnailImg) {
-        this.productThumbnailImg = productThumbnailImg;
+    private void setThumbnailImg(String thumbnailImg) {
+        this.thumbnailImg = thumbnailImg;
     }
 
-    private void setProductName(String productName) {
-        this.productName = productName;
+    private void setName(String name) {
+        this.name = name;
     }
 
-    private void setProductPrice(Long productPrice) {
-        this.productPrice = productPrice;
+    private void setPrice(Long price) {
+        this.price = price;
     }
 
     public Product setProduct(Product getProduct) {
-        this.setProductName(getProduct.getProductName());
-        this.setProductPrice(getProduct.getProductPrice());
-        this.setProductCategory(getProduct.getProductCategory());
-        this.setProductName(getProduct.getProductName());
-        this.setProductRemains(getProduct.getProductRemains());
-        this.setProductSalesStatus(getProduct.getProductSalesStatus());
-        this.setProductThumbnailImg(getProduct.getProductThumbnailImg());
+        this.setName(getProduct.getName());
+        this.setPrice(getProduct.getPrice());
+        this.setCategory(getProduct.getCategory());
+        this.setName(getProduct.getName());
+        this.setRemains(getProduct.getRemains());
+        this.setSalesStatus(getProduct.getSalesStatus());
+        this.setThumbnailImg(getProduct.getThumbnailImg());
         return this;
     }
 
-    public Product(Long sellerId, Integer productSalesStatus, Long productRemains,
-        String productCategory, String productThumbnailImg, String productName, Long productPrice) {
+    public Product(Long sellerId, Integer salesStatus, Long remains,
+        String category, String thumbnailImg, String name, Long price) {
         this.sellerId = sellerId;
-        this.productSalesStatus = productSalesStatus;
-        this.productRemains = productRemains;
-        this.productCategory = productCategory;
-        this.productThumbnailImg = productThumbnailImg;
-        this.productName = productName;
-        this.productPrice = productPrice;
+        this.salesStatus = salesStatus;
+        this.remains = remains;
+        this.category = category;
+        this.thumbnailImg = thumbnailImg;
+        this.name = name;
+        this.price = price;
     }
 
-    public Product(Long id, Long sellerId, Integer productSalesStatus, Long productRemains,
-        String productCategory, String productThumbnailImg, String productName, Long productPrice) {
+    public Product(Long id, Long sellerId, Integer salesStatus, Long remains,
+        String category, String thumbnailImg, String name, Long price) {
         this.id = id;
         this.sellerId = sellerId;
-        this.productSalesStatus = productSalesStatus;
-        this.productRemains = productRemains;
-        this.productCategory = productCategory;
-        this.productThumbnailImg = productThumbnailImg;
-        this.productName = productName;
-        this.productPrice = productPrice;
+        this.salesStatus = salesStatus;
+        this.remains = remains;
+        this.category = category;
+        this.thumbnailImg = thumbnailImg;
+        this.name = name;
+        this.price = price;
     }
+
 }
