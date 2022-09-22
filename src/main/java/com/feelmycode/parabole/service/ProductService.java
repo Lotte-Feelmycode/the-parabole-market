@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Pageable;
 
 @Service
@@ -46,21 +44,21 @@ public class ProductService {
             if (category.equals("")) {
                 return productRepository.findAllBySellerId(sellerId, pageable);
             } else {
-                return productRepository.findAllBySellerIdAndProductCategory(sellerId, category,
+                return productRepository.findAllBySellerIdAndCategory(sellerId, category,
                     pageable);
             }
         } else if(!productName.equals("")) {
             if (category.equals("")) {
-                return productRepository.findAllByProductNameContaining(productName, pageable);
+                return productRepository.findAllByNameContaining(productName, pageable);
             } else {
-                return productRepository.findAllByProductNameContainingAndProductCategory(productName, category, pageable);
+                return productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
             }
         }
 
         if(category.equals("")) {
             return productRepository.findAll(pageable);
         } else {
-            return productRepository.findAllByProductCategory(category, pageable);
+            return productRepository.findAllByCategory(category, pageable);
         }
     }
 
