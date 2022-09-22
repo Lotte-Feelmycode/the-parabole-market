@@ -2,6 +2,9 @@ package com.feelmycode.parabole.domain;
 
 import static javax.persistence.FetchType.LAZY;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -22,43 +25,51 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "events", uniqueConstraints = {@UniqueConstraint(
-    name = "event_seller_unique",
-    columnNames = {"event_id", "seller_id"}
-)})
+@Table(name = "events", uniqueConstraints = {
+    @UniqueConstraint(name = "event_seller_unique", columnNames = {"event_id", "seller_id"})})
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+
 public class Event extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "seller_id")
+    @JsonBackReference
     private Seller seller;
 
+    @Column(name = "event_by")
     private String eventBy; // [ADMIN, SELLER]
 
+    @Column(name = "event_type")
     private String eventType; // [FCFS, REAFFLE]
 
+    @Column(name = "event_title")
     private String eventTitle;
 
+    @Column(name = "event_start_at")
     private String eventStartAt;
 
+    @Column(name = "event_end_at")
     private String eventEndAt;
 
+    @Column(name = "event_status")
     private Integer eventStatus; // 0:시작전, 1:진행중, 2:종료
 
+    @Column(name = "event_descript")
     private String eventDescript;
 
     @Embedded
     private EventImage eventImage;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = LAZY)
+    @JsonManagedReference
     private List<EventPrize> eventPrizes = new ArrayList<>();
 
-    //==연관관계 메소드==//
     public void setSeller(Seller seller) {
         this.seller = seller;
         seller.getEvents().add(this);
@@ -70,11 +81,9 @@ public class Event extends BaseEntity {
     }
 
     @Builder
-    public Event(String createdAt, String updatedAt, String deletedAt, Seller seller,
-        String eventBy,
-        String eventType, String eventTitle, String eventStartAt, String eventEndAt,
-        String eventDescript, EventImage eventImage, List<EventPrize> eventPrizes) {
-        super(createdAt, updatedAt, deletedAt);
+    public Event(Seller seller, String eventBy, String eventType, String eventTitle,
+        String eventStartAt, String eventEndAt, String eventDescript, EventImage eventImage,
+        List<EventPrize> eventPrizes) {
         this.seller = seller;
         this.eventBy = eventBy;
         this.eventType = eventType;
@@ -84,19 +93,12 @@ public class Event extends BaseEntity {
         this.eventStatus = 0; // 시작전
         this.eventDescript = eventDescript;
         this.eventImage = eventImage;
-        this.eventPrizes = eventPrizes;
+        //this.eventPrizes = eventPrizes;
         for (EventPrize eventPrize : eventPrizes) {
             addEventPrize(eventPrize);
         }
     }
 
-    //==비즈니스 로직==//
-    /**
-     * 이벤트 삭제
-     */
+    // TODO : 이벤트 수정, 삭제 및 재고관리 로직 추가
 
-
-    /**
-     * 이벤트 조회
-     */
 }

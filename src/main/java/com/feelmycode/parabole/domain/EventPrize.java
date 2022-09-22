@@ -2,6 +2,8 @@ package com.feelmycode.parabole.domain;
 
 import static javax.persistence.FetchType.LAZY;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,30 +14,35 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "event_prize")
 @Getter
+@NoArgsConstructor
 public class EventPrize {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_prize_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonBackReference
     private Event event;
 
     private String prizeType; // [COUPON, PRODUCT]
 
     private Integer stock;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "coupon_id")
+    @JsonBackReference
     private Coupon coupon;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "prodcut_id")
+    @JsonBackReference
     private Product product;
 
     public void setEvent(Event event) {
@@ -55,4 +62,17 @@ public class EventPrize {
         this.stock = stock;
         this.product = product;
     }
+
+    @Override
+    public String toString() {
+        return "EventPrize{" +
+            "id=" + id +
+            ", event=" + event +
+            ", prizeType='" + prizeType + '\'' +
+            ", stock=" + stock +
+            ", coupon=" + coupon +
+            ", product=" + product +
+            '}';
+    }
+
 }
