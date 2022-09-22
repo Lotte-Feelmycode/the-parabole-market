@@ -63,6 +63,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductList(getSellerId, getSellerName, getCategory, getProductName, getPageable));
     }
 
+    // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
     public ResponseEntity createProduct(@RequestBody Product product) {
         productService.saveProduct(product);
@@ -76,6 +77,7 @@ public class ProductController {
         return new ResponseEntity<>(message, header, HttpStatus.OK);
     }
 
+    // TODO: 셀러정보를 받아서 product 수정하기
     @PatchMapping
     public ResponseEntity updateProduct(@RequestBody Product product) {
         productService.updateProduct(product);
