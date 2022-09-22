@@ -1,22 +1,23 @@
 package com.feelmycode.parabole.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@NoArgsConstructor
 public class EventImage {
 
-    private String eventBannerImg;
+    @Column(name = "event_banner_img")
+    private String bannerImg;
 
-    private String eventDetailImg;
+    @Column(name = "event_detail_img")
+    private String detailImg;
 
-    protected EventImage() {
-
-    }
-
-    public EventImage(String eventBannerImg, String eventDetailImg) {
-        this.eventBannerImg = eventBannerImg;
-        this.eventDetailImg = eventDetailImg;
+    public EventImage(String bannerImg, String detailImg) {
+        this.bannerImg = bannerImg;
+        this.detailImg = detailImg;
     }
 }

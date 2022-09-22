@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventImage;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Seller;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -20,13 +21,13 @@ public class EventDto {
 
   private Long id;
   private Seller seller;
-  private String eventBy;
-  private String eventType;
-  private String eventTitle;
-  private String eventStartAt;
-  private String eventEndAt;
-  private Integer eventStatus;
-  private String eventDescript;
+  private String createdBy;
+  private String type;
+  private String title;
+  private String startAt;
+  private String endAt;
+  private Integer status;
+  private String descript;
   private EventImage eventImage;
   private List<EventPrize> eventPrizes = new ArrayList<>();
 
@@ -34,13 +35,13 @@ public class EventDto {
     return EventDto.builder()
         .id(event.getId())
         .seller(event.getSeller())
-        .eventBy(event.getEventBy())
-        .eventType(event.getEventType())
-        .eventTitle(event.getEventTitle())
-        .eventStartAt(event.getEventStartAt())
-        .eventEndAt(event.getEventEndAt())
-        .eventStatus(event.getEventStatus())
-        .eventDescript(event.getEventDescript())
+        .createdBy(event.getCreatedBy())
+        .type(event.getType())
+        .title(event.getTitle())
+        .startAt(event.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+        .endAt(event.getEndAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+        .status(event.getStatus())
+        .descript(event.getDescript())
         .eventImage(event.getEventImage())
         .eventPrizes(event.getEventPrizes())
         .build();
