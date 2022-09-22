@@ -7,8 +7,10 @@ import com.feelmycode.parabole.domain.User;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class EventApplyDto {
 
     @NotNull
@@ -19,9 +21,6 @@ public class EventApplyDto {
     private Long prizeId;
     private String participantAt;
 
-    public EventApplyDto(){
-
-    }
     public EventApplyDto(Long userId,Long eventId,Long prizeId,String participantAt){
         this.userId=userId;
         this.eventId=eventId;

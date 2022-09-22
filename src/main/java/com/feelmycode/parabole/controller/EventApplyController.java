@@ -27,10 +27,7 @@ public class EventApplyController {
         if(result) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("응모가 완료 되었습니다");
         }
-        else{
-            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("이미 응모가 완료 되었습니다");
-        }
+
+        return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("이미 응모가 완료 되었습니다");
     }
-
-
 }
