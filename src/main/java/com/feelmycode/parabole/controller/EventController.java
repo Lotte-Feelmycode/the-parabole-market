@@ -2,9 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
-import com.feelmycode.parabole.dto.EventDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
-import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
 import com.feelmycode.parabole.service.EventService;
 import java.util.List;
 import java.util.stream.Collectors;

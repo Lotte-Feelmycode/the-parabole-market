@@ -1,14 +1,8 @@
 package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.domain.EventImage;
-import com.feelmycode.parabole.domain.EventPrize;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
