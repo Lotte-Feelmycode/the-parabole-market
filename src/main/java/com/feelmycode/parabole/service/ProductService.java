@@ -26,10 +26,8 @@ public class ProductService {
 
     @Transactional
     public Long updateProduct(Product product) {
-        System.out.println(product.getProductPrice());
         Product getProduct = this.getProduct(product.getId());
         getProduct.setProduct(product);
-        System.out.println(getProduct.getProductPrice());
         productRepository.save(getProduct);
         return product.getId();
     }

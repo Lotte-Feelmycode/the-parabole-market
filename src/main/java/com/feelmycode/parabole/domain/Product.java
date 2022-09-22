@@ -22,9 +22,12 @@ public class Product {
     @Column(name = "product_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private Seller sellers;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "seller_id")
+//    private Seller sellerId;
+
+    @Column(name = "seller_id")
+    private Long sellerId;
 
     @Column(name = "product_sales_status")
     @NotNull
@@ -88,9 +91,9 @@ public class Product {
         return this;
     }
 
-    public Product(Seller seller, Integer productSalesStatus, Long productRemains,
+    public Product(Long sellerId, Integer productSalesStatus, Long productRemains,
         String productCategory, String productThumbnailImg, String productName, Long productPrice) {
-        this.sellers = seller;
+        this.sellerId = sellerId;
         this.productSalesStatus = productSalesStatus;
         this.productRemains = productRemains;
         this.productCategory = productCategory;
@@ -99,10 +102,10 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public Product(Long id, Seller sellers, Integer productSalesStatus, Long productRemains,
+    public Product(Long id, Long sellerId, Integer productSalesStatus, Long productRemains,
         String productCategory, String productThumbnailImg, String productName, Long productPrice) {
         this.id = id;
-        this.sellers = sellers;
+        this.sellerId = sellerId;
         this.productSalesStatus = productSalesStatus;
         this.productRemains = productRemains;
         this.productCategory = productCategory;
