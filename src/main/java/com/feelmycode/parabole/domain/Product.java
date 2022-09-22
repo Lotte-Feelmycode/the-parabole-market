@@ -3,6 +3,7 @@ package com.feelmycode.parabole.domain;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -54,11 +55,8 @@ public class Product extends BaseEntity {
     @NotNull
     private String thumbnailImg;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductDetail> productDetailList = new ArrayList<>();
-
-    public Product() {
-    }
 
     private void setSalesStatus(Integer salesStatus) {
         this.salesStatus = salesStatus;
@@ -87,6 +85,10 @@ public class Product extends BaseEntity {
     private void setProductDetailList(List<ProductDetail> detailList) {
         this.productDetailList = detailList;
     }
+
+    public Product() {
+    }
+
     public Product setProduct(Product getProduct) {
         this.setName(getProduct.getName());
         this.setPrice(getProduct.getPrice());

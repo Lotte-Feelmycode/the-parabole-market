@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.domain;
 
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,17 +25,37 @@ public class ProductDetail {
     private Product product;
 
     @Column(name = "product_detail_img")
-    private String Img;
+    private String img;
 
     @Column(name = "product_detail_img_caption")
     private String imgCaption;
 
+    private void setProduct(Product product) {
+        this.product = product;
+    }
+
+    private void setImg(String img) {
+        this.img = img;
+    }
+
+    private void setImgCaption(String imgCaption) {
+        this.imgCaption = imgCaption;
+    }
+
     public ProductDetail() {
     }
 
-    public ProductDetail(String img, String imgCaption) {
-        Img = img;
+    public ProductDetail(Product product, String img, String imgCaption) {
+        this.product = product;
+        this.img = img;
         this.imgCaption = imgCaption;
+    }
+
+    public ProductDetail setProductDetail(Product product, String img, String imgCaption) {
+        this.setProduct(product);
+        this.setImg(img);
+        this.setImgCaption(imgCaption);
+        return this;
     }
 
 }
