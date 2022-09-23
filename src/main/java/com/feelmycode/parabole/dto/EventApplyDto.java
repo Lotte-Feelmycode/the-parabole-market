@@ -27,6 +27,7 @@ public class EventApplyDto {
         this.prizeId=prizeId;
         this.participantAt=participantAt;
     }
+
     public EventParticipant toEntity(User user, Event event,EventPrize prize, LocalDateTime eventTimeStartAt) {
         return new EventParticipant(user,event,prize,eventTimeStartAt);
     }
