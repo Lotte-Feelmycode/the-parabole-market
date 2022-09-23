@@ -29,13 +29,13 @@ public class CouponController {
     private final CouponService couponService;
     private final SellerService sellerService;
 
-    @PostMapping("/seller/create")
-    public CouponCreateResponseDto addCoupon(@RequestBody CouponCreateRequestDto dto) {
-        /** addCoupon, addUserCoupon 이 모두 발생한다. */
-        return couponService.addCoupon(dto);
-//        return ResponseEntity.ok(couponService.addCoupon(dto));
-        // TODO: 에러 처리 해주어야함
-    }
+//    @PostMapping("/seller/create")
+//    public CouponCreateResponseDto addCoupon(@RequestBody CouponCreateRequestDto dto) {
+//        /** addCoupon, addUserCoupon 이 모두 발생한다. */
+//        return couponService.addCoupon(dto);
+////        return ResponseEntity.ok(couponService.addCoupon(dto));
+//        // TODO: 에러 처리 해주어야함
+//    }
 
     @PostMapping("/seller/giveout")
     public ResponseEntity<String> setUserToUserCoupon(@RequestParam String couponSNo,
@@ -45,20 +45,20 @@ public class CouponController {
         // TODO: 에러 처리 해주어야함
     }
 
-    @PostMapping("/seller/list")
-    public ResponseEntity<List<CouponSellerResponseDto>> getSellerCouponList(
-        @RequestParam Long sellerId) {
-        List<CouponSellerResponseDto> sellerCouponList = couponService.findCouponsBySellerId(
-            sellerId);
-        return ResponseEntity.ok(sellerCouponList);
-    }
+//    @PostMapping("/seller/list")
+//    public ResponseEntity<List<CouponSellerResponseDto>> getSellerCouponList(
+//        @RequestParam Long sellerId) {
+//        List<CouponSellerResponseDto> sellerCouponList = couponService.findCouponsBySellerId(
+//            sellerId);
+//        return ResponseEntity.ok(sellerCouponList);
+//    }
 
-    @PostMapping("/user/list")
-    public ResponseEntity<List<CouponUserResponseDto>> getUserCouponList(
-        @RequestParam Long userId) {
-        List<CouponUserResponseDto> userCouponList = couponService.findUserCouponsByUserId(userId);
-        return ResponseEntity.ok(userCouponList);
-    }
+//    @PostMapping("/user/list")
+//    public ResponseEntity<List<CouponUserResponseDto>> getUserCouponList(
+//        @RequestParam Long userId) {
+//        List<CouponUserResponseDto> userCouponList = couponService.findUserCouponsByUserId(userId);
+//        return ResponseEntity.ok(userCouponList);
+//    }
 
     @GetMapping("/applyinfo")
     public ResponseEntity<CouponAvailianceResponseDto> getCouponInfo(

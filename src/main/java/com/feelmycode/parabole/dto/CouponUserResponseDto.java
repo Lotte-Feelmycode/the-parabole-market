@@ -2,6 +2,7 @@ package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.domain.coupons.Coupon;
 import com.feelmycode.parabole.domain.coupons.UserCoupon;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,10 +17,10 @@ public class CouponUserResponseDto {
         private Integer type;
         private Object RateOrAmount;
         private Integer useState;
-        private String useDate;
-        private String acquiredDate;
-        private String validAt;
-        private String expiresAt;
+        private LocalDateTime useDate;
+        private LocalDateTime acquiredDate;
+        private LocalDateTime validAt;
+        private LocalDateTime expiresAt;
 
         private Long maxDiscountAmount;
         private Long minPaymentAmount;

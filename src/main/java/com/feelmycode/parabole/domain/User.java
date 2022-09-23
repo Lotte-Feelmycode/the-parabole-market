@@ -2,6 +2,7 @@ package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.domain.coupons.UserCoupon;
 import com.sun.istack.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -40,14 +41,6 @@ public class User extends BaseEntity {
     @Column(name = "user_password", length = 200)
     @NotNull
     private String password;
-
-    @Column(name = "user_created_at")
-    @NotNull
-    private String createdAt;
-
-    @Column(name = "user_updated_at")
-    @NotNull
-    private String updatedAt;
 
     @Column(name = "user_role")
     @NotNull

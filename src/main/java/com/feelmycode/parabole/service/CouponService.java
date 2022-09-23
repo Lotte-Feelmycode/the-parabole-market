@@ -2,10 +2,10 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.CouponType;
 import com.feelmycode.parabole.domain.CouponUseState;
-import com.feelmycode.parabole.domain.Seller;
+//import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.coupons.Coupon;
 import com.feelmycode.parabole.domain.coupons.UserCoupon;
-import com.feelmycode.parabole.repository.SellerRepository;
+//import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
@@ -28,23 +28,24 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class CouponService {
-    private final SellerRepository sellerRepository;
+
+//    private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
     /** Seller :: Coupon Registration and Confirmation */
-    public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
-        Seller s = sellerRepository.findSellerBySellerId(dto.getSellerId());
-        Coupon c = dto.toEntity(s, dto.getType());
-
-        s.addCoupon(c);        // 연관관계의 주인은 seller
-        for (int i = 0; i < dto.getCnt(); i++) {
-            c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
-        }
-        // save 를 안쓰는 이유는 아마도 cascadeType을 ALL로 해주었기 때문에 add해도 persistence가 refresh 되기 때문.
-        return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
-    }
+//    public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
+//        Seller s = sellerRepository.findSellerBySellerId(dto.getSellerId());
+//        Coupon c = dto.toEntity(s, dto.getType());
+//
+//        s.addCoupon(c);        // 연관관계의 주인은 seller
+//        for (int i = 0; i < dto.getCnt(); i++) {
+//            c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
+//        }
+//        // save 를 안쓰는 이유는 아마도 cascadeType을 ALL로 해주었기 때문에 add해도 persistence가 refresh 되기 때문.
+//        return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
+//    }
 
     public String giveoutUserCoupon(String couponSNo, Long userId) {
 
@@ -59,28 +60,28 @@ public class CouponService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<CouponSellerResponseDto> findCouponsBySellerId(Long sellerId) {
-        List<Coupon> couponList =  couponRepository.findCouponsBySellerId(sellerId);
-        return couponList.stream()
-            .map(CouponSellerResponseDto::new)
-            .collect(Collectors.toList());
+//    @Transactional(readOnly = true)
+//    public List<CouponSellerResponseDto> findCouponsBySellerId(Long sellerId) {
+//        List<Coupon> couponList =  couponRepository.findCouponsBySellerId(sellerId);
+//        return couponList.stream()
+//            .map(CouponSellerResponseDto::new)
+//            .collect(Collectors.toList());
+//    }
 
-    }
-    @Transactional(readOnly = true)
-    public List<CouponUserResponseDto> findUserCouponsByUserId(Long userId) {
-        List<UserCoupon> couponList =  userCouponRepository.findUserCouponsByUserId(userId);
-        List<CouponUserResponseDto> dtos = new ArrayList<>();
-
-        for (int i = 0; i < couponList.size(); i++) {
-            UserCoupon uc = couponList.get(i);
-            Long cidOfUc = uc.getCoupon().getId();
-            Coupon c = couponRepository.findCouponByCouponId(cidOfUc);
-
-            dtos.add(new CouponUserResponseDto(c, uc, c.getSeller().getName()));
-        }
-        return dtos;
-    }
+//    @Transactional(readOnly = true)
+//    public List<CouponUserResponseDto> findUserCouponsByUserId(Long userId) {
+//        List<UserCoupon> couponList =  userCouponRepository.findUserCouponsByUserId(userId);
+//        List<CouponUserResponseDto> dtos = new ArrayList<>();
+//
+//        for (int i = 0; i < couponList.size(); i++) {
+//            UserCoupon uc = couponList.get(i);
+//            Long cidOfUc = uc.getCoupon().getId();
+//            Coupon c = couponRepository.findCouponByCouponId(cidOfUc);
+//
+//            dtos.add(new CouponUserResponseDto(c, uc, c.getSeller().getName()));
+//        }
+//        return dtos;
+//    }
 
     @Transactional(readOnly = true)
     public CouponAvailianceResponseDto getCouponInfo(String couponSNo) {
@@ -107,7 +108,7 @@ public class CouponService {
         UserCoupon uc = userCouponRepository.findUserCouponByCouponSerialNo(couponSNo);
         if (uc.getUser().getId() == userId) {
             if (uc.getUseState() == CouponUseState.NotUsed) {
-                uc.useCoupon(LocalDateTime.now().toString());
+                uc.useCoupon(LocalDateTime.now());
                 ret = "Coupon Used Correctly";
             } else if (uc.getUseState() == CouponUseState.Used) {
                 ret = "Coupon Already Used";

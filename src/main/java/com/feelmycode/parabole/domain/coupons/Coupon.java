@@ -3,9 +3,10 @@ package com.feelmycode.parabole.domain.coupons;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.feelmycode.parabole.domain.CouponType;
 import com.feelmycode.parabole.domain.CouponUseState;
-import com.feelmycode.parabole.domain.Seller;
+//import com.feelmycode.parabole.domain.Seller;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -40,9 +41,10 @@ public class Coupon
     @Column(name = "coupon_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private Seller seller ;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "seller_id")
+    @Column(name = "seller_id")
+    private Long sellerId;
 
     @Column(name = "coupon_name",length = 500)
     @NotNull
@@ -61,20 +63,13 @@ public class Coupon
     @NotNull
     private Long discountAmount;                // 할인금액(원)
 
-    @Column(name = "coupon_created_at")
-    @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private String createdAt;
-
     @Column(name = "coupon_valid_at")
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private String validAt;
+    private LocalDateTime validAt;
 
     @Column(name = "coupon_expires_at")
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private String expiresAt;
+    private LocalDateTime expiresAt;
 
     @Column(name = "coupon_max_discount_amount")
     @NotNull
@@ -95,21 +90,19 @@ public class Coupon
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
+    public void setSeller(Long sellerId) {
+        this.sellerId = sellerId;
     }
 
-    public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
-        Long discountAmount,
-        String createdAt, String validAt, String expiresAt,
+    public Coupon(String name, Long sellerId, CouponType type, Integer discountRate,
+        Long discountAmount, LocalDateTime validAt, LocalDateTime expiresAt,
         Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 
         this.name = name;
-        this.seller = seller;
+        this.sellerId = sellerId;
         this.type = type;
         this.discountRate = discountRate;
         this.discountAmount = discountAmount;
-        this.createdAt = createdAt;
         this.validAt = validAt;
         this.expiresAt = expiresAt;
         this.maxDiscountAmount = maxDiscountAmount;

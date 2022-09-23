@@ -54,11 +54,11 @@ public class UserCoupon
 
     @Column(name = "coupon_acquisition_date")
     @NotNull
-    private String acquiredDate;
+    private LocalDateTime acquiredDate;
 
     @Column(name = "coupon_use_date")
     @NotNull
-    private String useDate;
+    private LocalDateTime useDate;
 
 
     /** 연관관계 편의 메서드 */
@@ -84,7 +84,7 @@ public class UserCoupon
         this.coupon = null;     // issueCoupon 에서 coupon 넣어줍니다
         this.user = null;
         this.useState = CouponUseState.NotUsed;
-        this.acquiredDate = LocalDateTime.now().toString();
+        this.acquiredDate = LocalDateTime.now();
         this.useDate = null;
     }
 
@@ -98,7 +98,7 @@ public class UserCoupon
 //    }
 
     /** User used Coupon (Update Coupon useState, useDate */
-    public void useCoupon(String usedDate) {
+    public void useCoupon(LocalDateTime usedDate) {
         this.useState = CouponUseState.Used;
         this.useDate = usedDate;
     }
