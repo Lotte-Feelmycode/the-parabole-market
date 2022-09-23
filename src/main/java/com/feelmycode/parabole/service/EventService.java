@@ -104,7 +104,7 @@ public class EventService {
      * (삭제된 이벤트 제외)
      */
     public List<Event> getEvents() {
-        return eventRepository.findAllByIsDelted(false);
+        return eventRepository.findAllByIsDeleted(false);
     }
 
     // TODO : 이벤트 수정

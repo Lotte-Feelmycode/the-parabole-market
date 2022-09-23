@@ -1,9 +1,6 @@
 package com.feelmycode.parabole.dto;
 
-import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventImage;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,14 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class EventCreateRequestDto {
+
     private Long sellerId;
-    private String eventBy;
-    private String eventType;
-    private String eventTitle;
-    private String eventStartAt;
-    private String eventEndAt;
-    private Integer eventStatus;
-    private String eventDescript;
+    private String createdBy;
+    private String type;
+    private String title;
+    private String startAt;
+    private String endAt;
+    private String descript;
     private EventImage eventImage;
+    private EventPrizeCreateRequestDto eventPrizeCreateRequestDtos;
 
 }
