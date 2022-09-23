@@ -1,5 +1,7 @@
 package com.feelmycode.parabole.service;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventPrize;
@@ -28,9 +30,9 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
-    private final SellerRepository sellerRepository;
+    //private final SellerRepository sellerRepository;
 
-    private final CouponRepository couponRepository;
+    //private final CouponRepository couponRepository;
 
     private final ProductRepository productRepository;
 
@@ -38,13 +40,12 @@ public class EventService {
      *  이벤트 생성
      */
     @Transactional
-    public Long Event(EventCreateRequestDto eventDto) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public Long createEvent(EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
         // TODO : Error Exception 수정
-        Seller seller = sellerRepository.findById(eventDto.getSellerId()).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 판매자가 없습니다."));
+        //Seller seller = sellerRepository.findById(eventDto.getSellerId()).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 판매자가 없습니다."));
+        Long sellerId = eventDto.getSellerId();
 
         List<Long> productIds = eventDto.getEventPrizeCreateRequestDtos().getProductIds();
         List<Long> couponIds  = eventDto.getEventPrizeCreateRequestDtos().getCouponIds();
@@ -59,22 +60,23 @@ public class EventService {
             }
         }
 
-        if (CollectionUtils.isEmpty(productIds)) {
-            for (Long couponId : couponIds) {
-                Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 쿠폰이 없습니다."));
-                EventPrize couponPrize = new EventPrize("COUPON", eventDto.getEventPrizeCreateRequestDtos().getStock(), coupon);
-                eventPrizeList.add(couponPrize);
-            }
-        }
+//        if (CollectionUtils.isEmpty(productIds)) {
+//            for (Long couponId : couponIds) {
+//                Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new IdNotFoundException("해당하는 ID의 쿠폰이 없습니다."));
+//                EventPrize couponPrize = new EventPrize("COUPON", eventDto.getEventPrizeCreateRequestDtos().getStock(), coupon);
+//                eventPrizeList.add(couponPrize);
+//            }
+//        }
 
         // 이벤트 생성
         Event event = Event.builder()
-            .seller(seller)
+            //.seller(seller)
+            .sellerId(sellerId)
             .createdBy(eventDto.getCreatedBy())
             .type(eventDto.getType())
             .title(eventDto.getTitle())
-            .startAt(LocalDateTime.parse(eventDto.getStartAt(), formatter))
-            .endAt(LocalDateTime.parse(eventDto.getEndAt(), formatter))
+            .startAt(LocalDateTime.parse(eventDto.getStartAt(), ISO_LOCAL_DATE_TIME))
+            .endAt(LocalDateTime.parse(eventDto.getEndAt(), ISO_LOCAL_DATE_TIME))
             .descript(eventDto.getDescript())
             .eventImage(eventDto.getEventImage())
             .eventPrizes(eventPrizeList)
@@ -88,7 +90,7 @@ public class EventService {
     /**
      * 이벤트 ID로 단건 조회
      */
-    public Event getEvent(Long eventId) {
+    public Event getEventByEventId(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow();
     }
 
@@ -103,12 +105,11 @@ public class EventService {
      * 이벤트 전체 조회
      * (삭제된 이벤트 제외)
      */
-    public List<Event> getEvents() {
+    public List<Event> getEventsAllNotDeleted() {
         return eventRepository.findAllByIsDeleted(false);
     }
 
     // TODO : 이벤트 수정
-
     /**
      * 이벤트 취소
      */

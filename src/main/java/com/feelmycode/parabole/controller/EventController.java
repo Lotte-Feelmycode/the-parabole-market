@@ -25,7 +25,7 @@ public class EventController {
     @PostMapping()
     public ResponseEntity<?> createEvent(@RequestBody EventCreateRequestDto eventDto) {
         try {
-            Long eventId = eventService.Event(eventDto);
+            Long eventId = eventService.createEvent(eventDto);
             return ResponseEntity.ok(eventId);
         } catch (Exception e) {
             String error = e.getMessage();
@@ -35,14 +35,14 @@ public class EventController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<EventListResponseDto> getEvent(@PathVariable("eventId") Long eventId) {
-        Event eventEntity = eventService.getEvent(eventId);
+        Event eventEntity = eventService.getEventByEventId(eventId);
         EventListResponseDto response = EventListResponseDto.of(eventEntity);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping()
     public ResponseEntity<List<EventListResponseDto>> getEvent() {
-        List<Event> eventEntities = eventService.getEvents();
+        List<Event> eventEntities = eventService.getEventsAllNotDeleted();
         List<EventListResponseDto> response = eventEntities.stream()
             .map(EventListResponseDto::of)
             .collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.service;
 
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.junit.Assert.assertEquals;
 
 import com.feelmycode.parabole.domain.Event;
@@ -12,6 +13,7 @@ import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +31,6 @@ public class eventServiceTest {
     EventRepository eventRepository;
     @Autowired
     SellerRepository sellerRepository;
-
     @Autowired
     EventService eventService;
 
@@ -41,11 +42,14 @@ public class eventServiceTest {
         productIds.add(1L);
         productIds.add(2L);
 
+        LocalDateTime startAt = LocalDateTime.parse("2022-09-22T00:00:00", ISO_LOCAL_DATE_TIME);
+        LocalDateTime endAt = LocalDateTime.parse("2022-09-28T18:00:00", ISO_LOCAL_DATE_TIME);
+
         EventPrizeCreateRequestDto eventPrizeCreateRequestDto = new EventPrizeCreateRequestDto("FCFS", 50, productIds, null);
-        EventCreateRequestDto testEventDto = new EventCreateRequestDto(1L, "SELLER", "RAFFLE", "테스트등록이벤트", "2022-09-22 00:00:00", "2022-09-28 18:00:00","테스트 등록 이벤트 설명", new EventImage(), eventPrizeCreateRequestDto);
+        EventCreateRequestDto testEventDto = new EventCreateRequestDto(1L, "SELLER", "RAFFLE", "테스트등록이벤트", startAt+"", endAt+"","테스트 등록 이벤트 설명", new EventImage(), eventPrizeCreateRequestDto);
 
         //when
-        Long eventId = eventService.Event(testEventDto);
+        Long eventId = eventService.createEvent(testEventDto);
 
         // then
         Event getEvent = eventRepository.findById(eventId).orElseThrow();

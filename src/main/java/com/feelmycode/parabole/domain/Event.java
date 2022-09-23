@@ -36,10 +36,12 @@ public class Event extends BaseEntity implements Serializable {
     @Column(name = "event_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    @JsonBackReference
-    private Seller seller;
+//    @ManyToOne
+//    @JoinColumn(name = "seller_id")
+//    @JsonBackReference
+//    private Seller seller;
+    @Column(name = "seller_id")
+    private Long sellerId;
 
     @Column(name = "created_by")
     private String createdBy; // [ADMIN, SELLER]
@@ -77,10 +79,10 @@ public class Event extends BaseEntity implements Serializable {
         this.isDeleted = false;
     }
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-        seller.getEvents().add(this);
-    }
+//    public void setSeller(Seller seller) {
+//        this.seller = seller;
+//        seller.getEvents().add(this);
+//    }
 
     public void addEventPrize(EventPrize eventPrize) {
         eventPrizes.add(eventPrize);
@@ -88,10 +90,11 @@ public class Event extends BaseEntity implements Serializable {
     }
 
     @Builder
-    public Event(Seller seller, String createdBy, String type, String title,
+    public Event(/*Seller seller*/Long sellerId, String createdBy, String type, String title,
         LocalDateTime startAt, LocalDateTime endAt, String descript, EventImage eventImage,
         List<EventPrize> eventPrizes) {
-        this.seller = seller;
+        //this.seller = seller;
+        this.sellerId = sellerId;
         this.createdBy = createdBy;
         this.type = type;
         this.title = title;
@@ -121,7 +124,8 @@ public class Event extends BaseEntity implements Serializable {
     public String toString() {
         return "Event{" +
             "id=" + id +
-            ", seller=" + seller +
+            //", seller=" + seller +
+            ", sellerId=" + sellerId + '\'' +
             ", createdBy='" + createdBy + '\'' +
             ", type='" + type + '\'' +
             ", title='" + title + '\'' +
