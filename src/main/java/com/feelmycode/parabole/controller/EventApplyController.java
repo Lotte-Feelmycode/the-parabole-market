@@ -19,12 +19,12 @@ public class EventApplyController {
 
     private final EventParticipantService eventParticipantService;
 
-    @ExceptionHandler(value=Exception.class)
-    @RequestMapping(value = "/participant",method = RequestMethod.POST)
-    public ResponseEntity<String> insertFcFsApply(@RequestBody @Valid EventApplyDto dto){
+    @ExceptionHandler(value = Exception.class)
+    @RequestMapping(value = "/participant", method = RequestMethod.POST)
+    public ResponseEntity<String> insertFcFsApply(@RequestBody @Valid EventApplyDto dto) {
 
-        boolean result=eventParticipantService.eventJoin(dto);
-        if(result) {
+        boolean result = eventParticipantService.eventJoin(dto);
+        if (result) {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("응모가 완료 되었습니다");
         }
 

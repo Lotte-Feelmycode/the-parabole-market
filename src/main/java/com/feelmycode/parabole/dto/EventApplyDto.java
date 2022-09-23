@@ -21,14 +21,15 @@ public class EventApplyDto {
     private Long prizeId;
     private String participantAt;
 
-    public EventApplyDto(Long userId,Long eventId,Long prizeId,String participantAt){
-        this.userId=userId;
-        this.eventId=eventId;
-        this.prizeId=prizeId;
-        this.participantAt=participantAt;
+    public EventApplyDto(Long userId, Long eventId, Long prizeId, String participantAt) {
+        this.userId = userId;
+        this.eventId = eventId;
+        this.prizeId = prizeId;
+        this.participantAt = participantAt;
     }
 
-    public EventParticipant toEntity(User user, Event event,EventPrize prize, LocalDateTime eventTimeStartAt) {
-        return new EventParticipant(user,event,prize,eventTimeStartAt);
+    public EventParticipant toEntity(User user, Event event, EventPrize prize,
+        LocalDateTime eventTimeStartAt) {
+        return new EventParticipant(user, event, prize, eventTimeStartAt);
     }
 }
