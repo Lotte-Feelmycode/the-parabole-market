@@ -21,3 +21,4 @@ public class EventImage {
         this.eventDetailImg = eventDetailImg;
     }
 }
+

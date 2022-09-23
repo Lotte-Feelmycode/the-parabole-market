@@ -74,5 +74,5 @@ public class EventPrize {
             ", product=" + product +
             '}';
     }
-
 }
+
