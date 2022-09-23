@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CouponSellerResponseDto {
         /** ResponseDto for POST /api/v1/coupon/seller/list **/
-
         private String name;
-
         private Long sellerId;
         private Integer type;
         private Integer discountRate;
@@ -27,12 +25,11 @@ public class CouponSellerResponseDto {
         private Integer cnt;
 
         /** Entity to DTO **/
-
         public CouponSellerResponseDto(Coupon coupon) {
                 // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
                 this.sellerId = coupon.getSeller().getId();
-                this.type = coupon.getType();
+                this.type = coupon.getType().ordinal();
                 this.discountRate = coupon.getDiscountRate();
                 this.discountAmount = coupon.getDiscountAmount();
                 this.createdAt = coupon.getCreatedAt();
@@ -41,7 +38,6 @@ public class CouponSellerResponseDto {
                 this.maxDiscountAmount = coupon.getMaxDiscountAmount();
                 this.minPaymentAmount = coupon.getMinPaymentAmount();
                 this.details = coupon.getDetails();
-
                 this.cnt = coupon.getCnt();
         }
 }

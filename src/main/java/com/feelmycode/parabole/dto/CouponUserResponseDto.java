@@ -29,13 +29,13 @@ public class CouponUserResponseDto {
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
-                this.type = coupon.getType();
+                this.type = coupon.getType().ordinal();
                 if (type == 1) {
                         this.RateOrAmount = coupon.getDiscountRate();
                 } else if (type == 2) {
                         this.RateOrAmount = coupon.getDiscountAmount();
                 }
-                this.useState = userCoupon.getUseState();
+                this.useState = userCoupon.getUseState().ordinal();
                 this.acquiredDate = userCoupon.getAcquiredDate();
                 this.useDate = userCoupon.getUseDate();
                 this.validAt = coupon.getValidAt();

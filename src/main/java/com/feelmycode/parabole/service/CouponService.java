@@ -1,5 +1,7 @@
 package com.feelmycode.parabole.service;
 
+import com.feelmycode.parabole.domain.CouponType;
+import com.feelmycode.parabole.domain.CouponUseState;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.coupons.Coupon;
 import com.feelmycode.parabole.domain.coupons.UserCoupon;
@@ -24,28 +26,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CouponService {
     private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
-
     /** Seller :: Coupon Registration and Confirmation */
-    @Transactional
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         Seller s = sellerRepository.findSellerBySellerId(dto.getSellerId());
-        Coupon c = dto.toEntity(s);
+        Coupon c = dto.toEntity(s, dto.getType());
 
         s.addCoupon(c);        // 연관관계의 주인은 seller
         for (int i = 0; i < dto.getCnt(); i++) {
             c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
         }
         // save 를 안쓰는 이유는 아마도 cascadeType을 ALL 로 해주었기 때문에 add 해도 persistence가 refresh 됭서?
-        return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType(), c.getCnt());
+        return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
     }
 
-    @Transactional
     public String giveoutUserCoupon(String couponSNo, Long userId) {
 
         UserCoupon uc = userCouponRepository.findUserCouponByCouponSerialNo(couponSNo);
@@ -87,29 +87,29 @@ public class CouponService {
 
         UserCoupon uc = userCouponRepository.findUserCouponByCouponSerialNo(couponSNo);
         Coupon c = uc.getCoupon();
-        Integer type = 0;
+
+        Integer type = null;
         Object ret = null;
 
-        if(c.getType() == 1){
+        if(c.getType() == CouponType.RATE){
             type = 1;
             ret = c.getDiscountRate();
-        } else if (c.getType() == 2) {
+        } else if (c.getType() == CouponType.AMOUNT) {
             type = 2 ;
             ret = c.getDiscountAmount();
         }
         return new CouponAvailianceResponseDto(type, ret);
     }
 
-    @Transactional
     public String useUserCoupon(String couponSNo, Long userId) {
         String ret = null;
 
         UserCoupon uc = userCouponRepository.findUserCouponByCouponSerialNo(couponSNo);
         if (uc.getUser().getId() == userId) {
-            if (uc.getUseState() == 0) {
+            if (uc.getUseState() == CouponUseState.NotUsed) {
                 uc.useCoupon(LocalDateTime.now().toString());
                 ret = "Coupon Used Correctly";
-            } else if (uc.getUseState() == 1) {
+            } else if (uc.getUseState() == CouponUseState.Used) {
                 ret = "Coupon Already Used";
             }
         } else {

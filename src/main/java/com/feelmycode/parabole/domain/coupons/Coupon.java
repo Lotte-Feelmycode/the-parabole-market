@@ -1,6 +1,8 @@
 package com.feelmycode.parabole.domain.coupons;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.feelmycode.parabole.domain.CouponType;
+import com.feelmycode.parabole.domain.CouponUseState;
 import com.feelmycode.parabole.domain.Seller;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
@@ -8,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,13 +45,14 @@ public class Coupon
     @JoinColumn(name = "seller_id")
     private Seller seller ;
 
-    @Column(name = "coupon_name",length = 500, nullable = false)
+    @Column(name = "coupon_name",length = 500)
     @NotNull
     private String name;
 
     @Column(name = "coupon_type")
     @NotNull
-    private Integer type;                       // 쿠폰종류 ( 할인율1  할인금액2 )
+    @Enumerated(EnumType.STRING)
+    private CouponType type;                       // 쿠폰종류 ( 할인율1  할인금액2 )
 
     @Column(name = "coupon_discount_rate")
     @NotNull
@@ -95,7 +101,7 @@ public class Coupon
         this.seller = seller;
     }
 
-    public Coupon(String name, Seller seller, Integer type, Integer discountRate,
+    public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
         Long discountAmount,
         String createdAt, String validAt, String expiresAt,
         Long maxDiscountAmount, Long minPaymentAmount, String details, Integer cnt) {

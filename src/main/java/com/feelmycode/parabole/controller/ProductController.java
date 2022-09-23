@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.controller;
 
-import com.feelmycode.parabole.domain.Message;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.service.ProductService;
 import java.nio.charset.Charset;
@@ -67,14 +66,11 @@ public class ProductController {
     @PostMapping
     public ResponseEntity createProduct(@RequestBody Product product) {
         productService.saveProduct(product);
-        Message message = new Message();
-        message.setMessage("테스트 메세지 전송");
-        message.setSuccess(true);
 
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        return new ResponseEntity<>(message, header, HttpStatus.OK);
+        return new ResponseEntity<>(header, HttpStatus.OK);
     }
 
     // TODO: 셀러정보를 받아서 product 수정하기
@@ -82,14 +78,10 @@ public class ProductController {
     public ResponseEntity updateProduct(@RequestBody Product product) {
         productService.updateProduct(product);
 
-        Message message = new Message();
-        message.setMessage("테스트 메세지 전송");
-        message.setSuccess(true);
-
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        return new ResponseEntity<>(message, header, HttpStatus.OK);
+        return new ResponseEntity<>(header, HttpStatus.OK);
     }
 
 }

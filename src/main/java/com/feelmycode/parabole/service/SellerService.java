@@ -15,4 +15,3 @@ public class SellerService {
         return sellerRepository.findSellerBySellerId(sellerId);
     }
 }
-

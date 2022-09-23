@@ -1,11 +1,14 @@
 package com.feelmycode.parabole.domain.coupons;
 
+import com.feelmycode.parabole.domain.CouponUseState;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.global.util.UuidApp;
 import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,10 +47,10 @@ public class UserCoupon
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "coupon_use_state", nullable = false)
-    @ColumnDefault("0")
+    @Column(name = "coupon_use_state")
     @NotNull
-    private Integer useState;                            // 쿠폰 사용안함 0   사용완료 1
+    @Enumerated(EnumType.STRING)
+    private CouponUseState useState;
 
     @Column(name = "coupon_acquisition_date")
     @NotNull
@@ -80,7 +83,7 @@ public class UserCoupon
 
         this.coupon = null;     // issueCoupon 에서 coupon 넣어줍니다
         this.user = null;
-        this.useState = 0;
+        this.useState = CouponUseState.NotUsed;
         this.acquiredDate = LocalDateTime.now().toString();
         this.useDate = null;
     }
@@ -96,7 +99,7 @@ public class UserCoupon
 
     /** User used Coupon (Update Coupon useState, useDate */
     public void useCoupon(String usedDate) {
-        this.useState = 1;
+        this.useState = CouponUseState.Used;
         this.useDate = usedDate;
     }
 }

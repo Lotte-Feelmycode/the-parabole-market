@@ -18,43 +18,42 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity
-{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_email", length = 200, nullable = false)
+    @Column(name = "user_email", length = 200)
     @NotNull
     private String email;
 
-    @Column(name = "user_name", length = 200, nullable = false)
+    @Column(name = "user_name", length = 200)
     @NotNull
     private String name;
 
-    @Column(name = "user_nickname", length = 200, nullable = false)
+    @Column(name = "user_nickname", length = 200)
     @NotNull
     private String nickname;
 
-    @Column(name = "user_password", length = 200, nullable = false)
+    @Column(name = "user_password", length = 200)
     @NotNull
     private String password;
 
-    @Column(name = "user_created_at", nullable = false)
+    @Column(name = "user_created_at")
     @NotNull
     private String createdAt;
 
-    @Column(name = "user_updated_at", nullable = false)
+    @Column(name = "user_updated_at")
     @NotNull
     private String updatedAt;
 
-    @Column(name = "user_role", nullable = false)
+    @Column(name = "user_role")
     @NotNull
     private String role;
 
-    @Column(name = "img_url", nullable = false)
+    @Column(name = "img_url")
     @NotNull
     private String imgUrl;
 
