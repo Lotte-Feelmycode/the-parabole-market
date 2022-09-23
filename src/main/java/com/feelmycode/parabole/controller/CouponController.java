@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/coupon")
 public class CouponController {
 
+    // TODO: 로거 추후 변경 예정
     Logger logger = LoggerFactory.getLogger(CouponController.class);
     private final CouponService couponService;
     private final SellerService sellerService;
 
-    /* 1.OK */
     @PostMapping("/seller/create")
     public CouponCreateResponseDto addCoupon(@RequestBody CouponCreateRequestDto dto) {
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
@@ -37,18 +37,14 @@ public class CouponController {
         // TODO: 에러 처리 해주어야함
     }
 
-    /* 2.OK */
-    /** Set User to UserCoupon :: 즉 쿠폰을 사용자에게 배부 */
     @PostMapping("/seller/giveout")
-    public ResponseEntity<String> giveoutUserCoupon(@RequestParam String couponSNo,
+    public ResponseEntity<String> setUserToUserCoupon(@RequestParam String couponSNo,
         @RequestParam Long userId) {
         String result = couponService.giveoutUserCoupon(couponSNo, userId);
         return ResponseEntity.ok(result);
         // TODO: 에러 처리 해주어야함
     }
 
-    /* 3.OK */
-    /** Show All Seller's Coupon List :: 판매자 내 등록 쿠폰 목록 */
     @PostMapping("/seller/list")
     public ResponseEntity<List<CouponSellerResponseDto>> getSellerCouponList(
         @RequestParam Long sellerId) {
@@ -57,8 +53,6 @@ public class CouponController {
         return ResponseEntity.ok(sellerCouponList);
     }
 
-    /* 4.OK */
-    /** Show All User's Coupon List :: 사용자 내 소유 쿠폰 목록 */
     @PostMapping("/user/list")
     public ResponseEntity<List<CouponUserResponseDto>> getUserCouponList(
         @RequestParam Long userId) {
@@ -66,16 +60,12 @@ public class CouponController {
         return ResponseEntity.ok(userCouponList);
     }
 
-    /* 5.OK */
-    /** Show Info for Product Purchase :: 쿠폰 사용을 위해서 쿠폰 정보(유형,할인율/액수 반환 */
     @GetMapping("/applyinfo")
     public ResponseEntity<CouponAvailianceResponseDto> getCouponInfo(
         @RequestParam String couponSNo) {
         return ResponseEntity.ok(couponService.getCouponInfo(couponSNo));
     }
 
-    /* 6.OK */
-    /** Change useState (Use Coupon) :: 쿠폰 사용시 로직 (사용자 본인이 소유해야 사용 가능) */
     @PostMapping("/user/use")
     public ResponseEntity<String> useUserCoupon(@RequestParam String couponSNo,
                                                 @RequestParam Long userId) {

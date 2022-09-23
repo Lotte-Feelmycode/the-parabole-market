@@ -29,7 +29,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "coupons")
 public class Coupon
@@ -87,11 +86,10 @@ public class Coupon
 
     @Column(name = "coupon_details")
     @NotNull
-    private String details;
+    private String detail;
 
     @Column(name = "coupon_publish_cnt")
     @NotNull
-    @ColumnDefault("3")
     private Integer cnt;                       // 발행할 쿠폰의 수량
 
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
@@ -104,7 +102,7 @@ public class Coupon
     public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
         Long discountAmount,
         String createdAt, String validAt, String expiresAt,
-        Long maxDiscountAmount, Long minPaymentAmount, String details, Integer cnt) {
+        Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 
         this.name = name;
         this.seller = seller;
@@ -116,7 +114,7 @@ public class Coupon
         this.expiresAt = expiresAt;
         this.maxDiscountAmount = maxDiscountAmount;
         this.minPaymentAmount = minPaymentAmount;
-        this.details = details;
+        this.detail = detail;
         this.cnt = cnt;
     }
 

@@ -42,7 +42,7 @@ public class CouponService {
         for (int i = 0; i < dto.getCnt(); i++) {
             c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
         }
-        // save 를 안쓰는 이유는 아마도 cascadeType을 ALL 로 해주었기 때문에 add 해도 persistence가 refresh 됭서?
+        // save 를 안쓰는 이유는 아마도 cascadeType을 ALL로 해주었기 때문에 add해도 persistence가 refresh 되기 때문.
         return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
     }
 
