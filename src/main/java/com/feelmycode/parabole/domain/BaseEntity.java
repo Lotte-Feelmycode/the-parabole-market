@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
@@ -14,18 +15,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private String createdAt;
+  @CreatedDate
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private String updatedAt;
+  @LastModifiedDate
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
-    private String deletedAt;
+  @Column(name = "deleted_at")
+  private LocalDateTime deletedAt;
 
-    @Column(name = "is_deleted")
-    @ColumnDefault("false")
-    private boolean isDeleted;
+  @Column(name = "is_deleted")
+  @ColumnDefault("false")
+  boolean isDeleted;
+
 }
