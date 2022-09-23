@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class EventPrizeCreateRequestDto {
-    private String prizeType;
+
+    private String type;
     private Integer stock;
     private List<Long> productIds;
     private List<Long> couponIds;
+
 }
