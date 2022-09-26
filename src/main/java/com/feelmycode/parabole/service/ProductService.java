@@ -1,8 +1,10 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
@@ -32,7 +34,7 @@ public class ProductService {
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
-            .orElseThrow(() -> new IllegalArgumentException());
+            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "상품이 존재하지 않습니다."));
     }
 
     @Transactional(readOnly = true)
