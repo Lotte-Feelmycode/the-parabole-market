@@ -67,9 +67,6 @@ public class ProductController {
     public ResponseEntity createProduct(@RequestBody Product product) {
         productService.saveProduct(product);
 
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
