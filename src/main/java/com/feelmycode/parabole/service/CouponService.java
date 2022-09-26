@@ -104,14 +104,14 @@ public class CouponService {
         UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo);
         Coupon c = uc.getCoupon();
 
-        Integer type = null;
+        String type = null;
         Object ret = null;
 
         if(c.getType() == CouponType.RATE){
-            type = 1;
+            type = "RATE";
             ret = c.getDiscountRate();
         } else if (c.getType() == CouponType.AMOUNT) {
-            type = 2 ;
+            type = "AMOUNT" ;
             ret = c.getDiscountAmount();
         }
         return new CouponAvailianceResponseDto(type, ret);
@@ -121,15 +121,22 @@ public class CouponService {
         String ret = null;
 
         UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo);
-        if (uc.getUser().getId() == userId) {
-            if (uc.getUseState() == CouponUseState.NotUsed) {
-                uc.useCoupon(LocalDateTime.now());
-                ret = "Coupon Used Correctly";
-            } else if (uc.getUseState() == CouponUseState.Used) {
-                ret = "Coupon Already Used";
+        User owner = uc.getUser();
+
+        if (owner == null) {
+            ret = "No Users are Assigned to Coupon. Assign a User first.";
+        }
+        else if (owner != null){
+            if (owner.getId() == userId) {
+                if (uc.getUseState() == CouponUseState.NotUsed) {
+                    uc.useCoupon();
+                    ret = "Coupon Used Correctly";
+                } else if (uc.getUseState() == CouponUseState.Used) {
+                    ret = "Coupon Already Used";
+                }
+            } else if (owner.getId() != userId){
+                ret = "Coupon Unavailable (Not mine)";
             }
-        } else {
-            ret = "Coupon Unavailable (Not mine)";
         }
         return ret;
     }

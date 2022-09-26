@@ -5,7 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import lombok.Getter;
-import net.bytebuddy.asm.Advice.Local;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -31,3 +30,4 @@ public class BaseEntity {
     @ColumnDefault("false")
     private boolean isDeleted;
 }
+

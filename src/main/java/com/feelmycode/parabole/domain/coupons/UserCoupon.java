@@ -98,9 +98,9 @@ public class UserCoupon
 //    }
 
     /** User used Coupon (Update Coupon useState, useDate */
-    public void useCoupon(LocalDateTime usedDate) {
+    public void useCoupon() {
         this.useState = CouponUseState.Used;
-        this.useDate = usedDate;
+        this.useDate = LocalDateTime.now();
     }
 }
 
