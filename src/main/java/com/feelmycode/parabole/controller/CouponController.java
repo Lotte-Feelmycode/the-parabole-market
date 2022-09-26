@@ -46,7 +46,7 @@ public class CouponController {
     }
 
     @PostMapping("/seller/giveout")
-    public ResponseEntity<String> setUserToUserCoupon(@RequestBody Map<String, Object> map) {
+    public ResponseEntity<String> assignUserToUserCoupon(@RequestBody Map<String, Object> map) {
 
         String couponSNo = (String)map.get("couponSNo");
         Long userId = Long.parseLong(String.valueOf(map.get("userId")));
@@ -71,13 +71,14 @@ public class CouponController {
     public ResponseEntity<Page<CouponUserResponseDto> > getUserCouponList(
                                     @RequestBody Map<String, Object> map) {
 
+        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
         Long userId = Long.parseLong(String.valueOf(map.get("userId")));
 
         Page<CouponUserResponseDto> userCouponList = couponService.getUserCouponList(userId);
         return ResponseEntity.ok(userCouponList);
     }
 
-    @GetMapping("/applyinfo")
+    @GetMapping("/info")
     public ResponseEntity<CouponAvailianceResponseDto> getCouponInfo(
                                     @RequestBody Map<String, Object> map) {
 

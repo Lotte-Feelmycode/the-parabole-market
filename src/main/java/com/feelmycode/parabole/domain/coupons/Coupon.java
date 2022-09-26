@@ -1,9 +1,11 @@
 package com.feelmycode.parabole.domain.coupons;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.feelmycode.parabole.domain.BaseEntity;
 import com.feelmycode.parabole.domain.CouponType;
 import com.feelmycode.parabole.domain.CouponUseState;
 //import com.feelmycode.parabole.domain.Seller;
+//import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -32,9 +34,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor
 @Entity
 @Table(name = "coupons")
-public class Coupon
-//    extends BaseTimeEntity
-    implements Serializable {
+public class Coupon extends BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,10 +43,15 @@ public class Coupon
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "seller_id")
+//    private Seller seller;
     @Column(name = "seller_id")
     private Long sellerId;
 
-    @Column(name = "coupon_name",length = 500)
+    /* Entity 없어서 추가 :: Seller 생기면 접근할 수 있으니까 삭제 필수 */
+    @Column(name = "seller_name")
+    private String sellerName;
+
+    @Column(name = "coupon_name", length = 500)
     @NotNull
     private String name;
 

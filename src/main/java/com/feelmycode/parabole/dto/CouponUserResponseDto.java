@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CouponUserResponseDto {
-        /** ResponseDto for POST /api/v1/coupon/user/list **/
 
+        /** ResponseDto for POST /api/v1/coupon/user/list **/
         private String name;
         private String serialNo;
         private String sellerName;
@@ -26,6 +26,7 @@ public class CouponUserResponseDto {
         private Long minPaymentAmount;
 
         public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String sellerName) {
+
                 // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
@@ -43,7 +44,6 @@ public class CouponUserResponseDto {
                 this.expiresAt = coupon.getExpiresAt();
                 this.maxDiscountAmount = coupon.getMaxDiscountAmount();
                 this.minPaymentAmount = coupon.getMinPaymentAmount();
-
         }
 
 }
