@@ -65,7 +65,8 @@ public class ProductController {
         }
 
         Page<Product> response = productService.getProductList(getSellerId, getSellerName,
-            getCategory, getProductName, getPageable);
+            getProductName, getCategory, getPageable);
+            
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
