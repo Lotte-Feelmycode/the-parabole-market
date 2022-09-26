@@ -2,6 +2,7 @@ package com.feelmycode.parabole.repository;
 
 import com.feelmycode.parabole.domain.UserCoupon;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
 
     List<UserCoupon> findAllByUserId(Long userId);
-    UserCoupon findBySerialNoContains(String serialNo);
+    Optional<UserCoupon> findBySerialNoContains(String serialNo);
 }

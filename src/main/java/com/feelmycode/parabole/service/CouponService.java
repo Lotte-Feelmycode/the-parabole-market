@@ -10,6 +10,7 @@ import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +43,10 @@ public class CouponService {
 //        Seller s = sellerRepository.findById(dto.getSellerId())
 //            .orElseThrow(() -> new IllegalArgumentException());
         Coupon c = dto.toEntity(dto.getSellerId(), dto.getType());
+
+        if (!couponRepository.findAllByNameAndSellerId(dto.getName(), dto.getSellerId()).isEmpty()) {
+            return null;
+        }
         couponRepository.save(c);
 
 //        s.addCoupon(c);  // 연관관계의 주인은 seller (양방향이라 셀러에게 쿠폰을 추가해줘야하는데 Seller 없음)
@@ -57,15 +63,18 @@ public class CouponService {
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
     public String giveoutUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo);
+        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
         User u = userRepository.findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException());
+            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+                "사용자Id로 사용자를 검색한 내용이 존재하지 않습니다."));
 
         if (uc.getUser() == null) {
             u.setUserCoupon(uc);
-            return "UserCoupon Assigned Correctly";
+            return "SUCCESS";
         } else {
-            return "UserCoupon Already Has Owner(User)";
+            return "FAIL";
         }
     }
 
@@ -89,7 +98,8 @@ public class CouponService {
             UserCoupon uc = couponList.get(i);
             Long cidOfUc = uc.getCoupon().getId();
             Coupon c = couponRepository.findById(cidOfUc)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+                    "쿠폰Id로 쿠폰을 검색한 내용이 존재하지 않습니다."));
 
             dtos.add(new CouponUserResponseDto(c, uc, c.getSellerName()));
         }
@@ -99,7 +109,9 @@ public class CouponService {
     @Transactional(readOnly = true)
     public CouponAvailianceResponseDto getCouponInfo(String couponSNo) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo);
+        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
         Coupon c = uc.getCoupon();
 
         String type = null;
@@ -118,22 +130,24 @@ public class CouponService {
     public String useUserCoupon(String couponSNo, Long userId) {
         String ret = null;
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo);
+        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
         User owner = uc.getUser();
 
         if (owner == null) {
-            ret = "No Users are Assigned to Coupon. Assign a User first.";
+            ret = "NO_USER";
         }
         else if (owner != null){
             if (owner.getId() == userId) {
                 if (uc.getUseState() == CouponUseState.NotUsed) {
                     uc.useCoupon();
-                    ret = "Coupon Used Correctly";
+                    ret = "SUCCESS";
                 } else if (uc.getUseState() == CouponUseState.Used) {
-                    ret = "Coupon Already Used";
+                    ret = "ALREADY_USED";
                 }
             } else if (owner.getId() != userId){
-                ret = "Coupon Unavailable (Not mine)";
+                ret = "FAILURE";
             }
         }
         return ret;
