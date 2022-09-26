@@ -67,10 +67,7 @@ public class ProductController {
     public ResponseEntity createProduct(@RequestBody Product product) {
         productService.saveProduct(product);
 
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return new ResponseEntity<>(header, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // TODO: 셀러정보를 받아서 product 수정하기
@@ -81,7 +78,7 @@ public class ProductController {
         HttpHeaders header = new HttpHeaders();
         header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        return new ResponseEntity<>(header, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
