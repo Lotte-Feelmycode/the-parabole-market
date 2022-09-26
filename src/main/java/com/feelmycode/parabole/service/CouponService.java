@@ -45,7 +45,8 @@ public class CouponService {
         Coupon c = dto.toEntity(dto.getSellerId(), dto.getType());
 
         if (!couponRepository.findAllByNameAndSellerId(dto.getName(), dto.getSellerId()).isEmpty()) {
-            return null;
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "이전에 등록한 쿠폰명과 중복되어 쿠폰 등록에 실패하였습니다.");
         }
         couponRepository.save(c);
 
@@ -61,7 +62,7 @@ public class CouponService {
     }
 
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
-    public String giveoutUserCoupon(String couponSNo, Long userId) {
+    public void giveoutUserCoupon(String couponSNo, Long userId) {
 
         UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
@@ -72,9 +73,8 @@ public class CouponService {
 
         if (uc.getUser() == null) {
             u.setUserCoupon(uc);
-            return "SUCCESS";
         } else {
-            return "FAIL";
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰에 배정된 사용자가 이미 존재합니다.");
         }
     }
 
@@ -124,11 +124,11 @@ public class CouponService {
             type = "AMOUNT" ;
             ret = c.getDiscountAmount();
         }
+
         return new CouponAvailianceResponseDto(type, ret);
     }
 
-    public String useUserCoupon(String couponSNo, Long userId) {
-        String ret = null;
+    public void useUserCoupon(String couponSNo, Long userId) {
 
         UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
@@ -136,21 +136,18 @@ public class CouponService {
         User owner = uc.getUser();
 
         if (owner == null) {
-            ret = "NO_USER";
-        }
-        else if (owner != null){
-            if (owner.getId() == userId) {
-                if (uc.getUseState() == CouponUseState.NotUsed) {
-                    uc.useCoupon();
-                    ret = "SUCCESS";
-                } else if (uc.getUseState() == CouponUseState.Used) {
-                    ret = "ALREADY_USED";
-                }
-            } else if (owner.getId() != userId){
-                ret = "FAILURE";
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰에 배정된 사용자가 없습니다. 사용자를 먼저 배정하세요.");
+        } else if (!owner.getId().equals(userId)){
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
+        } else {
+            if (uc.getUseState() == CouponUseState.Used) {
+                throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                    "이미 사용완료된 쿠폰입니다.");
             }
         }
-        return ret;
+        uc.useCoupon();
     }
 
 }
