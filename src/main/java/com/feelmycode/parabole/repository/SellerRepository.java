@@ -7,7 +7,4 @@
 //
 //public interface SellerRepository extends JpaRepository<Seller, Long> {
 //
-//    @Query("SELECT s FROM Seller s WHERE s.id =:sellerId")
-//    Seller findSellerBySellerId(@Param("sellerId") Long sellerId);
-//
 //}

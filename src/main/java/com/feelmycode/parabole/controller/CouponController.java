@@ -35,6 +35,7 @@ public class CouponController {
 
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
+
     @PostMapping("/seller/create")
     public ResponseEntity<CouponCreateResponseDto> addCoupon(
                                     @RequestBody CouponCreateRequestDto dto) {
