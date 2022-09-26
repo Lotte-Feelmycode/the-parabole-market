@@ -1,6 +1,6 @@
 //package com.feelmycode.parabole.domain;
 //
-//import com.feelmycode.parabole.domain.coupons.Coupon;
+//import com.feelmycode.parabole.domain.Coupon;
 //import com.sun.istack.NotNull;
 //import java.util.ArrayList;
 //import java.util.List;

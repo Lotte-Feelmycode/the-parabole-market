@@ -1,8 +1,6 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.domain.coupons.UserCoupon;
 import com.sun.istack.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;

@@ -3,11 +3,9 @@ package com.feelmycode.parabole.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.feelmycode.parabole.domain.CouponType;
 //import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.domain.coupons.Coupon;
+import com.feelmycode.parabole.domain.Coupon;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 public class CouponCreateRequestDto {
@@ -17,9 +15,7 @@ public class CouponCreateRequestDto {
         private Integer type;
         private Integer discountRate;
         private Long discountAmount;
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime validAt;
-        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime expiresAt;
         private Long maxDiscountAmount;
         private Long minPaymentAmount;

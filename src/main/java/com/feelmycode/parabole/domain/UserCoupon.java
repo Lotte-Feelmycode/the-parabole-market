@@ -1,5 +1,6 @@
-package com.feelmycode.parabole.domain.coupons;
+package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.CouponUseState;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.global.util.UuidApp;
@@ -18,7 +19,6 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "user_coupons")

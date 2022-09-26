@@ -1,6 +1,6 @@
 package com.feelmycode.parabole.dto;
 
-import com.feelmycode.parabole.domain.coupons.Coupon;
+import com.feelmycode.parabole.domain.Coupon;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
