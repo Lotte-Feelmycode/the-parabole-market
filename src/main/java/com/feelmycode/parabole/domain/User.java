@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 @NoArgsConstructor
@@ -30,7 +31,7 @@ public class User extends BaseEntity {
 
     @Column(name = "user_name", length = 200)
     @NotNull
-    private String name;
+    private String username;
 
     @Column(name = "user_nickname", length = 200)
     @NotNull
@@ -55,5 +56,14 @@ public class User extends BaseEntity {
     public void setUserCoupon(UserCoupon userCoupon){
         userCoupon.setUser(this);               // owner
         this.getUserCoupons().add(userCoupon);
+    }
+
+    public User(String email, String username,
+        String nickname, String password) {
+        this.email = email;
+        this.username = username;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = "user";
     }
 }
