@@ -1,19 +1,18 @@
 package com.feelmycode.parabole.service;
 
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
 //import com.feelmycode.parabole.domain.Coupon;
 //import com.feelmycode.parabole.domain.Seller;
 //import com.feelmycode.parabole.repository.CouponRepository;
 //import com.feelmycode.parabole.repository.SellerRepository;
+import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
 import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Product;
+//import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,21 @@ public class EventService {
 
     private final ProductRepository productRepository;
 
+//    private Seller getSeller(Long sellerId) {
+//        return sellerRepository.findById(sellerId)
+//            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 판매자가 없습니다"));
+//    }
+
+    private Product getProduct(Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 상품이 없습니다"));
+    }
+
+//    private Coupon getCoupon(Long couponId) {
+//        return couponRepository.findById(couponId)
+//            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 쿠폰이 없습니다."));
+//    }
+
     /**
      * 이벤트 생성
      */
@@ -42,45 +56,34 @@ public class EventService {
     public Long createEvent(EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
-        //Seller seller = sellerRepository.findById(eventDto.getSellerId()).orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 판매자가 없습니다")));
+        //Seller seller = getSeller(eventDto.getSellerId());
         Long sellerId = eventDto.getSellerId();
-
-        List<Long> productIds = eventDto.getEventPrizeCreateRequestDtos().getProductIds();
-        List<Long> couponIds = eventDto.getEventPrizeCreateRequestDtos().getCouponIds();
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
 
-        if (CollectionUtils.isEmpty(productIds)) {
-            for (Long productId : productIds) {
-                Product product = productRepository.findById(productId).orElseThrow(() ->
-                    new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 상품이 없습니다."));
-                eventPrizeList.add(new EventPrize("PRODUCT",
-                    eventDto.getEventPrizeCreateRequestDtos().getStock(), product));
+        List<EventPrizeCreateRequestDto> eventPrizeParams = eventDto.getEventPrizeCreateRequestDtos();
+
+        if (!CollectionUtils.isEmpty(eventPrizeParams)) {
+            for (EventPrizeCreateRequestDto eventPrizeParam : eventPrizeParams) {
+                String prizeType = eventPrizeParam.getType();
+                System.out.println(prizeType);
+                Long id = eventPrizeParam.getId();
+                if (prizeType.equals("PRODUCT")) {
+                    eventPrizeList.add(new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
+                } else {
+                    //eventPrizeList.add(new EventPrize(prizeType, eventPrizeParam.getStock(), getCoupon(id)));
+                }
             }
         }
-
-//        if (CollectionUtils.isEmpty(productIds)) {
-//            for (Long couponId : couponIds) {
-//                Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 쿠폰이 없습니다"));
-//                EventPrize couponPrize = new EventPrize("COUPON", eventDto.getEventPrizeCreateRequestDtos().getStock(), coupon);
-//                eventPrizeList.add(couponPrize);
-//            }
-//        }
 
         // 이벤트 생성
         Event event = Event.builder()
             //.seller(seller)
-            .sellerId(sellerId)
-            .createdBy(eventDto.getCreatedBy())
-            .type(eventDto.getType())
-            .title(eventDto.getTitle())
-            .startAt(LocalDateTime.parse(eventDto.getStartAt(), ISO_LOCAL_DATE_TIME))
-            .endAt(LocalDateTime.parse(eventDto.getEndAt(), ISO_LOCAL_DATE_TIME))
-            .descript(eventDto.getDescript())
-            .eventImage(eventDto.getEventImage())
-            .eventPrizes(eventPrizeList)
-            .build();
+            .sellerId(sellerId).createdBy(eventDto.getCreatedBy()).type(eventDto.getType())
+            .title(eventDto.getTitle()).startAt(eventDto.getStartAt()).endAt(eventDto.getEndAt())
+            .descript(eventDto.getDescript()).eventImage(eventDto.getEventImage())
+            .eventPrizes(eventPrizeList).build();
 
         // 이벤트 저장
         eventRepository.save(event);
@@ -91,8 +94,8 @@ public class EventService {
      * 이벤트 ID로 단건 조회
      */
     public Event getEventByEventId(Long eventId) {
-        return eventRepository.findById(eventId).orElseThrow(
-            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 이벤트가 없습니다"));
+        return eventRepository.findById(eventId)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 이벤트가 없습니다"));
     }
 
     /**
@@ -115,7 +118,7 @@ public class EventService {
      */
     @Transactional
     public void cancelEvent(Long eventId) {
-        Event event = eventRepository.findById(eventId).orElseThrow(()-> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 이벤트를 찾을 수 없습니다"));
+        Event event = getEventByEventId(eventId);
         try {
             event.cancel();
             eventRepository.save(event);

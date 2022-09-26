@@ -35,18 +35,26 @@ public class eventServiceTest {
     EventService eventService;
 
     @Test
+    public void 이벤트_에러_테스트() throws Exception {
+        //given
+        Long eventId = 100L;
+
+        //when
+        Event event = eventService.getEventByEventId(eventId);
+    }
+
+    @Test
     public void 이벤트등록() throws Exception {
         //given
         //셀러와 상품(1,2) 데이터가 있다고 간주
-        List<Long> productIds = new ArrayList<>();
-        productIds.add(1L);
-        productIds.add(2L);
+        List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
+        prizes.add(new EventPrizeCreateRequestDto(1L, "PRODUCT", 50));
+        prizes.add(new EventPrizeCreateRequestDto(2L, "PRODUCT", 100));
 
         LocalDateTime startAt = LocalDateTime.parse("2022-09-22T00:00:00", ISO_LOCAL_DATE_TIME);
         LocalDateTime endAt = LocalDateTime.parse("2022-09-28T18:00:00", ISO_LOCAL_DATE_TIME);
 
-        EventPrizeCreateRequestDto eventPrizeCreateRequestDto = new EventPrizeCreateRequestDto("FCFS", 50, productIds, null);
-        EventCreateRequestDto testEventDto = new EventCreateRequestDto(1L, "SELLER", "RAFFLE", "테스트등록이벤트", startAt+"", endAt+"","테스트 등록 이벤트 설명", new EventImage(), eventPrizeCreateRequestDto);
+        EventCreateRequestDto testEventDto = new EventCreateRequestDto(1L, "SELLER", "RAFFLE", "테스트등록이벤트", startAt, endAt,"테스트 등록 이벤트 설명", new EventImage(), prizes);
 
         //when
         Long eventId = eventService.createEvent(testEventDto);

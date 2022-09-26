@@ -56,9 +56,9 @@ public class EventController {
     public ResponseEntity<ParaboleResponse> cancelEvent(@PathVariable("eventId") Long eventId) {
         try {
             eventService.cancelEvent(eventId);
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 취소 성공");
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 취소 실패");
         }
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 취소 성공");
     }
 }

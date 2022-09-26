@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EventPrizeCreateRequestDto {
 
+    private Long id;
     private String type;
     private Integer stock;
-    private List<Long> productIds;
-    private List<Long> couponIds;
 
 }
