@@ -66,17 +66,14 @@ public class ProductController {
 
         Page<Product> response = productService.getProductList(getSellerId, getSellerName,
             getCategory, getProductName, getPageable);
+            
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
     // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestBody Product product) {
-        productService.saveProduct(product);
-
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
+     
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 
