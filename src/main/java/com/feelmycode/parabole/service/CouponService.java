@@ -44,11 +44,6 @@ public class CouponService {
 //        Seller s = sellerRepository.findById(dto.getSellerId())
 //            .orElseThrow(() -> new IllegalArgumentException());
         Coupon c = dto.toEntity(dto.getSellerId(), dto.getType());
-
-        if (!couponRepository.findAllByNameAndSellerId(dto.getName(), dto.getSellerId()).isEmpty()) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST,
-                "이전에 등록한 쿠폰명과 중복되어 쿠폰 등록에 실패하였습니다.");
-        }
         couponRepository.save(c);
 
 //        s.addCoupon(c);  // 연관관계의 주인은 seller (양방향이라 셀러에게 쿠폰을 추가해줘야하는데 Seller 없음)
