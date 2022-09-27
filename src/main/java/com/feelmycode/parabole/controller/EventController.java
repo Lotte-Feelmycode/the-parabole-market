@@ -28,12 +28,13 @@ public class EventController {
 
     @PostMapping()
     public ResponseEntity<ParaboleResponse> createEvent(@RequestBody EventCreateRequestDto eventDto) {
+        Long eventId = -1L;
         try {
-            Long eventId = eventService.createEvent(eventDto);
-            return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "이벤트 등록 성공", eventId);
+            eventId = eventService.createEvent(eventDto);
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");
         }
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "이벤트 등록 성공", eventId);
     }
 
     @GetMapping("/{eventId}")
