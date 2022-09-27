@@ -24,13 +24,8 @@ public class CouponCreateRequestDto {
 
         /** DTO to Entity **/
         public Coupon toEntity(Long sellerId, Integer type){
-                CouponType couponType = null;
-                if (type == 1) {
-                        couponType = CouponType.RATE;
-                } else if (type == 2) {
-                        couponType = CouponType.AMOUNT;
-                }
-                return new Coupon(name, sellerId, couponType, discountRate,
+
+                return new Coupon(name, sellerId, type, discountRate,
                     discountAmount, validAt, expiresAt,
                     maxDiscountAmount, minPaymentAmount, detail,
                     cnt);

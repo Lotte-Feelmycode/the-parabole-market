@@ -31,7 +31,7 @@ public class CouponUserResponseDto {
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
-                this.type = coupon.getType().ordinal();
+                this.type = coupon.getType();
                 if (type == 1) {
                         this.RateOrAmount = coupon.getDiscountRate();
                 } else if (type == 2) {

@@ -47,8 +47,9 @@ public class Coupon extends BaseEntity implements Serializable {
 
     @Column(name = "coupon_type")
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private CouponType type;                       // 쿠폰종류 ( 할인율1  할인금액2 )
+//    @Enumerated(EnumType.STRING)
+//    private CouponType type;
+    private Integer type;           // 쿠폰종류 ( 할인율1  할인금액2 )
 
     @Column(name = "coupon_discount_rate")
     @NotNull
@@ -89,7 +90,7 @@ public class Coupon extends BaseEntity implements Serializable {
         this.sellerId = sellerId;
     }
 
-    public Coupon(String name, Long sellerId, CouponType type, Integer discountRate,
+    public Coupon(String name, Long sellerId, Integer type, Integer discountRate,
         Long discountAmount, LocalDateTime validAt, LocalDateTime expiresAt,
         Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 

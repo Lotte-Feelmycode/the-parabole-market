@@ -118,10 +118,10 @@ public class CouponService {
         String type = null;
         Object ret = null;
 
-        if(c.getType() == CouponType.RATE){
+        if(c.getType() == 1){
             type = "RATE";
             ret = c.getDiscountRate();
-        } else if (c.getType() == CouponType.AMOUNT) {
+        } else if (c.getType() == 2) {
             type = "AMOUNT" ;
             ret = c.getDiscountAmount();
         }
