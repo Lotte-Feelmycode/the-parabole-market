@@ -4,13 +4,9 @@ import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.dto.CartItemDto;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
-import com.feelmycode.parabole.repository.ProductRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,22 +15,22 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final CartService cartService;
-    private final ProductRepository productRepository;
 
-    public void addItem(CartItemDto cartItemDto) {
+    public String addItem(CartItemDto cartItemDto) {
         Cart cart = cartService.getCart(cartItemDto.getUserId());
         CartItem cartItem = cartItemDto.toEntity(
             cart,
-            getProduct(cartItemDto.getProductId()),
+            cartItemDto.getProduct(),
             cartItemDto.getCnt()
         );
         cartItemRepository.save(cartItem);
+        return "장바구니 성공";
     }
 
     //TODO: userEntity로 변경
-    public void updateItem(CartItemDto cartItemDto) {
-        CartItem currentCartItem = getCartItem(cartItemDto.getProductId(), cartItemDto.getUserId());
-        currentCartItem.setCnt(cartItemDto.getCnt());
+    public void updateItem(Product product, Long userId, Integer cnt) {
+        CartItem currentCartItem = getCartItem(product.getId(), userId);
+        currentCartItem.setCnt(cnt);
         cartItemRepository.save(currentCartItem);
     }
 
@@ -44,34 +40,23 @@ public class CartItemService {
         return cartItemRepository.findAllByCartId(cart.getId());
     }
 
-    public void cartListDelete(CartItemDto cartItemDto) {
-        Cart cart = cartService.getCart(cartItemDto.getUserId());
-        cartItemRepository.deleteAllByProductIdInQuery(cart,
-            getProductsInCart(cartItemDto.getProductsId(),
-                cart.getId()));
+    public void cartDelete(Long cartId, Long productId) {
+        deleteCartItem(cartId, productId);
+    }
+
+    public void cartListDelete(Long cartId, List<Long> productId) {
+        cartItemRepository.deleteAllByProductIdInQuery(cartId, productId);
     }
 
     private CartItem getCartItem(Long productId, Long userId) {
         return cartItemRepository.findByProductIdAndCartId(productId,
-            cartService.getCart(userId).getId()).orElseThrow(() -> new ParaboleException(
-            HttpStatus.BAD_REQUEST, "카트에 해당 상품이 존재하지 않습니다."));
+            cartService.getCart(userId).getId()).orElseThrow(() -> new IllegalArgumentException());
     }
 
-    private Product getProduct(Long productId) {
-        return productRepository.findById(productId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "상품이 존재하지 않습니다."));
+    private CartItem deleteCartItem(Long cartId, Long productId) {
+        return cartItemRepository.deleteByProductId(cartId, productId)
+            .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    private List<Long> getProductsInCart(List<Long> productId, Long cartId) {
-        List<Long> result = new ArrayList<>();
-        for (Long pid : productId) {
-            if (cartItemRepository.findByProductIdAndCartId(pid, cartId).isPresent()) {
-                result.add(pid);
-            } else {
-                throw new ParaboleException(HttpStatus.BAD_REQUEST, "카트에 해당 상품이 없습니다");
-            }
-        }
-        return result;
-    }
 
 }
