@@ -1,0 +1,7 @@
+= Product
+
+=== 상품 목록
+operation::product-list[snippets='http-request,path-parameters,http-response,response-fields']
+
+=== 상품 등록
+operation::product[snippets='http-request,path-parameters,http-response,response-fields']

@@ -4,11 +4,9 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.ProductService;
-import java.nio.charset.Charset;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/product")
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -73,17 +72,22 @@ public class ProductController {
     // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestBody Product product) {
-     
+    
+        log.info("TEST {}", "INFO");
+        log.warn("TEST {}", "WARN");
+        log.error("TEST {}", "ERROR");
+        log.error("TEST {}({})", "ERROR", "ERROR");
+        
+        productService.saveProduct(product);
+        
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 
     // TODO: 셀러정보를 받아서 product 수정하기
     @PatchMapping
     public ResponseEntity<ParaboleResponse>updateProduct(@RequestBody Product product) {
+    
         productService.updateProduct(product);
-
-        HttpHeaders header = new HttpHeaders();
-        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 수정");
     }
