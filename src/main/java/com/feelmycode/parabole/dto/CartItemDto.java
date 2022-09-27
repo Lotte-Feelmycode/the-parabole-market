@@ -3,7 +3,7 @@ package com.feelmycode.parabole.dto;
 import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.repository.ProductRepository;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,23 +16,35 @@ public class CartItemDto {
     private Long userId;
 
     @NotNull
-    private Long cartId;
-
-    @NotNull
-    private Product product;
+    private Long productId;
 
     @NotNull
     private Integer cnt;
 
-    public CartItemDto(Long userId,Product product,Integer cnt){
+    @NotNull
+    private List<Long> productsId;
+
+    public CartItemDto(Long userId,Long productId,Integer cnt){
         this.userId=userId;
-        this.product=product;
+        this.productId=productId;
         this.cnt=cnt;
+    }
+    public CartItemDto(Long userId, List<Long> productsId){
+        this.userId=userId;
+        this.productsId=productsId;
     }
     //TODO : user만들어지면 entity
     public CartItem toEntity(Cart cart, Product product,Integer cnt){
         return new CartItem(cart,product,cnt);
     }
 
-
+    @Override
+    public String toString() {
+        return "CartItemDto{" +
+            "userId=" + userId +
+            ", productId=" + productId +
+            ", cnt=" + cnt +
+            ", productsId=" + productsId +
+            '}';
+    }
 }

@@ -1,15 +1,17 @@
 package com.feelmycode.parabole.controller;
 
-import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.dto.CartItemDto;
+import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CartItemService;
-import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,19 +20,32 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
     private final CartItemService cartItemService;
 
-    @ExceptionHandler(value = Exception.class)
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResponseEntity<List<CartItem>> cartList(@Valid Long userId){
 
-        return ResponseEntity.ok(cartItemService.cartItemList(userId));
+    @PostMapping (value = "/list")
+    public ResponseEntity<ParaboleResponse> cartList(@RequestParam Long userId){
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK,true,"장바구니 리스트",cartItemService.cartItemList(userId));
     }
 
-    @ExceptionHandler(value = Exception.class)
-    @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
-    public String addProductInCart(CartItemDto cartItemDto){
-        if(cartItemService.addItem(cartItemDto).equals("장바구니 성공")){
-            return "성공";
-        }
-        return "실패";
+
+    @PostMapping(value = "/addproduct")
+    public ResponseEntity<ParaboleResponse> addProductInCart(@RequestBody CartItemDto cartItemDto){
+        cartItemService.addItem(cartItemDto);
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED,true,"장바구니 상품 추가");
     }
+
+
+    @DeleteMapping(value = "/delete")
+    public ResponseEntity<ParaboleResponse> deleteProductInCart(@RequestBody CartItemDto cartItemDto){
+        System.out.println(cartItemDto.toString());
+        cartItemService.cartListDelete(cartItemDto);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK,true,"장바구니 상품 삭제");
+    }
+
+    @PatchMapping(value = "/updatecnt")
+    public ResponseEntity<ParaboleResponse> updateProductCnt(@RequestBody CartItemDto cartItemDto){
+        cartItemService.updateItem(cartItemDto);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK,true,"상품수량 수정");
+    }
+
 }
