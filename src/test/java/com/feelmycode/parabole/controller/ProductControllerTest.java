@@ -47,7 +47,7 @@ public class ProductControllerTest {
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-            .apply(documentationConfiguration(this.restDocumentation))       // (2)
+            .apply(documentationConfiguration(this.restDocumentation))     
             .build();
     }
 
