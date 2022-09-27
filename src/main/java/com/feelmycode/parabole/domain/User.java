@@ -56,4 +56,13 @@ public class User extends BaseEntity {
         userCoupon.setUser(this);               // owner
         this.getUserCoupons().add(userCoupon);
     }
+
+    public User(String email, String name,
+        String nickname, String password) {
+        this.email = email;
+        this.name = name;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = "user";
+    }
 }
