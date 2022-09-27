@@ -1,10 +1,11 @@
-//package com.feelmycode.parabole.repository;
-//
-//import com.feelmycode.parabole.domain.Seller;
-//import org.springframework.data.jpa.repository.JpaRepository;
-//import org.springframework.data.jpa.repository.Query;
-//import org.springframework.data.repository.query.Param;
-//
-//public interface SellerRepository extends JpaRepository<Seller, Long> {
-//
-//}
+package com.feelmycode.parabole.repository;
+
+import com.feelmycode.parabole.domain.Seller;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SellerRepository extends JpaRepository<Seller, Long> {
+
+    Seller findByUserId(Long userId);
+    Seller findByRegistrationNo(String registrationNo);
+
+}
