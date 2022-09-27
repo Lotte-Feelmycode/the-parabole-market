@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "event_prize")
+@Table(name = "event_prizes")
 @Getter
 @NoArgsConstructor
 public class EventPrize {
@@ -41,7 +41,7 @@ public class EventPrize {
     private Coupon coupon;
 
     @ManyToOne
-    @JoinColumn(name = "prodcut_id")
+    @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
 

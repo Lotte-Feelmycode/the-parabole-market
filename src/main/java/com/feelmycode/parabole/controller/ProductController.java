@@ -1,6 +1,8 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.global.api.ParaboleResponse;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +32,7 @@ public class ProductController {
     private final static int DEFAULT_SIZE = 20;
 
     @GetMapping("/list")
-    public ResponseEntity<Page<Product>> getProductList(@RequestParam(required = false) Long sellerId,
+    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) Long sellerId,
                                             @RequestParam(required = false) String sellerName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
@@ -52,33 +54,42 @@ public class ProductController {
             getCategory = category;
         }
         if(productName != null && !productName.equals("null") && !productName.equals("")) {
+            if(productName.equals("error")) {
+                throw new ParaboleException(HttpStatus.BAD_REQUEST, "error test");
+            }
             getProductName = productName;
         }
         if(pageable != null) {
             getPageable = pageable;
         }
 
-        return ResponseEntity.ok(productService.getProductList(getSellerId, getSellerName, getCategory, getProductName, getPageable));
+        Page<Product> response = productService.getProductList(getSellerId, getSellerName,
+            getProductName, getCategory, getPageable);
+            
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
     // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
-    public ResponseEntity createProduct(@RequestBody Product product) {
+    public ResponseEntity<ParaboleResponse> createProduct(@RequestBody Product product) {
+    
         log.info("TEST {}", "INFO");
         log.warn("TEST {}", "WARN");
         log.error("TEST {}", "ERROR");
         log.error("TEST {}({})", "ERROR", "ERROR");
+        
         productService.saveProduct(product);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 
     // TODO: 셀러정보를 받아서 product 수정하기
     @PatchMapping
-    public ResponseEntity updateProduct(@RequestBody Product product) {
+    public ResponseEntity<ParaboleResponse>updateProduct(@RequestBody Product product) {
+    
         productService.updateProduct(product);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 수정");
     }
 
 }
