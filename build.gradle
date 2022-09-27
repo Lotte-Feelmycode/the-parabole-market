@@ -58,7 +58,7 @@ asciidoctor {
 }
 
 test {
-	outputs.dir snippetsDir
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
@@ -81,7 +81,7 @@ openapi3 {
     description = 'The Parabole API description'
     version = '0.1.0'
     format = 'yaml'
-	outputDirectory = "."
+    outputDirectory = "."
     outputFileNamePrefix = "swagger"
     copy {
         from "build/api-spec"
