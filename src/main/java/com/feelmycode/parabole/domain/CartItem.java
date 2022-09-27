@@ -1,9 +1,5 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.repository.CartItemRepository;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
