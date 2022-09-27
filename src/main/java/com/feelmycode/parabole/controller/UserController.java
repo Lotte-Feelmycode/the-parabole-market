@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    // TODO: 로거 추후 변경 예정
-    Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     private final static int DEFAULT_PAGE = 0;
@@ -32,8 +30,7 @@ public class UserController {
     public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
 
         userService.signup(dto);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
-            true, "회원가입 성공");
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "회원가입 성공");
     }
 
     @GetMapping()
@@ -41,8 +38,7 @@ public class UserController {
                                                 @RequestBody UserSigninDto dto) {
 
         userService.signin(request, dto);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "로그인 성공");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공");
     }
 
 
