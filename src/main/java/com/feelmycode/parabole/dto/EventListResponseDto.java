@@ -3,7 +3,7 @@ package com.feelmycode.parabole.dto;
 import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventImage;
 import com.feelmycode.parabole.domain.EventPrize;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -23,8 +23,8 @@ public class EventListResponseDto {
     private String createdBy;
     private String type;
     private String title;
-    private String startAt;
-    private String endAt;
+    private LocalDateTime startAt;
+    private LocalDateTime endAt;
     private Integer status;
     private String descript;
     private EventImage eventImage;
@@ -38,8 +38,8 @@ public class EventListResponseDto {
             .createdBy(event.getCreatedBy())
             .type(event.getType())
             .title(event.getTitle())
-            .startAt(event.getStartAt().format(DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss")))
-            .endAt(event.getEndAt().format(DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:ss")))
+            .startAt(event.getStartAt())
+            .endAt(event.getEndAt())
             .status(event.getStatus())
             .descript(event.getDescript())
             .eventImage(event.getEventImage())
