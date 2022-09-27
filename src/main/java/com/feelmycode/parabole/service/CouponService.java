@@ -19,6 +19,7 @@ import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -64,9 +65,10 @@ public class CouponService {
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
     public void giveoutUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
+
         User u = userRepository.findById(userId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자Id로 사용자를 검색한 내용이 존재하지 않습니다."));
@@ -109,9 +111,10 @@ public class CouponService {
     @Transactional(readOnly = true)
     public CouponAvailianceResponseDto getCouponInfo(String couponSNo) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
+            "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
+
         Coupon c = uc.getCoupon();
 
         String type = null;
@@ -130,7 +133,7 @@ public class CouponService {
 
     public void useUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoContains(couponSNo)
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
         User owner = uc.getUser();
