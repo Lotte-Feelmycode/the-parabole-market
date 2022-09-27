@@ -41,5 +41,4 @@ public class UserController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공");
     }
 
-
 }
