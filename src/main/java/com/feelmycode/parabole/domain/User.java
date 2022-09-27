@@ -30,7 +30,7 @@ public class User extends BaseEntity {
 
     @Column(name = "user_name", length = 200)
     @NotNull
-    private String username;
+    private String name;
 
     @Column(name = "user_nickname", length = 200)
     @NotNull
@@ -57,10 +57,10 @@ public class User extends BaseEntity {
         this.getUserCoupons().add(userCoupon);
     }
 
-    public User(String email, String username,
+    public User(String email, String name,
         String nickname, String password) {
         this.email = email;
-        this.username = username;
+        this.name = name;
         this.nickname = nickname;
         this.password = password;
         this.role = "user";

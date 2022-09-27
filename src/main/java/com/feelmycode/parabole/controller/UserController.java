@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     // TODO: 로거 추후 변경 예정
@@ -28,7 +28,7 @@ public class UserController {
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
 
         userService.signup(dto);
@@ -36,7 +36,7 @@ public class UserController {
             true, "회원가입 성공");
     }
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<ParaboleResponse> signin(HttpServletRequest request,
                                                 @RequestBody UserSigninDto dto) {
 

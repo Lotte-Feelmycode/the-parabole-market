@@ -6,6 +6,12 @@ import lombok.Getter;
 @Getter
 public class UserSignupDto {
 
+    private String email;
+    private String username;
+    private String nickname;
+    private String password;
+    private String passwordConfirmation;
+
     public UserSignupDto(String email, String username, String nickname, String password,
         String passwordConfirmation) {
         this.email = email;
@@ -14,12 +20,6 @@ public class UserSignupDto {
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
     }
-
-    private String email;
-    private String username;
-    private String nickname;
-    private String password;
-    private String passwordConfirmation;
 
     public User toEntity() {
         return new User(email, username, nickname, password);
