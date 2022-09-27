@@ -65,12 +65,14 @@ public class CouponService {
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
     public void giveoutUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
+        if (uc == null) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
+        }
 
         User u = userRepository.findById(userId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
                 "사용자Id로 사용자를 검색한 내용이 존재하지 않습니다."));
 
         if (uc.getUser() == null) {
@@ -111,10 +113,11 @@ public class CouponService {
     @Transactional(readOnly = true)
     public CouponAvailianceResponseDto getCouponInfo(String couponSNo) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-            "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
-
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
+        if (uc == null) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
+        }
         Coupon c = uc.getCoupon();
 
         String type = null;
@@ -133,9 +136,11 @@ public class CouponService {
 
     public void useUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다."));
+        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
+        if (uc == null) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND,
+                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
+        }
         User owner = uc.getUser();
 
         if (owner == null) {
