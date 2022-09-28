@@ -21,8 +21,16 @@ public class UserSignupDto {
         this.passwordConfirmation = passwordConfirmation;
     }
 
-    public User toEntity() {
+    public User toEntity(String email, String username, String nickname, String password) {
         return new User(email, username, nickname, password);
+    }
+
+    // 입력값이 없는 필드가 있으면 blank exists True 반환
+    public boolean checkIfBlankExists() {
+        if(this.getEmail().equals("") || this.getUsername().equals("") ||
+            this.getNickname().equals("") || this.getPassword().equals("") ||
+            this.getPasswordConfirmation().equals("")) return true;
+        return false;
     }
 
 }
