@@ -29,5 +29,6 @@ public class BaseEntity {
   @Column(name = "is_deleted")
   @ColumnDefault("false")
   boolean isDeleted;
-
+  
 }
+
