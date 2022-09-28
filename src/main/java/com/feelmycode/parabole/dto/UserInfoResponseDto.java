@@ -9,14 +9,11 @@ public class UserInfoResponseDto {
     private String username;
     private String nickname;
     private String role;
-    private String imgUrl;
 
-    public UserInfoResponseDto(String email, String username, String nickname, String role,
-        String imgUrl) {
+    public UserInfoResponseDto(String email, String username, String nickname, String role) {
         this.email = email;
         this.username = username;
         this.nickname = nickname;
         this.role = role;
-        this.imgUrl = imgUrl;
     }
 }

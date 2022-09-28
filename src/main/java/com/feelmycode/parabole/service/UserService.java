@@ -81,8 +81,7 @@ public class UserService {
         if(user.getSeller() == null)
             role = "USER";
 
-        return new UserInfoResponseDto(user.getEmail(), user.getName(),
-            user.getNickname(), role, user.getImgUrl());
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), role);
     }
 
 }
