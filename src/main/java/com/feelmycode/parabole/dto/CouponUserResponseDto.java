@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CouponUserResponseDto {
 
         /** ResponseDto for POST /api/v1/coupon/user/list **/
@@ -27,7 +26,6 @@ public class CouponUserResponseDto {
 
         public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String sellerName) {
 
-                // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;

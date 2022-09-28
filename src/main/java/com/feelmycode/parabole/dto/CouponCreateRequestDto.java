@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.dto;
 
-//import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
 import java.time.LocalDateTime;

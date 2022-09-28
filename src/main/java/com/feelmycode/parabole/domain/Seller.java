@@ -52,10 +52,4 @@ public class Seller extends BaseEntity {
         this.user = user;
     }
 
-    /** Add coupon to seller */
-//    public void addCoupon(Coupon coupon) {
-//        coupon.setSeller(this);     // owner
-//        getCoupons().add(coupon);   // 관계설정
-//    }
-
 }

@@ -61,7 +61,7 @@ public class UserCoupon extends BaseEntity {
     /** Default Constructor */
     public UserCoupon() {
         this.serialNo = UuidApp.generator();
-        this.coupon = null;     // issueCoupon 에서 coupon 넣어줍니다
+        this.coupon = null;
         this.user = null;
         this.useState = CouponUseState.NotUsed;
         this.acquiredDate = LocalDateTime.now();

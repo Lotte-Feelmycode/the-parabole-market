@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class CouponSellerResponseDto {
         /** ResponseDto for POST /api/v1/coupon/seller/list **/
         private String name;
@@ -40,4 +39,5 @@ public class CouponSellerResponseDto {
                 this.detail = coupon.getDetail();
                 this.cnt = coupon.getCnt();
         }
+
 }
