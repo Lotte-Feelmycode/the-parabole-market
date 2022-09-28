@@ -23,20 +23,21 @@ public class OrderService {
 
     @Transactional
     public Order updateOrder(Long userId, Long orderId, int state) {
-        Order getOrder = this.getOrder(orderId);
-        if (getOrder.getUser().getId() != userId) {
-            new ParaboleException(HttpStatus.UNAUTHORIZED, "주문을 수정할 수 없는 사용자입니다.");
-        }
+        Order getOrder = checkAuthentication(userId, orderId);
         getOrder.setOrder(state, getOrder.getOrderInfoList());
         return getOrder;
     }
 
-    @Transactional
-    public void deleteOrder(Long userId, Long orderId) {
+    public Order checkAuthentication(Long userId, Long orderId) {
         Order getOrder = this.getOrder(orderId);
         if (getOrder.getUser().getId() != userId) {
-            new ParaboleException(HttpStatus.UNAUTHORIZED, "주문을 삭제할 수 없는 사용자입니다.");
+            new ParaboleException(HttpStatus.UNAUTHORIZED, "주문에 접근할 수 없습니다.");
         }
+        return getOrder;
+    }
+    @Transactional
+    public void deleteOrder(Long userId, Long orderId) {
+        checkAuthentication(userId, orderId);
     }
 
     public Order getOrder(Long orderId) {

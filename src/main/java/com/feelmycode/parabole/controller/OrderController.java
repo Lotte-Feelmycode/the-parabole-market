@@ -24,6 +24,7 @@ public class OrderController {
     private final OrderService orderService;
     //    private final UserService userService;
 
+    // TODO: 어느 타이밍에 유저와 연결된 Order 생성할 건지 파악하기
     @PatchMapping()
     public ResponseEntity<ParaboleResponse> updateOrderState(@RequestParam Long orderId,
         @RequestParam Long userId, @RequestParam int orderState) {
