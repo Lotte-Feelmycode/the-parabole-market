@@ -25,8 +25,7 @@ public class CartController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<ParaboleResponse> cartList(@RequestParam Long userId) {
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 리스트",
-            cartItemService.cartItemList(userId));
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 리스트", cartItemService.cartItemList(userId));
     }
 
     @PostMapping(value = "/product/add")

@@ -61,7 +61,7 @@ public class CartItemService {
 
     private Product getProduct(Long productId) {
         return productRepository.findById(productId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "상품이 존재하지 않습니다."));
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "상품이 존재하지 않습니다."));
     }
 
     private List<Long> getCartItemId(CartItemRequestDto cartItemRequestDto) {
