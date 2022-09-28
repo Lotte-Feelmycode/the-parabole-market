@@ -67,4 +67,10 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void deleteUser(Long userId) {
+        // 탈퇴 로직이 아니고 user 삭제 입니다. deleteUserWhenSellerCreationFails 역할 수행
+        userRepository.deleteById(userId);
+    }
+
 }

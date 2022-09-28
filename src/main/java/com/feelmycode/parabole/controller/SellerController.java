@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.SellerRegisterDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.SellerService;
+import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/seller")
 public class SellerController {
 
+    private final UserService userService;
     private final SellerService sellerService;
 
     @PostMapping()
@@ -26,8 +28,8 @@ public class SellerController {
 
         Seller newSeller = sellerService.registerSeller(userId, sellerDto);
         if (newSeller == null) {
+            userService.deleteUser(userId);
             return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST, false, "판매자 회원가입 실패");
-            // TODO: User Table 도 Abort 해주는 과정 추가해야함
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 회원가입 성공");
     }
