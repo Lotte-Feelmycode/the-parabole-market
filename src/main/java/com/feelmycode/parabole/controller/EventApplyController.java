@@ -21,11 +21,7 @@ public class EventApplyController {
 
     @PostMapping("/participant")
     public ResponseEntity<ParaboleResponse> insertEventApply(@RequestBody @Valid EventApplyDto dto) {
-
-        boolean result = eventParticipantService.eventJoin(dto);
-        if (result) {
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "응모가 완료 되었습니다");
-        }
-        return ParaboleResponse.CommonResponse(HttpStatus.ALREADY_REPORTED, true, "이미 응모 하셨습니다");
+        eventParticipantService.eventJoin(dto);
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "응모가 완료 되었습니다");
     }
 }

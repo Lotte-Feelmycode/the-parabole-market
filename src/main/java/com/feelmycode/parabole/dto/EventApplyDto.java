@@ -19,9 +19,9 @@ public class EventApplyDto {
     private Long eventId;
     @NotNull
     private Long eventPrizeId;
-    private String participantAt;
+    private LocalDateTime participantAt;
 
-    public EventApplyDto(Long userId, Long eventId, Long eventPrizeId, String participantAt) {
+    public EventApplyDto(Long userId, Long eventId, Long eventPrizeId, LocalDateTime participantAt) {
         this.userId = userId;
         this.eventId = eventId;
         this.eventPrizeId = eventPrizeId;

@@ -24,30 +24,23 @@ public class EventParticipantService {
     private final EventPrizeRepository eventPrizeRepository;
     private final EventRepository eventRepository;
 
-    public boolean eventJoin(EventApplyDto eventApplyDto) {
+    public void eventJoin(EventApplyDto eventApplyDto) {
+        applyCheck(eventApplyDto);
+        EventParticipant eventApply = eventApplyDto.toEntity(
+            getUser(eventApplyDto.getUserId()),
+            getEvent(eventApplyDto.getEventId()),
+            getEventPrize(eventApplyDto.getEventPrizeId()),
+            LocalDateTime.now());
 
-        if (applyCheck(eventApplyDto)) {
-
-            EventParticipant eventApply = eventApplyDto.toEntity(
-                getUser(eventApplyDto.getUserId()),
-                getEvent(eventApplyDto.getEventId()),
-                getEventPrize(eventApplyDto.getEventPrizeId()),
-                LocalDateTime.now());
-
-            eventParticipantRepository.save(eventApply);
-            return true;
-        } else {
-            return false;
-        }
+        eventParticipantRepository.save(eventApply);
     }
 
-    private boolean applyCheck(EventApplyDto eventApplyDto) {
+    private void applyCheck(EventApplyDto eventApplyDto) {
         EventParticipant eventParticipant = eventParticipantRepository.findByUserIdAndEventId(
             eventApplyDto.getUserId(), eventApplyDto.getEventId());
         if (eventParticipant != null) {
-            return false;
+            throw new ParaboleException(HttpStatus.ALREADY_REPORTED, "이미 응모 완료 되었습니다");
         }
-        return true;
     }
 
     private User getUser(Long userId) {
