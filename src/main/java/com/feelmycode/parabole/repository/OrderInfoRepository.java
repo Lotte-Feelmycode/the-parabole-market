@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface OrderInfoRepository extends JpaRepository<OrderInfo, Long> {
 
     List<OrderInfo> findAllByOrderId(Long orderId);
+
 }
