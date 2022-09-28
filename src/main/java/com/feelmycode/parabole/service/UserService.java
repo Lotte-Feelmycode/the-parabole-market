@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -37,7 +38,6 @@ public class UserService {
     }
 
     // TODO: Repo에서 springdatajpa 사용하여 String 으로 도메인 받아오는 과정 해결x => API 미완성
-    @Transactional(readOnly = true)
     public boolean signin(@NotNull UserSigninDto dto) {
 
         if (dto.getEmail().equals("") || dto.getPassword().equals("")) {
@@ -54,14 +54,11 @@ public class UserService {
     }
 
     @Transactional
-    public Integer checkAccountRole(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "해당 이메일을 사용하는 계정이 존재하지 않습니다.");
-        }
+    public boolean isUser(Long userId) {
+        User user = getUser(userId);
         if (user.getSeller() == null)
-            return 1;       // USER
-        return 2;       // SELLER
+            return true;
+        return false;
     }
 
     @Transactional
@@ -70,17 +67,20 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
-    @Transactional(readOnly = true)
-    public UserInfoResponseDto myPageUserInfo(Long userId) {
+    public UserInfoResponseDto getUserInfo(Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(
-            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id 를 가진 사용자가 존재하지 않습니다"));
+        User user = getUser(userId);
 
         String role = "SELLER";
         if(user.getSeller() == null)
             role = "USER";
 
         return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), role);
+    }
+
+    public User getUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
     }
 
 }
