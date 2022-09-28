@@ -57,13 +57,12 @@ public class UserService {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new ParaboleException(HttpStatus.NOT_FOUND, "해당 이메일을 사용하는 계정이 존재하지 않습니다.");
-        } else {
-            if (user.getSeller() == null) {
-                return 1;       // USER
-            } else {
-                return 2;       // SELLER
-            }
         }
+        if (user.getSeller() == null)
+            return 1;       // USER
+        else
+            return 2;       // SELLER
+
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package com.feelmycode.parabole.domain;
+package com.feelmycode.parabole.enumtype;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

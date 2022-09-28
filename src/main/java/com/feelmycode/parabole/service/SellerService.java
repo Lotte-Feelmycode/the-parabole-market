@@ -18,12 +18,13 @@ public class SellerService {
 
     private final UserRepository userRepository;
     private final SellerRepository sellerRepository;
-    
+
     @Transactional
     public Seller registerSeller(@NotNull Long userId, @NotNull SellerRegisterDto sDto) {
 
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "사용자Id 로 조회 가능한 사용자가 존재하지 않습니다"));
+            .orElseThrow(
+                () -> new ParaboleException(HttpStatus.NOT_FOUND, "사용자Id 로 조회 가능한 사용자가 존재하지 않습니다"));
 
         Seller seller = new Seller(sDto.getStoreName(), sDto.getSellerRegistrationNo());
         if (sellerRepository.findByRegistrationNo(seller.getRegistrationNo()) != null) {
@@ -33,4 +34,9 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
+    @Transactional(readOnly = true)
+    public Seller getSellerInfo(@NotNull Long sellerId) {
+        return sellerRepository.findById(sellerId).orElseThrow(
+            () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."));
+    }
 }
