@@ -18,13 +18,13 @@ public class EventApplyDto {
     @NotNull
     private Long eventId;
     @NotNull
-    private Long prizeId;
+    private Long eventPrizeId;
     private String participantAt;
 
-    public EventApplyDto(Long userId, Long eventId, Long prizeId, String participantAt) {
+    public EventApplyDto(Long userId, Long eventId, Long eventPrizeId, String participantAt) {
         this.userId = userId;
         this.eventId = eventId;
-        this.prizeId = prizeId;
+        this.eventPrizeId = eventPrizeId;
         this.participantAt = participantAt;
     }
 
