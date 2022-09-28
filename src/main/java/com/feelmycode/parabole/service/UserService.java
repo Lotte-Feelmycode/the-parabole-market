@@ -2,6 +2,7 @@ package com.feelmycode.parabole.service;
 
 
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSigninDto;
 import com.feelmycode.parabole.dto.UserSignupDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -68,6 +69,19 @@ public class UserService {
     public void deleteUser(Long userId) {
         // 탈퇴 로직이 아니고 user 삭제 입니다. deleteUserWhenSellerCreationFails 역할 수행
         userRepository.deleteById(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto myPageUserInfo(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(
+            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id 를 가진 사용자가 존재하지 않습니다"));
+
+        String role = "SELLER";
+        if(user.getSeller() == null)
+            role = "USER";
+
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), role);
     }
 
 }

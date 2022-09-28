@@ -50,10 +50,6 @@ public class User extends BaseEntity {
     @OneToOne
     private Seller seller;
 
-    @Column(name = "img_url")
-    @NotNull
-    private String imgUrl;
-
     @OneToMany(mappedBy = "user")
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
