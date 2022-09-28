@@ -47,11 +47,9 @@ public class UserController {
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam String email) {
         // TODO: Role을 enum타입을 사용할 수 있게 변경
         if (userService.checkAccountRole(email) == 1) {
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 사용자(USER) 입니다.",
-                "USER");
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 사용자(USER) 입니다.", "USER");
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 판매자(SELLER) 입니다.",
-            "SELLER");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 판매자(SELLER) 입니다.", "SELLER");
     }
 
     @GetMapping("/{userId}")
