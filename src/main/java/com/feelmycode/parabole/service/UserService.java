@@ -27,8 +27,8 @@ public class UserService {
         if (!dto.getPassword().equals(dto.getPasswordConfirmation())) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력한 비밀번호와 비밀번호 확인란이 일치하지 않습니다.");
         }
-        User u = userRepository.findByEmail(dto.getEmail());
-        if (u != null) {
+        User user = userRepository.findByEmail(dto.getEmail());
+        if (user != null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력하신 이메일을 사용 중인 유저가 존재합니다. 다른 이메일로 가입해주세요.");
         }
         return userRepository.save(

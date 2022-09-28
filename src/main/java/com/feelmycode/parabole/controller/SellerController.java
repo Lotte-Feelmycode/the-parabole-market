@@ -3,6 +3,7 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.SellerRegisterDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class SellerController {
         Seller newSeller = sellerService.registerSeller(userId, sellerDto);
         if (newSeller == null) {
             userService.deleteUser(userId);
-            return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST, false, "판매자 회원가입 실패");
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "판매자 회원가입 실패");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 회원가입 성공");
     }
