@@ -44,7 +44,6 @@ public class Seller extends BaseEntity {
     }
 
     public void setUser(User user) {
-        user.setSeller(this);     // owner
         this.user = user;
     }
 

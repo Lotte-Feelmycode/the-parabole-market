@@ -50,20 +50,12 @@ public class User extends BaseEntity {
     @OneToOne
     private Seller seller;
 
-    @Column(name = "img_url")
-    @NotNull
-    private String imgUrl;
-
     @OneToMany(mappedBy = "user")
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-    /** 연관관계 메서드 */
-    public void setUserCoupon(UserCoupon userCoupon){
-        userCoupon.setUser(this);               // owner
-        this.getUserCoupons().add(userCoupon);
-    }
-
+    /** User 에게 판매자 권한을 부여하는 것을 오직 Admin 만 가능하기에 함수 사용할 일 X */
     public void setSeller(Seller seller) {
+        seller.setUser(this);
         this.seller = seller;
     }
 
