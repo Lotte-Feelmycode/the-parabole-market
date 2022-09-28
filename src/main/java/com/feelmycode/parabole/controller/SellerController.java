@@ -22,7 +22,7 @@ public class SellerController {
     @GetMapping("/info")
     public ResponseEntity<ParaboleResponse> getSellerInfo(@RequestParam("userId") Long userId) {
 
-        Seller seller = sellerService.getSellerInfo(userId);
+        Seller seller = sellerService.getSeller(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "셀러 정보 출력 성공",
             new SellerInfoResponseDto(seller.getUser().getId(), seller.getStoreName(),

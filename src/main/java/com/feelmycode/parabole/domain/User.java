@@ -59,13 +59,6 @@ public class User extends BaseEntity {
         this.seller = seller;
     }
 
-    public String checkRole() {
-        if (seller != null) {
-            return "SELLER";
-        }
-        return "USER";
-    }
-
     public User(String email, String name,
         String nickname, String password) {
         this.email = email;

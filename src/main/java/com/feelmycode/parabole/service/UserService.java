@@ -70,7 +70,6 @@ public class UserService {
     public UserInfoResponseDto getUserInfo(Long userId) {
 
         User user = getUser(userId);
-
         String role = "SELLER";
         if(user.getSeller() == null)
             role = "USER";
