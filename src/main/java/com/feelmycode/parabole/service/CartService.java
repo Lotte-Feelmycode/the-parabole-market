@@ -12,14 +12,20 @@ import org.springframework.stereotype.Service;
 public class CartService {
 
     private final CartRepository cartRepository;
+
     //TODO user 생성될떄 붙여줘야함
-    public Long createCart(Long userId){
-        Cart cart=getCart(userId);
+    public Long createCart(Long userId) {
+        Cart cart = getCart(userId);
         cartRepository.save(cart);
         return cart.getId();
     }
-    public Cart getCart(Long userId){
-        return cartRepository.findByUserId(userId)
-            .orElseThrow(()->new ParaboleException(HttpStatus.BAD_REQUEST,"장바구니가 없습니다."));
+
+    public Cart getCart(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        if (cart == null) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니가 없습니다.");
+        } else {
+            return cart;
+        }
     }
 }

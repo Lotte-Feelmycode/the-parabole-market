@@ -1,12 +1,14 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.CartItemDto;
+import com.feelmycode.parabole.dto.CartItemRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CartItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,7 @@ public class CartController {
 
     private final CartItemService cartItemService;
 
-    @PostMapping(value = "/list")
+    @GetMapping(value = "/list")
     public ResponseEntity<ParaboleResponse> cartList(@RequestParam Long userId) {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 리스트",
             cartItemService.cartItemList(userId));
@@ -35,10 +37,10 @@ public class CartController {
 
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ParaboleResponse> deleteProductInCart(
-        @RequestBody CartItemDto cartItemDto) {
-        System.out.println(cartItemDto.toString());
-        cartItemService.cartListDelete(cartItemDto);
+        @RequestBody CartItemRequestDto cartItemRequestDto) {
+        cartItemService.cartListDelete(cartItemRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 상품 삭제");
+
     }
 
     @PatchMapping(value = "/update/cnt")
