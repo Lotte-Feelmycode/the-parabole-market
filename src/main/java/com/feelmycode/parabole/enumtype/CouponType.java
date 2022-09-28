@@ -1,4 +1,4 @@
-package com.feelmycode.parabole.domain;
+package com.feelmycode.parabole.enumtype;
 
 public enum CouponType {
     RATE("rate", 1),

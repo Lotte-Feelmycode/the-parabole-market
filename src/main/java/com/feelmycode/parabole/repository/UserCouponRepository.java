@@ -15,6 +15,6 @@ public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
 
     /** 쿼리문 안 붙였었는데 동작 안되길래 이 함수만 작성했어요 */
 //    @Query("SELECT uc FROM UserCoupon uc WHERE uc.serialNo LIKE %:serialNo%")
-    UserCoupon findBySerialNoLike(String serialNo);
+    UserCoupon findBySerialNo(String serialNo);
 
 }

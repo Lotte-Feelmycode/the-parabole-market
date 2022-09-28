@@ -29,7 +29,7 @@ public class CouponSellerResponseDto {
         public CouponSellerResponseDto(Coupon coupon) {
                 // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
-                this.sellerId = coupon.getSellerId();
+                this.sellerId = coupon.getSeller().getId();
                 this.type = coupon.getType();
                 this.discountRate = coupon.getDiscountRate();
                 this.discountAmount = coupon.getDiscountAmount();
