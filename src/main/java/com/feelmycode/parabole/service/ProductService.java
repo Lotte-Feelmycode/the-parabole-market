@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,21 @@ import org.springframework.data.domain.Pageable;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Product product) {
+    public Long saveProduct(Long userId, Product product) {
+        sellerService.getSeller(userId);
+
+        product.setSeller(sellerService.getSellerInfo(userId));
         productRepository.save(product);
+
         return product.getId();
     }
 
     @Transactional
-    public Long updateProduct(Product product) {
+    public Long updateProduct(Long userId, Product product) {
+        sellerService.getSeller(userId);
         Product getProduct = this.getProduct(product.getId());
         getProduct.setProduct(product);
         productRepository.save(getProduct);
@@ -38,9 +45,12 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProductList(Long sellerId, String sellerName, String productName, String category, Pageable pageable) {
+    public Page<Product> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
-        // TODO : sellerName 조회 후 sellerId로 조회
+        if(sellerId == 0L || sellerId == null) {
+            Seller seller = sellerService.getSellerByStoreName(storeName);
+            sellerId = seller.getId();
+        }
 
         if(!sellerId.equals(0L)) {
             if (category.equals("")) {
