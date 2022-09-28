@@ -35,8 +35,18 @@ public class SellerService {
     }
 
     @Transactional(readOnly = true)
-    public Seller getSellerInfo(@NotNull Long sellerId) {
-        return sellerRepository.findById(sellerId).orElseThrow(
-            () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."));
+    public Seller getSellerInfo(@NotNull Long userId) {
+        Seller seller = getSeller(userId);
+        if (seller != null) {
+            return seller;
+        }
+        throw new ParaboleException(HttpStatus.BAD_REQUEST, "해당 사용자는 판매자가 아닙니다.");
+    }
+
+    @Transactional(readOnly = true)
+    public Seller getSeller(@NotNull Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."))
+            .getSeller();
     }
 }
