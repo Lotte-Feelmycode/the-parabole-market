@@ -32,13 +32,11 @@ public class UserController {
             return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
                 true, "사용자: 회원가입 성공");
         } else {
-            return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
-                true, "판매자: 사용자 정보만 회원가입 성공. "
+            return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true,
+                "판매자: 사용자 정보만 회원가입 성공. "
                     + "프론트에서 판매자 회원가입 과정을 이어서 작성하기 위해 반환받은 userId와 "
                     + "userRegisterDto를 POST /api/v1/seller 로 전송해주세요. ", newUser.getId());
-
             // TODO: 302 로 REST API로 Redirect 시킬 수 있는 방법 있는지 알아보기
-            // TODO: Seller 회원가입시에, User등록oSeller등록x 일 경우에 User save를 다시 삭제해 주어야 함
         }
     }
 
@@ -53,7 +51,7 @@ public class UserController {
 
     @GetMapping("/role")
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam String email) {
-
+        // TODO: Role을 enum타입을 사용할 수 있게 변경
         if (userService.checkAccountRole(email) == 1) {
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 사용자(USER) 입니다.", "USER");
         }

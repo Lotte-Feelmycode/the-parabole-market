@@ -21,9 +21,7 @@ public class UserService {
     @Transactional
     public User signup(@NotNull UserSignupDto dto) {
 
-        if (dto.getEmail().equals("") || dto.getUsername().equals("") ||
-            dto.getNickname().equals("") || dto.getPassword().equals("") ||
-            dto.getPasswordConfirmation().equals("")) {
+        if (dto.checkIfBlankExists()) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 입력란에 채우지 않은 란이 있습니다.");
         }
         if (!dto.getPassword().equals(dto.getPasswordConfirmation())) {
@@ -33,7 +31,8 @@ public class UserService {
         if (u != null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력하신 이메일을 사용 중인 유저가 존재합니다. 다른 이메일로 가입해주세요.");
         }
-        return userRepository.save(dto.toEntity());
+        return userRepository.save(
+            dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPassword()));
     }
 
     // TODO: Repo에서 springdatajpa 사용하여 String 으로 도메인 받아오는 과정 해결x => API 미완성

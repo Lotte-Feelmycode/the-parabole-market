@@ -18,6 +18,7 @@ public class SellerService {
 
     private final UserRepository userRepository;
     private final SellerRepository sellerRepository;
+    
     @Transactional
     public Seller registerSeller(@NotNull Long userId, @NotNull SellerRegisterDto sDto) {
 
@@ -26,7 +27,7 @@ public class SellerService {
 
         Seller seller = new Seller(sDto.getStoreName(), sDto.getSellerRegistrationNo());
         if (sellerRepository.findByRegistrationNo(seller.getRegistrationNo()) != null) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "판매자 사업자 번호가 올바르지 않습니다.");
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "판매자 사업자 번호가 중복됩니다. 다른 값을 입력하세요.");
         }
         seller.setUser(user);
         return sellerRepository.save(seller);
