@@ -3,12 +3,17 @@ package com.feelmycode.parabole.domain;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,9 +45,10 @@ public class User extends BaseEntity {
     @NotNull
     private String password;
 
-    @Column(name = "user_role")
+    @JoinColumn(name = "seller_id")
     @NotNull
-    private String role;
+    @OneToOne
+    private Seller seller;
 
     @Column(name = "img_url")
     @NotNull
@@ -57,12 +63,15 @@ public class User extends BaseEntity {
         this.getUserCoupons().add(userCoupon);
     }
 
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
     public User(String email, String name,
         String nickname, String password) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.password = password;
-        this.role = "user";
     }
 }
