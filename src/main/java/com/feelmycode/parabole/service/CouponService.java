@@ -1,24 +1,23 @@
 package com.feelmycode.parabole.service;
 
-import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.domain.Coupon;
+import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
+import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
-import com.feelmycode.parabole.domain.User;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.repository.SellerRepository;
-import com.feelmycode.parabole.repository.UserRepository;
-import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
+import com.feelmycode.parabole.enumtype.CouponUseState;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
+import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserCouponRepository;
+import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,21 +38,21 @@ public class CouponService {
 
     /** Seller :: Coupon Registration and Confirmation */
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
-//        TODO: SellerRepo 에 findById추가, 연관메서드addCoupon() 추가, line46 제거, 모든 주석 제거 필요
-        Seller s = sellerRepository.findById(dto.getSellerId())
+        Seller seller = sellerRepository.findById(dto.getSellerId())
             .orElseThrow(() -> new IllegalArgumentException());
-        Coupon c = dto.toEntity(s, dto.getType());
-        couponRepository.save(c);
+        Coupon coupon = dto.toEntity(seller, dto.getType());
+        coupon.setSeller(seller);
+        couponRepository.save(coupon);
 
-//        s.addCoupon(c);  // 연관관계의 주인은 seller (양방향이라 셀러에게 쿠폰을 추가해줘야하는데 Seller 없음)
+//        seller.addCoupon(coupon);
         
         for (int i = 0; i < dto.getCnt(); i++) {
-            c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
+            coupon.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
         }
 //       save 를 안쓰는 이유는 아마도 cascadeType을 ALL로 해주었기 때문에 add해도 persistence가 refresh 되기 때문.
 //       return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
-        return new CouponCreateResponseDto(c.getName(), new String("sellerName"),
-           dto.getType(), c.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), new String("sellerName"),
+           dto.getType(), coupon.getCnt());
     }
 
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
@@ -96,7 +95,7 @@ public class CouponService {
                     "쿠폰Id로 쿠폰을 검색한 내용이 존재하지 않습니다."));
 
             Seller seller = sellerRepository.findById(coupon.getSeller().getId()).orElseThrow();
-            dtos.add(new CouponUserResponseDto(coupon, userCoupon, seller.get));
+            dtos.add(new CouponUserResponseDto(coupon, userCoupon, seller.getUser().getName()));
         }
         return new PageImpl<>(dtos);
     }
