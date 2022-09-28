@@ -61,8 +61,7 @@ public class UserService {
         }
         if (user.getSeller() == null)
             return 1;       // USER
-        else
-            return 2;       // SELLER
+        return 2;       // SELLER
     }
 
     @Transactional
