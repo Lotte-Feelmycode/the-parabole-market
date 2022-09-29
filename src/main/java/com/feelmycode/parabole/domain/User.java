@@ -46,7 +46,6 @@ public class User extends BaseEntity {
     private String password;
 
     @JoinColumn(name = "seller_id")
-    @NotNull
     @OneToOne
     private Seller seller;
 
