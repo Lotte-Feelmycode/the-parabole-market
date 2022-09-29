@@ -63,7 +63,6 @@ public class UserCoupon extends BaseEntity {
         this.useDate = null;
     }
 
-    /** 연관관계 편의 메서드 */
     public void setCoupon(Coupon coupon) {
         if (this.coupon != null) {
             this.coupon.getUserCoupons().remove(this);
@@ -75,13 +74,11 @@ public class UserCoupon extends BaseEntity {
     public void setUser(User user){
         if (this.user != null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰에 배정된 사용자가 이미 존재합니다.");
-//            this.user.getUserCoupons().remove(this);
         }
         this.user = user;
         user.getUserCoupons().add(this);
     }
 
-    /** User used Coupon (Update Coupon useState, useDate) */
     public void useCoupon() {
         this.useState = CouponUseState.Used;
         this.useDate = LocalDateTime.now();
