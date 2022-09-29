@@ -88,6 +88,6 @@ public class CouponController {
     public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestBody CouponUseAndAssignRequestDto dto) {
 
         couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "Coupon Used Correctly");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
     }
 }
