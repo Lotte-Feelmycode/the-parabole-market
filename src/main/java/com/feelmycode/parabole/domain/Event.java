@@ -36,12 +36,10 @@ public class Event extends BaseEntity implements Serializable {
     @Column(name = "event_id")
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "seller_id")
-//    @JsonBackReference
-//    private Seller seller;
-    @Column(name = "seller_id")
-    private Long sellerId;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    @JsonBackReference
+    private Seller seller;
 
     @Column(name = "created_by")
     private String createdBy; // [ADMIN, SELLER]
@@ -79,10 +77,10 @@ public class Event extends BaseEntity implements Serializable {
         this.isDeleted = false;
     }
 
-//    public void setSeller(Seller seller) {
-//        this.seller = seller;
-//        seller.getEvents().add(this);
-//    }
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+        seller.getEvents().add(this);
+    }
 
     public void addEventPrize(EventPrize eventPrize) {
         eventPrizes.add(eventPrize);
@@ -90,11 +88,10 @@ public class Event extends BaseEntity implements Serializable {
     }
 
     @Builder
-    public Event(/*Seller seller*/Long sellerId, String createdBy, String type, String title,
+    public Event(Seller seller, String createdBy, String type, String title,
         LocalDateTime startAt, LocalDateTime endAt, String descript, EventImage eventImage,
         List<EventPrize> eventPrizes) {
-        //this.seller = seller;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.createdBy = createdBy;
         this.type = type;
         this.title = title;
@@ -116,25 +113,6 @@ public class Event extends BaseEntity implements Serializable {
         if(status!=0 || (LocalDateTime.now()).isAfter(startAt)) {
             throw new IllegalStateException("이미 시작된 이벤트는 취소가 불가능합니다.");
         }
-
         setDeleted();
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-            "id=" + id +
-            //", seller=" + seller +
-            ", sellerId=" + sellerId + '\'' +
-            ", createdBy='" + createdBy + '\'' +
-            ", type='" + type + '\'' +
-            ", title='" + title + '\'' +
-            ", startAt='" + startAt + '\'' +
-            ", endAt='" + endAt + '\'' +
-            ", status=" + status +
-            ", descript='" + descript + '\'' +
-            ", eventImage=" + eventImage +
-            ", eventPrizes=" + eventPrizes +
-            '}';
     }
 }

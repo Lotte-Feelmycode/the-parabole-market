@@ -5,7 +5,6 @@ import com.feelmycode.parabole.domain.EventImage;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Seller;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -21,8 +20,7 @@ import lombok.NoArgsConstructor;
 public class EventDto {
 
   private Long id;
-//  private Seller seller;
-  private Long sellerId;
+  private Seller seller;
   private String createdBy;
   private String type;
   private String title;
@@ -36,8 +34,7 @@ public class EventDto {
   static public EventDto of(Event event) {
     return EventDto.builder()
         .id(event.getId())
-        //.seller(event.getSeller())
-        .sellerId(event.getSellerId())
+        .seller(event.getSeller())
         .createdBy(event.getCreatedBy())
         .type(event.getType())
         .title(event.getTitle())

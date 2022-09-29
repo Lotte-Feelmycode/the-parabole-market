@@ -33,8 +33,7 @@ public class EventListResponseDto {
     static public EventListResponseDto of(Event event) {
         return EventListResponseDto.builder()
             .id(event.getId())
-            //.sellerId(event.getSeller().getId())
-            .sellerId(event.getSellerId())
+            .sellerId(event.getSeller().getId())
             .createdBy(event.getCreatedBy())
             .type(event.getType())
             .title(event.getTitle())
