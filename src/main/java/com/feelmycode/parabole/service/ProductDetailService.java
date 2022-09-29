@@ -19,7 +19,7 @@ public class ProductDetailService {
 
     @Transactional
     public void createProductDetail(Long userId, ProductDetail productDetail) {
-        sellerService.getSeller(userId);
+        sellerService.getSellerByUserId(userId);
         productDetailRepository.save(productDetail);
     }
 

@@ -22,9 +22,9 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(Long userId, Product product) {
-        sellerService.getSeller(userId);
+        sellerService.getSellerByUserId(userId);
 
-        product.setSeller(sellerService.getSeller(userId));
+        product.setSeller(sellerService.getSellerByUserId(userId));
         productRepository.save(product);
 
         return product.getId();
@@ -32,7 +32,7 @@ public class ProductService {
 
     @Transactional
     public Long updateProduct(Long userId, Product product) {
-        sellerService.getSeller(userId);
+        sellerService.getSellerByUserId(userId);
         Product getProduct = this.getProduct(product.getId());
         getProduct.setProduct(product);
         productRepository.save(getProduct);
