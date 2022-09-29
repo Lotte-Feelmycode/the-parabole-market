@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class SellerService {
 
@@ -34,14 +35,18 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
-    @Transactional(readOnly = true)
     public Seller getSellerByUserId(@NotNull Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."))
             .getSeller();
     }
 
-    @Transactional(readOnly = true)
+    public Seller getSellerBySellerId(@NotNull Long sellerId) {
+        return sellerRepository.findById(sellerId).orElseThrow(
+            () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자를 찾을 수 없습니다.")
+        );
+    }
+
     public Seller getSellerByStoreName(@NotNull String storeName) {
         Seller seller = sellerRepository.findByStoreName(storeName);
         if (seller == null) {

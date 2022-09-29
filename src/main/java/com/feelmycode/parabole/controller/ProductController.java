@@ -2,7 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.ProductDetail;
-import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -35,6 +35,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductDetailService productDetailService;
+    private final SellerService sellerService;
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
@@ -106,8 +107,8 @@ public class ProductController {
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {
         Product product = productService.getProduct(productId);
         List<ProductDetail> productDetailList = productDetailService.getProductDetailList(productId);
-
-        ProductDetailListResponseDto responseDto = new ProductDetailListResponseDto(product, productDetailList);
+        Seller seller = sellerService.getSellerBySellerId(product.getSeller().getId());
+        ProductDetailListResponseDto responseDto = new ProductDetailListResponseDto(product, productDetailList, seller);
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", responseDto);
     }
