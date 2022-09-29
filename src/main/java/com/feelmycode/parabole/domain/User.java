@@ -3,11 +3,8 @@ package com.feelmycode.parabole.domain;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,7 +50,7 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-    /** User 에게 판매자 권한을 부여하는 것을 오직 Admin 만 가능하기에 함수 사용할 일 X */
+    /** Admin 에서 판매자 권한 부여 */
     public void setSeller(Seller seller) {
         seller.setUser(this);
         this.seller = seller;

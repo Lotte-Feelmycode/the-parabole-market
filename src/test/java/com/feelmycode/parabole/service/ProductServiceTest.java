@@ -4,6 +4,7 @@ package com.feelmycode.parabole.service;
 import static org.junit.Assert.assertEquals;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +21,14 @@ class ProductServiceTest {
     @Autowired
     ProductRepository productRepository;
 
+    private static Seller seller = new Seller("테스트", "1");
     @Test
     void saveProduct() {
         // given
-        Product product = new Product(1L, 1, 50L, "국밥", "https://img.url", "순대국밥", 15000L);
+        Product product = new Product(seller, 1, 50L, "국밥", "https://img.url", "순대국밥", 15000L);
 
         // when
-        productService.saveProduct(product);
+        productService.saveProduct(1L, product);
 
         // then
         Product getProduct = productService.getProduct(product.getId());
@@ -41,10 +43,10 @@ class ProductServiceTest {
     @Test
     public void updateTest() throws Exception {
         // given
-        Product product = new Product(1L, 1L, 1, 50L, "국밥", "https://img.url", "순대국밥", 2000L);
+        Product product = new Product(1L, seller, 1, 50L, "국밥", "https://img.url", "순대국밥", 2000L);
 
         // when
-        Long getId = productService.updateProduct(product);
+        Long getId = productService.updateProduct(1L, product);
 
         //then
         Product getProduct = productService.getProduct(getId);
