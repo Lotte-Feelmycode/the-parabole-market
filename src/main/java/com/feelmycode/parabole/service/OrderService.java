@@ -39,7 +39,6 @@ public class OrderService {
     public void deleteOrder(Long userId, Long orderId) {
         Order getOrder = checkAuthentication(userId, orderId);
         getOrder.setDeleted();
-        getOrder.setState(0);
     }
 
     public Order getOrder(Long orderId) {

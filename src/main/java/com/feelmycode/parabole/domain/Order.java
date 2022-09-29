@@ -49,8 +49,9 @@ public class Order extends BaseEntity {
 
     public void setDeleted() {
         this.isDeleted = false;
+        this.setState(0);
     }
-    public void setState(int state) {
+    private void setState(int state) {
         this.state = state;
     }
 
