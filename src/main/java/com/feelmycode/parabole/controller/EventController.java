@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/events")
+@RequestMapping("/api/v1/event")
 public class EventController {
 
     private final EventService eventService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ParaboleResponse> createEvent(@RequestBody EventCreateRequestDto eventDto) {
         Long eventId = -1L;
         try {
@@ -44,7 +44,7 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId+"번 이벤트 조회 성공", response);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
         List<Event> eventEntities = eventService.getEventsAllNotDeleted();
         List<EventListResponseDto> response = eventEntities.stream()
