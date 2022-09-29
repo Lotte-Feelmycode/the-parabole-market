@@ -41,7 +41,7 @@ public class ProductController {
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
     @GetMapping("/list")
-    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required=false) Long sellerId,
+    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) Long sellerId,
                                             @RequestParam(required = false) String sellerName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
@@ -80,7 +80,6 @@ public class ProductController {
     // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody Product product) {
-    
         log.info("TEST {}", "INFO");
         log.warn("TEST {}", "WARN");
         log.error("TEST {}", "ERROR");
@@ -99,7 +98,6 @@ public class ProductController {
 
     @PatchMapping
     public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
-
         productService.updateProduct(userId, product);
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
@@ -107,7 +105,6 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {
-
         Product product = productService.getProduct(productId);
         List<ProductDetail> productDetailList = productDetailService.getProductDetailList(productId);
 
@@ -115,4 +112,5 @@ public class ProductController {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", responseDto);
     }
+    
 }
