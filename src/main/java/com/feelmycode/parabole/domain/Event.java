@@ -74,7 +74,7 @@ public class Event extends BaseEntity implements Serializable {
     }
 
     public void setDeleted() {
-        this.isDeleted = false;
+        this.isDeleted = true;
     }
 
     public void setSeller(Seller seller) {
