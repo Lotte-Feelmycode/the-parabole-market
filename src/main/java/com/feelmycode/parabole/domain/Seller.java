@@ -48,6 +48,12 @@ public class Seller extends BaseEntity {
         this.registrationNo = registrationNo;
     }
 
+    public Seller(User user, String storeName, String registrationNo) {
+        this.user = user;
+        this.storeName = storeName;
+        this.registrationNo = registrationNo;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

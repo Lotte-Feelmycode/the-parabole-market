@@ -34,11 +34,7 @@ public class UserCoupon extends BaseEntity {
     private String serialNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name="coupon_id", referencedColumnName="coupon_id")
-//        , @JoinColumn(name="seller_id", referencedColumnName="seller_id")
-    })
-    @JoinColumn(name = "coupon_id")
+    @JoinColumn(name="coupon_id", referencedColumnName="coupon_id")
     private Coupon coupon;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -58,7 +54,6 @@ public class UserCoupon extends BaseEntity {
     @NotNull
     private LocalDateTime useDate;
 
-    /** Default Constructor */
     public UserCoupon() {
         this.serialNo = UuidApp.generator();
         this.coupon = null;

@@ -30,7 +30,9 @@ public class CouponUserResponseDto {
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
                 this.type = coupon.getType().getName();
-                if (type.equals("RATE")) this.RateOrAmount = coupon.getDiscountRate();
+                if (type.equals("RATE")) {
+                        this.RateOrAmount = coupon.getDiscountRate();
+                }
                 this.RateOrAmount = coupon.getDiscountAmount();
                 this.useState = userCoupon.getUseState().ordinal();
                 this.acquiredDate = userCoupon.getAcquiredDate();

@@ -21,7 +21,6 @@ public class CouponCreateRequestDto {
         private String detail;
         private Integer cnt;    // 발행할 쿠폰수
 
-        /** DTO to Entity **/
         public Coupon toEntity(Seller seller, CouponType type){
 
                 return new Coupon(name, seller, type, discountRate,

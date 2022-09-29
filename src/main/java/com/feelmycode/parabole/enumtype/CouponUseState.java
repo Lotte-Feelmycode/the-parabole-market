@@ -24,7 +24,9 @@ public enum CouponUseState {
     }
 
     public static CouponUseState returnNameToValue(Integer value) {
-        if(value == 1) return CouponUseState.NotUsed;
+        if(value == 1) {
+            return CouponUseState.NotUsed;
+        }
         return CouponUseState.Used;
     }
 

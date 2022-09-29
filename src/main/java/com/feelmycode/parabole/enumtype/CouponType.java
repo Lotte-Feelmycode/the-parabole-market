@@ -25,7 +25,9 @@ public enum CouponType {
     }
 
     public static CouponType returnNameToValue(Integer value) {
-        if(value == 1) return CouponType.RATE;
+        if(value == 1) {
+            return CouponType.RATE;
+        }
         return CouponType.AMOUNT;
     }
 

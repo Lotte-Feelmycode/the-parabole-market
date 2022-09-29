@@ -46,10 +46,8 @@ public class CouponService {
         coupon.setSeller(seller);
         couponRepository.save(coupon);
 
-//        seller.addCoupon(coupon);
-        
         for (int i = 0; i < dto.getCnt(); i++) {
-            coupon.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
+            coupon.addUserCoupon(new UserCoupon());
         }
         return new CouponCreateResponseDto(coupon.getName(), new String("sellerName"),
            dto.getType(), coupon.getCnt());
