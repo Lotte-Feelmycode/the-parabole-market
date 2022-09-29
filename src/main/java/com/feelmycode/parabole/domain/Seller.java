@@ -48,7 +48,6 @@ public class Seller extends BaseEntity {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Coupon> coupons = new ArrayList<>();
 
-
     public Seller(String storeName, String registrationNo) {
         this.storeName = storeName;
         this.registrationNo = registrationNo;

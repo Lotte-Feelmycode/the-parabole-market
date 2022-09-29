@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final static String URL = "localhost:8080/api/v1/product/detail/";
     private final ProductRepository productRepository;
     private final SellerService sellerService;
 
@@ -25,9 +26,13 @@ public class ProductService {
         sellerService.getSellerByUserId(userId);
 
         product.setSeller(sellerService.getSellerByUserId(userId));
+
+        Long productId = productRepository.countById(userId)+1;
+        product.setUrl(URL+productId);
+
         productRepository.save(product);
 
-        return product.getId();
+        return productId;
     }
 
     @Transactional

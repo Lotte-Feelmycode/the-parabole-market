@@ -56,6 +56,9 @@ public class Product extends BaseEntity {
     @NotNull
     private String thumbnailImg;
 
+    @Column(name = "product_url")
+    private String url;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
@@ -83,6 +86,9 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
     private void setProductDetailList(List<ProductDetail> detailList) {
         this.productDetailList = detailList;
     }
@@ -100,34 +106,12 @@ public class Product extends BaseEntity {
         this.setSalesStatus(getProduct.getSalesStatus());
         this.setThumbnailImg(getProduct.getThumbnailImg());
         this.setProductDetailList(getProduct.getProductDetailList());
+        this.setUrl(getProduct.getUrl());
         return this;
     }
 
-    public Product(Seller seller, Integer salesStatus, Long remains,
-        String category, String thumbnailImg, String name, Long price) {
-        this.seller = seller;
-        this.salesStatus = salesStatus;
-        this.remains = remains;
-        this.category = category;
-        this.thumbnailImg = thumbnailImg;
-        this.name = name;
-        this.price = price;
-    }
-
-    public Product(Long id, Seller seller, Integer salesStatus, Long remains,
-        String category, String thumbnailImg, String name, Long price) {
-        this.id = id;
-        this.seller = seller;
-        this.salesStatus = salesStatus;
-        this.remains = remains;
-        this.category = category;
-        this.thumbnailImg = thumbnailImg;
-        this.name = name;
-        this.price = price;
-    }
-
     public Product(Seller seller, String name, Integer salesStatus, Long remains, Long price,
-        String category, String thumbnailImg, List<ProductDetail> productDetailList) {
+        String category, String thumbnailImg, List<ProductDetail> productDetailList, String url) {
         this.seller = seller;
         this.name = name;
         this.salesStatus = salesStatus;
@@ -136,6 +120,7 @@ public class Product extends BaseEntity {
         this.category = category;
         this.thumbnailImg = thumbnailImg;
         this.productDetailList = productDetailList;
+        this.url = url;
     }
 
 }

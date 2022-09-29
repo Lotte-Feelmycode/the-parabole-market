@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +45,11 @@ public class Order extends BaseEntity {
     private int state;
 
     @NotNull
-    @Column(name = "order_delivery_fee")
+    @Column(name = "order_delivery_fee", columnDefinition = "bigint default 3000")
     private long deliveryFee;
 
     public void setDeleted() {
-        this.isDeleted = false;
+        this.isDeleted = true;
         this.setState(0);
     }
     private void setState(int state) {
