@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
@@ -10,6 +11,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,9 +45,8 @@ public class Coupon extends BaseEntity implements Serializable {
 
     @Column(name = "coupon_type")
     @NotNull
-//    @Enumerated(EnumType.STRING)
-//    private CouponType type;
-    private Integer type;                       // 쿠폰종류 ( 할인율1  할인금액2 )
+    @Enumerated(EnumType.STRING)
+    private CouponType type;
 
     @Column(name = "coupon_discount_rate")
     @NotNull
@@ -85,7 +87,7 @@ public class Coupon extends BaseEntity implements Serializable {
         this.seller = seller;
     }
 
-    public Coupon(String name, Seller seller, Integer type, Integer discountRate,
+    public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
         Long discountAmount, LocalDateTime validAt, LocalDateTime expiresAt,
         Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 

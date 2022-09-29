@@ -2,6 +2,7 @@ package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.enumtype.CouponType;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -21,7 +22,7 @@ public class CouponCreateRequestDto {
         private Integer cnt;    // 발행할 쿠폰수
 
         /** DTO to Entity **/
-        public Coupon toEntity(Seller seller, Integer type){
+        public Coupon toEntity(Seller seller, CouponType type){
 
                 return new Coupon(name, seller, type, discountRate,
                     discountAmount, validAt, expiresAt,

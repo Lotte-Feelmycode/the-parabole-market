@@ -9,6 +9,7 @@ import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
+import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
@@ -16,6 +17,7 @@ import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ public class CouponService {
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         Seller seller = sellerRepository.findById(dto.getSellerId())
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 판매자 Id가 존재하지 않습니다."));
-        Coupon coupon = dto.toEntity(seller, dto.getType());
+        Coupon coupon = dto.toEntity(seller, CouponType.returnNameToValue(dto.getType()));
         coupon.setSeller(seller);
         couponRepository.save(coupon);
 
@@ -110,18 +112,15 @@ public class CouponService {
         }
         Coupon coupon = userCoupon.getCoupon();
 
-        String type = null;
-        Object ret = null;
+        String type = coupon.getType().getName();
+        Object discountValue = null;
 
-        if(coupon.getType() == 1){
-            type = "RATE";
-            ret = coupon.getDiscountRate();
-        } else if (coupon.getType() == 2) {
-            type = "AMOUNT" ;
-            ret = coupon.getDiscountAmount();
+        if(coupon.getType().getName().equals("RATE")) {
+            discountValue = coupon.getDiscountRate();
         }
+        discountValue = coupon.getDiscountAmount();
 
-        return new CouponAvailianceResponseDto(type, ret);
+        return new CouponAvailianceResponseDto(type, discountValue);
     }
 
     public void useUserCoupon(String couponSNo, Long userId) {
@@ -138,6 +137,9 @@ public class CouponService {
         } else if (!user.getId().equals(userId)){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
+        } else if(userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())){
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰이 만료되어 사용할 수 없습니다.");
         } else {
             if (userCoupon.getUseState() == CouponUseState.Used) {
                 throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 사용완료된 쿠폰입니다.");

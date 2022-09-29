@@ -35,10 +35,10 @@ public class UserCoupon extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
-        @JoinColumn(name="coupon_id", referencedColumnName="coupon_id"),
-        @JoinColumn(name="seller_id", referencedColumnName="seller_id")
+        @JoinColumn(name="coupon_id", referencedColumnName="coupon_id")
+//        , @JoinColumn(name="seller_id", referencedColumnName="seller_id")
     })
-//    @JoinColumn(name = "coupon_id")
+    @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -91,6 +91,7 @@ public class UserCoupon extends BaseEntity {
         this.useState = CouponUseState.Used;
         this.useDate = LocalDateTime.now();
     }
+
 }
 
 
