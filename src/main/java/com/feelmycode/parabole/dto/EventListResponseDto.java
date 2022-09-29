@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
 public class EventListResponseDto {
 
     private Long id;
@@ -29,6 +28,22 @@ public class EventListResponseDto {
     private String descript;
     private EventImage eventImage;
     private List<EventPrize> eventPrizes = new ArrayList<>();
+
+    public EventListResponseDto(Long id, Long sellerId, String createdBy, String type, String title,
+        LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,
+        EventImage eventImage, List<EventPrize> eventPrizes) {
+        this.id = id;
+        this.sellerId = sellerId;
+        this.createdBy = createdBy;
+        this.type = type;
+        this.title = title;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.status = status;
+        this.descript = descript;
+        this.eventImage = eventImage;
+        this.eventPrizes = eventPrizes;
+    }
 
     static public EventListResponseDto of(Event event) {
         return EventListResponseDto.builder()
