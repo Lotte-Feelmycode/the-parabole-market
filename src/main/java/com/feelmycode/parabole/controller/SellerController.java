@@ -38,4 +38,5 @@ public class SellerController {
             new SellerInfoResponseDto(seller.getUser().getId(), seller.getStoreName(),
                 seller.getRegistrationNo()));
     }
+
 }
