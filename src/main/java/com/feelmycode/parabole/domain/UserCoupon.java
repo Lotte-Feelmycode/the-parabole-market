@@ -1,8 +1,7 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.domain.Coupon;
-import com.feelmycode.parabole.domain.CouponUseState;
-import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.enumtype.CouponUseState;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.UuidApp;
 import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
@@ -19,13 +18,12 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Entity
 @Table(name = "user_coupons")
 @Getter
-public class UserCoupon
-//    extends BaseTimeEntity
-{
+public class UserCoupon extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,11 +34,7 @@ public class UserCoupon
     private String serialNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-        @JoinColumn(name="coupon_id", referencedColumnName="coupon_id"),
-        @JoinColumn(name="seller_id", referencedColumnName="seller_id")
-    })
-//    @JoinColumn(name = "coupon_id")
+    @JoinColumn(name="coupon_id", referencedColumnName="coupon_id")
     private Coupon coupon;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,48 +54,36 @@ public class UserCoupon
     @NotNull
     private LocalDateTime useDate;
 
-
-    /** 연관관계 편의 메서드 */
-    public void setCoupon(Coupon coupon) {
-        if (this.coupon != null) {
-            this.coupon.getUserCoupons().remove(this);
-        }
-        this.coupon = coupon;
-//        아래 코드는 연관관계 주인인 Coupon 에서 해준다
-//        coupon.getUserCoupons().add(this);
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-//        아래 코드는 연관관계 주인인 User 에서 해준다
-//        user.getUserCoupons().add(this);
-    }
-
-    /** Default Constructor */
     public UserCoupon() {
         this.serialNo = UuidApp.generator();
-
-        this.coupon = null;     // issueCoupon 에서 coupon 넣어줍니다
+        this.coupon = null;
         this.user = null;
         this.useState = CouponUseState.NotUsed;
         this.acquiredDate = LocalDateTime.now();
         this.useDate = null;
     }
 
-//    public UserCoupon(Coupon coupon, User user) {
-//        this.serialNo = UuidApp.generator();
-//        this.coupon = coupon;
-//        this.user = user;
-//        this.useState = 0;
-//        this.acquiredDate = LocalDateTime.now();
-//        this.useDate = null;
-//    }
+    public void setCoupon(Coupon coupon) {
+        if (this.coupon != null) {
+            this.coupon.getUserCoupons().remove(this);
+        }
+        this.coupon = coupon;
+        coupon.getUserCoupons().add(this);
+    }
 
-    /** User used Coupon (Update Coupon useState, useDate */
+    public void setUser(User user){
+        if (this.user != null) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰에 배정된 사용자가 이미 존재합니다.");
+        }
+        this.user = user;
+        user.getUserCoupons().add(this);
+    }
+
     public void useCoupon() {
         this.useState = CouponUseState.Used;
         this.useDate = LocalDateTime.now();
     }
+
 }
 
 

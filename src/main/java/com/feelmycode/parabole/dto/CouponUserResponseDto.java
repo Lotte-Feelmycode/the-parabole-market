@@ -7,14 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CouponUserResponseDto {
 
         /** ResponseDto for POST /api/v1/coupon/user/list **/
         private String name;
         private String serialNo;
         private String sellerName;
-        private Integer type;
+        private String type;
         private Object RateOrAmount;
         private Integer useState;
         private LocalDateTime useDate;
@@ -27,16 +26,14 @@ public class CouponUserResponseDto {
 
         public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String sellerName) {
 
-                // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
-                this.type = coupon.getType().ordinal();
-                if (type == 1) {
+                this.type = coupon.getType().getName();
+                if (type.equals("RATE")) {
                         this.RateOrAmount = coupon.getDiscountRate();
-                } else if (type == 2) {
-                        this.RateOrAmount = coupon.getDiscountAmount();
                 }
+                this.RateOrAmount = coupon.getDiscountAmount();
                 this.useState = userCoupon.getUseState().ordinal();
                 this.acquiredDate = userCoupon.getAcquiredDate();
                 this.useDate = userCoupon.getUseDate();

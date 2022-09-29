@@ -1,25 +1,25 @@
 package com.feelmycode.parabole.service;
 
-import com.feelmycode.parabole.domain.CouponType;
-import com.feelmycode.parabole.domain.CouponUseState;
-//import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.Coupon;
+import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
-//import com.feelmycode.parabole.repository.SellerRepository;
+import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
-import com.feelmycode.parabole.domain.User;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.repository.UserRepository;
-import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
+import com.feelmycode.parabole.enumtype.CouponType;
+import com.feelmycode.parabole.enumtype.CouponUseState;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
+import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserCouponRepository;
+import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,48 +33,40 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CouponService {
 
-//    private final SellerRepository sellerRepository;
+    private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
     /** Seller :: Coupon Registration and Confirmation */
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
-//        TODO: SellerRepo 에 findById추가, 연관메서드addCoupon() 추가, line46 제거, 모든 주석 제거 필요
-//        Seller s = sellerRepository.findById(dto.getSellerId())
-//            .orElseThrow(() -> new IllegalArgumentException());
-        Coupon c = dto.toEntity(dto.getSellerId(), dto.getType());
-        couponRepository.save(c);
+        Seller seller = sellerRepository.findById(dto.getSellerId())
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 판매자 Id가 존재하지 않습니다."));
+        Coupon coupon = dto.toEntity(seller, CouponType.returnNameToValue(dto.getType()));
+        coupon.setSeller(seller);
+        couponRepository.save(coupon);
 
-//        s.addCoupon(c);  // 연관관계의 주인은 seller (양방향이라 셀러에게 쿠폰을 추가해줘야하는데 Seller 없음)
-        
         for (int i = 0; i < dto.getCnt(); i++) {
-            c.addUserCoupon(new UserCoupon());     // 연관관계의 주인은 coupon
+            coupon.addUserCoupon(new UserCoupon());
         }
-//       save 를 안쓰는 이유는 아마도 cascadeType을 ALL로 해주었기 때문에 add해도 persistence가 refresh 되기 때문.
-//       return new CouponCreateResponseDto(c.getName(), s.getName(), c.getType().ordinal(), c.getCnt());
-        return new CouponCreateResponseDto(c.getName(), new String("sellerName"),
-           dto.getType(), c.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), new String("sellerName"),
+           dto.getType(), coupon.getCnt());
     }
 
     /** DB 에 Seller 없으면 API testing 실패 납니다. Table 생성 후에 실행 */
     public void giveoutUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
-        if (uc == null) {
+        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+        if (userCoupon == null) {
             throw new ParaboleException(HttpStatus.NOT_FOUND,
                 "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
         }
 
-        User u = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
                 "사용자Id로 사용자를 검색한 내용이 존재하지 않습니다."));
 
-        if (uc.getUser() == null) {
-            u.setUserCoupon(uc);
-        } else {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰에 배정된 사용자가 이미 존재합니다.");
-        }
+        userCoupon.setUser(user);
     }
 
     @Transactional(readOnly = true)
@@ -93,14 +85,17 @@ public class CouponService {
         List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
+        if (couponList.size() == 0) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "소유한 쿠폰이 없습니다.");
+        }
         for (int i = 0; i < couponList.size(); i++) {
-            UserCoupon uc = couponList.get(i);
-            Long cidOfUc = uc.getCoupon().getId();
-            Coupon c = couponRepository.findById(cidOfUc)
-                .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-                    "쿠폰Id로 쿠폰을 검색한 내용이 존재하지 않습니다."));
-
-            dtos.add(new CouponUserResponseDto(c, uc, c.getSellerName()));
+            UserCoupon userCoupon = couponList.get(i);
+            Coupon coupon = userCoupon.getCoupon();
+            Seller seller = coupon.getSeller();
+            if (userCoupon == null || coupon == null || seller == null) {
+                throw new ParaboleException(HttpStatus.NOT_FOUND, "소유한 쿠폰이 없습니다.");
+            }
+            dtos.add(new CouponUserResponseDto(coupon, userCoupon, seller.getUser().getName()));
         }
         return new PageImpl<>(dtos);
     }
@@ -108,49 +103,47 @@ public class CouponService {
     @Transactional(readOnly = true)
     public CouponAvailianceResponseDto getCouponInfo(String couponSNo) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
-        if (uc == null) {
+        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+        if (userCoupon == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
         }
-        Coupon c = uc.getCoupon();
+        Coupon coupon = userCoupon.getCoupon();
 
-        String type = null;
-        Object ret = null;
+        String type = coupon.getType().getName();
+        Object discountValue = null;
 
-        if(c.getType() == CouponType.RATE){
-            type = "RATE";
-            ret = c.getDiscountRate();
-        } else if (c.getType() == CouponType.AMOUNT) {
-            type = "AMOUNT" ;
-            ret = c.getDiscountAmount();
+        if(coupon.getType().getName().equals("RATE")) {
+            discountValue = coupon.getDiscountRate();
         }
+        discountValue = coupon.getDiscountAmount();
 
-        return new CouponAvailianceResponseDto(type, ret);
+        return new CouponAvailianceResponseDto(type, discountValue);
     }
 
     public void useUserCoupon(String couponSNo, Long userId) {
 
-        UserCoupon uc = userCouponRepository.findBySerialNoLike(couponSNo);
-        if (uc == null) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND,
-                "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
+        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+        if (userCoupon == null) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
         }
-        User owner = uc.getUser();
+        User user = userCoupon.getUser();
 
-        if (owner == null) {
+        if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰에 배정된 사용자가 없습니다. 사용자를 먼저 배정하세요.");
-        } else if (!owner.getId().equals(userId)){
+        } else if (!user.getId().equals(userId)){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
+        } else if(userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())){
+            throw new ParaboleException(HttpStatus.BAD_REQUEST,
+                "쿠폰이 만료되어 사용할 수 없습니다.");
         } else {
-            if (uc.getUseState() == CouponUseState.Used) {
-                throw new ParaboleException(HttpStatus.BAD_REQUEST,
-                    "이미 사용완료된 쿠폰입니다.");
+            if (userCoupon.getUseState() == CouponUseState.Used) {
+                throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 사용완료된 쿠폰입니다.");
             }
         }
-        uc.useCoupon();
+        userCoupon.useCoupon();
     }
 
 }
