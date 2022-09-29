@@ -1,6 +1,9 @@
 package com.feelmycode.parabole.domain;
 
+import static javax.persistence.FetchType.LAZY;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,5 +63,16 @@ public class EventPrize {
         this.product = product;
     }
 
+    @Override
+    public String toString() {
+        return "EventPrize{" +
+            "id=" + id +
+            ", event=" + event +
+            ", prizeType='" + prizeType + '\'' +
+            ", stock=" + stock +
+            ", coupon=" + coupon +
+            ", product=" + product +
+            '}';
+    }
 }
 
