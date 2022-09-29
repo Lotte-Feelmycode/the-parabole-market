@@ -2,6 +2,7 @@ package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.UserCoupon;
+import com.feelmycode.parabole.enumtype.CouponType;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class CouponUserResponseDto {
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
                 this.type = coupon.getType().getName();
-                if (type.equals("RATE")) {
+                if (type.equals(CouponType.RATE.getName())) {
                         this.RateOrAmount = coupon.getDiscountRate();
                 }
                 this.RateOrAmount = coupon.getDiscountAmount();
