@@ -47,7 +47,7 @@ public class OrderService {
     }
 
     public Order getOrderByUserId(Long userId) {
-        return orderRepository.findByUserIdOrderByOrderIdDesc(userId);
+        return orderRepository.findTopByUserIdOrderByIdDesc(userId);
     }
 
 }
