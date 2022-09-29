@@ -39,7 +39,7 @@ public class CouponService {
     /** Seller :: Coupon Registration and Confirmation */
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         Seller seller = sellerRepository.findById(dto.getSellerId())
-            .orElseThrow(() -> new IllegalArgumentException());
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 판매자 Id가 존재하지 않습니다."));
         Coupon coupon = dto.toEntity(seller, dto.getType());
         coupon.setSeller(seller);
         couponRepository.save(coupon);
@@ -85,14 +85,16 @@ public class CouponService {
         List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
+        if (couponList.size() == 0) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "소유한 쿠폰이 없습니다.");
+        }
         for (int i = 0; i < couponList.size(); i++) {
             UserCoupon userCoupon = couponList.get(i);
-            Long cidOfUc = userCoupon.getCoupon().getId();
-            Coupon coupon = couponRepository.findById(cidOfUc)
-                .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST,
-                    "쿠폰Id로 쿠폰을 검색한 내용이 존재하지 않습니다."));
-
-            Seller seller = sellerRepository.findById(coupon.getSeller().getId()).orElseThrow();
+            Coupon coupon = userCoupon.getCoupon();
+            Seller seller = coupon.getSeller();
+            if (userCoupon == null || coupon == null || seller == null) {
+                throw new ParaboleException(HttpStatus.NOT_FOUND, "소유한 쿠폰이 없습니다.");
+            }
             dtos.add(new CouponUserResponseDto(coupon, userCoupon, seller.getUser().getName()));
         }
         return new PageImpl<>(dtos);
@@ -106,17 +108,17 @@ public class CouponService {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰 일련번호로 사용자 쿠폰을 검색한 내용이 존재하지 않습니다.");
         }
-        Coupon c = userCoupon.getCoupon();
+        Coupon coupon = userCoupon.getCoupon();
 
         String type = null;
         Object ret = null;
 
-        if(c.getType() == 1){
+        if(coupon.getType() == 1){
             type = "RATE";
-            ret = c.getDiscountRate();
-        } else if (c.getType() == 2) {
+            ret = coupon.getDiscountRate();
+        } else if (coupon.getType() == 2) {
             type = "AMOUNT" ;
-            ret = c.getDiscountAmount();
+            ret = coupon.getDiscountAmount();
         }
 
         return new CouponAvailianceResponseDto(type, ret);
