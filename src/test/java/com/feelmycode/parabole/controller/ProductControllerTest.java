@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.service.ProductService;
 import org.junit.Before;
 import org.junit.Rule;
@@ -43,6 +44,7 @@ public class ProductControllerTest {
     public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
     @Autowired
     private WebApplicationContext context;
+    private final Seller seller = new Seller("테스트", "1");
 
     @Before
     public void setUp() {
@@ -63,7 +65,7 @@ public class ProductControllerTest {
 
     @Test
     public void createProduct() throws Exception {
-        Product product = new Product(1L, 1L, 1, 50L, "국밥", "https://img.url", "순대국밥", 2000L);
+        Product product = new Product(1L, seller, 1, 50L, "국밥", "https://img.url", "순대국밥", 2000L);
         this.mockMvc.perform(post("/api/v1/product")
                 .content(String.valueOf(MediaType.APPLICATION_JSON))
             .content(this.objectMapper.writeValueAsString(product)))

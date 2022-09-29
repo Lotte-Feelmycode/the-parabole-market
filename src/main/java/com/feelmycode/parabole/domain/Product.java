@@ -6,16 +6,21 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "products")
 @Getter
+@NoArgsConstructor
 public class Product extends BaseEntity {
 
     @Id
@@ -23,13 +28,9 @@ public class Product extends BaseEntity {
     @Column(name = "product_id")
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "seller_id")
-//    private Seller seller;
-
-    // TODO: sellerId가 아닌 Seller 자체를 받을 수 있도록 수정할 예정
-    @Column(name = "seller_id")
-    private Long sellerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
 
     @Column(name = "product_name")
     @NotNull
@@ -86,7 +87,8 @@ public class Product extends BaseEntity {
         this.productDetailList = detailList;
     }
 
-    public Product() {
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public Product setProduct(Product getProduct) {
@@ -101,9 +103,9 @@ public class Product extends BaseEntity {
         return this;
     }
 
-    public Product(Long sellerId, Integer salesStatus, Long remains,
+    public Product(Seller seller, Integer salesStatus, Long remains,
         String category, String thumbnailImg, String name, Long price) {
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.salesStatus = salesStatus;
         this.remains = remains;
         this.category = category;
@@ -112,10 +114,10 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
-    public Product(Long id, Long sellerId, Integer salesStatus, Long remains,
+    public Product(Long id, Seller seller, Integer salesStatus, Long remains,
         String category, String thumbnailImg, String name, Long price) {
         this.id = id;
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.salesStatus = salesStatus;
         this.remains = remains;
         this.category = category;
@@ -124,9 +126,9 @@ public class Product extends BaseEntity {
         this.price = price;
     }
 
-    public Product(Long sellerId, String name, Integer salesStatus, Long remains, Long price,
+    public Product(Seller seller, String name, Integer salesStatus, Long remains, Long price,
         String category, String thumbnailImg, List<ProductDetail> productDetailList) {
-        this.sellerId = sellerId;
+        this.seller = seller;
         this.name = name;
         this.salesStatus = salesStatus;
         this.remains = remains;
