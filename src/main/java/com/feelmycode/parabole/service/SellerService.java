@@ -35,10 +35,20 @@ public class SellerService {
     }
 
     @Transactional(readOnly = true)
-    public Seller getSeller(@NotNull Long userId) {
+    public Seller getSellerByUserId(@NotNull Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."))
             .getSeller();
     }
+
+    @Transactional(readOnly = true)
+    public Seller getSellerByStoreName(@NotNull String storeName) {
+        Seller seller = sellerRepository.findByStoreName(storeName);
+        if (seller == null) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "해당 스토어 이름과 일치하는 판매자가 존재하지 않습니다.");
+        }
+        return seller;
+    }
+
 
 }
