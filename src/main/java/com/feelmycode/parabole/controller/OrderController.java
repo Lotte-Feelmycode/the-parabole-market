@@ -4,11 +4,13 @@ import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderService;
+import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,10 +24,16 @@ public class OrderController {
 
     private static final int DELIVERY_FEE = 3000;
     private final OrderService orderService;
-    //    private final UserService userService;
+    private final UserService userService;
 
-    // TODO: 어느 타이밍에 유저와 연결된 Order 생성할 건지 파악하기
-    @PatchMapping()
+    @GetMapping
+    public ResponseEntity<ParaboleResponse> createOrder(@RequestParam Long userId) {
+        log.info("Create Order. userId: {}", userId);
+        orderService.createOrder(new Order(userService.getUser(userId), 1, DELIVERY_FEE));
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "주문 정보 생성 완료");
+    }
+
+    @PatchMapping
     public ResponseEntity<ParaboleResponse> updateOrderState(@RequestParam Long orderId,
         @RequestParam Long userId, @RequestParam int orderState) {
         log.info("Update Order. orderId: {}, userId: {}, orderState: {}", orderId, userId, orderState);
@@ -33,8 +41,7 @@ public class OrderController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경", order);
     }
 
-
-    @DeleteMapping()
+    @DeleteMapping
     public ResponseEntity<ParaboleResponse> orderCancel(@RequestParam Long userId,
         @RequestParam Long orderId) {
         log.info("Delete Order. userId: {}, orderId: {}", userId, orderId);

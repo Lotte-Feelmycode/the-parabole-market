@@ -18,7 +18,6 @@ public class OrderInfoService {
 
     @Transactional
     public void saveOrderInfo(OrderInfo orderInfo) {
-
         orderInfoRepository.save(orderInfo);
     }
 
@@ -26,7 +25,7 @@ public class OrderInfoService {
     public List<OrderInfo> getOrderInfoList(Long userId) {
         Order order = orderService.getOrderByUserId(userId);
         if(order == null) {
-            orderService.saveOrder(order);
+            orderService.createOrder(order);
         }
         return orderInfoRepository.findAllByOrderId(order.getId());
     }

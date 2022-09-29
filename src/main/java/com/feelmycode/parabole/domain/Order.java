@@ -47,6 +47,13 @@ public class Order extends BaseEntity {
     @Column(name = "order_delivery_fee")
     private long deliveryFee;
 
+    public void setDeleted() {
+        this.isDeleted = false;
+    }
+    public void setState(int state) {
+        this.state = state;
+    }
+
     private void setOrderInfoList(List<OrderInfo> orderInfoList) {
         this.orderInfoList = orderInfoList;
     }
@@ -58,23 +65,12 @@ public class Order extends BaseEntity {
             .sum();
     }
 
-    private void setState(int orderState) {
-        this.state = orderState;
-    }
 
     private void setDeliveryFee(long orderDeliveryFee) {
         this.deliveryFee = orderDeliveryFee;
     }
 
     // TODO: 주문상세 정보 list로 추가하기
-    public Order(Long id, User user, Long total, int state, Long deliveryFee) {
-        this.id = id;
-        this.user = user;
-        this.total = total;
-        this.state = state;
-        this.deliveryFee = deliveryFee;
-    }
-
     public Order(Long id, User user, int state, long deliveryFee) {
         this.id = id;
         this.user = user;

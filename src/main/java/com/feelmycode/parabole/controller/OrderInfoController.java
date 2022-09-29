@@ -29,7 +29,7 @@ public class OrderInfoController {
     private final OrderService orderService;
 
     // TODO: userCoupon 정보 가져오기
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
         try {
             Order order = orderService.getOrderByUserId(orderInfoDto.getUserId());
@@ -41,7 +41,7 @@ public class OrderInfoController {
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "결제목록에 상품을 추가했습니다.");
     }
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
         List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoList(userId);

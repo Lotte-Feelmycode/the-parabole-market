@@ -16,7 +16,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Long saveOrder(Order order) {
+    public Long createOrder(Order order) {
         Order getOrder = orderRepository.save(order);
         return getOrder.getId();
     }
@@ -37,7 +37,9 @@ public class OrderService {
     }
     @Transactional
     public void deleteOrder(Long userId, Long orderId) {
-        checkAuthentication(userId, orderId);
+        Order getOrder = checkAuthentication(userId, orderId);
+        getOrder.setDeleted();
+        getOrder.setState(0);
     }
 
     public Order getOrder(Long orderId) {
