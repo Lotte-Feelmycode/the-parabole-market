@@ -42,12 +42,12 @@ public class ProductController {
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) Long sellerId,
-                                            @RequestParam(required = false) String sellerName,
+                                            @RequestParam(required = false) String storeName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
                                             @RequestParam(required = false) Pageable pageable) {
         Long getSellerId = 0L;
-        String getSellerName = "";
+        String getStoreName = "";
         String getCategory = "";
         String getProductName = "";
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
@@ -55,8 +55,8 @@ public class ProductController {
         if(sellerId != null || sellerId != 0L) {
             getSellerId = sellerId;
         }
-        if(sellerName != null && !sellerName.equals("null") && !sellerName.equals("")) {
-            getSellerName = sellerName;
+        if(storeName != null && !storeName.equals("null") && !storeName.equals("")) {
+            getStoreName = storeName;
         }
         if(category != null && !category.equals("null") && !category.equals("")) {
             getCategory = category;
@@ -71,7 +71,7 @@ public class ProductController {
             getPageable = pageable;
         }
 
-        Page<Product> response = productService.getProductList(getSellerId, getSellerName,
+        Page<Product> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, getPageable);
             
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
