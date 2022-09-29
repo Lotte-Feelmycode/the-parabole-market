@@ -24,7 +24,7 @@ public class ProductService {
     public Long saveProduct(Long userId, Product product) {
         sellerService.getSeller(userId);
 
-        product.setSeller(sellerService.getSellerInfo(userId));
+        product.setSeller(sellerService.getSeller(userId));
         productRepository.save(product);
 
         return product.getId();

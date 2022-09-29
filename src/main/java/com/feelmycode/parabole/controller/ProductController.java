@@ -77,7 +77,6 @@ public class ProductController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
-    // TODO: 셀러정보를 받아서 product 추가하기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody Product product) {
     
