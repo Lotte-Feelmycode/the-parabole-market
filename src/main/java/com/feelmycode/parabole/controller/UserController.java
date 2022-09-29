@@ -26,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
 
         User newUser = userService.signup(dto);
@@ -34,7 +34,7 @@ public class UserController {
             true, "사용자: 회원가입 성공");
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
 
         if (!userService.signin(dto)) {
@@ -44,19 +44,19 @@ public class UserController {
     }
 
     @GetMapping("/role")
-    public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam String email) {
+    public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
         // TODO: Role을 enum타입을 사용할 수 있게 변경
-        if (userService.checkAccountRole(email) == 1) {
+        if (userService.isUser(userId)) {
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 사용자(USER) 입니다.", "USER");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 판매자(SELLER) 입니다.", "SELLER");
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ParaboleResponse> myPageUserInfo(@PathVariable("userId") Long userId) {
+    public ResponseEntity<ParaboleResponse> getUserInfo(@PathVariable("userId") Long userId) {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
-            "마이페이지 사용자 개인정보 정상 출력", userService.myPageUserInfo(userId));
+            "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
     }
 
 }

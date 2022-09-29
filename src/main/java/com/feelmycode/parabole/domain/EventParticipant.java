@@ -32,7 +32,7 @@ public class EventParticipant {
     private Event event;
 
     @ManyToOne
-    @JoinColumn(name = "prize_id")
+    @JoinColumn(name = "event_prize_id")
     private EventPrize eventPrize;
 
     @Column(columnDefinition = "DateTime(6) not null")
