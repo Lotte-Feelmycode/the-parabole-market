@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.controller;
 
-import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
@@ -29,19 +28,19 @@ public class OrderInfoController {
     private final OrderService orderService;
 
     // TODO: userCoupon 정보 가져오기
-    @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
+    @PostMapping(produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfo) {
         try {
-            Order order = orderService.getOrderByUserId(orderInfoDto.getUserId());
-            OrderInfo orderInfo = orderInfoDto.toEntity(order);
+            log.info("Create Order Info. orderInfo: {}", orderInfo);
             orderInfoService.saveOrderInfo(orderInfo);
         } catch(Exception e) {
+            e.printStackTrace();
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "결제할 상품을 추가할 수 없습니다.");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "결제목록에 상품을 추가했습니다.");
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
         List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoList(userId);

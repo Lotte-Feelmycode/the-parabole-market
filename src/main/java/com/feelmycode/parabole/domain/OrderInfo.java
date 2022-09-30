@@ -32,6 +32,10 @@ public class OrderInfo extends BaseEntity {
 //    private UserCoupon userCoupon;
 
     @NotNull
+    @Column(name = "product_id")
+    private Long productId;
+
+    @NotNull
     @Column(name = "product_name")
     private String productName;
 
@@ -47,14 +51,11 @@ public class OrderInfo extends BaseEntity {
     @Column(name = "product_discount_price")
     private Long productDiscountPrice;
 
-    public OrderInfo(Order order) {
-        this.order = order;
-    }
-
-    public OrderInfo(Order order, UserCoupon userCoupon, String productName, int productCnt,
+    public OrderInfo(Order order, UserCoupon userCoupon, Long productId, String productName, int productCnt,
         Long productPrice, Long productDiscountPrice) {
         this.order = order;
 //        this.userCoupon = userCoupon;
+        this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
         this.productPrice = productPrice;
