@@ -5,6 +5,7 @@ import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSigninDto;
 import com.feelmycode.parabole.dto.UserSignupDto;
+import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
 import javax.validation.constraints.NotNull;
@@ -37,7 +38,6 @@ public class UserService {
             dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPassword()));
     }
 
-    // TODO: Repo에서 springdatajpa 사용하여 String 으로 도메인 받아오는 과정 해결x => API 미완성
     public boolean signin(@NotNull UserSigninDto dto) {
 
         if (dto.getEmail().equals("") || dto.getPassword().equals("")) {
@@ -54,32 +54,21 @@ public class UserService {
     }
 
     @Transactional
-    public boolean isUser(Long userId) {
-        User user = getUser(userId);
-        if (user.getSeller() == null)
-            return true;
-        return false;
-    }
-
-    @Transactional
-    public void deleteUser(Long userId) {
-        // 탈퇴 로직이 아니고 user 삭제 입니다. deleteUserWhenSellerCreationFails 역할 수행
-        userRepository.deleteById(userId);
+    public boolean isSeller(Long userId) {
+        return !getUser(userId).sellerIsNull();
     }
 
     public UserInfoResponseDto getUserInfo(Long userId) {
 
         User user = getUser(userId);
-        String role = "SELLER";
-        if(user.getSeller() == null)
-            role = "USER";
-
-        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), role);
+        if(user.sellerIsNull()){
+            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER");
+        }
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER");
     }
 
     public User getUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
+        return userRepository.findById(userId).orElseThrow(() -> new NoDataException());
     }
 
 }

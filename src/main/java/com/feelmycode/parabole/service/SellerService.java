@@ -3,6 +3,7 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.SellerRegisterDto;
+import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserRepository;
@@ -22,9 +23,7 @@ public class SellerService {
     @Transactional
     public Seller registerSeller(@NotNull Long userId, @NotNull SellerRegisterDto sDto) {
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(
-                () -> new ParaboleException(HttpStatus.NOT_FOUND, "사용자Id 로 조회 가능한 사용자가 존재하지 않습니다"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
 
         Seller seller = new Seller(sDto.getStoreName(), sDto.getSellerRegistrationNo());
         if (sellerRepository.findByRegistrationNo(seller.getRegistrationNo()) != null) {
@@ -36,16 +35,14 @@ public class SellerService {
 
     @Transactional(readOnly = true)
     public Seller getSellerByUserId(@NotNull Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                () -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 판매자 Id 를 가지는 판매자가 존재하지 않슴니다."))
-            .getSeller();
+        return userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
     }
 
     @Transactional(readOnly = true)
     public Seller getSellerByStoreName(@NotNull String storeName) {
         Seller seller = sellerRepository.findByStoreName(storeName);
         if (seller == null) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "해당 스토어 이름과 일치하는 판매자가 존재하지 않습니다.");
+            throw new NoDataException();
         }
         return seller;
     }
