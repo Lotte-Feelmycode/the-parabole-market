@@ -83,13 +83,14 @@ public class CouponService {
         List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
-        if (couponList.size() == 0) {
+        if (couponList.isEmpty()) {
             throw new NoDataException();
         }
         for (UserCoupon i : couponList) {
-            i.getCoupon().getSeller();
-            dtos.add(new CouponUserResponseDto(i.getCoupon(), i,
-                i.getCoupon().getSeller().getStoreName()));
+            Coupon nowCoupon = i.getCoupon();
+            Seller nowSeller = nowCoupon.getSeller();
+            dtos.add(new CouponUserResponseDto(nowCoupon, i,
+                nowSeller.getStoreName()));
         }
         return new PageImpl<>(dtos);
     }
@@ -117,7 +118,8 @@ public class CouponService {
 
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
         if (userCoupon == null) {
-            throw new NoDataException();
+            throw new ParaboleException(HttpStatus.NOT_FOUND,
+                "해당 일련번호의 쿠폰이 존재하지 않습니다.");
         }
         User user = userCoupon.getUser();
 

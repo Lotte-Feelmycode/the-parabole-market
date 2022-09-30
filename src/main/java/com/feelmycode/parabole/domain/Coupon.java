@@ -104,12 +104,9 @@ public class Coupon extends BaseEntity implements Serializable {
         this.cnt = cnt;
     }
 
-    /**
-     * Print all and each UserCoupon with SNo (quantity : cnt)
-     */
     public void addUserCoupon(UserCoupon userCoupon) {
 //        userCoupon.setCoupon(this);
-        getUserCoupons().add(userCoupon);
+        this.userCoupons.add(userCoupon);
     }
 
 

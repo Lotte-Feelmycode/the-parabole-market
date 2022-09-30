@@ -64,11 +64,6 @@ public class UserCoupon extends BaseEntity {
         this.useDate = null;
     }
 
-//    public void setCoupon(Coupon coupon) {
-//        this.coupon = coupon;
-//        coupon.getUserCoupons().add(this);
-//    }
-
     public void setUser(User user){
         if (this.user != null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰에 배정된 사용자가 이미 존재합니다.");
