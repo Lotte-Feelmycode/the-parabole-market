@@ -24,6 +24,7 @@ public enum CouponType {
         return 2;
     }
 
+    // 은우 , 저 이거 왜 만들라고 했는지 알겠어요. 감사
     public static CouponType returnNameToValue(Integer value) {
         if(value == 1) {
             return CouponType.RATE;
