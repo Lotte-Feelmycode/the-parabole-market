@@ -68,7 +68,8 @@ public class UserService {
     }
 
     public User getUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+        return userRepository.findById(userId).orElseThrow(
+            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
     }
 
 }

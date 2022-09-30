@@ -2,7 +2,7 @@ package com.feelmycode.parabole.global.error.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class NotSellerException extends ParaboleException{
+public class NotSellerException extends ParaboleException {
 
     public NotSellerException(String message) {
         super(HttpStatus.BAD_REQUEST, message);

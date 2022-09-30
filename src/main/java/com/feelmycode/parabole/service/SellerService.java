@@ -42,7 +42,7 @@ public class SellerService {
     public Seller getSellerByStoreName(@NotNull String storeName) {
         Seller seller = sellerRepository.findByStoreName(storeName);
         if (seller == null) {
-            throw new NoDataException();
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "해당 스토어를 가지는 판매자가 존재하지 않습니다.");
         }
         return seller;
     }
