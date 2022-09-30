@@ -119,7 +119,7 @@ public class CouponService {
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
         if (userCoupon == null) {
             throw new ParaboleException(HttpStatus.NOT_FOUND,
-                "해당 일련번호의 쿠폰이 존재하지 않습니다.");
+                "해당 일련번호를 가지는 쿠폰이 존재하지 않습니다.");
         }
         User user = userCoupon.getUser();
 
