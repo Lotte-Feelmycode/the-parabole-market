@@ -11,6 +11,7 @@ import com.feelmycode.parabole.service.ProductService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -44,7 +45,7 @@ public class ProductController {
                                             @RequestParam(required = false) String storeName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
-                                            @RequestParam(required = false) Pageable pageable) {
+                                            @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
 
         Long getSellerId = 0L;
         String getStoreName = "";
@@ -52,20 +53,24 @@ public class ProductController {
         String getProductName = "";
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        if(sellerId != null && !sellerId.equals("null") && !sellerId.equals("")) {
+        if(pageable != null) {
+            System.out.println("pageable : "+ pageable);
+        }
+
+        if(sellerId != null && !sellerId.equals("null") && !sellerId.equals("") && !sellerId.equals(" ")) {
             try {
                 getSellerId = Long.parseLong(sellerId);
             } catch (NumberFormatException e) {
                 throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 판매자 id 입니다. 상품목록 조회에 실패했습니다.");
             }
         }
-        if(storeName != null && !storeName.equals("null") && !storeName.equals("")) {
+        if(storeName != null && !storeName.equals("null") && !storeName.equals("") && !storeName.equals(" ")) {
             getStoreName = storeName;
         }
-        if(category != null && !category.equals("null") && !category.equals("")) {
+        if(category != null && !category.equals("null") && !category.equals("") && !category.equals(" ")) {
             getCategory = category;
         }
-        if(productName != null && !productName.equals("null") && !productName.equals("")) {
+        if(productName != null && !productName.equals("null") && !productName.equals("") && !productName.equals(" ")) {
             getProductName = productName;
         }
         if(pageable != null) {
