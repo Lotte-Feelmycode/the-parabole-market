@@ -2,6 +2,7 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.dto.ProductListGetResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,33 +46,34 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
+    public Page<ProductListGetResponseDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
         if(!storeName.equals("")) {
             Seller seller = sellerService.getSellerByStoreName(storeName);
             sellerId = seller.getId();
         }
 
+        Page<Product> data;
         if(!sellerId.equals(0L)) {
             if (category.equals("")) {
-                return productRepository.findAllBySellerId(sellerId, pageable);
+                data = productRepository.findAllBySellerId(sellerId, pageable);
             } else {
-                return productRepository.findAllBySellerIdAndCategory(sellerId, category,
+                data = productRepository.findAllBySellerIdAndCategory(sellerId, category,
                     pageable);
             }
         } else if(!productName.equals("")) {
             if (category.equals("")) {
-                return productRepository.findAllByNameContaining(productName, pageable);
+                data = productRepository.findAllByNameContaining(productName, pageable);
             } else {
-                return productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
+                data = productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
             }
+        } else if(category.equals("")) {
+            data = productRepository.findAll(pageable);
+        } else {
+            data = productRepository.findAllByCategory(category, pageable);
         }
 
-        if(category.equals("")) {
-            return productRepository.findAll(pageable);
-        } else {
-            return productRepository.findAllByCategory(category, pageable);
-        }
+        return data.map(ProductListGetResponseDto::new);
     }
 
 }

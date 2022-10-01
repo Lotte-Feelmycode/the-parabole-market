@@ -2,13 +2,12 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.ProductDetail;
-import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
+import com.feelmycode.parabole.dto.ProductListGetResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.ProductDetailService;
 import com.feelmycode.parabole.service.ProductService;
-import com.feelmycode.parabole.service.SellerService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,10 +75,9 @@ public class ProductController {
             getPageable = pageable;
         }
 
-
-        Page<Product> response = productService.getProductList(getSellerId, getStoreName,
+        Page<ProductListGetResponseDto> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, getPageable);
-            
+
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
