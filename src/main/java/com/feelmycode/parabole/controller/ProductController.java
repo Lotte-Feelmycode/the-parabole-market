@@ -52,11 +52,11 @@ public class ProductController {
         String getProductName = "";
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        if(sellerId != null && !storeName.equals("null") && !storeName.equals("")) {
+        if(sellerId != null && !sellerId.equals("null") && !sellerId.equals("")) {
             try {
                 getSellerId = Long.parseLong(sellerId);
             } catch (NumberFormatException e) {
-                throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 형식입니다. 상품목록 조회에 실패했습니다.");
+                throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 판매자 id 입니다. 상품목록 조회에 실패했습니다.");
             }
         }
         if(storeName != null && !storeName.equals("null") && !storeName.equals("")) {
@@ -66,9 +66,6 @@ public class ProductController {
             getCategory = category;
         }
         if(productName != null && !productName.equals("null") && !productName.equals("")) {
-            if(productName.equals("error")) {
-                throw new ParaboleException(HttpStatus.BAD_REQUEST, "error test");
-            }
             getProductName = productName;
         }
         if(pageable != null) {
