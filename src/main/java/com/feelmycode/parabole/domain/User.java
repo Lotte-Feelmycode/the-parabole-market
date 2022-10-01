@@ -1,5 +1,7 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.global.error.exception.NotSellerException;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,20 @@ public class User extends BaseEntity {
     public void setSeller(Seller seller) {
         seller.setUser(this);
         this.seller = seller;
+    }
+
+    public Seller getSeller() {
+        if (seller == null) {
+            throw new NotSellerException();
+        }
+        return seller;
+    }
+
+    public boolean sellerIsNull() {
+        if (seller == null) {
+            return true;
+        }
+        return false;
     }
 
     public User(String email, String name,
