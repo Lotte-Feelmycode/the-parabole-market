@@ -41,19 +41,24 @@ public class ProductController {
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
     @GetMapping("/list")
-    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) Long sellerId,
+    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) String sellerId,
                                             @RequestParam(required = false) String storeName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
                                             @RequestParam(required = false) Pageable pageable) {
+
         Long getSellerId = 0L;
         String getStoreName = "";
         String getCategory = "";
         String getProductName = "";
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        if(sellerId != null || sellerId != 0L) {
-            getSellerId = sellerId;
+        if(sellerId != null && !storeName.equals("null") && !storeName.equals("")) {
+            try {
+                getSellerId = Long.parseLong(sellerId);
+            } catch (NumberFormatException e) {
+                throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 형식입니다. 상품목록 조회에 실패했습니다.");
+            }
         }
         if(storeName != null && !storeName.equals("null") && !storeName.equals("")) {
             getStoreName = storeName;
@@ -70,6 +75,9 @@ public class ProductController {
         if(pageable != null) {
             getPageable = pageable;
         }
+
+        System.out.println("변수 : "+getSellerId+ getStoreName+
+            getProductName+ getCategory+ getPageable);
 
         Page<Product> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, getPageable);
