@@ -53,10 +53,6 @@ public class ProductController {
         String getProductName = "";
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        if(pageable != null) {
-            System.out.println("pageable : "+ pageable);
-        }
-
         if(sellerId != null && !sellerId.equals("null") && !sellerId.equals("") && !sellerId.equals(" ")) {
             try {
                 getSellerId = Long.parseLong(sellerId);
