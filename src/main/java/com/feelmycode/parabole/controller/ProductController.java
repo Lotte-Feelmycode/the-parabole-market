@@ -76,8 +76,6 @@ public class ProductController {
             getPageable = pageable;
         }
 
-        System.out.println("변수 : "+getSellerId+ getStoreName+
-            getProductName+ getCategory+ getPageable);
 
         Page<Product> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, getPageable);

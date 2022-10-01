@@ -47,7 +47,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<Product> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
-        if(sellerId != null && sellerId != 0L) {
+        if(!storeName.equals("")) {
             Seller seller = sellerService.getSellerByStoreName(storeName);
             sellerId = seller.getId();
         }
