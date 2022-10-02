@@ -25,16 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderInfoController {
 
     private final OrderInfoService orderInfoService;
-    private final OrderService orderService;
 
     // TODO: userCoupon 정보 가져오기
-    @PostMapping(produces = "application/json;charset=UTF-8")
+    @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfo) {
         try {
             log.info("Create Order Info. orderInfo: {}", orderInfo);
             orderInfoService.saveOrderInfo(orderInfo);
         } catch(Exception e) {
-            e.printStackTrace();
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "결제할 상품을 추가할 수 없습니다.");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "결제목록에 상품을 추가했습니다.");
