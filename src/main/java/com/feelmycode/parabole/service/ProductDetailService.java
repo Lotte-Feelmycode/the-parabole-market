@@ -1,7 +1,7 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.ProductDetail;
-import com.feelmycode.parabole.domain.ProductDetailRepository;
+import com.feelmycode.parabole.repository.ProductDetailRepository;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
