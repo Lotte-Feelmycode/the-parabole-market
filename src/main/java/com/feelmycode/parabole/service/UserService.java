@@ -35,7 +35,7 @@ public class UserService {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력하신 이메일을 사용 중인 유저가 존재합니다. 다른 이메일로 가입해주세요.");
         }
         return userRepository.save(
-            dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPassword()));
+            dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(), dto.getPassword()));
     }
 
     public boolean signin(@NotNull UserSigninDto dto) {
