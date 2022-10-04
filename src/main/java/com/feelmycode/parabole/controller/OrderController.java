@@ -35,9 +35,10 @@ public class OrderController {
 
     @PatchMapping
     public ResponseEntity<ParaboleResponse> updateOrderState(@RequestParam Long orderId,
-        @RequestParam Long userId, @RequestParam int orderState) {
+        @RequestParam Long userId, @RequestParam int orderState
+    ) {
         log.info("Update Order. orderId: {}, userId: {}, orderState: {}", orderId, userId, orderState);
-        Order order = orderService.updateOrder(userId, orderId, orderState);
+        Order order = orderService.updateOrderState(userId, orderId, orderState);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경", order);
     }
 
