@@ -33,9 +33,10 @@ public class EventService {
 
     private final ProductRepository productRepository;
 
-    private Seller getSeller(Long sellerId) {
-        return sellerRepository.findById(sellerId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 판매자가 없습니다"));
+    private final SellerService sellerService;
+
+    private Seller getSeller(Long userId) {
+        return sellerService.getSellerByUserId(userId);
     }
 
     private Product getProduct(Long productId) {
@@ -51,11 +52,13 @@ public class EventService {
     /**
      * 이벤트 생성
      */
+    // TODO: JWT 처리 후 userId 처리
+    // TODO: @Valid
     @Transactional
     public Long createEvent(EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
-        Seller seller = getSeller(eventDto.getSellerId());
+        Seller seller = getSeller(eventDto.getUserId());
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
@@ -99,8 +102,9 @@ public class EventService {
     /**
      * Seller ID로 이벤트 목록 조회
      */
-    public List<Event> getEventsBySellerId(Long sellerId) {
-        return eventRepository.findAllBySellerIdAndIsDeleted(sellerId, false);
+    public List<Event> getEventsBySellerId(Long userId) {
+        Seller seller = sellerService.getSellerByUserId(userId);
+        return eventRepository.findAllBySellerAndIsDeleted(seller, false);
     }
 
     /**

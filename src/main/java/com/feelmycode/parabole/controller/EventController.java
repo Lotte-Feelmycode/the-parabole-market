@@ -44,9 +44,19 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId+"번 이벤트 조회 성공", response);
     }
 
+    // TODO: 조회조건 추가
     @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
         List<Event> eventEntities = eventService.getEventsAllNotDeleted();
+        List<EventListResponseDto> response = eventEntities.stream()
+            .map(EventListResponseDto::of)
+            .collect(Collectors.toList());
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
+    }
+
+    @GetMapping("/seller/{userId}")
+    public ResponseEntity<ParaboleResponse> getEventByUserId(@PathVariable("userId") Long userId) {
+        List<Event> eventEntities = eventService.getEventsBySellerId(userId);
         List<EventListResponseDto> response = eventEntities.stream()
             .map(EventListResponseDto::of)
             .collect(Collectors.toList());
