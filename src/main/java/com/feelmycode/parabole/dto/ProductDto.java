@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class ProductListGetResponseDto {
+public class ProductDto {
     private final Long productId;
     private final String productName;
     private final Long sellerId;
@@ -16,8 +16,10 @@ public class ProductListGetResponseDto {
     private final String productThumbnailImg;
     private final LocalDateTime productCreatedAt;
     private final LocalDateTime productUpdatedAt;
+    private final LocalDateTime productDeletedAt;
+    private final boolean productIsDeleted;
 
-    public ProductListGetResponseDto(Product product) {
+    public ProductDto(Product product) {
         this.productId = product.getId();
         this.productName = product.getName();
         this.sellerId = product.getSeller().getId();
@@ -28,5 +30,7 @@ public class ProductListGetResponseDto {
         this.productThumbnailImg = product.getThumbnailImg();
         this.productCreatedAt = product.getCreatedAt();
         this.productUpdatedAt = product.getUpdatedAt();
+        this.productDeletedAt = product.getDeletedAt();
+        this.productIsDeleted = product.isDeleted();
     }
 }
