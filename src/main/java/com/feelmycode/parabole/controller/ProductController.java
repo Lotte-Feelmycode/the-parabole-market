@@ -57,7 +57,7 @@ public class ProductController {
             }
         }
 
-        log.debug("getSellerId : "+getSellerId + " / getStoreName : " + getStoreName + " / getProductName : "+ getProductName + " / getCategory : " + getCategory + " / getPageable : " + pageable);
+        log.debug("getSellerId : {} / getStoreName : {} / getProductName : {} / getCategory : {} / getPageable : {}", getSellerId, getStoreName, getProductName, getCategory, pageable);
         Page<ProductDto> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, pageable);
 
