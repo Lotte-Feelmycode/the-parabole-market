@@ -27,7 +27,7 @@ public class EventListResponseDto {
     private Integer status;
     private String descript;
     private EventImage eventImage;
-    private List<EventPrize> eventPrizes = new ArrayList<>();
+    private List<EventPrize> eventPrizes;
 
     public EventListResponseDto(Long id, Long sellerId, String createdBy, String type, String title,
         LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,

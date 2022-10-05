@@ -28,7 +28,7 @@ public class EventDto {
   private Integer status;
   private String descript;
   private EventImage eventImage;
-  private List<EventPrize> eventPrizes = new ArrayList<>();
+  private List<EventPrize> eventPrizes;
 
   public EventDto(Long id, Seller seller, String createdBy, String type, String title,
       LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,
