@@ -1,8 +1,13 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.dto.ProductDetailDto;
+import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
+import com.feelmycode.parabole.dto.ProductDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,15 +22,22 @@ import org.springframework.data.domain.Pageable;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductDetailService productDetailService;
+    private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Product product) {
+    public Long saveProduct(Long userId, Product product) {
+        sellerService.getSellerByUserId(userId);
+
+        product.setSeller(sellerService.getSellerByUserId(userId));
         productRepository.save(product);
+
         return product.getId();
     }
 
     @Transactional
-    public Long updateProduct(Product product) {
+    public Long updateProduct(Long userId, Product product) {
+        sellerService.getSellerByUserId(userId);
         Product getProduct = this.getProduct(product.getId());
         getProduct.setProduct(product);
         productRepository.save(getProduct);
@@ -37,31 +49,41 @@ public class ProductService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "상품이 존재하지 않습니다."));
     }
 
+    public ProductDetailListResponseDto getProductDetail(Long productId) {
+        Product getProduct = getProduct(productId);
+        List<ProductDetailDto> productDetailList = productDetailService.getProductDetailList(productId).stream().map(ProductDetailDto::new).toList();
+        return new ProductDetailListResponseDto(new ProductDto(getProduct), productDetailList, getProduct.getSeller().getStoreName());
+    }
+
     @Transactional(readOnly = true)
-    public Page<Product> getProductList(Long sellerId, String sellerName, String productName, String category, Pageable pageable) {
+    public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
-        // TODO : sellerName 조회 후 sellerId로 조회
+        if(!storeName.equals("")) {
+            Seller seller = sellerService.getSellerByStoreName(storeName);
+            sellerId = seller.getId();
+        }
 
+        Page<Product> data;
         if(!sellerId.equals(0L)) {
             if (category.equals("")) {
-                return productRepository.findAllBySellerId(sellerId, pageable);
+                data = productRepository.findAllBySellerId(sellerId, pageable);
             } else {
-                return productRepository.findAllBySellerIdAndCategory(sellerId, category,
+                data = productRepository.findAllBySellerIdAndCategory(sellerId, category,
                     pageable);
             }
         } else if(!productName.equals("")) {
             if (category.equals("")) {
-                return productRepository.findAllByNameContaining(productName, pageable);
+                data = productRepository.findAllByNameContaining(productName, pageable);
             } else {
-                return productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
+                data = productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
             }
+        } else if(category.equals("")) {
+            data = productRepository.findAll(pageable);
+        } else {
+            data = productRepository.findAllByCategory(category, pageable);
         }
 
-        if(category.equals("")) {
-            return productRepository.findAll(pageable);
-        } else {
-            return productRepository.findAllByCategory(category, pageable);
-        }
+        return data.map(ProductDto::new);
     }
 
 }

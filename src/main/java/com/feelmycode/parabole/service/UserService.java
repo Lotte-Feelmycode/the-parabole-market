@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.service;
 
 
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSigninDto;
@@ -70,6 +71,10 @@ public class UserService {
     public User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(
             () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
+    }
+
+    public void changeRoleToSeller(User user, Seller seller) {
+        user.setSeller(seller);
     }
 
 }

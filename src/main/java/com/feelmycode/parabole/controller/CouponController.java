@@ -4,7 +4,7 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CouponService;
-import com.feelmycode.parabole.dto.CouponAvailianceResponseDto;
+import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
@@ -79,7 +79,7 @@ public class CouponController {
     @GetMapping("/info")
     public ResponseEntity<ParaboleResponse> getCouponInfo(@RequestParam String couponSNo) {
 
-        CouponAvailianceResponseDto response = couponService.getCouponInfo(couponSNo);
+        CouponInfoResponseDto response = couponService.getCouponInfo(couponSNo);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "쿠폰 정보 반환", response);
     }
@@ -88,6 +88,6 @@ public class CouponController {
     public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestBody CouponUseAndAssignRequestDto dto) {
 
         couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "Coupon Used Correctly");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
     }
 }
