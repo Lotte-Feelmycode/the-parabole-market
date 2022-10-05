@@ -8,6 +8,7 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.EventService;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createEvent(@RequestBody EventCreateRequestDto eventDto) {
+    public ResponseEntity<ParaboleResponse> createEvent(@RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
         try {
             eventId = eventService.createEvent(eventDto);
@@ -44,7 +45,7 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId+"번 이벤트 조회 성공", response);
     }
 
-    // TODO: 조회조건 추가
+    // TODO: 조회조건+정렬조건 추가
     @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
         List<Event> eventEntities = eventService.getEventsAllNotDeleted();
