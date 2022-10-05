@@ -4,10 +4,11 @@ import com.feelmycode.parabole.domain.EventImage;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

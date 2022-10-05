@@ -1,6 +1,8 @@
 package com.feelmycode.parabole.dto;
 
+import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

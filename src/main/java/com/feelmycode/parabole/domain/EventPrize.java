@@ -1,6 +1,9 @@
 package com.feelmycode.parabole.domain;
 
+import static javax.persistence.FetchType.LAZY;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
