@@ -2,6 +2,7 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
@@ -14,6 +15,7 @@ import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,9 +35,10 @@ public class EventService {
 
     private final ProductRepository productRepository;
 
-    private Seller getSeller(Long sellerId) {
-        return sellerRepository.findById(sellerId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 판매자가 없습니다"));
+    private final SellerService sellerService;
+
+    private Seller getSeller(Long userId) {
+        return sellerService.getSellerByUserId(userId);
     }
 
     private Product getProduct(Long productId) {
@@ -48,14 +51,22 @@ public class EventService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 쿠폰이 없습니다."));
     }
 
+    public List<EventListResponseDto> getEventListResponseDto(List<Event> eventEntities) {
+        return eventEntities.stream()
+            .map(EventListResponseDto::of)
+            .collect(Collectors.toList());
+    }
+
     /**
      * 이벤트 생성
      */
+    // TODO: JWT 처리 후 userId 처리
+    // TODO: @Valid
     @Transactional
     public Long createEvent(EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
-        Seller seller = getSeller(eventDto.getSellerId());
+        Seller seller = getSeller(eventDto.getUserId());
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
@@ -65,12 +76,13 @@ public class EventService {
         if (!CollectionUtils.isEmpty(eventPrizeParams)) {
             for (EventPrizeCreateRequestDto eventPrizeParam : eventPrizeParams) {
                 String prizeType = eventPrizeParam.getType();
-                System.out.println(prizeType);
                 Long id = eventPrizeParam.getId();
                 if (prizeType.equals("PRODUCT")) {
-                    eventPrizeList.add(new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
+                    eventPrizeList.add(
+                        new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
                 } else {
-                    eventPrizeList.add(new EventPrize(prizeType, eventPrizeParam.getStock(), getCoupon(id)));
+                    eventPrizeList.add(
+                        new EventPrize(prizeType, eventPrizeParam.getStock(), getCoupon(id)));
                 }
             }
         }
@@ -99,8 +111,9 @@ public class EventService {
     /**
      * Seller ID로 이벤트 목록 조회
      */
-    public List<Event> getEventsBySellerId(Long sellerId) {
-        return eventRepository.findAllBySellerIdAndIsDeleted(sellerId, false);
+    public List<Event> getEventsBySellerId(Long userId) {
+        Seller seller = sellerService.getSellerByUserId(userId);
+        return eventRepository.findAllBySellerAndIsDeleted(seller, false);
     }
 
     /**
@@ -111,6 +124,7 @@ public class EventService {
     }
 
     // TODO : 이벤트 수정
+
     /**
      * 이벤트 취소
      */
