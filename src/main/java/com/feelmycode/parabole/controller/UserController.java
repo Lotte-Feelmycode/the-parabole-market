@@ -26,7 +26,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
 
         User newUser = userService.signup(dto);
@@ -34,7 +34,7 @@ public class UserController {
             true, "사용자: 회원가입 성공");
     }
 
-    @GetMapping
+    @PostMapping("/login")
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
 
         if (!userService.signin(dto)) {
