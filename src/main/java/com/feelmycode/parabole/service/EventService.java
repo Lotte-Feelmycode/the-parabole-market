@@ -68,7 +68,6 @@ public class EventService {
         if (!CollectionUtils.isEmpty(eventPrizeParams)) {
             for (EventPrizeCreateRequestDto eventPrizeParam : eventPrizeParams) {
                 String prizeType = eventPrizeParam.getType();
-                System.out.println(prizeType);
                 Long id = eventPrizeParam.getId();
                 if (prizeType.equals("PRODUCT")) {
                     eventPrizeList.add(new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
