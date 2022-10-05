@@ -1,8 +1,13 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Order;
+import com.feelmycode.parabole.domain.OrderInfo;
+import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderRepository;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,9 +29,20 @@ public class OrderService {
     }
 
     @Transactional
-    public Order updateOrder(Long userId, Long orderId, int state) {
+    public Order updateOrderState(Long userId, Long orderId, int state) {
+        log.info("접근 성공");
         Order getOrder = checkAuthentication(userId, orderId);
         getOrder.setOrder(state, getOrder.getOrderInfoList());
+        return getOrder;
+    }
+
+    @Transactional
+    public Order updateOrderInfo(Long userId, Long orderId, int state, int payState,
+        String userName, String userEmail, String userPhone,
+        String receiverName, String receiverPhone, String addressSimple, String addressDetail) {
+        Order getOrder = checkAuthentication(userId, orderId);
+        getOrder.setOrderInfo(state, getOrder.getOrderInfoList(), userName, userEmail, userPhone,
+            receiverName, receiverPhone, addressSimple, addressDetail, payState);
         return getOrder;
     }
 
@@ -54,6 +70,35 @@ public class OrderService {
 
     public Order getOrderByUserId(Long userId) {
         return orderRepository.findTopByUserIdOrderByIdDesc(userId);
+    }
+
+    // TODO: 셀러 별로 상품을 가져오기
+    // TODO: 제일 할인율이 높은 쿠폰을 각각의 셀러에게 적용하기
+    public void categorizeOrder(List<OrderInfo> list) {
+        HashMap<Long, Integer> saveSellerIdByIdx = new HashMap<>();
+        List<Long> sellerInfo = new ArrayList();
+
+        int idx = 0;
+
+        for(OrderInfo orderInfo : list) {
+            Order order = orderInfo.getOrder();
+//            Seller seller = order.getUser().getSeller();
+//            if(saveSellerIdByIdx.containsKey(seller.getId())) {
+//                continue;
+//            } else {
+//                saveSellerIdByIdx.put(seller.getId(), idx++);
+//                sellerInfo.add(seller.getId());
+//            }
+        }
+
+        List<Product>[] productInfo = new ArrayList[idx];
+//        Page<CouponAvailianceResponseDto> couponInfo = couponService.getUserCouponList()
+
+        for(OrderInfo orderInfo : list) {
+            Order order = orderInfo.getOrder();
+//            Seller seller = order.getUser().getSeller();
+//            productInfo[saveSellerIdByIdx.get(seller.getId())].add(productService.getProduct(orderInfo.getProductId()));
+        }
     }
 
 }

@@ -2,10 +2,13 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
+import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.OrderInfoListDto;
+import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,8 @@ public class OrderInfoService {
 
     private final OrderInfoRepository orderInfoRepository;
     private final OrderService orderService;
+    private final SellerService sellerService;
+    private final ProductService productService;
 
     @Transactional
     public void saveOrderInfo(OrderInfoListDto orderInfoListDto) {
@@ -40,6 +45,22 @@ public class OrderInfoService {
             orderService.createOrder(order);
         }
         return orderInfoRepository.findAllByOrderId(order.getId());
+    }
+
+    public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long userId) {
+        List<OrderInfoResponseDto> orderInfoList = new ArrayList<>();
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAll();
+
+        for(OrderInfo orderInfo : getOrderInfoList) {
+            Product getProduct = productService.getProduct(orderInfo.getProductId());
+            if(getProduct.getSeller().getId() == userId) {
+                OrderInfoResponseDto responseDto = orderInfo.toDto();
+                responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
+                responseDto.setProductRemain(getProduct.getRemains());
+                orderInfoList.add(responseDto);
+            }
+        }
+        return orderInfoList;
     }
 
 }

@@ -77,7 +77,7 @@ public class Order extends BaseEntity {
     private String deliveryComment;
 
     @NotNull
-    @Column(name = "order_state")
+    @Column(name = "order_pay_state")
     private int payState;
 
 

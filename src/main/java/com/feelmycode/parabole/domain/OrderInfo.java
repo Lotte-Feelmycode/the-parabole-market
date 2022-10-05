@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,4 +63,20 @@ public class OrderInfo extends BaseEntity {
         this.productDiscountPrice = productDiscountPrice;
     }
 
+    @Override
+    public String toString() {
+        return "OrderInfo{" +
+            "id=" + id +
+            ", order=" + order +
+            ", productId=" + productId +
+            ", productName='" + productName + '\'' +
+            ", productCnt=" + productCnt +
+            ", productPrice=" + productPrice +
+            ", productDiscountPrice=" + productDiscountPrice +
+            '}';
+    }
+
+    public OrderInfoResponseDto toDto() {
+        return new OrderInfoResponseDto(id, order.getUser().getId(), order.getUser().getEmail(), productId, productName, productCnt, productPrice, productDiscountPrice);
+    }
 }
