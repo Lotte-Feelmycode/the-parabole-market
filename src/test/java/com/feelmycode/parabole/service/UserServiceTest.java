@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserServiceTest {
-/*
+
     @Autowired
     UserService userService;
 
@@ -33,5 +33,5 @@ public class UserServiceTest {
         assertEquals("User ", user, seller.getUser());
         assertEquals("Seller ", seller, user.getSeller());
     }
-*/
+
 }
