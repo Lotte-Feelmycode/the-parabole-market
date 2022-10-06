@@ -39,10 +39,12 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
         log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
-        if (!userService.signin(dto)) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "로그인을 다시 시도하세요.");
+        if (userService.signin(dto).sellerIsNull()) {
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공: 사용자 입니다.");
+        } else if (!userService.signin(dto).sellerIsNull()) {
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공: 판매자 입니다.");
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공");
+        return ParaboleResponse.CommonResponse(HttpStatus.NOT_FOUND, false, "로그인 실패");
     }
 
     @GetMapping("/role")

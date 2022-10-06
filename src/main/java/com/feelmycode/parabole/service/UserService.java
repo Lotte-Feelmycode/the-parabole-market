@@ -41,19 +41,19 @@ public class UserService {
             dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(), dto.getPassword()));
     }
 
-    public boolean signin(@NotNull UserSigninDto dto) {
+    public User signin(@NotNull UserSigninDto dto) {
         log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
         if (dto.getEmail().equals("") || dto.getPassword().equals("")) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "로그인 입력란에 채우지 않은 란이 있습니다.");
         }
-        if (userRepository.findByEmail(dto.getEmail()) == null) {
+        User user = userRepository.findByEmail(dto.getEmail());
+        if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "입력하신 이메일을 가진 사용자가 존재하지 않습니다");
         }
-        if (userRepository.findByEmail(dto.getEmail()) != null
-            && !userRepository.findByEmail(dto.getEmail()).getPassword().equals(dto.getPassword())) {
+        if (user != null && !user.getPassword().equals(dto.getPassword())) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이메일 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요");
         }
-        return true;
+        return user;
     }
 
     @Transactional
