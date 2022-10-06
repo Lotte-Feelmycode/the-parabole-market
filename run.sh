@@ -11,5 +11,5 @@ kill -9 $CURRENT_PID
 sleep 10
 fi
  echo ">어플리케이션 배포 진행!"
-nohup java -jar parabole-0.0.1-SNAPSHOT.jar  & > log$(date +"%Y%m%d").log 2>&1 &
+nohup java -jar parabole-0.0.1-SNAPSHOT.jar > log$(date +"%Y%m%d").log 2>&1 &
 echo "완료"
