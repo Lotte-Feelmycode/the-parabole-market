@@ -50,7 +50,7 @@ public class UserService {
         if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "입력하신 이메일을 가진 사용자가 존재하지 않습니다");
         }
-        if (user != null && !user.getPassword().equals(dto.getPassword())) {
+        if (!user.getPassword().equals(dto.getPassword())) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이메일 또는 비밀번호가 일치하지 않습니다. 다시 입력해 주세요");
         }
         return user;

@@ -44,11 +44,8 @@ public class UserController {
         if (user.sellerIsNull()) {
             userId = user.getId();
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자 로그인 성공", userId);
-        } else if (!user.sellerIsNull()) {
-            userId = user.getId();
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 로그인 성공", userId);
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.NOT_FOUND, false, "로그인 실패");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 로그인 성공", userId);
     }
 
     @GetMapping("/role")
