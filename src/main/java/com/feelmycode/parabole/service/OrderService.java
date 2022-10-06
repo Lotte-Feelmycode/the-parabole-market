@@ -50,10 +50,10 @@ public class OrderService {
         Order getOrder = null;
         getOrder = this.getOrder(orderId);
         if(getOrder == null) {
-            new ParaboleException(HttpStatus.BAD_REQUEST, "주문을 찾을 수 없습니다");
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문을 찾을 수 없습니다");
         }
         if (getOrder.getUser().getId() != userId) {
-            new ParaboleException(HttpStatus.UNAUTHORIZED, "주문에 접근할 수 없습니다.");
+            throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문에 접근할 수 없습니다.");
         }
         return getOrder;
     }

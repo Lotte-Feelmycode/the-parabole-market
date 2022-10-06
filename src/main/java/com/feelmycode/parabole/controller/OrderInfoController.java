@@ -2,10 +2,10 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.dto.OrderInfoListDto;
+import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderInfoService;
-import com.feelmycode.parabole.service.OrderService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,4 +45,11 @@ public class OrderInfoController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 
+    // sellerId를 인자로 받는다고 되어있지만 판매자가 로그인했을 때 userId를 가져옴.  seller 였을 때만 불러올 수 있도록
+    @GetMapping("/seller")
+    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long sellerId) {
+        log.info("Seller Id: {} ", sellerId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(sellerId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회", orderInfoList);
+    }
 }

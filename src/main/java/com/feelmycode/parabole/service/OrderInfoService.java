@@ -47,6 +47,7 @@ public class OrderInfoService {
         return orderInfoRepository.findAllByOrderId(order.getId());
     }
 
+    // TODO: OrderInfo에서 Seller정보를 snapshot으로 가지고 있게 변경하기
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long userId) {
         List<OrderInfoResponseDto> orderInfoList = new ArrayList<>();
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAll();
