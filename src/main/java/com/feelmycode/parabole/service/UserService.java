@@ -11,10 +11,12 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -40,7 +42,7 @@ public class UserService {
     }
 
     public boolean signin(@NotNull UserSigninDto dto) {
-
+        log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
         if (dto.getEmail().equals("") || dto.getPassword().equals("")) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "로그인 입력란에 채우지 않은 란이 있습니다.");
         }
