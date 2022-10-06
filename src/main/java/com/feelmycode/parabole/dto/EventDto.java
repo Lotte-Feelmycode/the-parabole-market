@@ -5,10 +5,8 @@ import com.feelmycode.parabole.domain.EventImage;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Seller;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +26,7 @@ public class EventDto {
   private Integer status;
   private String descript;
   private EventImage eventImage;
-  private List<EventPrize> eventPrizes = new ArrayList<>();
+  private List<EventPrize> eventPrizes;
 
   public EventDto(Long id, Seller seller, String createdBy, String type, String title,
       LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,

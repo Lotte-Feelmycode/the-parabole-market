@@ -7,10 +7,10 @@ public class CouponCreateResponseDto {
 
     private String couponName;
     private String sellerName;
-    private Integer type;
+    private String type;
     private Integer cnt;
 
-    public CouponCreateResponseDto(String couponName, String sellerName, Integer type,
+    public CouponCreateResponseDto(String couponName, String sellerName, String type,
         Integer cnt) {
         this.couponName = couponName;
         this.sellerName = sellerName;

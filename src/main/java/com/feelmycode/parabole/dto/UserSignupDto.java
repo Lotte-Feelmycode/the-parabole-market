@@ -9,20 +9,22 @@ public class UserSignupDto {
     private String email;
     private String username;
     private String nickname;
+    private String phone;
     private String password;
     private String passwordConfirmation;
 
-    public UserSignupDto(String email, String username, String nickname, String password,
+    public UserSignupDto(String email, String username, String nickname, String phone, String password,
         String passwordConfirmation) {
         this.email = email;
         this.username = username;
         this.nickname = nickname;
+        this.phone = phone;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
     }
 
-    public User toEntity(String email, String username, String nickname, String password) {
-        return new User(email, username, nickname, password);
+    public User toEntity(String email, String username, String nickname, String phone, String password) {
+        return new User(email, username, nickname, phone, password);
     }
 
     // 입력값이 없는 필드가 있으면 blank exists True 반환
