@@ -33,7 +33,7 @@ public class UserController {
 
         User newUser = userService.signup(dto);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
-            true, "사용자: 회원가입 성공");
+            true, "사용자: 회원가입 성공", newUser.getId());
     }
 
     @PostMapping("/signin")
