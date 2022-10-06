@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponSellerResponseDto {
 
-        /** ResponseDto for POST /api/v1/coupon/seller/list **/
         private String name;
-        private Long sellerId;
         private Integer type;
         private Integer discountRate;
         private Long discountAmount;
@@ -25,12 +23,11 @@ public class CouponSellerResponseDto {
         private Integer cnt;
 
         public CouponSellerResponseDto(Coupon coupon) {
-                // 동일한 couponId 로 물려있는 coupon 과 userCoupon 인 경우에
                 this.name = coupon.getName();
-                this.sellerId = coupon.getSeller().getId();
                 this.type = coupon.getType().getValue();
                 this.discountRate = coupon.getDiscountRate();
                 this.discountAmount = coupon.getDiscountAmount();
+                this.createdAt = coupon.getCreatedAt();
                 this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
                 this.maxDiscountAmount = coupon.getMaxDiscountAmount();

@@ -1,14 +1,14 @@
-buildscript {
-    ext {
-        restdocsApiSpecVersion = '0.16.2'
-    }
-}
+//buildscript {
+//    ext {
+//        restdocsApiSpecVersion = '0.16.2'
+//    }
+//}
 plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
-	id 'org.asciidoctor.convert' version '1.5.9.2'
-	id 'com.epages.restdocs-api-spec' version '0.11.3'
+//	id 'org.asciidoctor.convert' version '1.5.9.2'
+//	id 'com.epages.restdocs-api-spec' version '0.11.3'
 }
 
 group = 'com.feelmycode.parabole'
@@ -34,60 +34,61 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
-    implementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
+//    implementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
-    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+//    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+//    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-ext {
-    set('snippetsDir', file("build/generated-snippets"))
-}
+//ext {
+//    set('snippetsDir', file("build/generated-snippets"))
+//}
 
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
-}
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//}
 
 test {
-    outputs.dir snippetsDir
+//    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
-bootJar {
-    dependsOn asciidoctor
-
-    copy {
-        from "build/generated_snippets"
-        into "src/main/resources/static/docs/"
-    }
-}
+//bootJar {
+//    dependsOn asciidoctor
+//
+//    copy {
+//        from "build/generated_snippets"
+//        into "src/main/resources/static/docs/"
+//    }
+//}
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-openapi3 {
-    server = 'http://localhost:8080'
-    title = 'The Parabole'
-    description = 'The Parabole API description'
-    version = '0.1.0'
-    format = 'yaml'
-    outputDirectory = "."
-    outputFileNamePrefix = "swagger"
-    copy {
-        from "build/api-spec"
-        into "src/main/resources/static/docs"
-    }
-}
+//openapi3 {
+//    server = 'http://localhost:8080'
+//    title = 'The Parabole'
+//    description = 'The Parabole API description'
+//    version = '0.1.0'
+//    format = 'yaml'
+//    outputDirectory = "."
+//    outputFileNamePrefix = "swagger"
+//    copy {
+//        from "build/api-spec"
+//        into "src/main/resources/static/docs"
+//    }
+//}
+
 processResources.dependsOn('ymlSecurity')
 
 task ymlSecurity(type: Copy) {

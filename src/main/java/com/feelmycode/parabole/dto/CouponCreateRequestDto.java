@@ -1,8 +1,5 @@
 package com.feelmycode.parabole.dto;
 
-import com.feelmycode.parabole.domain.Coupon;
-import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.enumtype.CouponType;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -10,7 +7,7 @@ import lombok.Getter;
 public class CouponCreateRequestDto {
 
         private String name;
-        private Long sellerId;
+        private Long userId;
         private Integer type;
         private Integer discountRate;
         private Long discountAmount;
@@ -19,13 +16,6 @@ public class CouponCreateRequestDto {
         private Long maxDiscountAmount;
         private Long minPaymentAmount;
         private String detail;
-        private Integer cnt;    // 발행할 쿠폰수
+        private Integer cnt;
 
-        public Coupon toEntity(Seller seller, CouponType type){
-
-                return new Coupon(name, seller, type, discountRate,
-                    discountAmount, validAt, expiresAt,
-                    maxDiscountAmount, minPaymentAmount, detail,
-                    cnt);
-        }
 }
