@@ -15,5 +15,7 @@ public class OrderInfoListDto {
     private Long productPrice;
     private Long productDiscountPrice;
     private Long productDeliveryFee;
+    private Long sellerId;
+    private String sellerStoreName;
 
 }

@@ -34,7 +34,7 @@ public class OrderInfoService {
         if(order == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문정보를 찾을 수 없습니다.");
         }
-        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(), orderInfoListDto.getProductId(), orderInfoListDto.getProductName(), orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(), orderInfoListDto.getProductDiscountPrice());
+        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(), orderInfoListDto.getProductId(), orderInfoListDto.getProductName(), orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(), orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(), orderInfoListDto.getSellerStoreName());
         orderInfoRepository.save(orderInfo);
     }
 
@@ -48,18 +48,17 @@ public class OrderInfoService {
     }
 
     // TODO: OrderInfo에서 Seller정보를 snapshot으로 가지고 있게 변경하기
-    public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long userId) {
+    public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
         List<OrderInfoResponseDto> orderInfoList = new ArrayList<>();
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAll();
 
         for(OrderInfo orderInfo : getOrderInfoList) {
+            OrderInfoResponseDto responseDto = orderInfo.toDto();
             Product getProduct = productService.getProduct(orderInfo.getProductId());
-            if(getProduct.getSeller().getId() == userId) {
-                OrderInfoResponseDto responseDto = orderInfo.toDto();
-                responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
-                responseDto.setProductRemain(getProduct.getRemains());
-                orderInfoList.add(responseDto);
-            }
+            responseDto.setProductUrl(getProduct.getUrl());
+            responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
+            responseDto.setProductRemain(getProduct.getRemains());
+            orderInfoList.add(responseDto);
         }
         return orderInfoList;
     }

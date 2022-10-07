@@ -52,8 +52,16 @@ public class OrderInfo extends BaseEntity {
     @Column(name = "product_discount_price")
     private Long productDiscountPrice;
 
+    @NotNull
+    @Column(name = "seller_id")
+    private Long sellerId;
+
+    @NotNull
+    @Column(name = "seller_store_name")
+    private String sellerStoreName;
+
     public OrderInfo(Order order, UserCoupon userCoupon, Long productId, String productName, int productCnt,
-        Long productPrice, Long productDiscountPrice) {
+        Long productPrice, Long productDiscountPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
 //        this.userCoupon = userCoupon;
         this.productId = productId;
@@ -61,19 +69,8 @@ public class OrderInfo extends BaseEntity {
         this.productCnt = productCnt;
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderInfo{" +
-            "id=" + id +
-            ", order=" + order +
-            ", productId=" + productId +
-            ", productName='" + productName + '\'' +
-            ", productCnt=" + productCnt +
-            ", productPrice=" + productPrice +
-            ", productDiscountPrice=" + productDiscountPrice +
-            '}';
+        this.sellerId = sellerId;
+        this.sellerStoreName = sellerStoreName;
     }
 
     public OrderInfoResponseDto toDto() {
