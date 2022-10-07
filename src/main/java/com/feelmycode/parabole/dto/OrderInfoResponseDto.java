@@ -16,7 +16,7 @@ public class OrderInfoResponseDto {
     private Long productId;
     private String productName;
     private int productCnt;
-    private long productRemain;
+    private Long productRemain;
     private Long productPrice;
     private Long productDiscountPrice;
     private String productThumbnailImg;
