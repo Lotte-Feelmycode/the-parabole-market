@@ -14,15 +14,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Entity
 @Table(name = "user_coupons")
 @Getter
+@NoArgsConstructor
 public class UserCoupon extends BaseEntity {
 
     @Id
@@ -54,21 +55,13 @@ public class UserCoupon extends BaseEntity {
     @NotNull
     private LocalDateTime useDate;
 
-    public UserCoupon() {
+    public UserCoupon(Coupon coupon) {
         this.serialNo = UuidApp.generator();
-        this.coupon = null;
+        this.coupon = coupon;
         this.user = null;
         this.useState = CouponUseState.NotUsed;
         this.acquiredDate = LocalDateTime.now();
         this.useDate = null;
-    }
-
-    public void setCoupon(Coupon coupon) {
-        if (this.coupon != null) {
-            this.coupon.getUserCoupons().remove(this);
-        }
-        this.coupon = coupon;
-        coupon.getUserCoupons().add(this);
     }
 
     public void setUser(User user){

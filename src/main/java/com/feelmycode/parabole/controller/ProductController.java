@@ -2,16 +2,16 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.ProductDetail;
-import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
+import com.feelmycode.parabole.dto.ProductDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.service.ProductDetailService;
 import com.feelmycode.parabole.service.ProductService;
-import com.feelmycode.parabole.service.SellerService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,45 +33,34 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductDetailService productDetailService;
-    private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
     @GetMapping("/list")
-    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) Long sellerId,
+    public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) String sellerId,
                                             @RequestParam(required = false) String storeName,
                                             @RequestParam(required = false) String category,
                                             @RequestParam(required = false) String productName,
-                                            @RequestParam(required = false) Pageable pageable) {
+                                            @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+
         Long getSellerId = 0L;
-        String getStoreName = "";
-        String getCategory = "";
-        String getProductName = "";
-        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
+        String getStoreName = StringUtil.controllerParamIsBlank(storeName) ? "" : storeName;
+        String getCategory = StringUtil.controllerParamIsBlank(category) ? "" : category;
+        String getProductName = StringUtil.controllerParamIsBlank(productName) ? "" : productName;
 
-        if(sellerId != null || sellerId != 0L) {
-            getSellerId = sellerId;
-        }
-        if(storeName != null && !storeName.equals("null") && !storeName.equals("")) {
-            getStoreName = storeName;
-        }
-        if(category != null && !category.equals("null") && !category.equals("")) {
-            getCategory = category;
-        }
-        if(productName != null && !productName.equals("null") && !productName.equals("")) {
-            if(productName.equals("error")) {
-                throw new ParaboleException(HttpStatus.BAD_REQUEST, "error test");
+        if(!StringUtil.controllerParamIsBlank(sellerId)) {
+            try {
+                getSellerId = Long.parseLong(sellerId);
+            } catch (NumberFormatException e) {
+                throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 판매자 id 입니다. 상품목록 조회에 실패했습니다.");
             }
-            getProductName = productName;
-        }
-        if(pageable != null) {
-            getPageable = pageable;
         }
 
-        Page<Product> response = productService.getProductList(getSellerId, getStoreName,
-            getProductName, getCategory, getPageable);
-            
+        log.debug("getSellerId : {} / getStoreName : {} / getProductName : {} / getCategory : {} / getPageable : {}", getSellerId, getStoreName, getProductName, getCategory, pageable);
+        Page<ProductDto> response = productService.getProductList(getSellerId, getStoreName,
+            getProductName, getCategory, pageable);
+
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
@@ -104,12 +91,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {
-        Product product = productService.getProduct(productId);
-        List<ProductDetail> productDetailList = productDetailService.getProductDetailList(productId);
-
-        ProductDetailListResponseDto responseDto = new ProductDetailListResponseDto(product, productDetailList);
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", responseDto);
+        ProductDetailListResponseDto response = productService.getProductDetail(productId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", response);
     }
     
 }

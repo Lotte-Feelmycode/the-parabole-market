@@ -1,17 +1,19 @@
 package com.feelmycode.parabole.dto;
 
-import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.ProductDetail;
-import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 
+@Getter
 public class ProductDetailListResponseDto {
 
-    private Product product;
-    private List<ProductDetail> productDetail = new ArrayList<>();
+    private ProductDto product;
+    private List<ProductDetailDto> productDetail;
+    private String storeName;
 
-    public ProductDetailListResponseDto(Product product, List<ProductDetail> productDetail) {
+    public ProductDetailListResponseDto(ProductDto product, List<ProductDetailDto> productDetail, String storeName) {
         this.product = product;
         this.productDetail = productDetail;
+        this.storeName = storeName;
     }
+
 }

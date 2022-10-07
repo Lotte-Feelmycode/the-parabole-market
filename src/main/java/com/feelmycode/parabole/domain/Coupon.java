@@ -83,9 +83,9 @@ public class Coupon extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-    }
+//    public void setSeller(Seller seller) {
+//        this.seller = seller;
+//    }
 
     public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
         Long discountAmount, LocalDateTime validAt, LocalDateTime expiresAt,
@@ -104,11 +104,10 @@ public class Coupon extends BaseEntity implements Serializable {
         this.cnt = cnt;
     }
 
-    /**
-     * Print all and each UserCoupon with SNo (quantity : cnt)
-     */
     public void addUserCoupon(UserCoupon userCoupon) {
-        userCoupon.setCoupon(this);
-        getUserCoupons().add(userCoupon);
+//        userCoupon.setCoupon(this);
+        this.userCoupons.add(userCoupon);
     }
+
+
 }
