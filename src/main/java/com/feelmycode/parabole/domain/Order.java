@@ -39,11 +39,6 @@ public class Order extends BaseEntity {
     @Column(name = "order_total")
     private long total;
 
-    // TODO: 주문정보 enum으로 변경하기
-    @NotNull
-    @Column(name = "order_state")
-    private int state;
-
     @NotNull
     @Column(name = "order_user_name")
     private String userName;
@@ -77,20 +72,11 @@ public class Order extends BaseEntity {
     private String deliveryComment;
 
     @NotNull
-    @Column(name = "order_pay_state")
-    private int payState;
-
-
-    @NotNull
     @Column(name = "order_delivery_fee")
     private long deliveryFee;
 
     public void setDeleted() {
         this.isDeleted = false;
-        this.setState(0);
-    }
-    private void setState(int state) {
-        this.state = state;
     }
 
     private void setOrderInfoList(List<OrderInfo> orderInfoList) {
@@ -111,38 +97,14 @@ public class Order extends BaseEntity {
 
     // TODO: 주문상세 정보 list로 추가하기
 
-    public Order(User user, int state, long deliveryFee) {
+    public Order(User user, long deliveryFee) {
         this.user = user;
         this.setTotal(getOrderInfoList());
-        this.state = state;
         this.deliveryFee = deliveryFee;
     }
 
-    public Order(Long id, User user, List<OrderInfo> orderInfoList, long total, int state,
-        String userName, String userEmail, String userPhone, String receiverName,
-        String receiverPhone,
-        String addressSimple, String addressDetail, String deliveryComment, int payState,
-        long deliveryFee) {
-        this.id = id;
-        this.user = user;
-        this.orderInfoList = orderInfoList;
-        this.total = total;
-        this.state = state;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPhone = userPhone;
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.addressSimple = addressSimple;
-        this.addressDetail = addressDetail;
-        this.deliveryComment = deliveryComment;
-        this.payState = payState;
-        this.deliveryFee = deliveryFee;
-    }
-
-    public Order setOrderInfo(int state, List<OrderInfo> orderInfoList, String userName, String userEmail, String userPhone,
-        String receiverName, String receiverPhone, String addressSimple, String addressDetail, int payState) {
-        this.setState(state);
+    public Order setOrderInfo(List<OrderInfo> orderInfoList, String userName, String userEmail, String userPhone,
+        String receiverName, String receiverPhone, String addressSimple, String addressDetail) {
         this.setOrderInfoList(orderInfoList);
         this.setTotal(orderInfoList);
         this.userName = userName;
@@ -152,12 +114,10 @@ public class Order extends BaseEntity {
         this.receiverPhone = receiverPhone;
         this.addressSimple = addressSimple;
         this.addressDetail = addressDetail;
-        this.payState = payState;
         return this;
     }
 
-    public Order setOrder(int state, List<OrderInfo> orderInfoList) {
-        this.setState(state);
+    public Order setOrder(List<OrderInfo> orderInfoList) {
         this.setOrderInfoList(orderInfoList);
         this.setTotal(orderInfoList);
         return this;

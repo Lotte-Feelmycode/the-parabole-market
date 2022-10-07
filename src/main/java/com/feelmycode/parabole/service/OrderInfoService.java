@@ -33,7 +33,7 @@ public class OrderInfoService {
         if(order == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문정보를 찾을 수 없습니다.");
         }
-        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(), orderInfoListDto.getProductId(), orderInfoListDto.getProductName(), orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(), orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(), orderInfoListDto.getSellerStoreName());
+        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(), orderInfoListDto.getState(), orderInfoListDto.getPayState(), orderInfoListDto.getProductId(), orderInfoListDto.getProductName(), orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(), orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(), orderInfoListDto.getSellerStoreName());
         orderInfoRepository.save(orderInfo);
     }
 

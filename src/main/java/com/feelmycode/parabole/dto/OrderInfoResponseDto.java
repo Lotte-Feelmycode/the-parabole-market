@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 public class OrderInfoResponseDto {
 
     private Long id;
+    private String state;
+    private String payState;
     private Long userId;
     private String userEmail;
     private Long productId;
@@ -20,9 +22,11 @@ public class OrderInfoResponseDto {
     private String productThumbnailImg;
     private String productUrl;
 
-    public OrderInfoResponseDto(Long id, Long userId, String userEmail, Long productId, String productName,
+    public OrderInfoResponseDto(Long id, String state, String payState, Long userId, String userEmail, Long productId, String productName,
         int productCnt, Long productPrice, Long productDiscountPrice) {
         this.id = id;
+        this.state = state;
+        this.payState = payState;
         this.userId = userId;
         this.userEmail = userEmail;
         this.productId = productId;

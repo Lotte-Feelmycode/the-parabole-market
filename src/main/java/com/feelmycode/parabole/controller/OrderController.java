@@ -29,16 +29,15 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<ParaboleResponse> createOrder(@RequestParam Long userId) {
         log.info("Create Order. userId: {}", userId);
-        orderService.createOrder(new Order(userService.getUser(userId), 1, DELIVERY_FEE));
+        orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "주문 정보 생성 완료");
     }
 
     @PatchMapping
     public ResponseEntity<ParaboleResponse> updateOrderState(@RequestParam Long orderId,
-        @RequestParam Long userId, @RequestParam int orderState
-    ) {
-        log.info("Update Order. orderId: {}, userId: {}, orderState: {}", orderId, userId, orderState);
-        Order order = orderService.updateOrderState(userId, orderId, orderState);
+        @RequestParam Long userId) {
+        log.info("Update Order. orderId: {}, userId: {}, orderState: {}", orderId, userId);
+        Order order = orderService.updateOrderState(userId, orderId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경", order);
     }
 

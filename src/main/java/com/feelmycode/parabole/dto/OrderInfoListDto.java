@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 public class OrderInfoListDto {
 
     private Long userId;
+    private int state;
+    private int payState;
     private Long productId;
     private String productName;
     private int productCnt;

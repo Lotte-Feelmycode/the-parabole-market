@@ -29,20 +29,20 @@ public class OrderService {
     }
 
     @Transactional
-    public Order updateOrderState(Long userId, Long orderId, int state) {
+    public Order updateOrderState(Long userId, Long orderId) {
         log.info("접근 성공");
         Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setOrder(state, getOrder.getOrderInfoList());
+        getOrder.setOrder(getOrder.getOrderInfoList());
         return getOrder;
     }
 
     @Transactional
-    public Order updateOrderInfo(Long userId, Long orderId, int state, int payState,
+    public Order updateOrderInfo(Long userId, Long orderId,
         String userName, String userEmail, String userPhone,
         String receiverName, String receiverPhone, String addressSimple, String addressDetail) {
         Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setOrderInfo(state, getOrder.getOrderInfoList(), userName, userEmail, userPhone,
-            receiverName, receiverPhone, addressSimple, addressDetail, payState);
+        getOrder.setOrderInfo(getOrder.getOrderInfoList(), userName, userEmail, userPhone,
+            receiverName, receiverPhone, addressSimple, addressDetail);
         return getOrder;
     }
 
