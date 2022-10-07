@@ -24,7 +24,6 @@ public class OrderInfoService {
 
     private final OrderInfoRepository orderInfoRepository;
     private final OrderService orderService;
-    private final SellerService sellerService;
     private final ProductService productService;
 
     @Transactional
