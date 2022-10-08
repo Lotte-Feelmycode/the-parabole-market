@@ -1,15 +1,39 @@
-echo "Start Spring Boot Application!"
+#!/bin/bash
+
+PROJECT_NAME="The Parabole"
+
+TODAY=$(date +"%Y%m%d")
+DEPLOY_PATH=/home/ubuntu
+
+LOG_PATH=$DEPLOY_PATH/log
+LINK_LOG_FILE=DEPLOY_PATH/parabole.log
+LOG_FILE=$LOG_PATH/$PROJECT_NAME_$TODAY.log
+ERR_LOG_FILE=$LOG_PATH/$PROJECT_NAME_ERROR_$TODAY.log
+DEPLOY_JAR=$parabole-0.0.1-SNAPSHOT.jar
+
+echo "> Start run.sh for $PROJECT_NAME" >> $LOG_FILE
+
+echo "> Delete log link" >> $LOG_FILE
+rm $LINK_LOG_FILE
+ln - s $LOG_FILE $LINK_LOG_FILE
+echo "> Build log : $LOG_FILE" >> $LOG_FILE
+
+
+echo "> Check $PROJECT_NAME running"
 CURRENT_PID=$(ps -ef | grep java | grep parabole | awk '{print $2}')
 echo "$CURRENT_PID"
 
- if [ -z $CURRENT_PID ]; then
-echo ">현재 구동중인 어플리케이션이 없으므로 종료하지 않습니다."
-
+if [ -z $CURRENT_PID ]
+then
+  echo "> No such current pid" >> $LOG_FILE
 else
-echo "> kill -9 $CURRENT_PID"
-kill -9 $CURRENT_PID
-sleep 10
+ echo "> kill -9 $CURRENT_PID"
+ kill -9 $CURRENT_PID
+ sleep 10
 fi
- echo ">어플리케이션 배포 진행!"
-nohup java -jar parabole-0.0.1-SNAPSHOT.jar > log$(date +"%Y%m%d").log 2>&1 &
-echo "완료"
+
+DEPLOY_FILE=$DEPLOY_PATH/$DEPLOY_JAR
+echo "> Deploy start : $DEPLOY_JAR"
+nohup java -jar $DEPLOY_FILE >> LOG_FILE 2>$ERR_LOG_FILE &
+
+echo "> End of run.sh" >> $LOG_FILE
