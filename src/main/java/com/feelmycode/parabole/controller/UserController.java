@@ -48,9 +48,9 @@ public class UserController {
     @GetMapping("/role")
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
         if (userService.isSeller(userId)) {
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 판매자(SELLER) 입니다.", "SELLER");
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_SELLER", userService.getSeller(userId).getId());
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "계정은 Role 은 사용자(USER) 입니다.", "USER");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_USER", userService.getUser(userId).getId());
     }
 
     @GetMapping("/{userId}")

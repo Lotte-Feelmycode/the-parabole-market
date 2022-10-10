@@ -56,9 +56,12 @@ public class UserService {
         return true;
     }
 
-    @Transactional
     public boolean isSeller(Long userId) {
         return !getUser(userId).sellerIsNull();
+    }
+
+    public Seller getSeller(Long userId) {
+        return getUser(userId).getSeller();
     }
 
     public UserInfoResponseDto getUserInfo(Long userId) {
