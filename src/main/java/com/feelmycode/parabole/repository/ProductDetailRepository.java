@@ -1,5 +1,6 @@
-package com.feelmycode.parabole.domain;
+package com.feelmycode.parabole.repository;
 
+import com.feelmycode.parabole.domain.ProductDetail;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
