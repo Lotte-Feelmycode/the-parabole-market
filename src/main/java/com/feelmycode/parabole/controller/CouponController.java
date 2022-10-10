@@ -41,7 +41,7 @@ public class CouponController {
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
-    @PostMapping("/seller/create")
+    @PostMapping("/create")
     public ResponseEntity<ParaboleResponse> addCoupon(
                                     @RequestBody CouponCreateRequestDto dto) {
 
@@ -51,7 +51,7 @@ public class CouponController {
             true, "쿠폰 등록 성공", response);
     }
 
-    @PostMapping("/seller/giveout")
+    @PostMapping("/giveout")
     public ResponseEntity<ParaboleResponse> assignUserToUserCoupon(
         @RequestBody CouponUseAndAssignRequestDto dto) {
 
@@ -60,25 +60,25 @@ public class CouponController {
             true, "쿠폰에 사용자가 배정되었습니다");
     }
 
-    @GetMapping("/seller/list")
-    public ResponseEntity<ParaboleResponse> getSellerCouponList(@RequestParam Long sellerId) {
-
-        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
-
-        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponList(sellerId);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "셀러 쿠폰 목록", sellerCouponList);
-    }
-
-    @GetMapping("/user/list")
-    public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestParam Long userId) {
-
-        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
-
-        Page<CouponUserResponseDto> userCouponList = couponService.getUserCouponList(userId);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "유저 쿠폰 목록", userCouponList);
-    }
+//    @GetMapping("/seller/list")
+//    public ResponseEntity<ParaboleResponse> getSellerCouponList(@RequestParam Long sellerId) {
+//
+//        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
+//
+//        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponList(sellerId);
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK,
+//            true, "셀러 쿠폰 목록", sellerCouponList);
+//    }
+//
+//    @GetMapping("/user/list")
+//    public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestParam Long userId) {
+//
+//        Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
+//
+//        Page<CouponUserResponseDto> userCouponList = couponService.getUserCouponList(userId);
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK,
+//            true, "유저 쿠폰 목록", userCouponList);
+//    }
 
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getCouponList(@RequestParam Long userId) {

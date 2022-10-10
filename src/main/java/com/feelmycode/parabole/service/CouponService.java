@@ -43,7 +43,7 @@ public class CouponService {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new NoDataException());
 
-        Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountRate(), dto.getDiscountAmount(), dto.getValidAt(),
+        Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
             dto.getExpiresAt(), dto.getMaxDiscountAmount(), dto.getMinPaymentAmount(), dto.getDetail(), dto.getCnt());
 
         couponRepository.save(coupon);
@@ -103,15 +103,7 @@ public class CouponService {
             throw new NoDataException();
         }
         Coupon coupon = userCoupon.getCoupon();
-
-        Object discountValue = null;
-
-        if(coupon.getType() == CouponType.RATE) {
-            discountValue = coupon.getDiscountRate();
-        }
-        discountValue = coupon.getDiscountAmount();
-
-        return new CouponInfoResponseDto(coupon.getType().getName(), discountValue);
+        return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
     }
 
     public void useUserCoupon(String couponSNo, Long userId) {
