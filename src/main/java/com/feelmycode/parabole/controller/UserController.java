@@ -40,12 +40,12 @@ public class UserController {
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
         log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
         User user = userService.signin(dto);
-        Long userId = null;
+
+        String message = "판매자 로그인 성공";
         if (user.sellerIsNull()) {
-            userId = user.getId();
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자 로그인 성공", userId);
+            message = "사용자 로그인 성공";
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 로그인 성공", userId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, message, user.getId());
     }
 
     @GetMapping("/role")
