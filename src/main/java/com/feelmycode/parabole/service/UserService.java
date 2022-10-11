@@ -4,11 +4,14 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
+import com.feelmycode.parabole.dto.UserSearchDto;
 import com.feelmycode.parabole.dto.UserSigninDto;
 import com.feelmycode.parabole.dto.UserSignupDto;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +80,23 @@ public class UserService {
 
     public void changeRoleToSeller(User user, Seller seller) {
         user.setSeller(seller);
+    }
+
+    public List<UserSearchDto> getAllNonSellerUsers() {
+        List<User> list = userRepository.findAll();
+        System.out.println(list.size());
+        List<UserSearchDto> dtos = new ArrayList<>();
+
+        for (User u : list) {
+            if (u.sellerIsNull()) {
+                dtos.add(new UserSearchDto(u.getId(), u.getName(), u.getEmail(),
+                    u.getPhone()));
+            }
+        }
+        if (dtos.isEmpty()) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "USER 역할의 사용자가 존재하지 않습니다.");
+        }
+        return dtos;
     }
 
 }

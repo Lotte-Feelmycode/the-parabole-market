@@ -63,4 +63,11 @@ public class UserController {
             "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<ParaboleResponse> getAllNonSellerUsers() {
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 모든 사용자 조회 성공",
+            userService.getAllNonSellerUsers());
+    }
+
 }
