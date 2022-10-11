@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.controller;
 
+import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
@@ -29,7 +30,7 @@ public class CartController {
     }
 
     @PostMapping(value = "/product/add")
-    public ResponseEntity<ParaboleResponse> addProductInCart(@RequestBody CartItemDto cartItemDto) {
+    public ResponseEntity<ParaboleResponse> addProductInCart(@RequestBody CartAddItemRequestDto cartItemDto) {
         cartItemService.addItem(cartItemDto);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "장바구니 상품 추가");
     }
