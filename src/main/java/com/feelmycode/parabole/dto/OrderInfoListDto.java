@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 public class OrderInfoListDto {
 
     private Long userId;
-    private int state;
-    private int payState;
+    private Integer state;
+    private Integer payState;
     private Long productId;
     private String productName;
-    private int productCnt;
+    private Integer productCnt;
     private Long productPrice;
     private Long productDiscountPrice;
     private Long productDeliveryFee;

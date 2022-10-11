@@ -28,10 +28,11 @@ public class OrderInfoController {
 
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfo) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody List<OrderInfoListDto> orderInfoListDto) {
         try {
-            log.info("Create Order Info. orderInfo: {}", orderInfo);
-            orderInfoService.saveOrderInfo(orderInfo);
+            for(OrderInfoListDto orderInfo : orderInfoListDto) {
+                orderInfoService.saveOrderInfo(orderInfo);
+            }
         } catch(Exception e) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "결제할 상품을 추가할 수 없습니다.");
         }

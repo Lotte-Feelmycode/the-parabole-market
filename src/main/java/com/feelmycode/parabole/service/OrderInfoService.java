@@ -30,17 +30,22 @@ public class OrderInfoService {
     public void saveOrderInfo(OrderInfoListDto orderInfoListDto) {
         Order order = orderService.getOrderByUserId(orderInfoListDto.getUserId());
         log.info("Save Order Info. order: {}", order.toString());
-        if(order == null) {
+        if (order == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문정보를 찾을 수 없습니다.");
         }
-        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(), orderInfoListDto.getState(), orderInfoListDto.getPayState(), orderInfoListDto.getProductId(), orderInfoListDto.getProductName(), orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(), orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(), orderInfoListDto.getSellerStoreName());
+        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(),
+            orderInfoListDto.getState(), orderInfoListDto.getPayState(),
+            orderInfoListDto.getProductId(), orderInfoListDto.getProductName(),
+            orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(),
+            orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(),
+            orderInfoListDto.getSellerStoreName());
         orderInfoRepository.save(orderInfo);
     }
 
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoList(Long userId) {
         Order order = orderService.getOrderByUserId(userId);
-        if(order == null) {
+        if (order == null) {
             orderService.createOrder(order);
         }
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
@@ -55,7 +60,7 @@ public class OrderInfoService {
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {
         List<OrderInfoResponseDto> orderInfoResponseDtoList = new ArrayList<>();
-        for(OrderInfo orderInfo : orderInfoList) {
+        for (OrderInfo orderInfo : orderInfoList) {
             OrderInfoResponseDto responseDto = orderInfo.toDto();
             Product getProduct = productService.getProduct(orderInfo.getProductId());
             responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
