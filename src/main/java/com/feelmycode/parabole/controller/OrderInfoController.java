@@ -41,7 +41,7 @@ public class OrderInfoController {
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
-        List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoList(userId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoList(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 

@@ -20,7 +20,6 @@ public class OrderInfoResponseDto {
     private Long productPrice;
     private Long productDiscountPrice;
     private String productThumbnailImg;
-    private String productUrl;
 
     public OrderInfoResponseDto(Long id, String state, String payState, Long userId, String userEmail, Long productId, String productName,
         int productCnt, Long productPrice, Long productDiscountPrice) {
@@ -37,10 +36,6 @@ public class OrderInfoResponseDto {
     }
     public void setProductThumbnailImg(String productThumbnailImg) {
         this.productThumbnailImg = productThumbnailImg;
-    }
-
-    public void setProductUrl(String productUrl) {
-        this.productUrl = productUrl;
     }
 
     public void setProductRemain(Long productRemain) {

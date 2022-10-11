@@ -38,27 +38,30 @@ public class OrderInfoService {
     }
 
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
-    public List<OrderInfo> getOrderInfoList(Long userId) {
+    public List<OrderInfoResponseDto> getOrderInfoList(Long userId) {
         Order order = orderService.getOrderByUserId(userId);
         if(order == null) {
             orderService.createOrder(order);
         }
-        return orderInfoRepository.findAllByOrderId(order.getId());
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
+        return changeEntityToDto(getOrderInfoList);
     }
 
     // TODO: OrderInfo에서 Seller정보를 snapshot으로 가지고 있게 변경하기
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
-        List<OrderInfoResponseDto> orderInfoList = new ArrayList<>();
+        return changeEntityToDto(getOrderInfoList);
+    }
 
-        for(OrderInfo orderInfo : getOrderInfoList) {
+    public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {
+        List<OrderInfoResponseDto> orderInfoResponseDtoList = new ArrayList<>();
+        for(OrderInfo orderInfo : orderInfoList) {
             OrderInfoResponseDto responseDto = orderInfo.toDto();
             Product getProduct = productService.getProduct(orderInfo.getProductId());
             responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
             responseDto.setProductRemain(getProduct.getRemains());
-            orderInfoList.add(responseDto);
+            orderInfoResponseDtoList.add(responseDto);
         }
-        return orderInfoList;
+        return orderInfoResponseDtoList;
     }
-
 }
