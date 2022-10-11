@@ -34,6 +34,7 @@ public class OrderInfoResponseDto {
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
     }
+    
     public void setProductThumbnailImg(String productThumbnailImg) {
         this.productThumbnailImg = productThumbnailImg;
     }
