@@ -33,16 +33,19 @@ public class UserController {
 
         User newUser = userService.signup(dto);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
-            true, "사용자: 회원가입 성공");
+            true, "사용자: 회원가입 성공", newUser.getId());
     }
 
     @PostMapping("/signin")
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
         log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
-        if (!userService.signin(dto)) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "로그인을 다시 시도하세요.");
+        User user = userService.signin(dto);
+
+        String message = "판매자 로그인 성공";
+        if (user.sellerIsNull()) {
+            message = "사용자 로그인 성공";
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그인 성공");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, message, user.getId());
     }
 
     @GetMapping("/role")
@@ -58,6 +61,13 @@ public class UserController {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
             "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<ParaboleResponse> getAllNonSellerUsers() {
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 모든 사용자 조회 성공",
+            userService.getAllNonSellerUsers());
     }
 
 }
