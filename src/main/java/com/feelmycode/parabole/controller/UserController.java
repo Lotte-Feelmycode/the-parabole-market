@@ -9,6 +9,7 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
@@ -26,7 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
 
         User newUser = userService.signup(dto);
@@ -34,9 +36,9 @@ public class UserController {
             true, "사용자: 회원가입 성공");
     }
 
-    @GetMapping
+    @PostMapping("/signin")
     public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
-
+        log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
         if (!userService.signin(dto)) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "로그인을 다시 시도하세요.");
         }
