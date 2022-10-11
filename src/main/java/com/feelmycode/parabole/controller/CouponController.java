@@ -13,6 +13,7 @@ import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,13 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/coupon")
 public class CouponController {
 
-    // TODO: 로거 추후 변경 예정
-    Logger logger = LoggerFactory.getLogger(CouponController.class);
     private final CouponService couponService;
     private final UserService userService;
     private final SellerService sellerService;
