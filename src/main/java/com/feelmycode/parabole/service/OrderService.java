@@ -36,16 +36,6 @@ public class OrderService {
         return getOrder;
     }
 
-    @Transactional
-    public Order updateOrderInfo(Long userId, Long orderId,
-        String userName, String userEmail, String userPhone,
-        String receiverName, String receiverPhone, String addressSimple, String addressDetail) {
-        Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setOrderInfo(getOrder.getOrderInfoList(), userName, userEmail, userPhone,
-            receiverName, receiverPhone, addressSimple, addressDetail);
-        return getOrder;
-    }
-
     public Order checkAuthentication(Long userId, Long orderId) {
         Order getOrder = null;
         getOrder = this.getOrder(orderId);

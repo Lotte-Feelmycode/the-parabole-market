@@ -90,7 +90,6 @@ public class Order extends BaseEntity {
             .sum();
     }
 
-
     private void setDeliveryFee(Long orderDeliveryFee) {
         this.deliveryFee = orderDeliveryFee;
     }
@@ -101,20 +100,6 @@ public class Order extends BaseEntity {
         this.user = user;
         this.setTotal(getOrderInfoList());
         this.deliveryFee = deliveryFee;
-    }
-
-    public Order setOrderInfo(List<OrderInfo> orderInfoList, String userName, String userEmail, String userPhone,
-        String receiverName, String receiverPhone, String addressSimple, String addressDetail) {
-        this.setOrderInfoList(orderInfoList);
-        this.setTotal(orderInfoList);
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPhone = userPhone;
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.addressSimple = addressSimple;
-        this.addressDetail = addressDetail;
-        return this;
     }
 
     public Order setOrder(List<OrderInfo> orderInfoList) {
