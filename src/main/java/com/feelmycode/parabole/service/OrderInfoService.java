@@ -54,7 +54,6 @@ public class OrderInfoService {
         for(OrderInfo orderInfo : getOrderInfoList) {
             OrderInfoResponseDto responseDto = orderInfo.toDto();
             Product getProduct = productService.getProduct(orderInfo.getProductId());
-            responseDto.setProductUrl(getProduct.getUrl());
             responseDto.setProductThumbnailImg(getProduct.getThumbnailImg());
             responseDto.setProductRemain(getProduct.getRemains());
             orderInfoList.add(responseDto);

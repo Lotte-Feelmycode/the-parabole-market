@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class OrderController {
 
-    private static final int DELIVERY_FEE = 3000;
+    private static final Long DELIVERY_FEE = 3000L;
     private final OrderService orderService;
     private final UserService userService;
 
