@@ -65,7 +65,7 @@ public class CouponController {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponList(sellerId);
+        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponListBySellerId(sellerId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "셀러 쿠폰 목록", sellerCouponList);
     }

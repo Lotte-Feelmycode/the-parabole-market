@@ -15,8 +15,8 @@ public class CouponUserResponseDto {
         private String serialNo;
         private String sellerName;
         private String type;
-        private Object RateOrAmount;
-        private Integer useState;
+        private Integer discountValue;
+        private String useState;
         private LocalDateTime useDate;
         private LocalDateTime acquiredDate;
         private LocalDateTime validAt;
@@ -31,8 +31,8 @@ public class CouponUserResponseDto {
                 this.serialNo = userCoupon.getSerialNo();
                 this.sellerName = sellerName;
                 this.type = coupon.getType().getName();
-                this.RateOrAmount = coupon.getDiscountValue();
-                this.useState = userCoupon.getUseState().ordinal();
+                this.discountValue = coupon.getDiscountValue();
+                this.useState = userCoupon.getUseState().getState();
                 this.acquiredDate = userCoupon.getAcquiredDate();
                 this.useDate = userCoupon.getUseDate();
                 this.validAt = coupon.getValidAt();
