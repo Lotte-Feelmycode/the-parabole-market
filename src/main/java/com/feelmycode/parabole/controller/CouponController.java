@@ -1,7 +1,5 @@
 package com.feelmycode.parabole.controller;
 
-//import com.feelmycode.parabole.service.SellerService;
-import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CouponService;
@@ -14,8 +12,6 @@ import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
