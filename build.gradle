@@ -14,7 +14,6 @@ plugins {
 group = 'com.feelmycode.parabole'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
-projectName = 'parabole'
 
 configurations {
     all {
@@ -23,7 +22,6 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
-    jar.archiveName = '${rootProject.name}.jar'
 }
 
 repositories {
