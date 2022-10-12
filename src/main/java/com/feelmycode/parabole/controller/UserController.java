@@ -50,6 +50,7 @@ public class UserController {
 
     @GetMapping("/role")
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
+
         if (userService.isSeller(userId)) {
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_SELLER", userService.getSeller(userId).getId());
         }
@@ -68,6 +69,13 @@ public class UserController {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 모든 사용자 조회 성공",
             userService.getAllNonSellerUsers());
+    }
+
+    @GetMapping("listbyname")
+    public ResponseEntity<ParaboleResponse> getNonSellerUsersByName(String name) {
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "검색어를 포함한 username을 가진 사용자 조회 성공",
+            userService.getNonSellerUsersByName(name));
     }
 
 }
