@@ -23,22 +23,23 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class OrderController {
 
-    private static final int DELIVERY_FEE = 3000;
+    private static final Long DELIVERY_FEE = 3000L;
     private final OrderService orderService;
     private final UserService userService;
 
     @PostMapping
+
     public ResponseEntity<ParaboleResponse> createOrder(@RequestBody Long userId) {
         log.info("Create Order. userId: {}", userId);
-        orderService.createOrder(new Order(userService.getUser(userId), 1, DELIVERY_FEE));
+        orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "주문 정보 생성 완료");
     }
 
     @PatchMapping
     public ResponseEntity<ParaboleResponse> updateOrderState(@RequestParam Long orderId,
-        @RequestParam Long userId, @RequestParam int orderState) {
-        log.info("Update Order. orderId: {}, userId: {}, orderState: {}", orderId, userId, orderState);
-        Order order = orderService.updateOrder(userId, orderId, orderState);
+        @RequestParam Long userId) {
+        log.info("Update Order. orderId: {}, userId: {}", orderId, userId);
+        Order order = orderService.updateOrderState(userId, orderId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경", order);
     }
 
@@ -48,7 +49,7 @@ public class OrderController {
         log.info("Delete Order. userId: {}, orderId: {}", userId, orderId);
         try {
             orderService.deleteOrder(userId, orderId);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문을 취소할 수 없습니다.");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문을 취소했습니다.");
