@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="The Parabole"
+PROJECT_NAME=The Parabole
 
 TODAY=$(date +"%Y%m%d")
 
