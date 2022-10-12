@@ -28,34 +28,19 @@ public class OrderService {
         return getOrder.getId();
     }
 
-    @Transactional
-    public Order updateOrderState(Long userId, Long orderId) {
-        log.info("접근 성공");
-        Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setOrder(getOrder.getOrderInfoList());
-        return getOrder;
-    }
-
-    public Order checkAuthentication(Long userId, Long orderId) {
+    public Order getOrder(Long userId) {
         Order getOrder = null;
-        getOrder = this.getOrder(orderId);
+        getOrder = this.getOrderByUserId(userId);
         if(getOrder == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문을 찾을 수 없습니다");
         }
-        if (getOrder.getUser().getId() != userId) {
-            throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문에 접근할 수 없습니다.");
-        }
         return getOrder;
     }
-    @Transactional
-    public void deleteOrder(Long userId, Long orderId) {
-        Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setDeleted();
-    }
 
-    public Order getOrder(Long orderId) {
-        return orderRepository.findById(orderId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "주문된 상품이 없습니다."));
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        Order getOrder = getOrder(orderId);
+        getOrder.setDeleted();
     }
 
     public Order getOrderByUserId(Long userId) {

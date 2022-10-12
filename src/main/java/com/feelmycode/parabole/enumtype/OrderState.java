@@ -14,8 +14,8 @@ public enum OrderState {
     BEFORE_DELIVERY("BEFORE_DELIVERY", 3),
     DELIVERY("DELIVERY", 4),
     DELIVERY_COMPLETE("DELIVERY_COMPLETE", 5),
-    BEFORE_REVIEW("BEFORE_REVIEW", 6),
-    REVIEW_COMPLETE("REVIEW_COMPLETE", 7),
+//    BEFORE_REVIEW("BEFORE_REVIEW", 6),
+//    REVIEW_COMPLETE("REVIEW_COMPLETE", 7),
     ORDER_CANCEL("ORDER_CANCEL", -1),
     REFUND("REFUND", -2),
     ERROR("ERROR", -99);
@@ -38,36 +38,36 @@ public enum OrderState {
             return 4;
         } else if (state.equals("DELIVERY_COMPLETE")) {
             return 5;
-        } else if (state.equals("BEFORE_REVIEW")) {
-            return 6;
-        } else if (state.equals("REVIEW_COMPLETE")) {
-            return 7;
+//        } else if (state.equals("BEFORE_REVIEW")) {
+//            return 6;
+//        } else if (state.equals("REVIEW_COMPLETE")) {
+//            return 7;
         }
         return -99;
     }
 
-    public static OrderState returnNameByValue(Integer value) {
+    public static String returnNameByValue(Integer value) {
         switch (value) {
             case -2:
-                return OrderState.REFUND;
+                return "REFUND";
             case -1:
-                return OrderState.ORDER_CANCEL;
+                return "ORDER_CANCEL";
             case 1:
-                return OrderState.BEFORE_PAY;
+                return "BEFORE_PAY";
             case 2:
-                return OrderState.PAY_COMPLETE;
+                return "PAY_COMPLETE";
             case 3:
-                return OrderState.BEFORE_DELIVERY;
+                return "BEFORE_DELIVERY";
             case 4:
-                return OrderState.DELIVERY;
+                return "DELIVERY";
             case 5:
-                return OrderState.DELIVERY_COMPLETE;
-            case 6:
-                return OrderState.BEFORE_REVIEW;
-            case 7:
-                return OrderState.REVIEW_COMPLETE;
+                return "DELIVERY_COMPLETE";
+//            case 6:
+//                return "BEFORE_REVIEW";
+//            case 7:
+//                return "REVIEW_COMPLETE";
         }
-        return OrderState.ERROR;
+        return "ERROR";
     }
 
 }

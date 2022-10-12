@@ -6,6 +6,7 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
+import com.feelmycode.parabole.enumtype.OrderState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
@@ -28,13 +29,11 @@ public class OrderInfoService {
 
     @Transactional
     public void saveOrderInfo(OrderInfoListDto orderInfoListDto) {
-        Order order = orderService.getOrderByUserId(orderInfoListDto.getUserId());
+        Order order = orderService.getOrder((orderInfoListDto.getUserId()));
         log.info("Save Order Info. order: {}", order.toString());
-        if (order == null) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문정보를 찾을 수 없습니다.");
-        }
         OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(),
-            orderInfoListDto.getState(), orderInfoListDto.getPayState(),
+            OrderState.returnValueByName(orderInfoListDto.getState()),
+            orderInfoListDto.getPayState(),
             orderInfoListDto.getProductId(), orderInfoListDto.getProductName(),
             orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(),
             orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(),
@@ -42,17 +41,24 @@ public class OrderInfoService {
         orderInfoRepository.save(orderInfo);
     }
 
+    @Transactional
+    public void updateOrderState(Long orderInfoId, String orderState) {
+        try {
+            OrderInfo getOrderInfo = orderInfoRepository.findById(orderInfoId)
+                .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "주문정보를 찾을 수 없습니다."));
+            getOrderInfo.setState(OrderState.returnValueByName(orderState));
+        } catch (Exception e) {
+            throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정할 수 없습니다.");
+        }
+    }
+
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoList(Long userId) {
-        Order order = orderService.getOrderByUserId(userId);
-        if (order == null) {
-            orderService.createOrder(order);
-        }
+        Order order = orderService.getOrder(userId);
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
         return changeEntityToDto(getOrderInfoList);
     }
 
-    // TODO: OrderInfo에서 Seller정보를 snapshot으로 가지고 있게 변경하기
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
         return changeEntityToDto(getOrderInfoList);
@@ -69,4 +75,5 @@ public class OrderInfoService {
         }
         return orderInfoResponseDtoList;
     }
+
 }
