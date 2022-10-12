@@ -37,22 +37,46 @@ public class Order extends BaseEntity {
 
     @NotNull
     @Column(name = "order_total")
-    private long total;
+    private Long total;
 
     @NotNull
-    @Column(name = "order_state")
-    private int state;
+    @Column(name = "order_user_name")
+    private String userName;
+
+    @NotNull
+    @Column(name = "order_user_email")
+    private String userEmail;
+
+    @NotNull
+    @Column(name = "order_user_phone")
+    private String userPhone;
+
+    @NotNull
+    @Column(name = "order_receiver_name")
+    private String receiverName;
+
+    @NotNull
+    @Column(name = "order_receiver_phone")
+    private String receiverPhone;
+
+    @NotNull
+    @Column(name = "order_address_simple")
+    private String addressSimple;
+
+    @NotNull
+    @Column(name = "order_address_detail")
+    private String addressDetail;
+
+    @NotNull
+    @Column(name = "order_delivery_comment")
+    private String deliveryComment;
 
     @NotNull
     @Column(name = "order_delivery_fee")
-    private long deliveryFee;
+    private Long deliveryFee;
 
     public void setDeleted() {
         this.isDeleted = false;
-        this.setState(0);
-    }
-    private void setState(int state) {
-        this.state = state;
     }
 
     private void setOrderInfoList(List<OrderInfo> orderInfoList) {
@@ -66,28 +90,19 @@ public class Order extends BaseEntity {
             .sum();
     }
 
-
-    private void setDeliveryFee(long orderDeliveryFee) {
+    private void setDeliveryFee(Long orderDeliveryFee) {
         this.deliveryFee = orderDeliveryFee;
     }
 
     // TODO: 주문상세 정보 list로 추가하기
-    public Order(Long id, User user, int state, long deliveryFee) {
-        this.id = id;
+
+    public Order(User user, Long deliveryFee) {
         this.user = user;
         this.setTotal(getOrderInfoList());
-        this.state = state;
         this.deliveryFee = deliveryFee;
     }
 
-    public Order(User user, int state, long deliveryFee) {
-        this.user = user;
-        this.setTotal(getOrderInfoList());
-        this.state = state;
-        this.deliveryFee = deliveryFee;
-    }
-    public Order setOrder(int state, List<OrderInfo> orderInfoList) {
-        this.setState(state);
+    public Order setOrder(List<OrderInfo> orderInfoList) {
         this.setOrderInfoList(orderInfoList);
         this.setTotal(orderInfoList);
         return this;

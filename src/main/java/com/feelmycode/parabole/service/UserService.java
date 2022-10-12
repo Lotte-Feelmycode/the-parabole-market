@@ -7,7 +7,6 @@ import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSearchDto;
 import com.feelmycode.parabole.dto.UserSigninDto;
 import com.feelmycode.parabole.dto.UserSignupDto;
-import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CartService cartService;
 
     @Transactional
     public User signup(@NotNull UserSignupDto dto) {
@@ -40,8 +40,13 @@ public class UserService {
         if (user != null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력하신 이메일을 사용 중인 유저가 존재합니다. 다른 이메일로 가입해주세요.");
         }
-        return userRepository.save(
-            dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(), dto.getPassword()));
+
+        User save = userRepository.save(
+            dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(),
+                dto.getPassword()));
+        Long cartId = cartService.createCart(save.getId());
+        log.info("{} - 카트 생성완료: {}", save.getId(), cartId);
+        return save;
     }
 
     public User signin(@NotNull UserSigninDto dto) {
@@ -59,9 +64,12 @@ public class UserService {
         return user;
     }
 
-    @Transactional
     public boolean isSeller(Long userId) {
         return !getUser(userId).sellerIsNull();
+    }
+
+    public Seller getSeller(Long userId) {
+        return getUser(userId).getSeller();
     }
 
     public UserInfoResponseDto getUserInfo(Long userId) {
