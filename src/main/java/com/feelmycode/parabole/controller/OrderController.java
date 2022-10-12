@@ -24,7 +24,6 @@ public class OrderController {
 
     private static final Long DELIVERY_FEE = 3000L;
     private final OrderService orderService;
-    private final OrderInfoService orderInfoService;
     private final UserService userService;
 
     @PostMapping

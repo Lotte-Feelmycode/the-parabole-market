@@ -29,7 +29,7 @@ public class OrderInfoService {
 
     @Transactional
     public void saveOrderInfo(OrderInfoListDto orderInfoListDto) {
-        Order order = orderService.getOrder((orderInfoListDto.getUserId()));
+        Order order = orderService.getOrder(orderInfoListDto.getUserId());
         log.info("Save Order Info. order: {}", order.toString());
         OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(),
             OrderState.returnValueByName(orderInfoListDto.getState()),
