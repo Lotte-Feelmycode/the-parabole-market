@@ -24,23 +24,23 @@ public enum OrderState {
     private final Integer value;
 
     public static Integer returnValueByName(String state) {
-        if (state.equals("REFUND")) {
+        if (state.equals(REFUND.state)) {
             return -2;
-        } else if (state.equals("ORDER_CANCEL")) {
+        } else if (state.equals(ORDER_CANCEL.state)) {
             return -1;
-        } else if (state.equals("BEFORE_PAY")) {
+        } else if (state.equals(BEFORE_PAY.state)) {
             return 1;
-        } else if (state.equals("PAY_COMPLETE")) {
+        } else if (state.equals(PAY_COMPLETE.state)) {
             return 2;
-        } else if (state.equals("BEFORE_DELIVERY")) {
+        } else if (state.equals(BEFORE_DELIVERY.state)) {
             return 3;
-        } else if (state.equals("DELIVERY")) {
+        } else if (state.equals(DELIVERY.state)) {
             return 4;
-        } else if (state.equals("DELIVERY_COMPLETE")) {
+        } else if (state.equals(DELIVERY_COMPLETE.state)) {
             return 5;
-//        } else if (state.equals("BEFORE_REVIEW")) {
+//        } else if (state.equals(BEFORE_REVIEW.state)) {
 //            return 6;
-//        } else if (state.equals("REVIEW_COMPLETE")) {
+//        } else if (state.equals(REVIEW_COMPLETE.state)) {
 //            return 7;
         }
         return -99;
@@ -49,25 +49,25 @@ public enum OrderState {
     public static String returnNameByValue(Integer value) {
         switch (value) {
             case -2:
-                return "REFUND";
+                return REFUND.state;
             case -1:
-                return "ORDER_CANCEL";
+                return ORDER_CANCEL.state;
             case 1:
-                return "BEFORE_PAY";
+                return BEFORE_PAY.state;
             case 2:
-                return "PAY_COMPLETE";
+                return PAY_COMPLETE.state;
             case 3:
-                return "BEFORE_DELIVERY";
+                return BEFORE_DELIVERY.state;
             case 4:
-                return "DELIVERY";
+                return DELIVERY.state;
             case 5:
-                return "DELIVERY_COMPLETE";
+                return DELIVERY_COMPLETE.state;
 //            case 6:
-//                return "BEFORE_REVIEW";
+//                return BEFORE_REVIEW.state;
 //            case 7:
-//                return "REVIEW_COMPLETE";
+//                return REVIEW_COMPLETE.state;
         }
-        return "ERROR";
+        return ERROR.state;
     }
 
 }
