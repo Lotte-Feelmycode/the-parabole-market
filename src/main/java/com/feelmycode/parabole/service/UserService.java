@@ -45,7 +45,7 @@ public class UserService {
             dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(),
                 dto.getPassword()));
         Long cartId = cartService.createCart(save.getId());
-        log.info(save.getId()+" - 카트 생성완료 : "+cartId);
+        log.info("{} - 카트 생성완료: {}", save.getId(), cartId);
         return save;
     }
 
