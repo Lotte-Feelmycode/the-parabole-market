@@ -13,7 +13,6 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    //TODO user 생성될떄 붙여줘야함
     public Long createCart(Long userId) {
         Cart cart = getCart(userId);
         cartRepository.save(cart);

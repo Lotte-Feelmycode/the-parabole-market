@@ -3,6 +3,7 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -23,12 +24,12 @@ public class CartItemService {
     private final CartService cartService;
     private final ProductRepository productRepository;
 
-    public void addItem(CartItemDto cartItemDto) {
-        Cart cart = cartService.getCart(cartItemDto.getUserId());
-        CartItem cartItem = cartItemDto.toEntity(
+    public void addItem(CartAddItemRequestDto dto) {
+        Cart cart = cartService.getCart(dto.getUserId());
+        CartItem cartItem = new CartItem(
             cart,
-            getProduct(cartItemDto.getProductId()),
-            cartItemDto.getCnt()
+            getProduct(dto.getProductId()),
+            dto.getCnt()
         );
         cartItemRepository.save(cartItem);
     }
