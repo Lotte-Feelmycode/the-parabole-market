@@ -75,9 +75,9 @@ public class UserService {
 
         User user = getUser(userId);
         if(user.sellerIsNull()){
-            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER");
+            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER", user.getPhone());
         }
-        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER");
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER", user.getPhone());
     }
 
     public User getUser(Long userId) {
