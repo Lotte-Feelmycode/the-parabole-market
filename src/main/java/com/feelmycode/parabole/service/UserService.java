@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,22 +90,18 @@ public class UserService {
         user.setSeller(seller);
     }
 
-    public List<UserSearchDto> getAllNonSellerUsers() {
-        List<User> list = userRepository.findAll();
-        List<UserSearchDto> dtos = entityToDtoListTransition(list);
+    public List<UserSearchDto> getNonSellerUsers(String userName) {
 
-        if (dtos.isEmpty()) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "USER 역할의 사용자가 존재하지 않습니다.");
+        List<User> list;
+        if (userName.equals("")) {
+            list = userRepository.findAll();
+        } else {
+            list = userRepository.findAllByNameContainsIgnoreCase(userName);
         }
-        return dtos;
-    }
-
-    public List<UserSearchDto> getNonSellerUsersByName(String name) {
-        List<User> list = userRepository.findAllByNameContainsIgnoreCase(name);
         List<UserSearchDto> dtos = entityToDtoListTransition(list);
 
         if (dtos.isEmpty()) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "username을 포함하는 사용자가 존재하지 않습니다.");
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
         }
         return dtos;
     }
