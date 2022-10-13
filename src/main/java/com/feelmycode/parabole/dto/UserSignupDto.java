@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.dto;
 
+import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.User;
 import lombok.Getter;
 
@@ -23,8 +24,8 @@ public class UserSignupDto {
         this.passwordConfirmation = passwordConfirmation;
     }
 
-    public User toEntity(String email, String username, String nickname, String phone, String password) {
-        return new User(email, username, nickname, phone, password);
+    public User toEntity(String email, String username, String nickname, String phone, String password, Cart cart) {
+        return new User(email, username, nickname, phone, password, cart);
     }
 
     // 입력값이 없는 필드가 있으면 blank exists True 반환

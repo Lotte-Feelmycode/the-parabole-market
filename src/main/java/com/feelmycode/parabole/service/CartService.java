@@ -13,10 +13,9 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    public Long createCart(Long userId) {
-        Cart cart = getCart(userId);
-        cartRepository.save(cart);
-        return cart.getId();
+    public Cart createCart(){
+        Cart cart =  new Cart();
+        return cartRepository.save(cart);
     }
 
     public Cart getCart(Long userId) {

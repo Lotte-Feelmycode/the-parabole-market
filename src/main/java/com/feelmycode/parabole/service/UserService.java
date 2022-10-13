@@ -1,6 +1,6 @@
 package com.feelmycode.parabole.service;
 
-
+import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
@@ -41,12 +41,10 @@ public class UserService {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "회원가입 시에 입력하신 이메일을 사용 중인 유저가 존재합니다. 다른 이메일로 가입해주세요.");
         }
 
-        User save = userRepository.save(
+        Cart cart = cartService.createCart();
+        return userRepository.save(
             dto.toEntity(dto.getEmail(), dto.getUsername(), dto.getNickname(), dto.getPhone(),
-                dto.getPassword()));
-        Long cartId = cartService.createCart(save.getId());
-        log.info("{} - 카트 생성완료: {}", save.getId(), cartId);
-        return save;
+                dto.getPassword(), cart));
     }
 
     public User signin(@NotNull UserSigninDto dto) {
@@ -76,9 +74,9 @@ public class UserService {
 
         User user = getUser(userId);
         if(user.sellerIsNull()){
-            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER");
+            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER", user.getPhone());
         }
-        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER");
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER", user.getPhone());
     }
 
     public User getUser(Long userId) {
@@ -92,7 +90,25 @@ public class UserService {
 
     public List<UserSearchDto> getAllNonSellerUsers() {
         List<User> list = userRepository.findAll();
-        System.out.println(list.size());
+        List<UserSearchDto> dtos = entityToDtoListTransition(list);
+
+        if (dtos.isEmpty()) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "USER 역할의 사용자가 존재하지 않습니다.");
+        }
+        return dtos;
+    }
+
+    public List<UserSearchDto> getNonSellerUsersByName(String name) {
+        List<User> list = userRepository.findAllByNameContainsIgnoreCase(name);
+        List<UserSearchDto> dtos = entityToDtoListTransition(list);
+
+        if (dtos.isEmpty()) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "username을 포함하는 사용자가 존재하지 않습니다.");
+        }
+        return dtos;
+    }
+
+    public List<UserSearchDto> entityToDtoListTransition(List<User> list) {
         List<UserSearchDto> dtos = new ArrayList<>();
 
         for (User u : list) {
@@ -101,10 +117,6 @@ public class UserService {
                     u.getPhone()));
             }
         }
-        if (dtos.isEmpty()) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "USER 역할의 사용자가 존재하지 않습니다.");
-        }
         return dtos;
     }
-
 }

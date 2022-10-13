@@ -1,8 +1,6 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.global.error.exception.NotSellerException;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -14,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -49,17 +48,24 @@ public class User extends BaseEntity {
     private String password;
 
     @JoinColumn(name = "seller_id")
-    @NotNull
     @OneToOne
     private Seller seller;
+
+    @JoinColumn(name = "cart_id")
+    @OneToOne
+    private Cart cart;
 
     @OneToMany(mappedBy = "user")
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-    /** Admin 에서 판매자 권한 부여 */
     public void setSeller(Seller seller) {
         seller.setUser(this);
         this.seller = seller;
+    }
+
+    public void setCart(Cart cart) {
+        cart.setUser(this);
+        this.cart = cart;
     }
 
     public Seller getSeller() {
@@ -77,11 +83,12 @@ public class User extends BaseEntity {
     }
 
     public User(String email, String name,
-        String nickname, String phone, String password) {
+        String nickname, String phone, String password, Cart cart) {
         this.email = email;
         this.name = name;
         this.nickname = nickname;
         this.phone = phone;
         this.password = password;
+        setCart(cart);
     }
 }
