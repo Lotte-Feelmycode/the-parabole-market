@@ -15,6 +15,9 @@ ERR_LOG_FILE=$LOG_PATH/$PROJECT_NAME_ERROR_$TODAY.log
 
 echo "> Start run.sh for $PROJECT_NAME : $TODAY" >> $LOG_FILE
 
+echo "> Change file name" >> $LOG_FILE
+mv '$DEPLOY_JAR' $DEPLOY_JAR
+
 echo "> Delete log link file" >> $LOG_FILE
 rm $LINK_LOG_FILE
 ln -s $LOG_FILE $LINK_LOG_FILE
