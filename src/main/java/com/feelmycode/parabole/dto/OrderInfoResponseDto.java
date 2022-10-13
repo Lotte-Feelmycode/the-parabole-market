@@ -15,14 +15,14 @@ public class OrderInfoResponseDto {
     private String userEmail;
     private Long productId;
     private String productName;
-    private int productCnt;
+    private Integer productCnt;
     private Long productRemain;
     private Long productPrice;
     private Long productDiscountPrice;
     private String productThumbnailImg;
 
     public OrderInfoResponseDto(Long id, String state, String payState, Long userId, String userEmail, Long productId, String productName,
-        int productCnt, Long productPrice, Long productDiscountPrice) {
+        Integer productCnt, Long productPrice, Long productDiscountPrice) {
         this.id = id;
         this.state = state;
         this.payState = payState;

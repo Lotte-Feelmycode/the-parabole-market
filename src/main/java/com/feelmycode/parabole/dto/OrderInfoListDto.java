@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class OrderInfoListDto {
 
     private Long userId;
-    private Integer state;
+    private String state;
     private Integer payState;
     private Long productId;
     private String productName;
