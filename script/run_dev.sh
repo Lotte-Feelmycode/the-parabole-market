@@ -5,7 +5,7 @@ PROJECT_NAME="The Parabole"
 TODAY=$(date +"%Y%m%d")
 
 DEPLOY_PATH=/home/ubuntu
-DEPLOY_JAR=parabole-0.0.1-SNAPSHOT.jar
+DEPLOY_JAR=parabole_be-01-dev-0.0.1-SNAPSHOT.jar
 DEPLOY_FILE=$DEPLOY_PATH/$DEPLOY_JAR
 
 LOG_PATH=$DEPLOY_PATH/log
@@ -14,6 +14,9 @@ LOG_FILE=$LOG_PATH/$PROJECT_NAME_$TODAY.log
 ERR_LOG_FILE=$LOG_PATH/$PROJECT_NAME_ERROR_$TODAY.log
 
 echo "> Start run.sh for $PROJECT_NAME : $TODAY" >> $LOG_FILE
+
+echo "> Change file name" >> $LOG_FILE
+mv '$DEPLOY_JAR' $DEPLOY_JAR
 
 echo "> Delete log link file" >> $LOG_FILE
 rm $LINK_LOG_FILE
