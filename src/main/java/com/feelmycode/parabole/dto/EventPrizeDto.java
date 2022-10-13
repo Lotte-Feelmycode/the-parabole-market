@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class EventPrizeDto {
+
     private Long eventPrizeId;
     private String prizeType;
     private Integer stock;
@@ -21,23 +22,23 @@ public class EventPrizeDto {
     private Integer couponDiscountRate;
     private LocalDateTime expiresAt;
 
-    public EventPrizeDto(EventPrize eventPrize){
+    public EventPrizeDto(EventPrize eventPrize) {
         Product product = eventPrize.getProduct();
-        this.eventPrizeId=eventPrize.getId();
-        this.prizeType=eventPrize.getPrizeType();
-        if(this.prizeType.equals("COUPON")){
-            Coupon coupon=eventPrize.getCoupon();
-            couponId=coupon.getId();
-            couponDetail=coupon.getDetail();
-            couponDiscountRate=coupon.getDiscountRate();
-            this.stock=eventPrize.getStock();
-            this.expiresAt=coupon.getExpiresAt();
-        }
-        else if(this.prizeType.equals("PRODUCT")){
+        this.eventPrizeId = eventPrize.getId();
+        this.prizeType = eventPrize.getPrizeType();
+        if (this.prizeType.equals("COUPON")) {
+            Coupon coupon = eventPrize.getCoupon();
+            couponId = coupon.getId();
+            couponDetail = coupon.getDetail();
+            couponDiscountRate = coupon.getDiscountRate();
+            this.stock = eventPrize.getStock();
+            this.expiresAt = coupon.getExpiresAt();
+        } else if (this.prizeType.equals("PRODUCT")) {
             this.productId = product.getId();
             this.stock = eventPrize.getStock();
             this.productName = product.getName();
-            this.productImg=product.getThumbnailImg();
+            this.productImg = product.getThumbnailImg();
         }
     }
+
 }

@@ -16,4 +16,5 @@ public class RequestEventApplyCheckDto {
         this.eventId=eventId;
         this.userId=userId;
     }
+
 }

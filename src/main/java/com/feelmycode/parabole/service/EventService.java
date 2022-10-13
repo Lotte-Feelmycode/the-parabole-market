@@ -132,7 +132,7 @@ public class EventService {
     @Transactional
     public void cancelEvent(Long eventId) {
         Event event = eventRepository.findById(eventId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "이벤트 아이디가 없습니다."));
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 이벤트가 존재하지 않습니다."));
         try {
             event.cancel();
             eventRepository.save(event);

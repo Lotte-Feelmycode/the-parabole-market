@@ -35,14 +35,16 @@ public class EventParticipantService {
 
         eventParticipantRepository.save(eventApply);
     }
-    public boolean eventApplyCheck(RequestEventApplyCheckDto dto){
+
+    public boolean eventApplyCheck(RequestEventApplyCheckDto dto) {
         EventParticipant eventParticipant = eventParticipantRepository.findByUserIdAndEventId(
             dto.getUserId(), dto.getEventId());
-        if(eventParticipant!=null){
+        if (eventParticipant != null) {
             return false;
         }
         return true;
     }
+
     private void applyCheck(EventApplyDto eventApplyDto) {
         EventParticipant eventParticipant = eventParticipantRepository.findByUserIdAndEventId(
             eventApplyDto.getUserId(), eventApplyDto.getEventId());

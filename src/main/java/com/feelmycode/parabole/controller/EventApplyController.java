@@ -27,10 +27,12 @@ public class EventApplyController {
     }
 
     @PostMapping("/participant/check")
-    public ResponseEntity<ParaboleResponse> eventApplyCheck(@RequestBody RequestEventApplyCheckDto dto){
-        if(!eventParticipantService.eventApplyCheck(dto)){
-            return ParaboleResponse.CommonResponse(HttpStatus.ALREADY_REPORTED, true,dto.getEventId()+"번 이벤트에 이미 응모하였습니다",false);
+    public ResponseEntity<ParaboleResponse> eventApplyCheck(@RequestBody RequestEventApplyCheckDto dto) {
+        if (!eventParticipantService.eventApplyCheck(dto)) {
+            return ParaboleResponse.CommonResponse(HttpStatus.ALREADY_REPORTED, true,
+                dto.getEventId() + "번 이벤트에 이미 응모하였습니다", false);
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,dto.getEventId()+"번 이벤트에 응모한적이 없습니다",true);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
+            dto.getEventId() + "번 이벤트에 응모한적이 없습니다", true);
     }
 }

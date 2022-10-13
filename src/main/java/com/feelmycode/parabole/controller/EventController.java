@@ -26,7 +26,8 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createEvent(@RequestBody @Valid EventCreateRequestDto eventDto) {
+    public ResponseEntity<ParaboleResponse> createEvent(
+        @RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
         try {
             eventId = eventService.createEvent(eventDto);
@@ -40,22 +41,19 @@ public class EventController {
     @GetMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> getEvent(@PathVariable("eventId") Long eventId) {
         EventListResponseDto response = eventService.getEventByEventId(eventId);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId + "번 이벤트 조회 성공",
-            response);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId + "번 이벤트 조회 성공", response);
     }
 
     // TODO: 조회조건+정렬조건 추가
     @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
-        List<EventListResponseDto> response = eventService.getEventListResponseDto(
-            eventService.getEventsAllNotDeleted());
+        List<EventListResponseDto> response = eventService.getEventListResponseDto(eventService.getEventsAllNotDeleted());
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
     @GetMapping("/seller/{userId}")
     public ResponseEntity<ParaboleResponse> getEventByUserId(@PathVariable("userId") Long userId) {
-        List<EventListResponseDto> response = eventService.getEventListResponseDto(
-            eventService.getEventsBySellerId(userId));
+        List<EventListResponseDto> response = eventService.getEventListResponseDto(eventService.getEventsBySellerId(userId));
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
