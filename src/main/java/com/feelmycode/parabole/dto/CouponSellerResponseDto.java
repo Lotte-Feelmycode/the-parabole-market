@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponSellerResponseDto {
 
+        private Long couponId;
         private String name;
         private Integer type;
         private Integer discountValue;
@@ -22,6 +23,7 @@ public class CouponSellerResponseDto {
         private Integer cnt;
 
         public CouponSellerResponseDto(Coupon coupon) {
+                this.couponId = coupon.getId();
                 this.name = coupon.getName();
                 this.type = coupon.getType().getValue();
                 this.discountValue = coupon.getDiscountValue();
