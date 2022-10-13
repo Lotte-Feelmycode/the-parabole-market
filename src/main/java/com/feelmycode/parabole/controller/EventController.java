@@ -2,6 +2,8 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
+import com.feelmycode.parabole.dto.EventSearchRequestDto;
+import com.feelmycode.parabole.dto.EventSearchResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.EventService;
@@ -49,6 +51,12 @@ public class EventController {
     public ResponseEntity<ParaboleResponse> getEvent() {
         List<EventListResponseDto> response = eventService.getEventListResponseDto(eventService.getEventsAllNotDeleted());
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<ParaboleResponse> getEventList(@RequestBody EventSearchRequestDto eventSearchRequestDto) {
+        List<EventSearchResponseDto> response = eventService.getEventsSearch(eventSearchRequestDto);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 검색 리스트 조회 성공", response);
     }
 
     @GetMapping("/seller/{userId}")
