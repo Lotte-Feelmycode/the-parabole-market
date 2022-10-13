@@ -20,19 +20,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OrderService {
 
+    private static final Long DELIVERY_FEE = 3000L;
     private final OrderRepository orderRepository;
+    private final UserService userService;
 
     @Transactional
-    public Long createOrder(Order order) {
+    public Order createOrder(Order order) {
         Order getOrder = orderRepository.save(order);
-        return getOrder.getId();
+        return getOrder;
     }
 
     public Order getOrder(Long userId) {
         Order getOrder = null;
         getOrder = this.getOrderByUserId(userId);
         if(getOrder == null) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문을 찾을 수 없습니다");
+            createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
         }
         return getOrder;
     }

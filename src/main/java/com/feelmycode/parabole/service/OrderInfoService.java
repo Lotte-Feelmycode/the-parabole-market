@@ -3,9 +3,8 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.UserCoupon;
-import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
+import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.enumtype.OrderState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
@@ -23,21 +22,22 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OrderInfoService {
 
+    private static final Long DELIVERY_FEE = 3000L;
     private final OrderInfoRepository orderInfoRepository;
     private final OrderService orderService;
+    private final UserService userService;
     private final ProductService productService;
 
     @Transactional
-    public void saveOrderInfo(OrderInfoListDto orderInfoListDto) {
-        Order order = orderService.getOrder(orderInfoListDto.getUserId());
+    public void saveOrderInfo(Long userId, OrderInfoSimpleDto orderInfoDto) {
+        Order order = orderService.getOrder(userId);
+        if(order == null) {
+            log.info("Order is null");
+            order = orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
+        }
         log.info("Save Order Info. order: {}", order.toString());
-        OrderInfo orderInfo = new OrderInfo(order, new UserCoupon(),
-            OrderState.returnValueByName(orderInfoListDto.getState()),
-            orderInfoListDto.getPayState(),
-            orderInfoListDto.getProductId(), orderInfoListDto.getProductName(),
-            orderInfoListDto.getProductCnt(), orderInfoListDto.getProductPrice(),
-            orderInfoListDto.getProductDiscountPrice(), orderInfoListDto.getSellerId(),
-            orderInfoListDto.getSellerStoreName());
+        OrderInfo orderInfo = new OrderInfo(order, "KAKAO_PAY", orderInfoDto.getProductId(), orderInfoDto.getProductName(), orderInfoDto.getProductCnt(), orderInfoDto.getProductPrice());
+        orderInfo.setState(1);
         orderInfoRepository.save(orderInfo);
     }
 
