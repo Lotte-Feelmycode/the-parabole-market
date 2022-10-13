@@ -34,12 +34,10 @@ public class EventPrize {
 
     @ManyToOne
     @JoinColumn(name = "coupon_id")
-    @JsonBackReference
     private Coupon coupon;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonBackReference
     private Product product;
 
     public void setEvent(Event event) {

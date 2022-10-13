@@ -39,20 +39,23 @@ public class EventController {
     // TODO: 셀러 스토어 정보 리턴값 추가
     @GetMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> getEvent(@PathVariable("eventId") Long eventId) {
-        EventListResponseDto response = EventListResponseDto.of(eventService.getEventByEventId(eventId));
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId+"번 이벤트 조회 성공", response);
+        EventListResponseDto response = eventService.getEventByEventId(eventId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId + "번 이벤트 조회 성공",
+            response);
     }
 
     // TODO: 조회조건+정렬조건 추가
     @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
-        List<EventListResponseDto> response = eventService.getEventListResponseDto(eventService.getEventsAllNotDeleted());
+        List<EventListResponseDto> response = eventService.getEventListResponseDto(
+            eventService.getEventsAllNotDeleted());
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
     @GetMapping("/seller/{userId}")
     public ResponseEntity<ParaboleResponse> getEventByUserId(@PathVariable("userId") Long userId) {
-        List<EventListResponseDto> response = eventService.getEventListResponseDto(eventService.getEventsBySellerId(userId));
+        List<EventListResponseDto> response = eventService.getEventListResponseDto(
+            eventService.getEventsBySellerId(userId));
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
