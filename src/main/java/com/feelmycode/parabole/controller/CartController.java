@@ -1,10 +1,13 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
+import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
-import com.feelmycode.parabole.dto.CartItemRequestDto;
+import com.feelmycode.parabole.dto.CartItemGetResponseDto;
+import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CartItemService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +29,8 @@ public class CartController {
 
     @GetMapping(value = "/list")
     public ResponseEntity<ParaboleResponse> cartList(@RequestParam Long userId) {
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 리스트", cartItemService.cartItemList(userId));
+        CartItemGetResponseDto response = cartItemService.getCartItemList(userId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 리스트", response);
     }
 
     @PostMapping(value = "/product/add")
@@ -37,15 +41,15 @@ public class CartController {
 
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ParaboleResponse> deleteProductInCart(
-        @RequestBody CartItemRequestDto cartItemRequestDto) {
-        cartItemService.cartListDelete(cartItemRequestDto);
+        @RequestBody CartItemDeleteRequestDto dto) {
+        cartItemService.cartListDelete(dto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 상품 삭제");
 
     }
 
     @PatchMapping(value = "/update/cnt")
-    public ResponseEntity<ParaboleResponse> updateProductCnt(@RequestBody CartItemDto cartItemDto) {
-        cartItemService.updateItem(cartItemDto);
+    public ResponseEntity<ParaboleResponse> updateProductCnt(@RequestBody CartItemUpdateRequestDto dto) {
+        cartItemService.updateItem(dto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품수량 수정");
     }
 }
