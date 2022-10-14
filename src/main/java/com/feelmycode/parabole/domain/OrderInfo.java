@@ -36,11 +36,11 @@ public class OrderInfo extends BaseEntity {
 
     // 배송의 상태
     @Column(name = "order_info_state")
-    private Integer state;
+    private OrderState state;
 
     // 주문방식
     @Column(name = "order_info_pay_state")
-    private Integer payState;
+    private OrderPayState payState;
 
     @NotNull
     @Column(name = "product_id")
