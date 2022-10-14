@@ -38,11 +38,11 @@ public class OrderInfoService {
         }
         log.info("Save Order Info. order: {}", order.toString());
         OrderInfo orderInfo = new OrderInfo(order,
-                                    "KAKAO_PAY",
-                                            orderInfoDto.getProductId(),
-                                            orderInfoDto.getProductName(),
-                                            orderInfoDto.getProductCnt(),
-                                            orderInfoDto.getProductPrice());
+            "KAKAO_PAY",
+            orderInfoDto.getProductId(),
+            orderInfoDto.getProductName(),
+            orderInfoDto.getProductCnt(),
+            orderInfoDto.getProductPrice());
         orderInfo.setState(1);
         orderInfoRepository.save(orderInfo);
     }
