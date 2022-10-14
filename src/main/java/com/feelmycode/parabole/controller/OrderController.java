@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private static final Long DELIVERY_FEE = 3000L;
+    private static final Long DELIVERY_FEE = 0L;
+
     private final OrderService orderService;
     private final UserService userService;
 

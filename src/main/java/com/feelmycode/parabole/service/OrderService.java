@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OrderService {
 
-    private static final Long DELIVERY_FEE = 3000L;
+    private static final Long DELIVERY_FEE = 0L;
+
     private final OrderRepository orderRepository;
     private final UserService userService;
 

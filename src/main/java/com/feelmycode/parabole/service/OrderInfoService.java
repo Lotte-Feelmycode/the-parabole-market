@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OrderInfoService {
 
-    private static final Long DELIVERY_FEE = 3000L;
+    private static final Long DELIVERY_FEE = 0L;
+
     private final OrderInfoRepository orderInfoRepository;
     private final OrderService orderService;
     private final UserService userService;
@@ -36,7 +37,12 @@ public class OrderInfoService {
             order = orderService.createOrder(new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
         }
         log.info("Save Order Info. order: {}", order.toString());
-        OrderInfo orderInfo = new OrderInfo(order, "KAKAO_PAY", orderInfoDto.getProductId(), orderInfoDto.getProductName(), orderInfoDto.getProductCnt(), orderInfoDto.getProductPrice());
+        OrderInfo orderInfo = new OrderInfo(order,
+                                    "KAKAO_PAY",
+                                            orderInfoDto.getProductId(),
+                                            orderInfoDto.getProductName(),
+                                            orderInfoDto.getProductCnt(),
+                                            orderInfoDto.getProductPrice());
         orderInfo.setState(1);
         orderInfoRepository.save(orderInfo);
     }
