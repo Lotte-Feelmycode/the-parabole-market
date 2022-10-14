@@ -55,7 +55,6 @@ public class ProductService {
         return new ProductDetailListResponseDto(new ProductDto(getProduct), productDetailList, getProduct.getSeller().getStoreName());
     }
 
-    @Transactional(readOnly = true)
     public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
         if(!storeName.equals("")) {

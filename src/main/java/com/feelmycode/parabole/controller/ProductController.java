@@ -94,5 +94,12 @@ public class ProductController {
         ProductDetailListResponseDto response = productService.getProductDetail(productId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", response);
     }
-    
+
+    @GetMapping("/seller/list")
+    public ResponseEntity<ParaboleResponse> getProductBySellerId(@RequestParam Long userId, @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+        log.info("Get Product By Seller Id : {} ", userId);
+        Page<ProductDto> response = productService.getProductList(userId, "", "", "", pageable);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);
+    }
+
 }
