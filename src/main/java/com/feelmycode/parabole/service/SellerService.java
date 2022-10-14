@@ -48,7 +48,8 @@ public class SellerService {
     }
 
     public SellerDto getSellerBySellerId(@NotNull Long sellerId) {
-        Seller seller = sellerRepository.findBySellerId(sellerId);
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(()
+            -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 판매자 Id로 조회되는 판매자가 존재하지 않습니다."));
         return new SellerDto(seller);
     }
 

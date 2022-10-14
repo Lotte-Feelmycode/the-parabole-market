@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartRepository;
+import com.feelmycode.parabole.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     public Long createCart(Long userId) {
         checkNoCart(userId);
-        User user = userService.getUser(userId);
+        User user = userRepository.findById(userId).orElseThrow(() ->
+            new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
         Cart cart = new Cart(user);
         Cart save = cartRepository.save(cart);
         return save.getId();
