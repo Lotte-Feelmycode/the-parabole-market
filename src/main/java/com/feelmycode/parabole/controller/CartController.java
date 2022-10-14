@@ -2,12 +2,10 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
-import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemGetResponseDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CartItemService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

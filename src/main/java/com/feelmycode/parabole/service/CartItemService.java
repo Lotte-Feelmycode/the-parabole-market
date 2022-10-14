@@ -13,7 +13,6 @@ import com.feelmycode.parabole.repository.CartItemRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
