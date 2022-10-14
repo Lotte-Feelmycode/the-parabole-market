@@ -134,8 +134,9 @@ public class EventService {
         } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventTitle())) {
             eventList = eventRepository.findAllByTitleContainingAndIsDeleted(eventSearchRequestDto.getEventTitle(), false);
         } else if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
-            eventList = eventSearchRequestDto.getDateDiv() < 1 ?
-                eventRepository.findAllByStartAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false) : eventRepository.findAllByEndAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false);
+            eventList = eventSearchRequestDto.getDateDiv() < 1 
+            ? eventRepository.findAllByStartAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false) 
+            : eventRepository.findAllByEndAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false);
         } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventStatus())) {
             eventList = eventRepository.findAllByStatusAndIsDeleted(eventSearchRequestDto.getEventStatus().getValue(), false);
         }
