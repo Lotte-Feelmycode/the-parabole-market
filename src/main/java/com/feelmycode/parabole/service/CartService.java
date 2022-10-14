@@ -21,8 +21,8 @@ public class CartService {
 
     public Cart getCart(Long userId) {
         Cart cart = cartRepository.findByUserId(userId);
-        if (cart == null) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니가 없습니다.");
+        if (cart != null) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니가 이미 있습니다.");
         } else {
             return cart;
         }
