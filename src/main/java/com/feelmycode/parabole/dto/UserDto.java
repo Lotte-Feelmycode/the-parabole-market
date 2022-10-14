@@ -11,7 +11,6 @@ public class UserDto {
     private String name;
     private String nickname;
     private String phone;
-    private String password;
 
     public UserDto(User user) {
         id = user.getId();
@@ -19,6 +18,5 @@ public class UserDto {
         name = user.getName();
         nickname = user.getNickname();
         phone = user.getPhone();
-        password = user.getPassword();
     }
 }

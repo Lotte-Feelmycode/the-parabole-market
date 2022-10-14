@@ -4,7 +4,9 @@ import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventParticipant;
 import com.feelmycode.parabole.domain.User;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
+@Getter
 public class EventParticipantDto {
 
     private Long id;
@@ -17,12 +19,4 @@ public class EventParticipantDto {
         eventTimeStartAt = eventParticipant.getEventTimeStartAt();
     }
 
-    @Override
-    public String toString() {
-        return "EventParticipantDto{" +
-            "id=" + id +
-            ", user=" + user.getName() +
-            ", eventTimeStartAt=" + eventTimeStartAt +
-            '}';
-    }
 }
