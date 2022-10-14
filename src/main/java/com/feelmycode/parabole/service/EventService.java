@@ -8,11 +8,16 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.dto.EventSearchRequestDto;
+import com.feelmycode.parabole.dto.EventSearchResponseDto;
+import com.feelmycode.parabole.enumtype.EventStatus;
+import com.feelmycode.parabole.enumtype.EventType;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -53,7 +59,7 @@ public class EventService {
 
     public List<EventListResponseDto> getEventListResponseDto(List<Event> eventEntities) {
         return eventEntities.stream()
-            .map(EventListResponseDto::of)
+            .map(EventListResponseDto::new)
             .collect(Collectors.toList());
     }
 
@@ -103,9 +109,10 @@ public class EventService {
     /**
      * 이벤트 ID로 단건 조회
      */
-    public Event getEventByEventId(Long eventId) {
-        return eventRepository.findById(eventId)
+    public EventListResponseDto getEventByEventId(Long eventId) {
+        Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 이벤트가 없습니다"));
+        return new EventListResponseDto(event);
     }
 
     /**
@@ -114,6 +121,29 @@ public class EventService {
     public List<Event> getEventsBySellerId(Long userId) {
         Seller seller = sellerService.getSellerByUserId(userId);
         return eventRepository.findAllBySellerAndIsDeleted(seller, false);
+    }
+
+    /**
+     * 검색 조건으로 이벤트 목록 조회 (경품 목록 제외)
+     */
+    public List<EventSearchResponseDto> getEventsSearch(EventSearchRequestDto eventSearchRequestDto) {
+
+        List<Event> eventList = null;
+        if(!StringUtils.isEmpty(eventSearchRequestDto.getEventType())) {
+            eventList = eventRepository.findAllByTypeAndIsDeleted(eventSearchRequestDto.getEventType().getCode(), false);
+        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventTitle())) {
+            eventList = eventRepository.findAllByTitleContainingAndIsDeleted(eventSearchRequestDto.getEventTitle(), false);
+        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
+            eventList = eventSearchRequestDto.getDateDiv() < 1 
+            ? eventRepository.findAllByStartAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false) 
+            : eventRepository.findAllByEndAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false);
+        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventStatus())) {
+            eventList = eventRepository.findAllByStatusAndIsDeleted(eventSearchRequestDto.getEventStatus().getValue(), false);
+        }
+
+        return eventList.stream()
+            .map(EventSearchResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -130,7 +160,8 @@ public class EventService {
      */
     @Transactional
     public void cancelEvent(Long eventId) {
-        Event event = getEventByEventId(eventId);
+        Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 이벤트가 존재하지 않습니다."));
         try {
             event.cancel();
             eventRepository.save(event);

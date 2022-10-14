@@ -5,12 +5,16 @@ import com.feelmycode.parabole.domain.EventParticipant;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.EventApplyDto;
+import com.feelmycode.parabole.dto.EventParticipantDto;
+import com.feelmycode.parabole.dto.RequestEventApplyCheckDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.EventParticipantRepository;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,23 @@ public class EventParticipantService {
             LocalDateTime.now());
 
         eventParticipantRepository.save(eventApply);
+    }
+
+    public boolean eventApplyCheck(RequestEventApplyCheckDto dto) {
+        EventParticipant eventParticipant = eventParticipantRepository.findByUserIdAndEventId(
+            dto.getUserId(), dto.getEventId());
+        if (eventParticipant != null) {
+            return false;
+        }
+        return true;
+    }
+
+    public List<EventParticipantDto> getEventParticipants(Long eventId) {
+        List<EventParticipant> eventParticipantList = eventParticipantRepository.findAllByEventId(eventId);
+
+        return eventParticipantList.stream()
+            .map(EventParticipantDto::new)
+            .collect(Collectors.toList());
     }
 
     private void applyCheck(EventApplyDto eventApplyDto) {

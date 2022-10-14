@@ -12,8 +12,7 @@ public class CouponSellerResponseDto {
 
         private String name;
         private Integer type;
-        private Integer discountRate;
-        private Long discountAmount;
+        private Integer discountValue;
         private LocalDateTime createdAt;
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
@@ -25,8 +24,7 @@ public class CouponSellerResponseDto {
         public CouponSellerResponseDto(Coupon coupon) {
                 this.name = coupon.getName();
                 this.type = coupon.getType().getValue();
-                this.discountRate = coupon.getDiscountRate();
-                this.discountAmount = coupon.getDiscountAmount();
+                this.discountValue = coupon.getDiscountValue();
                 this.createdAt = coupon.getCreatedAt();
                 this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
