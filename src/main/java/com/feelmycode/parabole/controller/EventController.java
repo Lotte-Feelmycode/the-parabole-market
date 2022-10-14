@@ -26,7 +26,8 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createEvent(@RequestBody @Valid EventCreateRequestDto eventDto) {
+    public ResponseEntity<ParaboleResponse> createEvent(
+        @RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
         try {
             eventId = eventService.createEvent(eventDto);
@@ -39,8 +40,8 @@ public class EventController {
     // TODO: 셀러 스토어 정보 리턴값 추가
     @GetMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> getEvent(@PathVariable("eventId") Long eventId) {
-        EventListResponseDto response = EventListResponseDto.of(eventService.getEventByEventId(eventId));
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId+"번 이벤트 조회 성공", response);
+        EventListResponseDto response = eventService.getEventByEventId(eventId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, eventId + "번 이벤트 조회 성공", response);
     }
 
     // TODO: 조회조건+정렬조건 추가

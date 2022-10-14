@@ -53,7 +53,7 @@ public class EventService {
 
     public List<EventListResponseDto> getEventListResponseDto(List<Event> eventEntities) {
         return eventEntities.stream()
-            .map(EventListResponseDto::of)
+            .map(EventListResponseDto::new)
             .collect(Collectors.toList());
     }
 
@@ -103,9 +103,10 @@ public class EventService {
     /**
      * 이벤트 ID로 단건 조회
      */
-    public Event getEventByEventId(Long eventId) {
-        return eventRepository.findById(eventId)
+    public EventListResponseDto getEventByEventId(Long eventId) {
+        Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 ID의 이벤트가 없습니다"));
+        return new EventListResponseDto(event);
     }
 
     /**
@@ -130,7 +131,8 @@ public class EventService {
      */
     @Transactional
     public void cancelEvent(Long eventId) {
-        Event event = getEventByEventId(eventId);
+        Event event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 이벤트가 존재하지 않습니다."));
         try {
             event.cancel();
             eventRepository.save(event);
