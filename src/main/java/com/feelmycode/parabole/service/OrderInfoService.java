@@ -29,11 +29,11 @@ public class OrderInfoService {
     private final ProductService productService;
 
     @Transactional
-    public void saveOrderInfo(Long userId, OrderInfoSimpleDto orderInfoDto) {
-        Order order = orderService.getOrder(userId);
+    public void saveOrderInfo(OrderInfoSimpleDto orderInfoDto) {
+        Order order = orderService.getOrder(orderInfoDto.getUserId());
         if(order == null) {
             log.info("Order is null");
-            order = orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
+            order = orderService.createOrder(new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
         }
         log.info("Save Order Info. order: {}", order.toString());
         OrderInfo orderInfo = new OrderInfo(order, "KAKAO_PAY", orderInfoDto.getProductId(), orderInfoDto.getProductName(), orderInfoDto.getProductCnt(), orderInfoDto.getProductPrice());

@@ -30,10 +30,10 @@ public class OrderInfoController {
 
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestParam Long userId, @RequestBody OrderInfoListDto orderInfoDto) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
         try {
             for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
-                orderInfoService.saveOrderInfo(userId, orderInfo);
+                orderInfoService.saveOrderInfo(orderInfo);
                 log.info("ORDER INFO: {}", orderInfo.toString());
             }
         } catch (Exception e) {
