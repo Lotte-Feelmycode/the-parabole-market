@@ -2,6 +2,7 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.dto.SellerRegisterDto;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SellerService {
 
     private final UserRepository userRepository;
@@ -33,18 +35,21 @@ public class SellerService {
         return sellerRepository.save(seller);
     }
 
-    @Transactional(readOnly = true)
     public Seller getSellerByUserId(@NotNull Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
     }
 
-    @Transactional(readOnly = true)
     public Seller getSellerByStoreName(@NotNull String storeName) {
         Seller seller = sellerRepository.findByStoreName(storeName);
         if (seller == null) {
             throw new ParaboleException(HttpStatus.NOT_FOUND, "해당 스토어를 가지는 판매자가 존재하지 않습니다.");
         }
         return seller;
+    }
+
+    public SellerDto getSellerBySellerId(@NotNull Long sellerId) {
+        Seller seller = sellerRepository.findBySellerId(sellerId);
+        return new SellerDto(seller);
     }
 
 }
