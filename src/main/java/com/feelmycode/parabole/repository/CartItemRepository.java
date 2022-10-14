@@ -10,14 +10,11 @@ import org.springframework.data.jpa.repository.Modifying;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findAllByCartId(Long cartId);
-
     Optional<CartItem> findById(Long cartItemId);
-
     Optional<CartItem> findByCartIdAndProductId(Long cartId, Long productId);
+    Long countByCartId(Long cartId);
 
     @Modifying
     void deleteAllByIdIn(List<Long> cartItemId);
-
-    Long countByCartId(Long cartId);
 
 }
