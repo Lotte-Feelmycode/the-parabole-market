@@ -98,23 +98,18 @@ public class UserService {
         } else {
             list = userRepository.findAllByNameContainsIgnoreCase(userName);
         }
-        List<UserSearchDto> dtos = entityToDtoListTransition(list);
 
-        if (dtos.isEmpty()) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
-        }
-        return dtos;
-    }
-
-    public List<UserSearchDto> entityToDtoListTransition(List<User> list) {
         List<UserSearchDto> dtos = new ArrayList<>();
-
         for (User u : list) {
             if (u.sellerIsNull()) {
                 dtos.add(new UserSearchDto(u.getId(), u.getName(), u.getEmail(),
                     u.getPhone()));
             }
         }
+        if (dtos.isEmpty()) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
+        }
         return dtos;
     }
+
 }
