@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CartItemRequestDto {
+public class CartItemDeleteRequestDto {
 
     @NotNull
     private Long userId;
@@ -15,7 +15,7 @@ public class CartItemRequestDto {
     @NotNull
     private List<Long> cartItemId;
 
-    public CartItemRequestDto(Long userId, List<Long> cartItemId) {
+    public CartItemDeleteRequestDto(Long userId, List<Long> cartItemId) {
         this.userId = userId;
         this.cartItemId = cartItemId;
     }
