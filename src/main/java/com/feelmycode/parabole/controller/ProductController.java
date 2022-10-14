@@ -31,9 +31,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class ProductController {
 
+    private final static int DEFAULT_SIZE = 20;
     private final ProductService productService;
     private final ProductDetailService productDetailService;
-    private final static int DEFAULT_SIZE = 20;
 
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
