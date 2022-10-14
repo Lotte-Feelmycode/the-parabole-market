@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.dto.SellerInfoResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.SellerService;
@@ -37,6 +38,12 @@ public class SellerController {
             true, "셀러 정보 출력 성공",
             new SellerInfoResponseDto(seller.getUser().getId(), seller.getStoreName(),
                 seller.getRegistrationNo()));
+    }
+
+    @GetMapping
+    public ResponseEntity<ParaboleResponse> getSeller(@RequestParam Long sellerId) {
+        SellerDto dto = sellerService.getSellerBySellerId(sellerId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자 정보", dto);
     }
 
 }

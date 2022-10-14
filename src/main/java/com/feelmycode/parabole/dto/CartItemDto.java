@@ -1,37 +1,24 @@
 package com.feelmycode.parabole.dto;
 
-import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
-import javax.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class CartItemDto {
+    private final Long cartItemId;
+    private final ProductDto product;
+    private final Integer count;
 
-    @NotNull
-    private Long cartItemId;
-
-    @NotNull
-    private Long userId;
-
-    @NotNull
-    private Long productId;
-
-    @NotNull
-    private Integer cnt;
-
-    public CartItemDto(Long cartItemId, Long productId, Long userId, Integer cnt) {
+    public CartItemDto(Long cartItemId, Product product, Integer count) {
         this.cartItemId = cartItemId;
-        this.productId = productId;
-        this.userId = userId;
-        this.cnt = cnt;
+        this.product = new ProductDto(product);
+        this.count = count;
     }
 
-    public CartItem toEntity(Cart cart, Product product, Integer cnt) {
-        return new CartItem(cart, product, cnt);
+    public CartItemDto(CartItem cartItem) {
+        this.cartItemId = cartItem.getId();
+        this.product = new ProductDto(cartItem.getProduct());
+        this.count = cartItem.getCnt();
     }
-
 }
