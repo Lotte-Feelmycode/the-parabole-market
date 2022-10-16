@@ -30,7 +30,7 @@ public class EventPrizeDto {
             Coupon coupon = eventPrize.getCoupon();
             couponId = coupon.getId();
             couponDetail = coupon.getDetail();
-            couponDiscountRate = coupon.getDiscountRate();
+            couponDiscountRate = coupon.getDiscountValue();
             this.stock = eventPrize.getStock();
             this.expiresAt = coupon.getExpiresAt();
         } else if (this.prizeType.equals("PRODUCT")) {
