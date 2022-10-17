@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.service;
 
-
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
@@ -15,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,9 +76,9 @@ public class UserService {
 
         User user = getUser(userId);
         if(user.sellerIsNull()){
-            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER");
+            return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "USER", user.getPhone());
         }
-        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER");
+        return new UserInfoResponseDto(user.getEmail(), user.getName(), user.getNickname(), "SELLER", user.getPhone());
     }
 
     public User getUser(Long userId) {
@@ -90,11 +90,16 @@ public class UserService {
         user.setSeller(seller);
     }
 
-    public List<UserSearchDto> getAllNonSellerUsers() {
-        List<User> list = userRepository.findAll();
-        System.out.println(list.size());
-        List<UserSearchDto> dtos = new ArrayList<>();
+    public List<UserSearchDto> getNonSellerUsers(String userName) {
 
+        List<User> list;
+        if (userName.equals("")) {
+            list = userRepository.findAll();
+        } else {
+            list = userRepository.findAllByNameContainsIgnoreCase(userName);
+        }
+
+        List<UserSearchDto> dtos = new ArrayList<>();
         for (User u : list) {
             if (u.sellerIsNull()) {
                 dtos.add(new UserSearchDto(u.getId(), u.getName(), u.getEmail(),
@@ -102,7 +107,7 @@ public class UserService {
             }
         }
         if (dtos.isEmpty()) {
-            throw new ParaboleException(HttpStatus.NOT_FOUND, "USER 역할의 사용자가 존재하지 않습니다.");
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
         }
         return dtos;
     }
