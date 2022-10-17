@@ -62,10 +62,7 @@ public class OrderInfoService {
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoList(Long userId) {
         Order order = orderService.getOrder(userId);
-        log.info("ORDER: {}", order.toString());
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
-        for(OrderInfo info : getOrderInfoList)
-            log.info("ORDER INFO: {}", info.toString());
         return changeEntityToDto(getOrderInfoList);
     }
 

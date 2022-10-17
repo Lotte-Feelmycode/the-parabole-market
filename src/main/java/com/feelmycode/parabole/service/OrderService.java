@@ -40,7 +40,7 @@ public class OrderService {
     }
 
     public Order getOrderByUserId(Long userId) {
-        return orderRepository.findTopByUserIdOrderByIdDesc(userId);
+        return orderRepository.findTop1ByUserIdOrderByIdDesc(userId);
     }
 
     // TODO: 셀러 별로 상품을 가져오기

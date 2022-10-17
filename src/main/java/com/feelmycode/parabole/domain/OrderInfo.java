@@ -22,6 +22,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_infos")
 public class OrderInfo extends BaseEntity {
 
+    @Override
+    public String toString() {
+        return "OrderInfo{" +
+            "id=" + id +
+            ", order=" + order +
+            ", state=" + state +
+            ", payState=" + payState +
+            ", productId=" + productId +
+            ", productName='" + productName + '\'' +
+            ", productCnt=" + productCnt +
+            ", productPrice=" + productPrice +
+            ", productDiscountPrice=" + productDiscountPrice +
+            ", sellerId=" + sellerId +
+            ", sellerStoreName='" + sellerStoreName + '\'' +
+            '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_info_id")
@@ -36,11 +53,11 @@ public class OrderInfo extends BaseEntity {
 
     // 배송의 상태
     @Column(name = "order_info_state")
-    private OrderState state;
+    private Integer state;
 
     // 주문방식
     @Column(name = "order_info_pay_state")
-    private OrderPayState payState;
+    private Integer payState;
 
     @NotNull
     @Column(name = "product_id")
