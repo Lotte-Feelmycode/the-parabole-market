@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -126,23 +127,15 @@ public class Coupon extends BaseEntity implements Serializable {
     }
 
     public List<UserCoupon> getUsedUserCouponList() {
-        List<UserCoupon> list = new ArrayList<>();
-        for (UserCoupon uc : userCoupons) {
-            if(uc.getUseState() == CouponUseState.Used){
-                list.add(uc);
-            }
-        }
-        return list;
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.Used.equals(uc.getUseState()))
+            .collect(Collectors.toList());
     }
 
     public List<UserCoupon> getNotUsedUserCouponList() {
-        List<UserCoupon> list = new ArrayList<>();
-        for (UserCoupon uc : userCoupons) {
-            if(uc.getUseState() == CouponUseState.NotUsed){
-                list.add(uc);
-            }
-        }
-        return list;
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.NotUsed.equals(uc.getUseState()))
+            .collect(Collectors.toList());
     }
 
     public List<UserCoupon> getNotAssignedUserCouponList() {

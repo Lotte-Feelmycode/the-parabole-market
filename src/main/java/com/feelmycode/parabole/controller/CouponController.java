@@ -81,7 +81,6 @@ public class CouponController {
         }
 
         List<UserCoupon> userCouponList = coupon.getNotAssignedUserCouponList();
-        System.out.println("사용자가 배정되지 않은 쿠폰 수량 : " + userCouponList.size());
         if (userCouponList.size() < getUserIdList.size()) {
             throw new ParaboleException(HttpStatus.NOT_ACCEPTABLE, "사용자에게 배정할 쿠폰의 수량이 부족합니다.");
         } else {
