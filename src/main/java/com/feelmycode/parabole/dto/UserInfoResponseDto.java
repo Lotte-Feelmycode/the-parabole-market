@@ -10,10 +10,13 @@ public class UserInfoResponseDto {
     private String nickname;
     private String role;
 
-    public UserInfoResponseDto(String email, String username, String nickname, String role) {
+    private String phone;
+
+    public UserInfoResponseDto(String email, String username, String nickname, String role, String phone) {
         this.email = email;
         this.username = username;
         this.nickname = nickname;
         this.role = role;
+        this.phone = phone;
     }
 }

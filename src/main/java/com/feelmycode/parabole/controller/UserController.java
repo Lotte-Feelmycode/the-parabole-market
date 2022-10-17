@@ -6,12 +6,14 @@ import com.feelmycode.parabole.dto.UserSigninDto;
 import com.feelmycode.parabole.dto.UserSignupDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.service.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +52,7 @@ public class UserController {
 
     @GetMapping("/role")
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
+
         if (userService.isSeller(userId)) {
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_SELLER", userService.getSeller(userId).getId());
         }
@@ -64,10 +67,12 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ParaboleResponse> getAllNonSellerUsers() {
+    public ResponseEntity<ParaboleResponse> getNonSellerUsers(@RequestParam(required = false) String userName) {
 
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 모든 사용자 조회 성공",
-            userService.getAllNonSellerUsers());
+        String getUserName = StringUtil.controllerParamIsBlank(userName) ? "" : userName;
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 사용자 조회 성공",
+            userService.getNonSellerUsers(getUserName));
     }
 
 }
