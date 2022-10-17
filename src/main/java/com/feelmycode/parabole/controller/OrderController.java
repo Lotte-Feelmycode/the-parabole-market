@@ -3,7 +3,6 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.service.OrderInfoService;
 import com.feelmycode.parabole.service.OrderService;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private static final Long DELIVERY_FEE = 3000L;
+    private static final Long DELIVERY_FEE = 0L;
+
     private final OrderService orderService;
     private final UserService userService;
 
     @PostMapping
-
     public ResponseEntity<ParaboleResponse> createOrder(@RequestBody Long userId) {
         log.info("Create Order. userId: {}", userId);
         orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));

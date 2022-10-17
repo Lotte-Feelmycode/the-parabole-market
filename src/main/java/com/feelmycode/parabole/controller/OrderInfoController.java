@@ -2,6 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
+import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -27,14 +28,17 @@ public class OrderInfoController {
 
     private final OrderInfoService orderInfoService;
 
+    // TODO: order paging
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody List<OrderInfoListDto> orderInfoListDto) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
         try {
-            for (OrderInfoListDto orderInfo : orderInfoListDto) {
+            for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
                 orderInfoService.saveOrderInfo(orderInfo);
+                log.info("ORDER INFO: {}", orderInfo.toString());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "결제할 상품을 추가할 수 없습니다.");
         }
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "결제목록에 상품을 추가했습니다.");
@@ -51,8 +55,7 @@ public class OrderInfoController {
     @GetMapping("/seller")
     public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long sellerId) {
         log.info("Seller Id: {} ", sellerId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(
-            sellerId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(sellerId);
         for (OrderInfoResponseDto dto : orderInfoList) {
             log.info(dto.toString());
         }
