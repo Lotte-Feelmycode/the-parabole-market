@@ -2,12 +2,14 @@ package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.enumtype.CouponType;
+import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -104,5 +106,45 @@ public class Coupon extends BaseEntity implements Serializable {
         this.userCoupons.add(userCoupon);
     }
 
+    public int getUsedUserCouponCnt() {
+        int cnt = 0;
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUseState().equals(CouponUseState.Used)){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
 
+    public int getNotUsedUserCouponCnt() {
+        int cnt = 0;
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUseState().equals(CouponUseState.NotUsed)){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    public List<UserCoupon> getUsedUserCouponList() {
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.Used.equals(uc.getUseState()))
+            .collect(Collectors.toList());
+    }
+
+    public List<UserCoupon> getNotUsedUserCouponList() {
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.NotUsed.equals(uc.getUseState()))
+            .collect(Collectors.toList());
+    }
+
+    public List<UserCoupon> getNotAssignedUserCouponList() {
+        List<UserCoupon> list = new ArrayList<>();
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUser() == null){
+                list.add(uc);
+            }
+        }
+        return list;
+    }
 }
