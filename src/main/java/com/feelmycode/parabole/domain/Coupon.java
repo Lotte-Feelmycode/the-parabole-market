@@ -125,6 +125,16 @@ public class Coupon extends BaseEntity implements Serializable {
         return cnt;
     }
 
+    public List<UserCoupon> getUsedUserCouponList() {
+        List<UserCoupon> list = new ArrayList<>();
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUseState() == CouponUseState.Used){
+                list.add(uc);
+            }
+        }
+        return list;
+    }
+
     public List<UserCoupon> getNotUsedUserCouponList() {
         List<UserCoupon> list = new ArrayList<>();
         for (UserCoupon uc : userCoupons) {
