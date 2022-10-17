@@ -28,6 +28,7 @@ public class OrderInfoController {
 
     private final OrderInfoService orderInfoService;
 
+    // TODO: order paging
     // TODO: userCoupon 정보 가져오기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
@@ -54,8 +55,7 @@ public class OrderInfoController {
     @GetMapping("/seller")
     public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long sellerId) {
         log.info("Seller Id: {} ", sellerId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(
-            sellerId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(sellerId);
         for (OrderInfoResponseDto dto : orderInfoList) {
             log.info(dto.toString());
         }

@@ -32,17 +32,18 @@ public class OrderInfoService {
     @Transactional
     public void saveOrderInfo(OrderInfoSimpleDto orderInfoDto) {
         Order order = orderService.getOrder(orderInfoDto.getUserId());
-        if(order == null) {
+        if (order == null) {
             log.info("Order is null");
-            order = orderService.createOrder(new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
+            order = orderService.createOrder(
+                new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
         }
         log.info("Save Order Info. order: {}", order.toString());
         OrderInfo orderInfo = new OrderInfo(order,
-                                    "KAKAO_PAY",
-                                            orderInfoDto.getProductId(),
-                                            orderInfoDto.getProductName(),
-                                            orderInfoDto.getProductCnt(),
-                                            orderInfoDto.getProductPrice());
+            "KAKAO_PAY",
+            orderInfoDto.getProductId(),
+            orderInfoDto.getProductName(),
+            orderInfoDto.getProductCnt(),
+            orderInfoDto.getProductPrice());
         orderInfo.setState(1);
         orderInfoRepository.save(orderInfo);
     }
@@ -61,11 +62,15 @@ public class OrderInfoService {
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoList(Long userId) {
         Order order = orderService.getOrder(userId);
+        log.info("ORDER: {}", order.toString());
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
+        for(OrderInfo info : getOrderInfoList)
+            log.info("ORDER INFO: {}", info.toString());
         return changeEntityToDto(getOrderInfoList);
     }
 
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
+        log.info("Service sellerId: {}", sellerId);
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
         return changeEntityToDto(getOrderInfoList);
     }

@@ -74,7 +74,8 @@ public class OrderInfo extends BaseEntity {
         this.state = state;
     }
 
-    public OrderInfo(Order order, UserCoupon userCoupon, Integer state, String payState, Long productId, String productName, Integer productCnt,
+    public OrderInfo(Order order, UserCoupon userCoupon, Integer state, String payState,
+        Long productId, String productName, Integer productCnt,
         Long productPrice, Long productDiscountPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
 //        this.userCoupon = userCoupon;
@@ -98,6 +99,7 @@ public class OrderInfo extends BaseEntity {
         this.productName = productName;
         this.productPrice = productPrice;
     }
+
     public OrderInfo(Order order, String payState, Long productId,
         String productName, Integer productCnt, Long productPrice) {
         this.order = order;
@@ -110,7 +112,11 @@ public class OrderInfo extends BaseEntity {
     }
 
     public OrderInfoResponseDto toDto() {
-        return new OrderInfoResponseDto(id, OrderState.returnNameByValue(state), OrderState.returnNameByValue(payState), order.getUser().getId(), order.getUser().getEmail(), productId, productName, productCnt, productPrice, productDiscountPrice);
+        return new OrderInfoResponseDto(id, OrderState.returnNameByValue(state),
+            OrderState.returnNameByValue(payState), order.getUser().getId(),
+            order.getUser().getEmail(), productId, productName, productCnt, productPrice,
+            productDiscountPrice);
     }
 
 }
+

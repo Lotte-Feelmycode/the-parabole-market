@@ -3,7 +3,6 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.service.OrderInfoService;
 import com.feelmycode.parabole.service.OrderService;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,6 @@ public class OrderController {
     private final UserService userService;
 
     @PostMapping
-
     public ResponseEntity<ParaboleResponse> createOrder(@RequestBody Long userId) {
         log.info("Create Order. userId: {}", userId);
         orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
