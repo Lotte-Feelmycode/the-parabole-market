@@ -54,15 +54,20 @@ public class CouponService {
         return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
     }
 
-    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//
+//        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+//        if (userCoupon == null) {
+//            throw new NoDataException();
+//        }
+//
+//        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+//        userCoupon.setUser(user);
+//    }
 
-        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
-        if (userCoupon == null) {
-            throw new NoDataException();
-        }
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
-        userCoupon.setUser(user);
+    @Transactional(readOnly = true)
+    public Coupon getCouponById(Long couponId) {
+        return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
     }
 
     @Transactional(readOnly = true)
@@ -104,6 +109,12 @@ public class CouponService {
                 nowSeller.getStoreName()));
         }
         return new PageImpl<>(dtos);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
+        return coupon.getUserCoupons();
     }
 
     @Transactional(readOnly = true)
