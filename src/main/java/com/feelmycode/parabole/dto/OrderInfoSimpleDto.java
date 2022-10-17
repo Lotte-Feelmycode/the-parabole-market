@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderInfoSimpleDto {
 
-    private Long userId;
     private Long productId;
-    private String productName;
     private Integer productCnt;
-    private Long productPrice;
 
 }

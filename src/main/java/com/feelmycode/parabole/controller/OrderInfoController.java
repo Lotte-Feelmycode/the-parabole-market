@@ -34,8 +34,7 @@ public class OrderInfoController {
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
         try {
             for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
-                orderInfoService.saveOrderInfo(orderInfo);
-                log.info("ORDER INFO: {}", orderInfo.toString());
+                orderInfoService.saveOrderInfo(orderInfoDto.getUserId(), orderInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,14 +60,6 @@ public class OrderInfoController {
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회",
             orderInfoList);
-    }
-
-    @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateOrderState(@RequestBody OrderUpdateRequestDto orderUpdate) {
-        log.info("Update Order. orderInfoId: {}", orderUpdate.getOrderId());
-        orderInfoService.updateOrderState(orderUpdate.getOrderInfoId(),
-            orderUpdate.getOrderState());
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경");
     }
 
 }

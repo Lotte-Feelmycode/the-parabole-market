@@ -5,8 +5,9 @@ import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
-import com.feelmycode.parabole.enumtype.OrderState;
+import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
+import com.feelmycode.parabole.repository.CartItemRepository;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,34 +29,39 @@ public class OrderInfoService {
     private final OrderService orderService;
     private final UserService userService;
     private final ProductService productService;
+    private final CartItemRepository cartItemRepository;
+    private final CartService cartService;
+
 
     @Transactional
-    public void saveOrderInfo(OrderInfoSimpleDto orderInfoDto) {
-        Order order = orderService.getOrder(orderInfoDto.getUserId());
+    public void saveOrderInfo(Long userId, OrderInfoSimpleDto orderInfoDto) {
+        Order order = orderService.getOrder(userId);
         if (order == null) {
-            log.info("Order is null");
-            order = orderService.createOrder(
-                new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
+            order = orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
         }
-        log.info("Save Order Info. order: {}", order.toString());
+        else if (order.getState() == -1) {
+            orderService.deleteOrder(order.getId());
+            order = orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
+        }
+        Product product = productService.getProduct(orderInfoDto.getProductId());
         OrderInfo orderInfo = new OrderInfo(order,
-            "KAKAO_PAY",
             orderInfoDto.getProductId(),
-            orderInfoDto.getProductName(),
+            product.getName(),
             orderInfoDto.getProductCnt(),
-            orderInfoDto.getProductPrice());
-        orderInfo.setState(1);
+            product.getPrice());
+        orderInfo.setState(-1);
         orderInfoRepository.save(orderInfo);
     }
 
     @Transactional
-    public void updateOrderState(Long orderInfoId, String orderState) {
+    public void updateOrderInfoState(Long orderInfoId, String orderState) {
         try {
             OrderInfo getOrderInfo = orderInfoRepository.findById(orderInfoId)
                 .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "주문정보를 찾을 수 없습니다."));
-            getOrderInfo.setState(OrderState.returnValueByName(orderState));
+
+            getOrderInfo.setState(OrderInfoState.returnValueByName(orderState));
         } catch (Exception e) {
-            throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정할 수 없습니다.");
+            throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정하는 중 문제가 발생했습니다.");
         }
     }
 

@@ -7,13 +7,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderUpdateRequestDto {
 
-    private Long orderId;
-    private Long orderInfoId;
+    private Long userId;
     private String orderState;
 
-    public OrderUpdateRequestDto(Long orderId, Long orderInfoId, String orderState) {
-        this.orderId = orderId;
-        this.orderInfoId = orderInfoId;
+    public OrderUpdateRequestDto(Long userId, String orderState) {
+        this.userId = userId;
         this.orderState = orderState;
     }
 

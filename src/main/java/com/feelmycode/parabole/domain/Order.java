@@ -75,13 +75,14 @@ public class Order extends BaseEntity {
     @Column(name = "order_delivery_fee")
     private Long deliveryFee;
 
-    public void setDeleted() {
-        this.isDeleted = false;
-    }
+    // TODO: enum으로 처리하기
+    @NotNull
+    @Column(name = "order_state")
+    private Integer state;
 
-    private void setOrderInfoList(List<OrderInfo> orderInfoList) {
-        this.orderInfoList = orderInfoList;
-    }
+    @NotNull
+    @Column(name="order_pay_state")
+    private Integer pay_state;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
@@ -94,18 +95,27 @@ public class Order extends BaseEntity {
         this.deliveryFee = orderDeliveryFee;
     }
 
-    // TODO: 주문상세 정보 list로 추가하기
-
     public Order(User user, Long deliveryFee) {
         this.user = user;
         this.setTotal(getOrderInfoList());
         this.deliveryFee = deliveryFee;
     }
 
-    public Order setOrder(List<OrderInfo> orderInfoList) {
-        this.setOrderInfoList(orderInfoList);
-        this.setTotal(orderInfoList);
-        return this;
+    @Override
+    public String toString() {
+        return "Order{" +
+            "id=" + id +
+            ", user=" + user +
+            ", total=" + total +
+            ", userName='" + userName + '\'' +
+            ", userEmail='" + userEmail + '\'' +
+            ", userPhone='" + userPhone + '\'' +
+            ", receiverName='" + receiverName + '\'' +
+            ", receiverPhone='" + receiverPhone + '\'' +
+            ", addressSimple='" + addressSimple + '\'' +
+            ", addressDetail='" + addressDetail + '\'' +
+            ", deliveryComment='" + deliveryComment + '\'' +
+            ", deliveryFee=" + deliveryFee +
+            '}';
     }
-
 }
