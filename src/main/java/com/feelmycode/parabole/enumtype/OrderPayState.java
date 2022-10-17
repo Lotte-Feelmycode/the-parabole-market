@@ -41,7 +41,7 @@ public enum OrderPayState {
     // TODO: Stream으로 구현하기
     public static String returnNameByValue(Integer value) {
         return Arrays.stream(values())
-            .filter(orderPayState -> orderPayState.value.toString().equals(value))
+            .filter(orderPayState -> orderPayState.value.toString().equals(value.toString()))
             .map(orderPayState -> orderPayState.state)
             .findFirst()
             .orElse("ERROR");

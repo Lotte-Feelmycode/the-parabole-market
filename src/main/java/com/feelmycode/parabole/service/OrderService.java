@@ -3,6 +3,8 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Order;
+import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
 import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.enumtype.OrderState;
 import com.feelmycode.parabole.repository.CartItemRepository;
@@ -28,23 +30,37 @@ public class OrderService {
     private final CartService cartService;
 
     @Transactional
-    public Order createOrder(Order order) {
-        Order getOrder = orderRepository.save(order);
-        return getOrder;
-    }
-
-    public Order getOrder(Long userId) {
-        Order getOrder = null;
-        getOrder = this.getOrderByUserId(userId);
-        if(getOrder == null) {
-            createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
-        }
+    public Order createOrder(Long userId, Order order) {
+        Order getOrder =  orderRepository.save(order);
         return getOrder;
     }
 
     @Transactional
+    public Order getOrder(Long userId) {
+        Order getOrder = null;
+        getOrder = this.getOrderByUserId(userId);
+        return getOrder;
+    }
+
+    @Transactional
+    public void updateDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
+        Order order = this.getOrder(deliveryDto.getUserId());
+        order.saveDeliveryInfo(deliveryDto);
+    }
+
+    public boolean isOrderEmpty(Long userId) {
+        Order order = this.getOrder(userId);
+        if (order == null)
+            return true;
+        if (order.getState() < 0) {
+            this.deleteOrder(order.getId());
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
     public void deleteOrder(Long orderId) {
-        Order getOrder = getOrder(orderId);
         orderRepository.deleteById(orderId);
     }
 
@@ -53,8 +69,12 @@ public class OrderService {
     }
 
     public void updateOrderState(OrderUpdateRequestDto orderUpdateRequestDto) {
+
+        Order order = this.getOrder(orderUpdateRequestDto.getUserId());
+        order.setState(orderUpdateRequestDto.getOrderState());
+
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
-        if(OrderState.returnValueByName(orderUpdateRequestDto.getOrderState()) > 0) {
+        if(OrderState.returnValueByName(orderUpdateRequestDto.getOrderState()).getValue() != -1) {
             Cart getCart = cartService.getCart(orderUpdateRequestDto.getUserId());
 
             List<CartItem> cartItemList = cartItemRepository.findAllByCartId(getCart.getId());

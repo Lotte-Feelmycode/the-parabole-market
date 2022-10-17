@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.dto;
 
-import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +11,6 @@ public class OrderInfoSimpleDto {
 
     private Long productId;
     private Integer productCnt;
+    private Long sellerId;
 
 }

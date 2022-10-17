@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
-import com.feelmycode.parabole.enumtype.OrderPayState;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.sun.istack.NotNull;
 import javax.persistence.Column;
@@ -21,22 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "order_infos")
 public class OrderInfo extends BaseEntity {
-
-    @Override
-    public String toString() {
-        return "OrderInfo{" +
-            "id=" + id +
-            ", order=" + order +
-            ", state=" + state +
-            ", productId=" + productId +
-            ", productName='" + productName + '\'' +
-            ", productCnt=" + productCnt +
-            ", productPrice=" + productPrice +
-            ", productDiscountPrice=" + productDiscountPrice +
-            ", sellerId=" + sellerId +
-            ", sellerStoreName='" + sellerStoreName + '\'' +
-            '}';
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,22 +84,15 @@ public class OrderInfo extends BaseEntity {
         this.sellerStoreName = sellerStoreName;
     }
 
-    public OrderInfo(Order order, String state, Long productId,
-        String productName, Long productPrice) {
-        this.order = order;
-        this.state = OrderPayState.returnValueByName(state);
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-    }
-
     public OrderInfo(Order order, Long productId,
-        String productName, Integer productCnt, Long productPrice) {
+        String productName, Integer productCnt, Long productPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
         this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
         this.productPrice = productPrice;
+        this.sellerId = sellerId;
+        this.sellerStoreName = sellerStoreName;
     }
 
     public OrderInfoResponseDto toDto() {

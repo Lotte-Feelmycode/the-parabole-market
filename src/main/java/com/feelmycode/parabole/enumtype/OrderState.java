@@ -8,24 +8,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum OrderState {
 
+    // OrderInfoState와는 달리 전체적인 주문의 배송완료여부를 판단한다.
     BEFORE_PAY("주문 확정 전", -1),
     PAY_COMPLETE("주문 확정", 0),
-    DELIVERY_COMPLETE("모든 배송 완료", 1);
+    DELIVERY_COMPLETE("모든 배송 완료", 1),
+    ERROR("에러", -99);
 
     private final String state;
     private final Integer value;
 
-    public static Integer returnValueByName(String state) {
+    public static OrderState returnValueByName(String state) {
         return Arrays.stream(values())
             .filter(orderState -> orderState.state.equals(state))
-            .map(orderState -> orderState.value)
-            .findFirst()
-            .orElse(-99);
+            .findAny()
+            .orElse(ERROR);
     }
 
     public static String returnNameByValue(Integer value) {
         return Arrays.stream(values())
-            .filter(orderState -> orderState.value.toString().equals(value))
+            .filter(orderState -> orderState.value.toString().equals(value.toString()))
             .map(orderState -> orderState.state)
             .findFirst()
             .orElse("ERROR");

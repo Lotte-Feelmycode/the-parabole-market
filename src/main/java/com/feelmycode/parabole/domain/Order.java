@@ -1,5 +1,8 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
+import com.feelmycode.parabole.enumtype.OrderPayState;
+import com.feelmycode.parabole.enumtype.OrderState;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor
+@Slf4j
 public class Order extends BaseEntity {
 
     @Id
@@ -81,14 +86,22 @@ public class Order extends BaseEntity {
     private Integer state;
 
     @NotNull
-    @Column(name="order_pay_state")
-    private Integer pay_state;
+    @Column(name = "order_pay_state")
+    private Integer payState;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
             .stream()
             .mapToLong(OrderInfo::getProductPrice)
             .sum();
+    }
+
+    public void setState(String state) {
+        this.state = OrderState.returnValueByName(state).getValue();
+    }
+
+    public void setState(Integer value) {
+        this.state = value;
     }
 
     private void setDeliveryFee(Long orderDeliveryFee) {
@@ -99,23 +112,21 @@ public class Order extends BaseEntity {
         this.user = user;
         this.setTotal(getOrderInfoList());
         this.deliveryFee = deliveryFee;
+        this.setState(-1);
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-            "id=" + id +
-            ", user=" + user +
-            ", total=" + total +
-            ", userName='" + userName + '\'' +
-            ", userEmail='" + userEmail + '\'' +
-            ", userPhone='" + userPhone + '\'' +
-            ", receiverName='" + receiverName + '\'' +
-            ", receiverPhone='" + receiverPhone + '\'' +
-            ", addressSimple='" + addressSimple + '\'' +
-            ", addressDetail='" + addressDetail + '\'' +
-            ", deliveryComment='" + deliveryComment + '\'' +
-            ", deliveryFee=" + deliveryFee +
-            '}';
+    public Order saveDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
+        this.userName = deliveryDto.getUserName();
+        this.userEmail = deliveryDto.getUserEmail();
+        this.userPhone = deliveryDto.getUserPhone();
+        this.receiverName = deliveryDto.getReceiverName();
+        this.receiverPhone = deliveryDto.getReceiverPhone();
+        this.addressSimple = deliveryDto.getAddressSimple();
+        this.addressDetail = deliveryDto.getAddressDetail();
+        this.deliveryComment = deliveryDto.getDeliveryComment();
+        this.state = 0;
+        this.payState = OrderPayState.returnValueByName(deliveryDto.getPayState());
+        return this;
     }
+
 }

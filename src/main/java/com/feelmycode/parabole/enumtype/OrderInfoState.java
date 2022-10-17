@@ -35,7 +35,7 @@ public enum OrderInfoState {
 
     public static String returnNameByValue(Integer value) {
         return Arrays.stream(values())
-            .filter(orderInfoState -> orderInfoState.value.toString().equals(value))
+            .filter(orderInfoState -> orderInfoState.value.toString().equals(value.toString()))
             .map(orderInfoState -> orderInfoState.state)
             .findFirst()
             .orElse("ERROR");
