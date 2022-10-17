@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class EventListResponseDto {
 
     private Long id;
+    private String storeName;
     private Long sellerId;
     private String createdBy;
     private String type;
@@ -27,10 +28,11 @@ public class EventListResponseDto {
     private EventImage eventImage;
     private List<EventPrizeDto> eventPrizes;
 
-    public EventListResponseDto(Long id, Long sellerId, String createdBy, String type, String title,
+    public EventListResponseDto(Long id, String storeName, Long sellerId, String createdBy, String type, String title,
         LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,
         EventImage eventImage, List<EventPrizeDto> eventPrizes) {
         this.id = id;
+        this.storeName = storeName;
         this.sellerId = sellerId;
         this.createdBy = createdBy;
         this.type = type;
@@ -44,6 +46,7 @@ public class EventListResponseDto {
     }
     public EventListResponseDto(Event event){
         this.id =event.getId();
+        this.storeName = event.getSeller().getStoreName();
         this.sellerId = event.getSeller().getId();
         this.createdBy = event.getCreatedBy();
         this.type = event.getType();

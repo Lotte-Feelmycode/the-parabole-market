@@ -1,23 +1,20 @@
 package com.feelmycode.parabole.dto;
 
-import lombok.AccessLevel;
+import java.util.List;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderInfoListDto {
 
-    private Long userId;
-    private String state;
-    private Integer payState;
-    private Long productId;
-    private String productName;
-    private Integer productCnt;
-    private Long productPrice;
-    private Long productDiscountPrice;
-    private Long productDeliveryFee;
-    private Long sellerId;
-    private String sellerStoreName;
+    private List<OrderInfoSimpleDto> orderInfoDto;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(OrderInfoSimpleDto dto : orderInfoDto) {
+            sb.append(dto.toString()).append("\n");
+        }
+        return sb.toString();
+    }
 
 }

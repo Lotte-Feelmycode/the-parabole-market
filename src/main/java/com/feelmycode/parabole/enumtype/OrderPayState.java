@@ -1,8 +1,8 @@
 package com.feelmycode.parabole.enumtype;
 
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 
 @Getter
 @RequiredArgsConstructor
@@ -24,28 +24,21 @@ public enum OrderPayState {
     private final Integer value;
 
     public static Integer returnValueByName(String state) {
-        if (state.equals("CARD")) {
-            return 1;
-        } else if (state.equals("BANK_TRANSFER")) {
-            return 2;
-        } else if (state.equals("PHONE")) {
-            return 3;
-        } else if (state.equals("VIRTUAL_ACCOUNT")) {
-            return 4;
-        } else if (state.equals("KAKAO_PAY")) {
-            return 5;
-        } else if (state.equals("TOSS")) {
-            return 6;
-        } else if (state.equals("WITHOUT_BANK")) {
-            return 7;
-        } else if(state.equals("WITHOUT_BANK_PAY")) {
-            return 8;
-        } else if (state.equals("NAVER_PAY")) {
-            return 9;
-        }
-        return -99;
+        return Arrays.stream(values())
+            .filter(orderPayState -> orderPayState.state.equals(state))
+            .map(orderPayState -> orderPayState.value)
+            .findFirst()
+            .orElse(-99);
+
+//        for (OrderPayState value : values()) {
+//            if (value.state.equals(state)) {
+//                return value.value;
+//            }
+//        }
+//        return -99;
     }
 
+    // TODO: Stream으로 구현하기
     public static OrderPayState returnNameByValue(Integer value) {
         switch (value) {
             case 1:
