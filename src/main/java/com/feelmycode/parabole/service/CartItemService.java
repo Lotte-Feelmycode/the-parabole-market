@@ -10,7 +10,6 @@ import com.feelmycode.parabole.dto.CartItemGetResponseDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,21 +77,12 @@ public class CartItemService {
 
     @Transactional
     public void cartListDelete(CartItemDeleteRequestDto cartItemRequestDto) {
-        cartItemRepository.deleteAllByIdIn(getCartItemId(cartItemRequestDto));
+        cartItemRepository.deleteById(cartItemRequestDto.getCartItemId());
     }
 
     private CartItem getCartItem(Long cartItemId) {
         return cartItemRepository.findById(cartItemId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
-    }
-
-    private List<Long> getCartItemId(CartItemDeleteRequestDto cartItemRequestDto) {
-        List<Long> result = new ArrayList<>();
-        for (Long cid : cartItemRequestDto.getCartItemId()) {
-            cartItemRepository.findById(cid).orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "해당 상품 장바구니가 존재하지 않습니다"));
-            result.add(cid);
-        }
-        return result;
     }
 
 }

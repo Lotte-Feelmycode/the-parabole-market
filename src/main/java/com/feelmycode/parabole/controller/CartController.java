@@ -39,8 +39,8 @@ public class CartController {
 
     @DeleteMapping(value = "/delete")
     public ResponseEntity<ParaboleResponse> deleteProductInCart(
-        @RequestBody CartItemDeleteRequestDto dto) {
-        cartItemService.cartListDelete(dto);
+        @RequestParam Long userId, @RequestParam Long cartItemId) {
+        cartItemService.cartListDelete(new CartItemDeleteRequestDto(userId, cartItemId));
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "장바구니 상품 삭제");
 
     }
