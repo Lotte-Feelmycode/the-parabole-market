@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class EventParticipantUserDto {
+
     private Long userId;
     private Long eventId;
 
@@ -19,15 +20,15 @@ public class EventParticipantUserDto {
     private Integer status;
     private String eventImg;
 
-    public EventParticipantUserDto(EventParticipant eventParticipant){
-        Event event=eventParticipant.getEvent();
-        this.userId=eventParticipant.getUser().getId();
+    public EventParticipantUserDto(EventParticipant eventParticipant) {
+        Event event = eventParticipant.getEvent();
+        this.userId = eventParticipant.getUser().getId();
         this.eventId = event.getId();
-        this.eventTimeStartAt=eventParticipant.getEventTimeStartAt();
+        this.eventTimeStartAt = eventParticipant.getEventTimeStartAt();
         this.eventTitle = event.getTitle();
         this.startAt = event.getStartAt();
         this.endAt = event.getEndAt();
         this.status = event.getStatus();
-        this.eventImg=event.getEventImage().getEventBannerImg();
+        this.eventImg = event.getEventImage().getEventBannerImg();
     }
 }
