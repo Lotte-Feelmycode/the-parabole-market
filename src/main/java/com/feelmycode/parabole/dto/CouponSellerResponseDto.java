@@ -21,6 +21,7 @@ public class CouponSellerResponseDto {
         private Long minPaymentAmount;
         private String detail;
         private Integer cnt;
+        private Integer remains;
 
         public CouponSellerResponseDto(Coupon coupon) {
                 this.couponId = coupon.getId();
@@ -34,6 +35,7 @@ public class CouponSellerResponseDto {
                 this.minPaymentAmount = coupon.getMinPaymentAmount();
                 this.detail = coupon.getDetail();
                 this.cnt = coupon.getCnt();
+                this.remains = coupon.getNotAssignedUserCouponList().size();
         }
 
 }
