@@ -40,14 +40,14 @@ public class OrderInfoController {
     // TODO: order paging
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoListDto) {
         try {
-            if (orderService.isOrderEmpty(orderInfoDto.getUserId())) {
-                orderService.createOrder(new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
+            if (orderService.isOrderEmpty(orderInfoListDto.getUserId())) {
+                orderService.createOrder(new Order(userService.getUser(orderInfoListDto.getUserId()), DELIVERY_FEE));
             }
 
-            for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
-                orderInfoService.saveOrderInfo(orderInfoDto.getUserId(), orderInfo);
+            for (OrderInfoSimpleDto orderInfo : orderInfoListDto.getOrderInfoDto()) {
+                orderInfoService.saveOrderInfo(orderInfoListDto.getUserId(), orderInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -84,7 +84,7 @@ public class UpdateService {
                 .map(CartItem::getId)
                 .collect(Collectors.toList());
 
-            cartItemRepository.deleteAllByIdIn(cartIdList);
+            cartItemRepository.deleteAllById(cartIdList);
         }
     }
 
