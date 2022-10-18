@@ -1,12 +1,16 @@
 package com.feelmycode.parabole.controller;
 
+import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.dto.OrderInfoListDto;
+import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
-import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderInfoService;
+import com.feelmycode.parabole.service.OrderService;
+import com.feelmycode.parabole.service.UpdateService;
+import com.feelmycode.parabole.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,16 +30,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderInfoController {
 
+    private static final Long DELIVERY_FEE = 0L;
+
+    private final OrderService orderService;
     private final OrderInfoService orderInfoService;
+    private final UpdateService updateService;
+    private final UserService userService;
 
     // TODO: order paging
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoListDto) {
         try {
-            for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
-                orderInfoService.saveOrderInfo(orderInfo);
-                log.info("ORDER INFO: {}", orderInfo.toString());
+            if (orderService.isOrderEmpty(orderInfoListDto.getUserId())) {
+                orderService.createOrder(new Order(userService.getUser(orderInfoListDto.getUserId()), DELIVERY_FEE));
+            }
+
+            for (OrderInfoSimpleDto orderInfo : orderInfoListDto.getOrderInfoDto()) {
+                orderInfoService.saveOrderInfo(orderInfoListDto.getUserId(), orderInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,28 +59,21 @@ public class OrderInfoController {
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoList(userId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 
-    // sellerId를 인자로 받는다고 되어있지만 판매자가 로그인했을 때 userId를 가져옴.  seller 였을 때만 불러올 수 있도록
     @GetMapping("/seller")
-    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long sellerId) {
-        log.info("Seller Id: {} ", sellerId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(sellerId);
-        for (OrderInfoResponseDto dto : orderInfoList) {
-            log.info(dto.toString());
-        }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회",
-            orderInfoList);
+    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long userId) {
+        log.info("Seller Id: {} ", userId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(userId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회",orderInfoList);
     }
 
     @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateOrderState(@RequestBody OrderUpdateRequestDto orderUpdate) {
-        log.info("Update Order. orderInfoId: {}", orderUpdate.getOrderId());
-        orderInfoService.updateOrderState(orderUpdate.getOrderInfoId(),
-            orderUpdate.getOrderState());
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 배송 상태 변경");
+    public ResponseEntity<ParaboleResponse> updateOrderInfo(@RequestBody OrderInfoRequestDto orderInfoRequestDto) {
+        updateService.updateOrderInfoState(orderInfoRequestDto);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자의 상세 주문 배송 정보 수정");
     }
 
 }

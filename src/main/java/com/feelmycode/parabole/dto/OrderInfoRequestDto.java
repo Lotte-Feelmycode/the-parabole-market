@@ -1,16 +1,17 @@
 package com.feelmycode.parabole.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-public class OrderUpdateRequestDto {
+@RequiredArgsConstructor
+public class OrderInfoRequestDto {
 
     private Long userId;
+    private Long orderInfoId;
     private String orderState;
 
-    public OrderUpdateRequestDto(Long userId, String orderState) {
+    public OrderInfoRequestDto(Long userId, String orderState) {
         this.userId = userId;
         this.orderState = orderState;
     }

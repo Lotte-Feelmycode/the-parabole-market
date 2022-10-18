@@ -39,28 +39,12 @@ public enum OrderPayState {
     }
 
     // TODO: Stream으로 구현하기
-    public static OrderPayState returnNameByValue(Integer value) {
-        switch (value) {
-            case 1:
-                return OrderPayState.CARD;
-            case 2:
-                return OrderPayState.BANK_TRANSFER;
-            case 3:
-                return OrderPayState.PHONE;
-            case 4:
-                return OrderPayState.VIRTUAL_ACCOUNT;
-            case 5:
-                return OrderPayState.KAKAO_PAY;
-            case 6:
-                return OrderPayState.TOSS;
-            case 7:
-                return OrderPayState.WITHOUT_BANK;
-            case 8:
-                return OrderPayState.WITHOUT_BANK_PAY;
-            case 9:
-                return OrderPayState.NAVER_PAY;
-        }
-        return OrderPayState.ERROR;
+    public static String returnNameByValue(Integer value) {
+        return Arrays.stream(values())
+            .filter(orderPayState -> orderPayState.value.toString().equals(value.toString()))
+            .map(orderPayState -> orderPayState.state)
+            .findFirst()
+            .orElse("ERROR");
     }
 
 }

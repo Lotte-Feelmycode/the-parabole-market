@@ -1,8 +1,7 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
-import com.feelmycode.parabole.enumtype.OrderPayState;
-import com.feelmycode.parabole.enumtype.OrderState;
+import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,23 +21,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_infos")
 public class OrderInfo extends BaseEntity {
 
-    @Override
-    public String toString() {
-        return "OrderInfo{" +
-            "id=" + id +
-            ", order=" + order +
-            ", state=" + state +
-            ", payState=" + payState +
-            ", productId=" + productId +
-            ", productName='" + productName + '\'' +
-            ", productCnt=" + productCnt +
-            ", productPrice=" + productPrice +
-            ", productDiscountPrice=" + productDiscountPrice +
-            ", sellerId=" + sellerId +
-            ", sellerStoreName='" + sellerStoreName + '\'' +
-            '}';
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_info_id")
@@ -54,10 +36,6 @@ public class OrderInfo extends BaseEntity {
     // 배송의 상태
     @Column(name = "order_info_state")
     private Integer state;
-
-    // 주문방식
-    @Column(name = "order_info_pay_state")
-    private Integer payState;
 
     @NotNull
     @Column(name = "product_id")
@@ -91,13 +69,12 @@ public class OrderInfo extends BaseEntity {
         this.state = state;
     }
 
-    public OrderInfo(Order order, UserCoupon userCoupon, Integer state, String payState,
+    public OrderInfo(Order order, UserCoupon userCoupon, Integer state,
         Long productId, String productName, Integer productCnt,
         Long productPrice, Long productDiscountPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
 //        this.userCoupon = userCoupon;
         this.state = state;
-        this.payState = OrderPayState.returnValueByName(payState);
         this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
@@ -107,30 +84,19 @@ public class OrderInfo extends BaseEntity {
         this.sellerStoreName = sellerStoreName;
     }
 
-    public OrderInfo(Order order, String state, String payState, Long productId,
-        String productName, Long productPrice) {
+    public OrderInfo(Order order, Long productId,
+        String productName, Integer productCnt, Long productPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
-        this.state = OrderPayState.returnValueByName(state);
-        this.payState = OrderPayState.returnValueByName(payState);
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-    }
-
-    public OrderInfo(Order order, String payState, Long productId,
-        String productName, Integer productCnt, Long productPrice) {
-        this.order = order;
-        payState = payState.trim();
-        this.payState = OrderPayState.returnValueByName(payState);
         this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
         this.productPrice = productPrice;
+        this.sellerId = sellerId;
+        this.sellerStoreName = sellerStoreName;
     }
 
     public OrderInfoResponseDto toDto() {
-        return new OrderInfoResponseDto(id, OrderState.returnNameByValue(state),
-            OrderState.returnNameByValue(payState), order.getUser().getId(),
+        return new OrderInfoResponseDto(id, OrderInfoState.returnNameByValue(state), order.getUser().getId(),
             order.getUser().getEmail(), productId, productName, productCnt, productPrice,
             productDiscountPrice);
     }

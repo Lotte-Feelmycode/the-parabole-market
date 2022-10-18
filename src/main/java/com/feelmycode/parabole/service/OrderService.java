@@ -17,26 +17,36 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserService userService;
+    private final CartItemRepository cartItemRepository;
+    private final CartService cartService;
 
     @Transactional
-    public Order createOrder(Order order) {
-        Order getOrder = orderRepository.save(order);
+    public Order createOrder(Long userId, Order order) {
+        Order getOrder =  orderRepository.save(order);
         return getOrder;
     }
 
+    @Transactional
     public Order getOrder(Long userId) {
         Order getOrder = null;
         getOrder = this.getOrderByUserId(userId);
-        if(getOrder == null) {
-            createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
-        }
         return getOrder;
     }
 
     @Transactional
     public void deleteOrder(Long orderId) {
-        Order getOrder = getOrder(orderId);
-        getOrder.setDeleted();
+        orderRepository.deleteById(orderId);
+    }
+
+    public boolean isOrderEmpty(Long userId) {
+        Order order = this.getOrder(userId);
+        if (order == null)
+            return true;
+        if (order.getState() < 0) {
+            this.deleteOrder(order.getId());
+            return true;
+        }
+        return false;
     }
 
     public Order getOrderByUserId(Long userId) {
@@ -45,7 +55,6 @@ public class OrderService {
 
     // TODO: 셀러 별로 상품을 가져오기
     // TODO: 제일 할인율이 높은 쿠폰을 각각의 셀러에게 적용하기
-
 //    public void categorizeOrder(List<OrderInfoResponseDto> list) {
 //        HashMap<Long, Integer> saveSellerIdByIdx = new HashMap<>();
 //        List<Long> sellerInfo = new ArrayList();

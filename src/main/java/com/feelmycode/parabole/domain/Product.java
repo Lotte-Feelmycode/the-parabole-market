@@ -138,19 +138,4 @@ public class Product extends BaseEntity {
         this.productDetailList = productDetailList;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-            "id=" + id +
-            ", seller=" + seller +
-            ", name='" + name + '\'' +
-            ", salesStatus=" + salesStatus +
-            ", remains=" + remains +
-            ", price=" + price +
-            ", category='" + category + '\'' +
-            ", thumbnailImg='" + thumbnailImg + '\'' +
-            ", productDetailList=" + productDetailList +
-            ", isDeleted=" + isDeleted +
-            '}';
-    }
 }
