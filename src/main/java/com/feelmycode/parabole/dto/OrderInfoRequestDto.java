@@ -11,9 +11,8 @@ public class OrderInfoRequestDto {
     private Long orderInfoId;
     private String orderState;
 
-    public OrderInfoRequestDto(Long userId, Long orderInfoId, String orderState) {
+    public OrderInfoRequestDto(Long userId, String orderState) {
         this.userId = userId;
-        this.orderInfoId = orderInfoId;
         this.orderState = orderState;
     }
 

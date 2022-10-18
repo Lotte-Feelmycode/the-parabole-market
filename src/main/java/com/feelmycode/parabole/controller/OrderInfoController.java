@@ -9,6 +9,7 @@ import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderInfoService;
 import com.feelmycode.parabole.service.OrderService;
+import com.feelmycode.parabole.service.UpdateService;
 import com.feelmycode.parabole.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class OrderInfoController {
 
     private final OrderService orderService;
     private final OrderInfoService orderInfoService;
+    private final UpdateService updateService;
     private final UserService userService;
 
     // TODO: order paging
@@ -41,7 +43,7 @@ public class OrderInfoController {
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoDto) {
         try {
             if (orderService.isOrderEmpty(orderInfoDto.getUserId())) {
-                orderService.createOrder(orderInfoDto.getUserId(), new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
+                orderService.createOrder(new Order(userService.getUser(orderInfoDto.getUserId()), DELIVERY_FEE));
             }
 
             for (OrderInfoSimpleDto orderInfo : orderInfoDto.getOrderInfoDto()) {
@@ -57,7 +59,7 @@ public class OrderInfoController {
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoList(userId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 
@@ -70,7 +72,7 @@ public class OrderInfoController {
 
     @PatchMapping
     public ResponseEntity<ParaboleResponse> updateOrderInfo(@RequestBody OrderInfoRequestDto orderInfoRequestDto) {
-        orderInfoService.updateOrderInfoState(orderInfoRequestDto);
+        updateService.updateOrderInfoState(orderInfoRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자의 상세 주문 배송 정보 수정");
     }
 
