@@ -2,6 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.EventApplyDto;
 import com.feelmycode.parabole.dto.EventParticipantDto;
+import com.feelmycode.parabole.dto.EventParticipantUserDto;
 import com.feelmycode.parabole.dto.RequestEventApplyCheckDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.EventParticipantService;
@@ -45,4 +46,11 @@ public class EventApplyController {
         List<EventParticipantDto> response = eventParticipantService.getEventParticipants(eventId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 응모 리스트 조회 성공", response);
     }
+
+    @GetMapping("/user/participant/{userId}")
+    public ResponseEntity<ParaboleResponse> getUserEventParticipants(@PathVariable Long userId) {
+        List<EventParticipantUserDto> response = eventParticipantService.getEventParticipantUser(userId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "유저 이벤트 응모 리스트 조회 성공", response);
+    }
+
 }
