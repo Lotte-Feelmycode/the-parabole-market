@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CouponService {
 
     private final SellerRepository sellerRepository;
@@ -39,6 +39,7 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
+    @Transactional
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new NoDataException());
@@ -54,18 +55,21 @@ public class CouponService {
         return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
     }
 
-    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//
+//        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+//        if (userCoupon == null) {
+//            throw new NoDataException();
+//        }
+//
+//        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+//        userCoupon.setUser(user);
+//    }
 
-        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
-        if (userCoupon == null) {
-            throw new NoDataException();
-        }
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
-        userCoupon.setUser(user);
+    public Coupon getCouponById(Long couponId) {
+        return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
     }
 
-    @Transactional(readOnly = true)
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
@@ -77,7 +81,6 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    @Transactional(readOnly = true)
     public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
         List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
@@ -88,7 +91,6 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    @Transactional(readOnly = true)
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
         List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
@@ -106,7 +108,11 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    @Transactional(readOnly = true)
+    public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
+        return coupon.getUserCoupons();
+    }
+
     public CouponInfoResponseDto getCouponInfo(String couponSNo) {
 
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
@@ -117,6 +123,7 @@ public class CouponService {
         return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
     }
 
+    @Transactional
     public void useUserCoupon(String couponSNo, Long userId) {
 
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);

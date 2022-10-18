@@ -6,6 +6,7 @@ import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.EventApplyDto;
 import com.feelmycode.parabole.dto.EventParticipantDto;
+import com.feelmycode.parabole.dto.EventParticipantUserDto;
 import com.feelmycode.parabole.dto.RequestEventApplyCheckDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.EventParticipantRepository;
@@ -27,6 +28,16 @@ public class EventParticipantService {
     private final UserRepository userRepository;
     private final EventPrizeRepository eventPrizeRepository;
     private final EventRepository eventRepository;
+
+    public List<EventParticipantUserDto> getEventParticipantUser(Long userId) {
+        List<EventParticipant> eventParticipant = eventParticipantRepository.findAllByUserId(getUser(userId).getId());
+
+        if (eventParticipant == null) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "이벤트 참여내역이 없습니다.");
+        }
+        return eventParticipant.stream().map(EventParticipantUserDto::new)
+            .collect(Collectors.toList());
+    }
 
     public void eventJoin(EventApplyDto eventApplyDto) {
         applyCheck(eventApplyDto);
