@@ -124,7 +124,6 @@ public class Order extends BaseEntity {
         this.addressSimple = deliveryDto.getAddressSimple();
         this.addressDetail = deliveryDto.getAddressDetail();
         this.deliveryComment = deliveryDto.getDeliveryComment();
-        this.state = 0;
         this.payState = OrderPayState.returnValueByName(deliveryDto.getPayState());
         return this;
     }

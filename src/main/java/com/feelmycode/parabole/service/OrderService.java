@@ -33,15 +33,15 @@ public class OrderService {
         orderRepository.deleteById(orderId);
     }
 
-    public boolean isOrderEmpty(Long userId) {
+    @Transactional
+    public void checkOrderState(Long userId) {
         Order order = this.getOrder(userId);
-        if (order == null)
-            return true;
+        if (order == null) {
+            return;
+        }
         if (order.getState() < 0) {
             this.deleteOrder(order.getId());
-            return true;
         }
-        return false;
     }
 
     public Order getOrderByUserId(Long userId) {
