@@ -10,10 +10,10 @@ import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.enumtype.OrderPayState;
-import com.feelmycode.parabole.enumtype.OrderState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
+import com.feelmycode.parabole.repository.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateService {
 
     private final OrderInfoRepository orderInfoRepository;
+    private final OrderRepository orderRepository;
     private final OrderInfoService orderInfoService;
     private final OrderService orderService;
     private final CartItemRepository cartItemRepository;
@@ -68,9 +69,10 @@ public class UpdateService {
         }
     }
 
+    @Transactional
     public void updateOrderState(OrderUpdateRequestDto orderUpdateRequestDto) {
-
         Order order = orderService.getOrder(orderUpdateRequestDto.getUserId());
+
         if(order.getState() < 1) {
             order.setState(order.getState()+1);
         }
