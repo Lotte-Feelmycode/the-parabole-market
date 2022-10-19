@@ -50,17 +50,18 @@ public class UpdateService {
             getOrderInfo.setState(OrderInfoState.returnValueByName(orderInfoRequestDto.getOrderState()));
 
             // 모든 상품이 배송완료일 때 주문이 완료되었다고 처리
-            if(orderInfoService.isDeliveryComplete(orderInfoRequestDto.getUserId())) {
+            if (orderInfoService.isDeliveryComplete(orderInfoRequestDto.getUserId())) {
                 Order order = orderService.getOrder(orderInfoRequestDto.getUserId());
 
                 List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
 
-                for(OrderInfo info : getOrderInfoList) {
+                for (OrderInfo info : getOrderInfoList) {
                     info.setState(OrderInfoState.returnValueByName(orderInfoRequestDto.getOrderState()));
                 }
 
                 this.updateOrderState(new OrderUpdateRequestDto(
-                    orderInfoRequestDto.getUserId(), OrderState.returnNameByValue(1), OrderPayState.returnNameByValue(order.getPayState())));
+                    orderInfoRequestDto.getUserId(),
+                    OrderPayState.returnNameByValue(order.getPayState())));
             }
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정하는 중 문제가 발생했습니다.");
@@ -70,26 +71,32 @@ public class UpdateService {
     public void updateOrderState(OrderUpdateRequestDto orderUpdateRequestDto) {
 
         Order order = orderService.getOrder(orderUpdateRequestDto.getUserId());
-        order.setState(orderUpdateRequestDto.getOrderState());
+        if(order.getState() < 1) {
+            order.setState(order.getState()+1);
+        }
 
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
-        if(OrderState.returnValueByName(orderUpdateRequestDto.getOrderState()).getValue() != -1) {
+        if (order.getState() == 0) {
             Cart getCart = cartService.getCart(orderUpdateRequestDto.getUserId());
 
             List<CartItem> cartItemList = cartItemRepository.findAllByCartId(getCart.getId());
 
-            if(cartItemList == null)
+            if (cartItemList == null) {
                 return;
+            }
 
-            List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(orderUpdateRequestDto.getUserId());
+            List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(
+                orderUpdateRequestDto.getUserId());
 
             List<Long> cartIdList = cartItemList.stream()
-                .filter(item -> orderInfoList.stream().anyMatch(orderInfo -> item.getProduct().getId().equals(orderInfo.getProductId())))
+                .filter(item -> orderInfoList.stream().anyMatch(
+                    orderInfo -> item.getProduct().getId().equals(orderInfo.getProductId())))
                 .map(CartItem::getId)
                 .collect(Collectors.toList());
 
-            if(cartIdList == null)
+            if (cartIdList == null) {
                 return;
+            }
 
             cartItemRepository.deleteAllById(cartIdList);
         }
