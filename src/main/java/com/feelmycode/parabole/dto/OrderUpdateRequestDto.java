@@ -8,12 +8,10 @@ import lombok.NoArgsConstructor;
 public class OrderUpdateRequestDto {
 
     private Long userId;
-    private String orderState;
     private String orderPayState;
 
-    public OrderUpdateRequestDto(Long userId, String orderState, String orderPayState) {
+    public OrderUpdateRequestDto(Long userId, String orderPayState) {
         this.userId = userId;
-        this.orderState = orderState;
         this.orderPayState = orderPayState;
     }
 
