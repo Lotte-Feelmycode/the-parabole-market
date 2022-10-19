@@ -9,6 +9,7 @@ import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
+import com.feelmycode.parabole.enumtype.OrderPayState;
 import com.feelmycode.parabole.enumtype.OrderState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
@@ -59,7 +60,7 @@ public class UpdateService {
                 }
 
                 this.updateOrderState(new OrderUpdateRequestDto(
-                    orderInfoRequestDto.getUserId(), OrderState.returnNameByValue(1)));
+                    orderInfoRequestDto.getUserId(), OrderState.returnNameByValue(1), OrderPayState.returnNameByValue(order.getPayState())));
             }
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정하는 중 문제가 발생했습니다.");
@@ -77,12 +78,18 @@ public class UpdateService {
 
             List<CartItem> cartItemList = cartItemRepository.findAllByCartId(getCart.getId());
 
+            if(cartItemList == null)
+                return;
+
             List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(orderUpdateRequestDto.getUserId());
 
             List<Long> cartIdList = cartItemList.stream()
                 .filter(item -> orderInfoList.stream().anyMatch(orderInfo -> item.getProduct().getId().equals(orderInfo.getProductId())))
                 .map(CartItem::getId)
                 .collect(Collectors.toList());
+
+            if(cartIdList == null)
+                return;
 
             cartItemRepository.deleteAllById(cartIdList);
         }

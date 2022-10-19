@@ -31,7 +31,7 @@ public class OrderInfoService {
         Order order = orderService.getOrder(userId);
 
         Product product = productService.getProduct(orderInfoDto.getProductId());
-        SellerDto seller = sellerService.getSellerBySellerId(orderInfoDto.getSellerId());
+        SellerDto seller = sellerService.getSellerBySellerId(product.getSeller().getId());
 
         OrderInfo orderInfo = new OrderInfo(order,
             orderInfoDto.getProductId(),

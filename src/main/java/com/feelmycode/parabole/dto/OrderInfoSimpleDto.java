@@ -10,6 +10,5 @@ public class OrderInfoSimpleDto {
 
     private Long productId;
     private Integer productCnt;
-    private Long sellerId;
 
 }
