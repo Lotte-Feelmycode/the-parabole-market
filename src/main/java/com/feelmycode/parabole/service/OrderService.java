@@ -13,15 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class OrderService {
 
-    private static final Long DELIVERY_FEE = 0L;
-
     private final OrderRepository orderRepository;
-    private final UserService userService;
-    private final CartItemRepository cartItemRepository;
-    private final CartService cartService;
 
     @Transactional
-    public Order createOrder(Long userId, Order order) {
+    public Order createOrder(Order order) {
         Order getOrder =  orderRepository.save(order);
         return getOrder;
     }

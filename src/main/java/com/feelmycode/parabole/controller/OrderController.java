@@ -24,7 +24,6 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<ParaboleResponse> updateOrder(@RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
-
         updateService.updateOrderState(orderUpdateRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 수정 완료");
     }
