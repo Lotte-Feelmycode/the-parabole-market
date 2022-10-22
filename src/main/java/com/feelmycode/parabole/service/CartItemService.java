@@ -7,15 +7,19 @@ import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemGetResponseDto;
+import com.feelmycode.parabole.dto.CartItemListWithCouponDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
+import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
     private final CartService cartService;
     private final ProductService productService;
+    private final CouponService couponService;
 
     @Transactional
     public void addItem(CartAddItemRequestDto dto) {
@@ -83,6 +88,54 @@ public class CartItemService {
     private CartItem getCartItem(Long cartItemId) {
         return cartItemRepository.findById(cartItemId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
+    }
+
+
+    // 셀러별로 항목 정렬
+    public List<CartItemListWithCouponDto>[] getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+        Cart cart = cartService.getCart(userId);
+
+        List<CartItemDto> getCartItems = cartItemRepository.findAllByCartId(cart.getId())
+            .stream().sorted(Comparator.comparing(CartItem::getId).reversed())
+            .map(CartItemDto::new).toList();
+
+        HashMap<Long, Integer> sellerIdMap = new HashMap<>();
+        int idx = 0;
+        for(CartItemDto item : getCartItems) {
+            Long sellerId = item.getProduct().getSellerId();
+            if(!sellerIdMap.containsKey(sellerId)) {
+                sellerIdMap.put(sellerId, idx++);
+            }
+        }
+
+        List<CartItemDto>[] getItemList = new ArrayList[sellerIdMap.size()];
+        for(int i = 0; i < sellerIdMap.size(); i++) {
+            getItemList[i] = new ArrayList<>();
+        }
+
+        for (CartItemDto item : getCartItems) {
+            Long sellerId = item.getProduct().getSellerId();
+            getItemList[sellerIdMap.get(sellerId)].add(item);
+        }
+
+        HashMap<Long, List<CouponInfoResponseDto>> couponList = couponService.getCouponListByUserId(userId);
+
+        List<CartItemListWithCouponDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()];
+
+        for(int i = 0; i < sellerIdMap.size(); i++) {
+            cartItemWithCoupon[i] = new ArrayList<>();
+        }
+
+        idx = 0;
+        for(Long key : sellerIdMap.keySet()) {
+            if(couponList.containsKey(key)) {
+                cartItemWithCoupon[sellerIdMap.get(key)].add(new CartItemListWithCouponDto(key, getItemList[sellerIdMap.get(key)], couponList.get(key)));
+            } else {
+                cartItemWithCoupon[key.intValue()].add(new CartItemListWithCouponDto(key, getItemList[sellerIdMap.get(key)], new ArrayList<>()));
+            }
+        }
+
+        return cartItemWithCoupon;
     }
 
 }

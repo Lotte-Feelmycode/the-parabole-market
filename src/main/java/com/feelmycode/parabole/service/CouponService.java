@@ -11,6 +11,7 @@ import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
+import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
@@ -20,6 +21,8 @@ import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -121,6 +124,38 @@ public class CouponService {
         }
         Coupon coupon = userCoupon.getCoupon();
         return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
+    }
+
+    public HashMap<Long, List<CouponInfoResponseDto>> getCouponListByUserId(Long userId) {
+        HashMap<Long, Integer> couponListMap = new HashMap<>();
+
+        List<UserCoupon> couponInfoList = userCouponRepository.findAllByUserId(userId);
+//            .stream()
+//            .filter(userCoupon -> userCoupon.getUseState() == CouponUseState.NotUsed)
+//            .filter(userCoupon -> userCoupon.getUseState().getState().equals("NOT_USED"))
+//            .collect(Collectors.toList());
+
+        int idx = 0;
+        for(UserCoupon coupons : couponInfoList) {
+            Long sellerId = coupons.getCoupon().getSeller().getId();
+            if(!couponListMap.containsKey(sellerId)) {
+                couponListMap.put(sellerId, idx++);
+            }
+        }
+
+        HashMap<Long, List<CouponInfoResponseDto>> couponMap = new HashMap<>();
+
+        for(UserCoupon coupons : couponInfoList) {
+            Long sellerId = coupons.getCoupon().getSeller().getId();
+            if(!couponMap.containsKey(sellerId)) {
+                couponMap.put(sellerId, new ArrayList<>());
+            }
+            List<CouponInfoResponseDto> list = couponMap.get(sellerId);
+            list.add(new CouponInfoResponseDto(coupons.getCoupon().getType().getName(), coupons.getCoupon().getDiscountValue()));
+            couponMap.put(sellerId, list);
+        }
+
+        return couponMap;
     }
 
     @Transactional
