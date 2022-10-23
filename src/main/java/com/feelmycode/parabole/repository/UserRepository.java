@@ -8,6 +8,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
     void deleteById(Long userId);
-    List<User> findAllByNameContainsIgnoreCase( String name);
+    List<User> findAllByUsernameContainsIgnoreCase(String username);
+
+    boolean existsByEmail(String email);
 
 }

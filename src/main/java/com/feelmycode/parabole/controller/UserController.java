@@ -27,28 +27,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
-
     private final UserService userService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
-
-        User newUser = userService.signup(dto);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
-            true, "사용자: 회원가입 성공", newUser.getId());
-    }
-
-    @PostMapping("/signin")
-    public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
-        log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
-        User user = userService.signin(dto);
-
-        String message = "판매자 로그인 성공";
-        if (user.sellerIsNull()) {
-            message = "사용자 로그인 성공";
-        }
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, message, user.getId());
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<ParaboleResponse> signup(@RequestBody UserSignupDto dto) {
+//
+//        User newUser = userService.signup(dto);
+//        return ParaboleResponse.CommonResponse(HttpStatus.CREATED,
+//            true, "사용자: 회원가입 성공", newUser.getId());
+//    }
+//
+//    @PostMapping("/signin")
+//    public ResponseEntity<ParaboleResponse> signin(@RequestBody UserSigninDto dto) {
+//        log.info("email: {}, password: {}", dto.getEmail(), dto.getPassword());
+//        User user = userService.signin(dto);
+//
+//        String message = "판매자 로그인 성공";
+//        if (user.sellerIsNull()) {
+//            message = "사용자 로그인 성공";
+//        }
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, message, user.getId());
+//    }
 
     @GetMapping("/role")
     public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
