@@ -27,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -105,7 +106,7 @@ public class CouponController {
     }
 
     @GetMapping("/user/list")
-    public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getUserCouponList(@AuthenticationPrincipal Long userId) {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
