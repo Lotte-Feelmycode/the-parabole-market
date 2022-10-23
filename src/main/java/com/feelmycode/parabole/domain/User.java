@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.global.error.exception.NotSellerException;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,30 +13,35 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Getter
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(generator="system-uuid")
+//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_email", length = 200)
-    @NotNull
+    @Column(name = "user_email", length = 200, nullable = false)
+//    @NotNull
     private String email;
 
-    @Column(name = "user_name", length = 200)
-    @NotNull
-    private String name;
+    @Column(name = "user_name", length = 200, nullable = false)
+//    @NotNull
+    private String username;
 
-    @Column(name = "user_nickname", length = 200)
-    @NotNull
+    @Column(name = "user_nickname", length = 200, nullable = false)
+//    @NotNull
     private String nickname;
 
     @Column(name = "user_phone", length = 200)
@@ -79,9 +83,22 @@ public class User extends BaseEntity {
     public User(String email, String name,
         String nickname, String phone, String password) {
         this.email = email;
-        this.name = name;
+        this.username = name;
         this.nickname = nickname;
         this.phone = phone;
         this.password = password;
+    }
+
+    public User(Long id, String email, String username, String nickname, String phone,
+        String password,
+        Seller seller, List<UserCoupon> userCoupons) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.password = password;
+        this.seller = seller;
+        this.userCoupons = userCoupons;
     }
 }
