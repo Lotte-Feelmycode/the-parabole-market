@@ -4,14 +4,13 @@ import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
-import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
+import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
-import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
@@ -79,8 +78,8 @@ public class CouponService {
         List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
-                                            .map(CouponSellerResponseDto::new)
-                                            .collect(Collectors.toList());
+            .map(CouponSellerResponseDto::new)
+            .collect(Collectors.toList());
         return new PageImpl<>(dtos);
     }
 
@@ -96,7 +95,7 @@ public class CouponService {
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
+        List<UserCoupon> couponList = userCouponRepository.findAllByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
@@ -129,25 +128,34 @@ public class CouponService {
     public HashMap<Long, List<CouponInfoResponseDto>> getCouponListByUserId(Long userId) {
         HashMap<Long, Integer> couponListMap = new HashMap<>();
 
-        List<UserCoupon> couponInfoList = userCouponRepository.findAllByUserId(userId);
-//            .stream()
-//            .filter(userCoupon -> userCoupon.getUseState() == CouponUseState.NotUsed)
-//            .filter(userCoupon -> userCoupon.getUseState().getState().equals("NOT_USED"))
-//            .collect(Collectors.toList());
+        Comparator<UserCoupon> coupon = (c1, c2) -> {
+            if (c1.getCoupon().getType() == c2.getCoupon().getType()) {
+                return -Integer.compare(c1.getCoupon().getDiscountValue(),
+                    c2.getCoupon().getDiscountValue());
+            }
+            return 1;
+        };
+
+        List<UserCoupon> couponInfoList = userCouponRepository.findAllByUserId(userId)
+            .stream()
+            .filter(userCoupon -> userCoupon.getUseState() == CouponUseState.NotUsed)
+            .sorted(Comparator.comparing(userCoupon -> userCoupon.getCoupon().getType()))
+            .sorted(coupon)
+            .collect(Collectors.toList());
 
         int idx = 0;
-        for(UserCoupon coupons : couponInfoList) {
+        for (UserCoupon coupons : couponInfoList) {
             Long sellerId = coupons.getCoupon().getSeller().getId();
-            if(!couponListMap.containsKey(sellerId)) {
+            if (!couponListMap.containsKey(sellerId)) {
                 couponListMap.put(sellerId, idx++);
             }
         }
 
         HashMap<Long, List<CouponInfoResponseDto>> couponMap = new HashMap<>();
 
-        for(UserCoupon coupons : couponInfoList) {
+        for (UserCoupon coupons : couponInfoList) {
             Long sellerId = coupons.getCoupon().getSeller().getId();
-            if(!couponMap.containsKey(sellerId)) {
+            if (!couponMap.containsKey(sellerId)) {
                 couponMap.put(sellerId, new ArrayList<>());
             }
             List<CouponInfoResponseDto> list = couponMap.get(sellerId);
@@ -171,10 +179,10 @@ public class CouponService {
         if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰에 배정된 사용자가 없습니다. 사용자를 먼저 배정하세요.");
-        } else if (!user.getId().equals(userId)){
+        } else if (!user.getId().equals(userId)) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
-        } else if(userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())){
+        } else if (userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰이 만료되어 사용할 수 없습니다.");
         } else {
