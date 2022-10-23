@@ -1,4 +1,4 @@
-package com.feelmycode.parabole.util;
+package com.feelmycode.parabole.global.util;
 
 import java.util.UUID;
 
