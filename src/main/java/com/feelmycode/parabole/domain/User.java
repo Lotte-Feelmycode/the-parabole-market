@@ -13,15 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 @Getter
 @NoArgsConstructor
 @Entity
 @Builder
+@AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
 
@@ -51,6 +52,12 @@ public class User extends BaseEntity {
     @Column(name = "user_password", length = 200)
     @NotNull
     private String password;
+
+    @Column(name = "user_role", length = 200)
+    private String role;
+
+    @Column(name = "user_auth_provider", length = 200)
+    private String authProvider; // example : facebook
 
     @JoinColumn(name = "seller_id")
     @NotNull
@@ -89,16 +96,4 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public User(Long id, String email, String username, String nickname, String phone,
-        String password,
-        Seller seller, List<UserCoupon> userCoupons) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
-        this.nickname = nickname;
-        this.phone = phone;
-        this.password = password;
-        this.seller = seller;
-        this.userCoupons = userCoupons;
-    }
 }

@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -60,5 +61,19 @@ public class TokenProvider {
             .getBody();
 
         return claims.getSubject();
+    }
+
+    public String create(final Authentication authentication) {
+        ApplicationOAuth2User userPrincipal = (ApplicationOAuth2User) authentication.getPrincipal();
+        Date expiryDate = Date.from(
+            Instant.now()
+                .plus(1, ChronoUnit.DAYS));
+
+        return Jwts.builder()
+            .setSubject(userPrincipal.getName()) // id가 리턴됨.
+            .setIssuedAt(new Date())
+            .setExpiration(expiryDate)
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .compact();
     }
 }

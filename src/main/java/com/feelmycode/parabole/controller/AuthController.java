@@ -68,10 +68,10 @@ public class AuthController {
             final UserDTO responseUserDTO = UserDTO.builder()
                 .id(user.getId())
                 .token(token)
-                .email(user.getUsername())
-                .username(user.getUsername())
-                .nickname(user.getNickname())
-                .phone(user.getPhone())
+//                .email(user.getUsername())
+//                .username(user.getUsername())
+//                .nickname(user.getNickname())
+//                .phone(user.getPhone())
                 .build();
 
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 로그인 성공",
