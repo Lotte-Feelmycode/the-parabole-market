@@ -26,13 +26,13 @@ public class ProductService {
     private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Long userId, Product product) {
+    public Long saveProduct(Long userId, ProductDto dto) {
         sellerService.getSellerByUserId(userId);
 
+        Product product = dto.dtoToEntity();
         product.setSeller(sellerService.getSellerByUserId(userId));
-        productRepository.save(product);
 
-        return product.getId();
+        return productRepository.save(product).getId();
     }
 
     @Transactional
