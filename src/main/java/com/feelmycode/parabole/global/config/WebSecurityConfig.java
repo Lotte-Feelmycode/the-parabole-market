@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.global.config;
 
 import com.feelmycode.parabole.security.JwtAuthenticationFilter;
+import com.feelmycode.parabole.security.OAuthUserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +16,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private OAuthUserServiceImpl oAuthUserService; // 직접만든
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,7 +35,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests() // /와 /auth/** 경로는 인증 안해도 됨.
             .antMatchers("/api/v1", "/api/v1/auth/**").permitAll()
             .anyRequest() // /와 /auth/**이외의 모든 경로는 인증 해야됨.
-            .authenticated();
+            .authenticated()
+
+            .and()
+            .oauth2Login()
+            .redirectionEndpoint()
+            .baseUri("/oauth2/callback/*")
+            .and()
+            .userInfoEndpoint()
+            .userService(oAuthUserService); // OAuthUserServiceImpl를 유저 서비스로 등록
 
         // filter 등록.
         // 매 리퀘스트마다 CorsFilter 실행한 후에 jwtAuthenticationFilter 실행한다.
