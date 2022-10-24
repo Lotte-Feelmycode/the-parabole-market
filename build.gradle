@@ -1,14 +1,13 @@
-//buildscript {
-//    ext {
-//        restdocsApiSpecVersion = '0.16.2'
-//    }
-//}
+buildscript {
+    ext {
+        restdocsApiSpecVersion = '0.16.2'
+    }
+}
 plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
-	id 'org.asciidoctor.convert' version '1.5.9.2'
-//	id 'com.epages.restdocs-api-spec' version '0.11.3'
+	id 'org.asciidoctor.convert' version '1.5.3'
 }
 
 group = 'com.feelmycode.parabole'
@@ -34,7 +33,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
-//    implementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
