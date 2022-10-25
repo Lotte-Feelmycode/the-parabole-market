@@ -7,20 +7,23 @@ import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemGetResponseDto;
-import com.feelmycode.parabole.dto.CartItemListWithCouponDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
-import com.feelmycode.parabole.dto.CouponInfoResponseDto;
+import com.feelmycode.parabole.dto.CartWithCouponResponseDto;
+import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,6 +33,7 @@ public class CartItemService {
     private final CartService cartService;
     private final ProductService productService;
     private final CouponService couponService;
+    private final SellerService sellerService;
 
     @Transactional
     public void addItem(CartAddItemRequestDto dto) {
@@ -90,48 +94,53 @@ public class CartItemService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
     }
 
+    public List<CartWithCouponResponseDto>[] getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
 
-    // 셀러별로 항목 정렬
-    public List<CartItemListWithCouponDto>[] getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
         Cart cart = cartService.getCart(userId);
 
         List<CartItemDto> getCartItems = cartItemRepository.findAllByCartId(cart.getId())
             .stream().sorted(Comparator.comparing(CartItem::getId).reversed())
             .map(CartItemDto::new).toList();
 
-        HashMap<Long, Integer> sellerIdMap = new HashMap<>();
-        int idx = 0;
+        HashMap<String, Integer> sellerIdMap = new HashMap<>();
+
+        int idx = 1;
         for(CartItemDto item : getCartItems) {
             Long sellerId = item.getProduct().getSellerId();
-            if(!sellerIdMap.containsKey(sellerId)) {
-                sellerIdMap.put(sellerId, idx++);
+            String storeName = sellerService.getSellerBySellerId(sellerId).getStoreName();
+            String key = sellerId+"$"+storeName;
+            if(!sellerIdMap.containsKey(key)) {
+                sellerIdMap.put(key, idx++);
             }
         }
 
-        List<CartItemDto>[] getItemList = new ArrayList[sellerIdMap.size()];
-        for(int i = 0; i < sellerIdMap.size(); i++) {
+        List<CartItemDto>[] getItemList = new ArrayList[sellerIdMap.size()+1];
+        for(int i = 0; i <= sellerIdMap.size(); i++) {
             getItemList[i] = new ArrayList<>();
         }
 
         for (CartItemDto item : getCartItems) {
             Long sellerId = item.getProduct().getSellerId();
-            getItemList[sellerIdMap.get(sellerId)].add(item);
+            String storeName = sellerService.getSellerBySellerId(sellerId).getStoreName();
+            String key = sellerId+"$"+storeName;
+            getItemList[sellerIdMap.get(key)].add(item);
         }
 
-        HashMap<Long, List<CouponInfoResponseDto>> couponList = couponService.getCouponListByUserId(userId);
+        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponListByUserId(userId);
 
-        List<CartItemListWithCouponDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()];
+        List<CartWithCouponResponseDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()+1];
 
-        for(int i = 0; i < sellerIdMap.size(); i++) {
+        for(int i = 0; i <= sellerIdMap.size(); i++) {
             cartItemWithCoupon[i] = new ArrayList<>();
         }
 
-        idx = 0;
-        for(Long key : sellerIdMap.keySet()) {
-            if(couponList.containsKey(key)) {
-                cartItemWithCoupon[sellerIdMap.get(key)].add(new CartItemListWithCouponDto(key, getItemList[sellerIdMap.get(key)], couponList.get(key)));
-            } else {
-                cartItemWithCoupon[key.intValue()].add(new CartItemListWithCouponDto(key, getItemList[sellerIdMap.get(key)], new ArrayList<>()));
+        HashSet<Long> cartWithCouponDto = new HashSet<>();
+
+        for(String key : sellerIdMap.keySet()) {
+            Long id = Long.parseLong(key.split("\\$")[0]);
+            String store = key.split("\\$")[1];
+            if(cartWithCouponDto.add(id)) {
+                cartItemWithCoupon[sellerIdMap.get(key)].add(new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)], couponList.get(id)));
             }
         }
 
