@@ -1,5 +1,8 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
+import com.feelmycode.parabole.enumtype.OrderPayState;
+import com.feelmycode.parabole.enumtype.OrderState;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Table(name = "orders")
 @Getter
 @NoArgsConstructor
+@Slf4j
 public class Order extends BaseEntity {
 
     @Id
@@ -37,27 +42,52 @@ public class Order extends BaseEntity {
 
     @NotNull
     @Column(name = "order_total")
-    private long total;
+    private Long total;
 
     @NotNull
-    @Column(name = "order_state")
-    private int state;
+    @Column(name = "order_user_name")
+    private String userName;
+
+    @NotNull
+    @Column(name = "order_user_email")
+    private String userEmail;
+
+    @NotNull
+    @Column(name = "order_user_phone")
+    private String userPhone;
+
+    @NotNull
+    @Column(name = "order_receiver_name")
+    private String receiverName;
+
+    @NotNull
+    @Column(name = "order_receiver_phone")
+    private String receiverPhone;
+
+    @NotNull
+    @Column(name = "order_address_simple")
+    private String addressSimple;
+
+    @NotNull
+    @Column(name = "order_address_detail")
+    private String addressDetail;
+
+    @NotNull
+    @Column(name = "order_delivery_comment")
+    private String deliveryComment;
 
     @NotNull
     @Column(name = "order_delivery_fee")
-    private long deliveryFee;
+    private Long deliveryFee;
 
-    public void setDeleted() {
-        this.isDeleted = false;
-        this.setState(0);
-    }
-    private void setState(int state) {
-        this.state = state;
-    }
+    // TODO: enum으로 처리하기
+    @NotNull
+    @Column(name = "order_state")
+    private Integer state;
 
-    private void setOrderInfoList(List<OrderInfo> orderInfoList) {
-        this.orderInfoList = orderInfoList;
-    }
+    @NotNull
+    @Column(name = "order_pay_state")
+    private Integer payState;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
@@ -66,30 +96,35 @@ public class Order extends BaseEntity {
             .sum();
     }
 
+    public void setState(String state) {
+        this.state = OrderState.returnValueByName(state).getValue();
+    }
 
-    private void setDeliveryFee(long orderDeliveryFee) {
+    public void setState(Integer value) {
+        this.state = value;
+    }
+
+    private void setDeliveryFee(Long orderDeliveryFee) {
         this.deliveryFee = orderDeliveryFee;
     }
 
-    // TODO: 주문상세 정보 list로 추가하기
-    public Order(Long id, User user, int state, long deliveryFee) {
-        this.id = id;
+    public Order(User user, Long deliveryFee) {
         this.user = user;
         this.setTotal(getOrderInfoList());
-        this.state = state;
         this.deliveryFee = deliveryFee;
+        this.setState(-1);
     }
 
-    public Order(User user, int state, long deliveryFee) {
-        this.user = user;
-        this.setTotal(getOrderInfoList());
-        this.state = state;
-        this.deliveryFee = deliveryFee;
-    }
-    public Order setOrder(int state, List<OrderInfo> orderInfoList) {
-        this.setState(state);
-        this.setOrderInfoList(orderInfoList);
-        this.setTotal(orderInfoList);
+    public Order saveDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
+        this.userName = deliveryDto.getUserName();
+        this.userEmail = deliveryDto.getUserEmail();
+        this.userPhone = deliveryDto.getUserPhone();
+        this.receiverName = deliveryDto.getReceiverName();
+        this.receiverPhone = deliveryDto.getReceiverPhone();
+        this.addressSimple = deliveryDto.getAddressSimple();
+        this.addressDetail = deliveryDto.getAddressDetail();
+        this.deliveryComment = deliveryDto.getDeliveryComment();
+        this.payState = OrderPayState.returnValueByName(deliveryDto.getPayState());
         return this;
     }
 

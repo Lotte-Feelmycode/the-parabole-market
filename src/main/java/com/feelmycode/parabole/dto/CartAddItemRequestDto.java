@@ -1,22 +1,26 @@
 package com.feelmycode.parabole.dto;
 
-import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class CartItemRequestDto {
+public class CartAddItemRequestDto {
 
     @NotNull
     private Long userId;
 
     @NotNull
-    private List<Long> cartItemId;
+    private Long productId;
 
-    public CartItemRequestDto(Long userId, List<Long> cartItemId) {
+    @NotNull
+    private Integer cnt;
+
+    public CartAddItemRequestDto(Long productId, Long userId, Integer cnt) {
+        this.productId = productId;
         this.userId = userId;
-        this.cartItemId = cartItemId;
+        this.cnt = cnt;
     }
+
 }

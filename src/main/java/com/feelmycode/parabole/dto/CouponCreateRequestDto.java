@@ -9,8 +9,7 @@ public class CouponCreateRequestDto {
         private String name;
         private Long userId;
         private Integer type;
-        private Integer discountRate;
-        private Long discountAmount;
+        private Integer discountValue;
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
         private Long maxDiscountAmount;

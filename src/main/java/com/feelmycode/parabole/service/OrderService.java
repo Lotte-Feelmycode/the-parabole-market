@@ -1,53 +1,98 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Order;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
 
     private final OrderRepository orderRepository;
 
     @Transactional
-    public Long createOrder(Order order) {
-        Order getOrder = orderRepository.save(order);
-        return getOrder.getId();
-    }
-
-    @Transactional
-    public Order updateOrder(Long userId, Long orderId, int state) {
-        Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setOrder(state, getOrder.getOrderInfoList());
+    public Order createOrder(Order order) {
+        Order getOrder =  orderRepository.save(order);
         return getOrder;
     }
 
-    public Order checkAuthentication(Long userId, Long orderId) {
-        Order getOrder = this.getOrder(orderId);
-        if (getOrder.getUser().getId() != userId) {
-            new ParaboleException(HttpStatus.UNAUTHORIZED, "주문에 접근할 수 없습니다.");
+    public List<Order> getOrderList(Long userId) {
+        List<Order> orderList = orderRepository.findAllByUserId(userId)
+            .stream()
+            .filter(order -> order.getState() != -1)
+            .collect(Collectors.toList());
+        return orderList;
+    }
+    @Transactional
+    public Order getOrder(Long userId) {
+        Order getOrder = null;
+        getOrder = this.getOrderByUserId(userId);
+        return getOrder;
+    }
+
+    @Transactional
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
+    @Transactional
+    public void checkOrderState(Long userId) {
+        Order order = this.getOrder(userId);
+        if (order == null) {
+            return;
         }
-        return getOrder;
-    }
-    @Transactional
-    public void deleteOrder(Long userId, Long orderId) {
-        Order getOrder = checkAuthentication(userId, orderId);
-        getOrder.setDeleted();
-    }
-
-    public Order getOrder(Long orderId) {
-        return orderRepository.findById(orderId)
-            .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "주문된 상품이 없습니다."));
+        if (order.getState() < 0) {
+            this.deleteOrder(order.getId());
+        }
     }
 
     public Order getOrderByUserId(Long userId) {
-        return orderRepository.findTopByUserIdOrderByIdDesc(userId);
+        return orderRepository.findTop1ByUserIdOrderByIdDesc(userId);
     }
+
+    // TODO: 셀러 별로 상품을 가져오기
+    // TODO: 제일 할인율이 높은 쿠폰을 각각의 셀러에게 적용하기
+//    public void categorizeOrder(List<OrderInfoResponseDto> list) {
+//        HashMap<Long, Integer> saveSellerIdByIdx = new HashMap<>();
+//        List<Long> sellerInfo = new ArrayList();
+//
+//        int idx = 0;
+
+        // HashMap을 사용해서 sellerInfo에 셀러별로 저장
+//        for(OrderInfoResponseDto orderInfo : list) {
+//            Order order = orderInfoService.getOrderInfoList();
+//            Seller seller = order.getUser().getSeller();
+//            if(saveSellerIdByIdx.containsKey(seller.getId())) {
+//                continue;
+//            } else {
+//                saveSellerIdByIdx.put(seller.getId(), idx++);
+//                sellerInfo.add(seller.getId());
+//            }
+//        }
+
+        // sellerInfo에 저장한 값을 토대로 셀러별 상품주문 리스트 저장
+//        List<Product>[] productInfo = new ArrayList[idx];
+//        Page<CouponAvailianceResponseDto> couponInfo = couponService.getUserCouponList()
+//
+//        for(OrderInfo orderInfo : list) {
+//            Order order = orderInfo.getOrder();
+//            Seller seller = order.getUser().getSeller();
+//            productInfo[saveSellerIdByIdx.get(seller.getId())].add(productService.getProduct(orderInfo.getProductId()));
+//        }
+//
+//        for(List<Product> productList : productInfo) {
+//            for(Product p : productList) {
+//                System.out.println(p);
+//            }
+//            System.out.println();
+//        }
+//    }
 
 }

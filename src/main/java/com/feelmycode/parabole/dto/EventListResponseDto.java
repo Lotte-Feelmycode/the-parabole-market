@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class EventListResponseDto {
 
     private Long id;
+    private String storeName;
     private Long sellerId;
     private String createdBy;
     private String type;
@@ -25,12 +26,13 @@ public class EventListResponseDto {
     private Integer status;
     private String descript;
     private EventImage eventImage;
-    private List<EventPrize> eventPrizes;
+    private List<EventPrizeDto> eventPrizes;
 
-    public EventListResponseDto(Long id, Long sellerId, String createdBy, String type, String title,
+    public EventListResponseDto(Long id, String storeName, Long sellerId, String createdBy, String type, String title,
         LocalDateTime startAt, LocalDateTime endAt, Integer status, String descript,
-        EventImage eventImage, List<EventPrize> eventPrizes) {
+        EventImage eventImage, List<EventPrizeDto> eventPrizes) {
         this.id = id;
+        this.storeName = storeName;
         this.sellerId = sellerId;
         this.createdBy = createdBy;
         this.type = type;
@@ -42,21 +44,19 @@ public class EventListResponseDto {
         this.eventImage = eventImage;
         this.eventPrizes = eventPrizes;
     }
-
-    static public EventListResponseDto of(Event event) {
-        return EventListResponseDto.builder()
-            .id(event.getId())
-            .sellerId(event.getSeller().getId())
-            .createdBy(event.getCreatedBy())
-            .type(event.getType())
-            .title(event.getTitle())
-            .startAt(event.getStartAt())
-            .endAt(event.getEndAt())
-            .status(event.getStatus())
-            .descript(event.getDescript())
-            .eventImage(event.getEventImage())
-            .eventPrizes(event.getEventPrizes())
-            .build();
+    public EventListResponseDto(Event event){
+        this.id =event.getId();
+        this.storeName = event.getSeller().getStoreName();
+        this.sellerId = event.getSeller().getId();
+        this.createdBy = event.getCreatedBy();
+        this.type = event.getType();
+        this.title = event.getTitle();
+        this.startAt = event.getStartAt();
+        this.endAt = event.getEndAt();
+        this.status = event.getStatus();
+        this.descript = event.getDescript();
+        this.eventImage = event.getEventImage();
+        this.eventPrizes = event.getEventPrizes().stream().map(EventPrizeDto::new).toList();
     }
 
 }

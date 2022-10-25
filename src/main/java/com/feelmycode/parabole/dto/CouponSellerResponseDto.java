@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponSellerResponseDto {
 
+        private Long couponId;
         private String name;
         private Integer type;
-        private Integer discountRate;
-        private Long discountAmount;
+        private Integer discountValue;
         private LocalDateTime createdAt;
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
@@ -21,12 +21,13 @@ public class CouponSellerResponseDto {
         private Long minPaymentAmount;
         private String detail;
         private Integer cnt;
+        private Integer remains;
 
         public CouponSellerResponseDto(Coupon coupon) {
+                this.couponId = coupon.getId();
                 this.name = coupon.getName();
                 this.type = coupon.getType().getValue();
-                this.discountRate = coupon.getDiscountRate();
-                this.discountAmount = coupon.getDiscountAmount();
+                this.discountValue = coupon.getDiscountValue();
                 this.createdAt = coupon.getCreatedAt();
                 this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
@@ -34,6 +35,7 @@ public class CouponSellerResponseDto {
                 this.minPaymentAmount = coupon.getMinPaymentAmount();
                 this.detail = coupon.getDetail();
                 this.cnt = coupon.getCnt();
+                this.remains = coupon.getNotAssignedUserCouponList().size();
         }
 
 }

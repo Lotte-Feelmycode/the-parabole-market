@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CouponService {
 
     private final SellerRepository sellerRepository;
@@ -39,11 +39,12 @@ public class CouponService {
     private final CouponRepository couponRepository;
     private final UserCouponRepository userCouponRepository;
 
+    @Transactional
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new NoDataException());
 
-        Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountRate(), dto.getDiscountAmount(), dto.getValidAt(),
+        Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
             dto.getExpiresAt(), dto.getMaxDiscountAmount(), dto.getMinPaymentAmount(), dto.getDetail(), dto.getCnt());
 
         couponRepository.save(coupon);
@@ -54,18 +55,21 @@ public class CouponService {
         return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
     }
 
-    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//    public void giveoutUserCoupon(String couponSNo, Long userId) {
+//
+//        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+//        if (userCoupon == null) {
+//            throw new NoDataException();
+//        }
+//
+//        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+//        userCoupon.setUser(user);
+//    }
 
-        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
-        if (userCoupon == null) {
-            throw new NoDataException();
-        }
-
-        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
-        userCoupon.setUser(user);
+    public Coupon getCouponById(Long couponId) {
+        return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
     }
 
-    @Transactional(readOnly = true)
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
@@ -77,7 +81,16 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    @Transactional(readOnly = true)
+    public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
+        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+
+        List<CouponSellerResponseDto> dtos = couponList.stream()
+            .map(CouponSellerResponseDto::new)
+            .collect(Collectors.toList());
+        return new PageImpl<>(dtos);
+    }
+
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
         List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
@@ -95,7 +108,11 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    @Transactional(readOnly = true)
+    public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
+        return coupon.getUserCoupons();
+    }
+
     public CouponInfoResponseDto getCouponInfo(String couponSNo) {
 
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
@@ -103,17 +120,10 @@ public class CouponService {
             throw new NoDataException();
         }
         Coupon coupon = userCoupon.getCoupon();
-
-        Object discountValue = null;
-
-        if(coupon.getType() == CouponType.RATE) {
-            discountValue = coupon.getDiscountRate();
-        }
-        discountValue = coupon.getDiscountAmount();
-
-        return new CouponInfoResponseDto(coupon.getType().getName(), discountValue);
+        return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
     }
 
+    @Transactional
     public void useUserCoupon(String couponSNo, Long userId) {
 
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);

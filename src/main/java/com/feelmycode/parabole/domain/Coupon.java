@@ -2,12 +2,14 @@ package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.enumtype.CouponType;
+import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,13 +50,9 @@ public class Coupon extends BaseEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private CouponType type;
 
-    @Column(name = "coupon_discount_rate")
+    @Column(name = "coupon_discount_value")
     @NotNull
-    private Integer discountRate;               // 할인율
-
-    @Column(name = "coupon_discount_amount")
-    @NotNull
-    private Long discountAmount;                // 할인금액(원)
+    private Integer discountValue;
 
     @Column(name = "coupon_valid_at")
     @NotNull
@@ -87,15 +85,14 @@ public class Coupon extends BaseEntity implements Serializable {
 //        this.seller = seller;
 //    }
 
-    public Coupon(String name, Seller seller, CouponType type, Integer discountRate,
-        Long discountAmount, LocalDateTime validAt, LocalDateTime expiresAt,
+    public Coupon(String name, Seller seller, CouponType type, Integer discountValue,
+        LocalDateTime validAt, LocalDateTime expiresAt,
         Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 
         this.name = name;
         this.seller = seller;
         this.type = type;
-        this.discountRate = discountRate;
-        this.discountAmount = discountAmount;
+        this.discountValue = discountValue;
         this.validAt = validAt;
         this.expiresAt = expiresAt;
         this.maxDiscountAmount = maxDiscountAmount;
@@ -109,5 +106,45 @@ public class Coupon extends BaseEntity implements Serializable {
         this.userCoupons.add(userCoupon);
     }
 
+    public int getUsedUserCouponCnt() {
+        int cnt = 0;
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUseState().equals(CouponUseState.Used)){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
 
+    public int getNotUsedUserCouponCnt() {
+        int cnt = 0;
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUseState().equals(CouponUseState.NotUsed)){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    public List<UserCoupon> getUsedUserCouponList() {
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.Used.equals(uc.getUseState()))
+            .collect(Collectors.toList());
+    }
+
+    public List<UserCoupon> getNotUsedUserCouponList() {
+        return userCoupons.stream()
+            .filter(uc -> CouponUseState.NotUsed.equals(uc.getUseState()))
+            .collect(Collectors.toList());
+    }
+
+    public List<UserCoupon> getNotAssignedUserCouponList() {
+        List<UserCoupon> list = new ArrayList<>();
+        for (UserCoupon uc : userCoupons) {
+            if(uc.getUser() == null){
+                list.add(uc);
+            }
+        }
+        return list;
+    }
 }

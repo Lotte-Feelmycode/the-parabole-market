@@ -1,5 +1,7 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.dto.OrderInfoResponseDto;
+import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,13 +33,21 @@ public class OrderInfo extends BaseEntity {
 //    @OneToOne(mappedBy = "orderInfo", cascade = CascadeType.ALL)
 //    private UserCoupon userCoupon;
 
+    // 배송의 상태
+    @Column(name = "order_info_state")
+    private Integer state;
+
+    @NotNull
+    @Column(name = "product_id")
+    private Long productId;
+
     @NotNull
     @Column(name = "product_name")
     private String productName;
 
     @NotNull
     @Column(name = "product_cnt")
-    private int productCnt;
+    private Integer productCnt;
 
     @NotNull
     @Column(name = "product_price")
@@ -47,18 +57,49 @@ public class OrderInfo extends BaseEntity {
     @Column(name = "product_discount_price")
     private Long productDiscountPrice;
 
-    public OrderInfo(Order order) {
-        this.order = order;
+    @NotNull
+    @Column(name = "seller_id")
+    private Long sellerId;
+
+    @NotNull
+    @Column(name = "seller_store_name")
+    private String sellerStoreName;
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
-    public OrderInfo(Order order, UserCoupon userCoupon, String productName, int productCnt,
-        Long productPrice, Long productDiscountPrice) {
+    public OrderInfo(Order order, UserCoupon userCoupon, Integer state,
+        Long productId, String productName, Integer productCnt,
+        Long productPrice, Long productDiscountPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
 //        this.userCoupon = userCoupon;
+        this.state = state;
+        this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
+        this.sellerId = sellerId;
+        this.sellerStoreName = sellerStoreName;
+    }
+
+    public OrderInfo(Order order, Long productId,
+        String productName, Integer productCnt, Long productPrice, Long sellerId, String sellerStoreName) {
+        this.order = order;
+        this.productId = productId;
+        this.productName = productName;
+        this.productCnt = productCnt;
+        this.productPrice = productPrice;
+        this.sellerId = sellerId;
+        this.sellerStoreName = sellerStoreName;
+    }
+
+    public OrderInfoResponseDto toDto() {
+        return new OrderInfoResponseDto(id, OrderInfoState.returnNameByValue(state), order.getUser().getId(),
+            order.getUser().getEmail(), productId, productName, productCnt, productPrice,
+            productDiscountPrice);
     }
 
 }
+

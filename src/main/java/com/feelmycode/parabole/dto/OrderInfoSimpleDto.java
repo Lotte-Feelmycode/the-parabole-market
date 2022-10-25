@@ -1,15 +1,14 @@
 package com.feelmycode.parabole.dto;
 
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderInfoListDto {
+public class OrderInfoSimpleDto {
 
-    private Long userId;
-    private List<OrderInfoSimpleDto> orderInfoDto;
+    private Long productId;
+    private Integer productCnt;
 
 }
