@@ -140,7 +140,15 @@ public class CartItemService {
             Long id = Long.parseLong(key.split("\\$")[0]);
             String store = key.split("\\$")[1];
             if(cartWithCouponDto.add(id)) {
-                cartItemWithCoupon[sellerIdMap.get(key)].add(new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)], couponList.get(id)));
+                if(couponList.isEmpty()) {
+                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                        new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)],
+                            new CouponResponseDto()));
+                } else {
+                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                        new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)],
+                            couponList.get(id)));
+                }
             }
         }
 
