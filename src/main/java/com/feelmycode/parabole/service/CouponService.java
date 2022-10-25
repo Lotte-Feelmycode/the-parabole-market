@@ -129,7 +129,7 @@ public class CouponService {
         return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
     }
 
-    public HashMap<Long, CouponResponseDto> getCouponListByUserId(Long userId) {
+    public HashMap<Long, CouponResponseDto> getCouponMapByUserId(Long userId) {
 
         Comparator<UserCoupon> coupon = (c1, c2) -> {
             if (c1.getCoupon().getType() == c2.getCoupon().getType()) {
@@ -149,41 +149,46 @@ public class CouponService {
         HashMap<Long, CouponResponseDto> couponMap = new HashMap<>();
 
         for (UserCoupon userCoupon : couponInfoList) {
-            Long sellerId = userCoupon.getCoupon().getSeller().getId();
 
-            Coupon couponInfo = couponRepository.findById(userCoupon.getCoupon().getId())
-                .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "쿠폰정보를 찾을 수 없습니다."));
+            Long sellerId = userCoupon.getCoupon().getSeller().getId();
+            Coupon couponInfo = userCoupon.getCoupon();
 
             CouponResponseDto response = null;
-
             if(couponMap.containsKey(sellerId)) {
                 response = couponMap.get(sellerId);
             } else {
                 response = new CouponResponseDto();
             }
 
-            if (userCoupon.getCoupon().getType() == CouponType.RATE) {            // RATE TYPE
+            if (couponInfo.getType() == CouponType.RATE) {            // RATE TYPE
                 List<CouponInfoDto> rateCoupon = response.getRateCoupon();
                 rateCoupon.add(new CouponInfoDto(
                     couponInfo.getName(),
                     couponInfo.getSeller().getStoreName(),
-                    userCoupon.getCoupon().getType().getName(),
-                    userCoupon.getCoupon().getDiscountValue()));
+                    couponInfo.getType().getName(),
+                    couponInfo.getDiscountValue()
+                ));
 
                 couponMap.put(sellerId, response.setRateCoupon(rateCoupon));
             }
-            else {            // AMOUNT TYPE
+            else if(couponInfo.getType() == CouponType.AMOUNT){            // AMOUNT TYPE
                 List<CouponInfoDto> amountCoupon = response.getAmountCoupon();
-                amountCoupon.add(new CouponInfoDto(couponInfo.getName(),
+                amountCoupon.add(new CouponInfoDto(
+                    couponInfo.getName(),
                     couponInfo.getSeller().getStoreName(),
-                    userCoupon.getCoupon().getType().getName(),
-                    userCoupon.getCoupon().getDiscountValue()));
+                    couponInfo.getType().getName(),
+                    couponInfo.getDiscountValue()
+                ));
 
                 couponMap.put(sellerId, response.setAmountCoupon(amountCoupon));
             }
+            else {
+                log.info("잘못된 쿠폰 정보가 저장되어있습니다. userCoupon_id : {} / CouponType : {}", userCoupon.getId(), userCoupon.getCoupon().getType());
+                throw new ParaboleException(HttpStatus.NOT_FOUND, "잘못된 쿠폰 정보가 저장되어있습니다.");
+            }
         }
 
-        if (couponMap.size() == 0) {
+        if (couponMap.isEmpty()) {
             return new HashMap<>();
         }
         return couponMap;

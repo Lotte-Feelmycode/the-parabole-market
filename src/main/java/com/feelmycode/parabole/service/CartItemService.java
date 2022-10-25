@@ -3,6 +3,7 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
@@ -98,17 +99,16 @@ public class CartItemService {
 
         Cart cart = cartService.getCart(userId);
 
-        List<CartItemDto> getCartItems = cartItemRepository.findAllByCartId(cart.getId())
+        List<CartItem> getCartItems = cartItemRepository.findAllByCartId(cart.getId())
             .stream().sorted(Comparator.comparing(CartItem::getId).reversed())
-            .map(CartItemDto::new).toList();
+            .toList();
 
         HashMap<String, Integer> sellerIdMap = new HashMap<>();
 
         int idx = 1;
-        for(CartItemDto item : getCartItems) {
-            Long sellerId = item.getProduct().getSellerId();
-            String storeName = sellerService.getSellerBySellerId(sellerId).getStoreName();
-            String key = sellerId+"$"+storeName;
+        for(CartItem item : getCartItems) {
+            Seller seller = item.getProduct().getSeller();
+            String key = seller.getId()+"$"+seller.getStoreName();
             if(!sellerIdMap.containsKey(key)) {
                 sellerIdMap.put(key, idx++);
             }
@@ -119,14 +119,13 @@ public class CartItemService {
             getItemList[i] = new ArrayList<>();
         }
 
-        for (CartItemDto item : getCartItems) {
-            Long sellerId = item.getProduct().getSellerId();
-            String storeName = sellerService.getSellerBySellerId(sellerId).getStoreName();
-            String key = sellerId+"$"+storeName;
-            getItemList[sellerIdMap.get(key)].add(item);
+        for (CartItem item : getCartItems) {
+            Seller seller = item.getProduct().getSeller();
+            String key = seller.getId()+"$"+seller.getStoreName();
+            getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
         }
 
-        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponListByUserId(userId);
+        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
         List<CartWithCouponResponseDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()+1];
 
@@ -137,17 +136,17 @@ public class CartItemService {
         HashSet<Long> cartWithCouponDto = new HashSet<>();
 
         for(String key : sellerIdMap.keySet()) {
-            Long id = Long.parseLong(key.split("\\$")[0]);
-            String store = key.split("\\$")[1];
-            if(cartWithCouponDto.add(id)) {
+            Long sellerId = Long.parseLong(key.split("\\$")[0]);
+            String storeName = key.split("\\$")[1];
+            if(cartWithCouponDto.add(sellerId)) {
                 if(couponList.isEmpty()) {
                     cartItemWithCoupon[sellerIdMap.get(key)].add(
-                        new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)],
+                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
                     cartItemWithCoupon[sellerIdMap.get(key)].add(
-                        new CartWithCouponResponseDto(id, store, getItemList[sellerIdMap.get(key)],
-                            couponList.get(id)));
+                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
+                            couponList.get(sellerId)));
                 }
             }
         }
