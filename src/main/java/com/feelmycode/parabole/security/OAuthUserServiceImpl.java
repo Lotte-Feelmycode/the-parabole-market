@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class OAuthUserServiceImpl extends DefaultOAuth2UserService {
-
+// public class PrincipalOauth2UserService extends DefaultOAuth2UserService { 와 동일
     @Autowired
     private UserRepository userRepository;
 
@@ -36,22 +36,30 @@ public class OAuthUserServiceImpl extends DefaultOAuth2UserService {
         }
 
         // login 필드를 가져온다.
-        final String username = (String) oAuth2User.getAttributes().get("login");
+        final String googleSub = (String) oAuth2User.getAttributes().get("sub");
+        final String googleName = (String) oAuth2User.getAttributes().get("name");
+        final String googlePic = (String) oAuth2User.getAttributes().get("picture");
+        final String googleEmail = (String) oAuth2User.getAttributes().get("email");
+
+        log.info("googleEmail : " + googleEmail);
         final String authProvider = userRequest.getClientRegistration().getClientName();
         User user = null;
         // 유저가 존재하지 않으면 새로 생성한다.
-        if(!userRepository.existsByUsername(username)) {
+        if(!userRepository.existsByEmail(googleEmail)) {
             user = User.builder()
-                .username(username)
+                .email(googleEmail)
+                .username(googleName)
+                .imageUrl(googlePic)
+                .nickname("")
                 .authProvider(authProvider)
                 .build();
             user = userRepository.save(user);
         } else {
-            user = userRepository.findByUsername(username);
+            user = userRepository.findByEmail(googleEmail);
         }
 
         log.info("Successfully pulled user info username {} authProvider {}",
-            username,
+            googleEmail,
             authProvider);
         // 변경 부분
         return new ApplicationOAuth2User(user.getId().toString(), oAuth2User.getAttributes());

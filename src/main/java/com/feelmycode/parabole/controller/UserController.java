@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,5 +65,15 @@ public class UserController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 사용자 조회 성공",
             userService.getNonSellerUsers(getUserName));
     }
+//      .then((res) => {
+//        console.log(res);
+//        console.log(res.id);
+//        console.log(res.token);
+    // for login 완료
+    @PostMapping("/welcome")
+    public ResponseEntity<ParaboleResponse> getWelcomePage(@AuthenticationPrincipal Long userId) {
 
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
+            "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
+    }
 }
