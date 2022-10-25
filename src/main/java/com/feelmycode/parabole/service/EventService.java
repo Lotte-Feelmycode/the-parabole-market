@@ -126,19 +126,29 @@ public class EventService {
     /**
      * 검색 조건으로 이벤트 목록 조회 (경품 목록 제외)
      */
-    public List<EventSearchResponseDto> getEventsSearch(EventSearchRequestDto eventSearchRequestDto) {
+    public List<EventSearchResponseDto> getEventsSearch(
+        EventSearchRequestDto eventSearchRequestDto) {
 
         List<Event> eventList = null;
-        if(!StringUtils.isEmpty(eventSearchRequestDto.getEventType())) {
-            eventList = eventRepository.findAllByTypeAndIsDeleted(eventSearchRequestDto.getEventType().getCode(), false);
-        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventTitle())) {
-            eventList = eventRepository.findAllByTitleContainingAndIsDeleted(eventSearchRequestDto.getEventTitle(), false);
-        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
-            eventList = eventSearchRequestDto.getDateDiv() < 1 
-            ? eventRepository.findAllByStartAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false) 
-            : eventRepository.findAllByEndAtBetweenAndIsDeleted(eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(), false);
-        } else if (!StringUtils.isEmpty(eventSearchRequestDto.getEventStatus())) {
-            eventList = eventRepository.findAllByStatusAndIsDeleted(eventSearchRequestDto.getEventStatus().getValue(), false);
+        Integer status = null;
+        String title = null;
+        String type = null;
+
+
+        if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
+            eventList = eventSearchRequestDto.getDateDiv() < 1
+                ? eventRepository.findAllByStartAtBetweenAndIsDeleted(
+                eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(),
+                false)
+                : eventRepository.findAllByEndAtBetweenAndIsDeleted(
+                    eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(),
+                    false);
+        } else {
+            status = eventSearchRequestDto.getEventStatus().getValue();
+            title = eventSearchRequestDto.getEventTitle();
+            type = eventSearchRequestDto.getEventType().getCode();
+            eventList = eventRepository.findAllByTypeAndStatusAndTitleContainingAndIsDeleted(type,
+                status, title, false);
         }
 
         return eventList.stream()
