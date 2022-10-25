@@ -2,7 +2,6 @@ package com.feelmycode.parabole.controller;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -31,9 +30,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -72,21 +69,59 @@ public class ProductControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(document("product-list",
-                preprocessRequest(modifyUris()
-                        .scheme("https")
-                        .host("parabole.com"),
-                    prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("sellerId").description("셀러 이름"),
-                    parameterWithName("storeName").description("셀러 스토어 이름"),
-                    parameterWithName("category").description("카테고리"),
-                    parameterWithName("productName").description("상품명")
+                    preprocessRequest(modifyUris()
+                            .scheme("https")
+                            .host("parabole.com"),
+                        prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestParameters(
+                        parameterWithName("sellerId").description("셀러 이름"),
+                        parameterWithName("storeName").description("셀러 스토어 이름"),
+                        parameterWithName("category").description("카테고리"),
+                        parameterWithName("productName").description("상품명")
+                    ),
+                    responseFields(
+                        fieldWithPath("success").description("성공여부"),
+                        fieldWithPath("message").description("메세지"),
+                        fieldWithPath("data").description("상품 목록"),
+                        fieldWithPath("data.content").description("상품"),
+                        fieldWithPath("data.content.[].productId").description("상품 아이디"),
+                        fieldWithPath("data.content.[].productName").description("상품 명"),
+                        fieldWithPath("data.content.[].sellerId").description("셀러 아이디"),
+                        fieldWithPath("data.content.[].storeName").description("셀러 스토어 이름"),
+                        fieldWithPath("data.content.[].productStatus").description("상품 상태"),
+                        fieldWithPath("data.content.[].productRemains").description("상품 재고"),
+                        fieldWithPath("data.content.[].productPrice").description("상품 가격"),
+                        fieldWithPath("data.content.[].productCategory").description("상품 카테고리"),
+                        fieldWithPath("data.content.[].productThumbnailImg").description("상품 썸네일"),
+                        fieldWithPath("data.content.[].productCreatedAt").description("생성일자"),
+                        fieldWithPath("data.content.[].productUpdatedAt").description("수정일자"),
+                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자"),
+                        fieldWithPath("data.content.[].productIsDeleted").description("삭제여부"),
+                        fieldWithPath("data.pageable").description("페이징 처리"),
+                        fieldWithPath("data.pageable.sort").description("페이징 처리"),
+                        fieldWithPath("data.pageable.sort.empty").description("페이징 처리"),
+                        fieldWithPath("data.pageable.sort.unsorted").description("페이징 처리"),
+                        fieldWithPath("data.pageable.sort.sorted").description("페이징 처리"),
+                        fieldWithPath("data.pageable.offset").description("페이징 처리"),
+                        fieldWithPath("data.pageable.pageNumber").description("페이징 처리"),
+                        fieldWithPath("data.pageable.pageSize").description("페이징 처리"),
+                        fieldWithPath("data.pageable.unpaged").description("페이징 처리"),
+                        fieldWithPath("data.pageable.paged").description("페이징 처리"),
+                        fieldWithPath("data.totalElements").description("총 항목 수"),
+                        fieldWithPath("data.totalPages").description("총 페이지 수"),
+                        fieldWithPath("data.last").description(""),
+                        fieldWithPath("data.size").description(""),
+                        fieldWithPath("data.number").description(""),
+                        fieldWithPath("data.sort").description(""),
+                        fieldWithPath("data.sort.empty").description(""),
+                        fieldWithPath("data.sort.unsorted").description(""),
+                        fieldWithPath("data.sort.sorted").description(""),
+                        fieldWithPath("data.numberOfElements").description("총 개수"),
+                        fieldWithPath("data.first").description(""),
+                        fieldWithPath("data.empty").description("")
                     )
-                )/*,*/
-//                responseFields(
-//                    fieldWithPath()
-//                )
+                )
             )
             .when()
             .port(port)
