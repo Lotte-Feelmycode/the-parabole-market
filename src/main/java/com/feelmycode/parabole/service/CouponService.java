@@ -73,7 +73,7 @@ public class CouponService {
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+        List<Coupon> couponList = couponRepository.findAllValidBySellerId(seller.getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
                                             .map(CouponSellerResponseDto::new)
@@ -93,7 +93,7 @@ public class CouponService {
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
+        List<UserCoupon> couponList =  userCouponRepository.findAllValidByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
