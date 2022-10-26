@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +31,9 @@ public class OrderInfo extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-//    @OneToOne(mappedBy = "orderInfo", cascade = CascadeType.ALL)
-//    private UserCoupon userCoupon;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_coupon_id")
+    private UserCoupon userCoupon;
 
     // 배송의 상태
     @Column(name = "order_info_state")
@@ -84,9 +86,10 @@ public class OrderInfo extends BaseEntity {
         this.sellerStoreName = sellerStoreName;
     }
 
-    public OrderInfo(Order order, Long productId,
+    public OrderInfo(Order order, UserCoupon userCoupon, Long productId,
         String productName, Integer productCnt, Long productPrice, Long sellerId, String sellerStoreName) {
         this.order = order;
+        this.userCoupon = userCoupon;
         this.productId = productId;
         this.productName = productName;
         this.productCnt = productCnt;
@@ -102,4 +105,3 @@ public class OrderInfo extends BaseEntity {
     }
 
 }
-
