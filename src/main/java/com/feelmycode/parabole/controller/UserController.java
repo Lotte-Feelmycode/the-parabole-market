@@ -45,11 +45,7 @@ public class UserController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 사용자 조회 성공",
             userService.getNonSellerUsers(getUserName));
     }
-//      .then((res) => {
-//        console.log(res);
-//        console.log(res.id);
-//        console.log(res.token);
-    // for login 완료
+
     @PostMapping("/welcome")
     public ResponseEntity<ParaboleResponse> getWelcomePage(@AuthenticationPrincipal Long userId) {
 
