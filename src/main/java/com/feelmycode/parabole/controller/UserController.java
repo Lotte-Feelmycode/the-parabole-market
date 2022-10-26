@@ -30,13 +30,6 @@ public class UserController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_USER", userService.getUser(userId).getId());
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<ParaboleResponse> getUserInfo(@AuthenticationPrincipal Long userId) {
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
-            "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
-    }
-
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getNonSellerUsers(@RequestParam(required = false) String userName) {
 
@@ -46,10 +39,10 @@ public class UserController {
             userService.getNonSellerUsers(getUserName));
     }
 
-    @PostMapping("/welcome")
-    public ResponseEntity<ParaboleResponse> getWelcomePage(@AuthenticationPrincipal Long userId) {
+    @PostMapping("/info")
+    public ResponseEntity<ParaboleResponse> getUserInfo(@AuthenticationPrincipal Long userId) {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
-            "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
+            "사용자 개인정보 정상 출력", userService.getUserInfo(userId));
     }
 }
