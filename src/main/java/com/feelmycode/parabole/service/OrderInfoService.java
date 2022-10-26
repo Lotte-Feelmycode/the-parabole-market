@@ -10,6 +10,7 @@ import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class OrderInfoService {
         SellerDto seller = sellerService.getSellerBySellerId(product.getSeller().getId());
 
         OrderInfo orderInfo = new OrderInfo(order,
+            null,
             orderInfoDto.getProductId(),
             product.getName(),
             orderInfoDto.getProductCnt(),
@@ -47,6 +49,13 @@ public class OrderInfoService {
         orderInfoRepository.save(orderInfo);
     }
 
+    public List<OrderInfoResponseDto> getOrderInfoListByUserId(List<Order> orderList) {
+        List<OrderInfo> orderInfoList = new ArrayList<>();
+        for(Order order : orderList) {
+            orderInfoList.addAll(this.getOrderInfoListByOrderId(order.getId()));
+        }
+        return this.changeEntityToDto(orderInfoList);
+    }
     public boolean isDeliveryComplete(Long userId) {
         List<OrderInfoResponseDto> orderInfoResponseDtoList = getOrderInfoListByUserId(userId);
         return orderInfoResponseDtoList.stream()
@@ -61,8 +70,10 @@ public class OrderInfoService {
     }
 
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
-        log.info("Service sellerId: {}", sellerId);
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
+            .stream()
+            .filter(state -> state.getState() != -1)
+            .collect(Collectors.toList());
         return changeEntityToDto(getOrderInfoList);
     }
 

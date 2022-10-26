@@ -42,9 +42,8 @@ public class OrderInfoController {
     @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoListDto) {
         try {
-            if (orderService.isOrderEmpty(orderInfoListDto.getUserId())) {
-                orderService.createOrder(new Order(userService.getUser(orderInfoListDto.getUserId()), DELIVERY_FEE));
-            }
+            orderService.checkOrderState(orderInfoListDto.getUserId());
+            orderService.createOrder(new Order(userService.getUser(orderInfoListDto.getUserId()), DELIVERY_FEE));
 
             for (OrderInfoSimpleDto orderInfo : orderInfoListDto.getOrderInfoDto()) {
                 orderInfoService.saveOrderInfo(orderInfoListDto.getUserId(), orderInfo);

@@ -4,9 +4,11 @@ import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
+import com.feelmycode.parabole.dto.CouponInfoDto;
 import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
+import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
@@ -20,15 +22,19 @@ import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -73,7 +79,7 @@ public class CouponService {
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllValidBySellerId(seller.getId());
+        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
                                             .map(CouponSellerResponseDto::new)
@@ -93,7 +99,7 @@ public class CouponService {
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList =  userCouponRepository.findAllValidByUserId(userId);
+        List<UserCoupon> couponList =  userCouponRepository.findAllByUserId(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
@@ -121,6 +127,71 @@ public class CouponService {
         }
         Coupon coupon = userCoupon.getCoupon();
         return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
+    }
+
+    public HashMap<Long, CouponResponseDto> getCouponMapByUserId(Long userId) {
+
+        Comparator<UserCoupon> coupon = (c1, c2) -> {
+            if (c1.getCoupon().getType() == c2.getCoupon().getType()) {
+                return -Integer.compare(c1.getCoupon().getDiscountValue(),
+                    c2.getCoupon().getDiscountValue());
+            }
+            return 1;
+        };
+
+        List<UserCoupon> couponInfoList = userCouponRepository.findAllByUserId(userId)
+            .stream()
+            .filter(userCoupon -> userCoupon.getUseState() == CouponUseState.NotUsed)
+            .sorted(Comparator.comparing(userCoupon -> userCoupon.getCoupon().getType()))
+            .sorted(coupon)
+            .collect(Collectors.toList());
+
+        HashMap<Long, CouponResponseDto> couponMap = new HashMap<>();
+
+        for (UserCoupon userCoupon : couponInfoList) {
+
+            Long sellerId = userCoupon.getCoupon().getSeller().getId();
+            Coupon couponInfo = userCoupon.getCoupon();
+
+            CouponResponseDto response = null;
+            if(couponMap.containsKey(sellerId)) {
+                response = couponMap.get(sellerId);
+            } else {
+                response = new CouponResponseDto();
+            }
+
+            if (couponInfo.getType() == CouponType.RATE) {            // RATE TYPE
+                List<CouponInfoDto> rateCoupon = response.getRateCoupon();
+                rateCoupon.add(new CouponInfoDto(
+                    couponInfo.getName(),
+                    couponInfo.getSeller().getStoreName(),
+                    couponInfo.getType().getName(),
+                    couponInfo.getDiscountValue()
+                ));
+
+                couponMap.put(sellerId, response.setRateCoupon(rateCoupon));
+            }
+            else if(couponInfo.getType() == CouponType.AMOUNT){            // AMOUNT TYPE
+                List<CouponInfoDto> amountCoupon = response.getAmountCoupon();
+                amountCoupon.add(new CouponInfoDto(
+                    couponInfo.getName(),
+                    couponInfo.getSeller().getStoreName(),
+                    couponInfo.getType().getName(),
+                    couponInfo.getDiscountValue()
+                ));
+
+                couponMap.put(sellerId, response.setAmountCoupon(amountCoupon));
+            }
+            else {
+                log.info("잘못된 쿠폰 정보가 저장되어있습니다. userCoupon_id : {} / CouponType : {}", userCoupon.getId(), userCoupon.getCoupon().getType());
+                throw new ParaboleException(HttpStatus.NOT_FOUND, "잘못된 쿠폰 정보가 저장되어있습니다.");
+            }
+        }
+
+        if (couponMap.isEmpty()) {
+            return new HashMap<>();
+        }
+        return couponMap;
     }
 
     @Transactional
