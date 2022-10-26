@@ -46,7 +46,7 @@ public class AuthController {
                 .id(registeredUser.getId())
                 .name(registeredUser.getUsername())
                 .build();
-            // 유저 정보는 항상 하나이므로 그냥 리스트로 만들어야하는 ResponseDTO를 사용하지 않고 그냥 UserDTO 리턴.
+
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 회원가입 성공",
                 responseUserDTO);
         } catch (Exception e) {
