@@ -23,11 +23,9 @@ public class TokenProvider {
                 .plus(1, ChronoUnit.DAYS));
 
         return Jwts.builder()
-            // header에 들어갈 내용 및 서명을 하기 위한 SECRET_KEY
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-            // payload에 들어갈 내용
             .setSubject(User.getId().toString()) // sub
-            .setIssuer("theparabole app") // iss
+            .setIssuer("The Parabole app") // iss
             .setIssuedAt(new Date()) // iat
             .setExpiration(expiryDate) // exp
             .compact();
@@ -49,7 +47,7 @@ public class TokenProvider {
                 .plus(1, ChronoUnit.DAYS));
 
         return Jwts.builder()
-            .setSubject(userPrincipal.getName()) // id가 리턴됨.
+            .setSubject(userPrincipal.getName())
             .setIssuedAt(new Date())
             .setExpiration(expiryDate)
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)

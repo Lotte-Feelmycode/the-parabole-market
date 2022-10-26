@@ -28,7 +28,7 @@ public class OAuthUserServiceImpl extends DefaultOAuth2UserService {
         final OAuth2User oAuth2User = super.loadUser(userRequest);
 
         try {
-            log.info("OAuth2User attributes {} ", new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
+            log.info("OAuth2User attributes {}", new ObjectMapper().writeValueAsString(oAuth2User.getAttributes()));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class OAuthUserServiceImpl extends DefaultOAuth2UserService {
         final String googlePic = (String) oAuth2User.getAttributes().get("picture");
         final String googleEmail = (String) oAuth2User.getAttributes().get("email");
 
-        log.info("googleEmail : " + googleEmail);
+        log.info("googleEmail : {}", googleEmail);
         final String authProvider = userRequest.getClientRegistration().getClientName();
         User user = null;
 
