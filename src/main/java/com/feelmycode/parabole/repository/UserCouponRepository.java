@@ -12,7 +12,6 @@ public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
     List<UserCoupon> findAllByUserId(Long userId);
     @Query(value="select uc from UserCoupon uc where uc.coupon.expiresAt <= current_date")
     List<UserCoupon> findAllValidByUserId(Long userId);
-
     UserCoupon findBySerialNo(String serialNo);
 
 }

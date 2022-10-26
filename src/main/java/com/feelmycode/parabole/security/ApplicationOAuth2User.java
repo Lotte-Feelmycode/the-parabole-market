@@ -31,6 +31,6 @@ public class ApplicationOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return this.id; // name 대신 id를 리턴한다.
+        return this.id;
     }
 }

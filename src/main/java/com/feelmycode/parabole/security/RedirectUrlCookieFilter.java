@@ -21,7 +21,7 @@ public class RedirectUrlCookieFilter extends OncePerRequestFilter {
         if (request.getRequestURI().startsWith("/auth/authorize")) {
             try {
                 log.info("request uri {} ", request.getRequestURI());
-                String redirectUrl = request.getParameter(REDIRECT_URI_PARAM); // 리퀘스트 파라미터에서 redirect_url을 가져온다.
+                String redirectUrl = request.getParameter(REDIRECT_URI_PARAM);
 
                 Cookie cookie = new Cookie(REDIRECT_URI_PARAM, redirectUrl);
                 cookie.setPath("/");
@@ -30,7 +30,7 @@ public class RedirectUrlCookieFilter extends OncePerRequestFilter {
                 response.addCookie(cookie);
 
             } catch (Exception ex) {
-                logger.error("Could not set user authentication in security context", ex);
+                log.error("Could not set user authentication in security context", ex);
                 log.info("Unauthorized request");
             }
 
@@ -43,3 +43,4 @@ public class RedirectUrlCookieFilter extends OncePerRequestFilter {
         }
     }
 }
+

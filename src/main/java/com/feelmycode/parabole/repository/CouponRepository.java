@@ -12,6 +12,5 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
     List<Coupon> findAllBySellerId(Long sellerId);
     @Query(value="select c from Coupon c where c.expiresAt <= current_date")
     List<Coupon> findAllValidBySellerId(Long sellerId);
-
     List<Coupon> findAllByNameAndSellerId(String couponName, Long sellerId);
 }

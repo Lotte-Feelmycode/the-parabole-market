@@ -1,9 +1,9 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.security.TokenProvider;
-import com.feelmycode.parabole.security.UserDTO;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +29,22 @@ public class AuthController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ParaboleResponse> registerUser(@RequestBody UserDto userDTO) {
         try {
             // 리퀘스트를 이용해 저장할 유저 만들기
             User user = User.builder()
                 .email(userDTO.getEmail())
-                .username(userDTO.getUsername())
+                .username(userDTO.getName())
                 .nickname(userDTO.getNickname())
                 .phone(userDTO.getPhone())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .build();
             // 서비스를 이용해 리파지토리에 유저 저장
             User registeredUser = userService.create(user);
-            UserDTO responseUserDTO = UserDTO.builder()
+            UserDto responseUserDTO = UserDto.builder()
                 .email(registeredUser.getEmail())
                 .id(registeredUser.getId())
-                .username(registeredUser.getUsername())
+                .name(registeredUser.getUsername())
                 .build();
             // 유저 정보는 항상 하나이므로 그냥 리스트로 만들어야하는 ResponseDTO를 사용하지 않고 그냥 UserDTO 리턴.
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 회원가입 성공",
@@ -56,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ParaboleResponse> authenticate(@RequestBody UserDto userDTO) {
         User user = userService.getByCredentials(
             userDTO.getEmail(),
             userDTO.getPassword(),
@@ -65,7 +65,7 @@ public class AuthController {
         if (user != null) {
             // 토큰 생성
             final String token = tokenProvider.create(user);
-            final UserDTO responseUserDTO = UserDTO.builder()
+            final UserDto responseUserDTO = UserDto.builder()
                 .id(user.getId())
                 .token(token)
 //                .email(user.getUsername())

@@ -33,5 +33,4 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         log.info("token {}", token);
         response.sendRedirect(redirectUri.orElseGet(() -> LOCAL_REDIRECT_URL) + "/sociallogin?token=" + token);
     }
-
 }

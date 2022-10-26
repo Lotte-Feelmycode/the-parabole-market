@@ -35,18 +35,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // http 시큐리티 빌더
         http.cors() // WebMvcConfig에서 이미 설정했으므로 기본 cors 설정.
             .and()
-            .csrf()// csrf는 현재 사용하지 않으므로 disable
-            .disable()
-            .httpBasic()// token을 사용하므로 basic 인증 disable
-            .disable()
+            .csrf().disable()
+            .httpBasic().disable()
             .sessionManagement()  // session 기반이 아님을 선언
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
             .and()
             .authorizeRequests() // /와 /auth/** 경로는 인증 안해도 됨.
-//            .antMatchers("/api/v1/coupon/user/**").access("hasRole('ROLE_USER')")
-//            .antMatchers("/api/v1/coupon/seller/**").access("hasRole('ROLE_SELLER')")
-//            .antMatchers("/","/api/v1", "/api/v1/auth/**", "/oauth2/**", "/api/v1/coupon/list/**").permitAll()
-            .antMatchers("/","/api/v1/auth/**").permitAll()
+            .antMatchers("/","/api/v1/auth/**", "/api/v1/product/", "/api/v1/product/list", "/api/v1/event/list").permitAll()
             .anyRequest() // /와 /auth/**이외의 모든 경로는 인증 해야됨.
             .authenticated()
 
@@ -54,14 +50,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .oauth2Login()
             .redirectionEndpoint()
             .baseUri("/oauth2/callback/*")
+
             .and()
             .authorizationEndpoint()
             .baseUri("/auth/authorize") // OAuth 2.0 흐름 시작을 위한 엔드포인트 추가
+
             .and()
             .userInfoEndpoint()
             .userService(oAuthUserService) // OAuthUserServiceImpl를 유저 서비스로 등록
+
             .and()
             .successHandler(oAuthSuccessHandler)
+
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(new Http403ForbiddenEntryPoint()); // Http403ForbiddenEntryPoint 추가

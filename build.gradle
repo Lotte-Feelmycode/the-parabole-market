@@ -38,6 +38,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
+
 //    implementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
@@ -45,6 +46,7 @@ dependencies {
 //    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     compileOnly 'org.projectlombok:lombok'
+
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
     annotationProcessor 'org.projectlombok:lombok'
