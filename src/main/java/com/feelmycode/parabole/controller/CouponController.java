@@ -50,24 +50,28 @@ public class CouponController {
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
-    @PostMapping("/create")
-    public ResponseEntity<ParaboleResponse> addCoupon(
-                                    @RequestBody CouponCreateRequestDto dto) {
+    @PostMapping("/new")
+    public ResponseEntity<ParaboleResponse> addCoupon(@AuthenticationPrincipal Long userId,
+        @RequestBody CouponCreateRequestDto dto) {
 
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
-        CouponCreateResponseDto response = couponService.addCoupon(dto);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "쿠폰 등록 성공", response);
+        if(userService.getSeller(userId) != null){
+            CouponCreateResponseDto response = couponService.addCoupon(dto);
+            return ParaboleResponse.CommonResponse(HttpStatus.OK,
+                true, "쿠폰 등록 성공", response);
+        }
+        return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST,
+            false, "판매자가 아니라서 쿠폰 등록할 권한이 없습니다.");
     }
 
-//    @PostMapping("/giveout")
-//    public ResponseEntity<ParaboleResponse> assignUserToUserCoupon(
-//        @RequestBody CouponUseAndAssignRequestDto dto) {
-//
-//        couponService.giveoutUserCoupon(dto.getCouponSNo(), dto.getUserId());
-//        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-//            true, "쿠폰에 사용자가 배정되었습니다");
-//    }
+    @PostMapping("/giveout")
+    public ResponseEntity<ParaboleResponse> assignUserToUserCoupon(
+        @RequestBody CouponUseAndAssignRequestDto dto) {
+
+        couponService.giveoutUserCoupon(dto.getCouponSNo(), dto.getUserId());
+        return ParaboleResponse.CommonResponse(HttpStatus.OK,
+            true, "쿠폰에 사용자가 배정되었습니다");
+    }
 
     @PostMapping("/assign")
     public ResponseEntity<ParaboleResponse> assignCoupon(@AuthenticationPrincipal Long userId,
