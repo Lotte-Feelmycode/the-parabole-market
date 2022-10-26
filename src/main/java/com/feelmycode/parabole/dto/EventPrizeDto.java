@@ -32,7 +32,7 @@ public class EventPrizeDto {
             Coupon coupon = eventPrize.getCoupon();
             couponId = coupon.getId();
             couponDetail = coupon.getDetail();
-            this.type=coupon.getType();
+            this.type = coupon.getType();
             couponDiscountValue = coupon.getDiscountValue();
             this.stock = eventPrize.getStock();
             this.expiresAt = coupon.getExpiresAt();
