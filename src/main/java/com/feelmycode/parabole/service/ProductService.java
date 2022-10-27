@@ -5,15 +5,16 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.ProductDetailDto;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,12 +27,10 @@ public class ProductService {
     private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Long userId, ProductDto dto) {
-        sellerService.getSellerByUserId(userId);
-
-        Product product = dto.dtoToEntity();
+    public Long saveProduct(ProductRequestDto dto) {
+        Product product = dto.toEntity();
+        Long userId = dto.getUserId();
         product.setSeller(sellerService.getSellerByUserId(userId));
-
         return productRepository.save(product).getId();
     }
 
@@ -71,13 +70,13 @@ public class ProductService {
                 data = productRepository.findAllBySellerIdAndCategory(sellerId, category,
                     pageable);
             }
-        } else if(!productName.equals("")) {
+        } else if (!productName.equals("")) {
             if (category.equals("")) {
                 data = productRepository.findAllByNameContaining(productName, pageable);
             } else {
                 data = productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
             }
-        } else if(category.equals("")) {
+        } else if (category.equals("")) {
             data = productRepository.findAll(pageable);
         } else {
             data = productRepository.findAllByCategory(category, pageable);

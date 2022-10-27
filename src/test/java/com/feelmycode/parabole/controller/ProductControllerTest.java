@@ -137,7 +137,7 @@ public class ProductControllerTest {
             "국밥", "img.jpg", "순대국밥", 10000L);
 
         //when
-        Long productId = productService.saveProduct(1L, new ProductDto(product));
+        Long productId = productService.saveProduct(new ProductRequestDto(0L, product.getName(), product.getCategory(), product.getRemains(), product.getPrice()));
 
         //then
         Product getProduct = productRepository.findById(productId).orElseThrow();
