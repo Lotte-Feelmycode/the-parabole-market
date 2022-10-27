@@ -76,7 +76,7 @@ public class CouponService {
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+        List<Coupon> couponList = couponRepository.findAllValidCoupons(seller.getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
                                             .map(CouponSellerResponseDto::new)
@@ -84,19 +84,19 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
-    public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
-
-        List<CouponSellerResponseDto> dtos = couponList.stream()
-            .map(CouponSellerResponseDto::new)
-            .collect(Collectors.toList());
-        return new PageImpl<>(dtos);
-    }
+//    public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
+//        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
+//        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+//
+//        List<CouponSellerResponseDto> dtos = couponList.stream()
+//            .map(CouponSellerResponseDto::new)
+//            .collect(Collectors.toList());
+//        return new PageImpl<>(dtos);
+//    }
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList =  userCouponRepository.findAllValidByUserId(userId);
+        List<UserCoupon> couponList =  userCouponRepository.findAllValidUserCoupons(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
