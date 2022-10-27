@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,15 +19,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Builder
-@AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GeneratedValue(generator="system-uuid")
-//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(name = "user_id")
     private Long id;
 
@@ -96,6 +91,24 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.phone = phone;
         this.password = password;
+    }
+
+    @Builder
+    public User(Long id, String email, String username, String nickname, String phone,
+        String password,
+        String role, String imageUrl, String authProvider, Seller seller,
+        List<UserCoupon> userCoupons) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.password = password;
+        this.role = role;
+        this.imageUrl = imageUrl;
+        this.authProvider = authProvider;
+        this.seller = seller;
+        this.userCoupons = userCoupons;
     }
 
 }

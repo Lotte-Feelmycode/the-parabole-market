@@ -26,7 +26,6 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         TokenProvider tokenProvider = new TokenProvider();
         String token = tokenProvider.create(authentication);
 
-//        response.getWriter().write(token);
         Optional<Cookie> oCookie = Arrays.stream(request.getCookies()).filter(cookie -> cookie.getName().equals(REDIRECT_URI_PARAM)).findFirst();
         Optional<String> redirectUri = oCookie.map(Cookie::getValue);
 
