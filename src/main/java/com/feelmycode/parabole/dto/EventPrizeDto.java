@@ -3,6 +3,7 @@ package com.feelmycode.parabole.dto;
 import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.enumtype.CouponType;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class EventPrizeDto {
     private String productImg;
     private Long couponId;
     private String couponDetail;
+    private CouponType type;
     private Integer couponDiscountValue;
     private LocalDateTime expiresAt;
 
@@ -30,6 +32,7 @@ public class EventPrizeDto {
             Coupon coupon = eventPrize.getCoupon();
             couponId = coupon.getId();
             couponDetail = coupon.getDetail();
+            this.type = coupon.getType();
             couponDiscountValue = coupon.getDiscountValue();
             this.stock = eventPrize.getStock();
             this.expiresAt = coupon.getExpiresAt();
