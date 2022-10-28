@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.controller;
 
 import static io.restassured.RestAssured.given;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -13,9 +12,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.dto.ProductDto;
 import com.feelmycode.parabole.repository.ProductRepository;
 import com.feelmycode.parabole.service.ProductService;
 import io.restassured.RestAssured;
@@ -59,10 +55,10 @@ public class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("상품 목록 테스트")
-    public void productList() throws Exception {
+    @DisplayName("상품 목록 조회")
+    public void productList() {
         given(this.spec)
-            .param("sellerId", "")
+            .param("sellerId", "1")
             .param("storeName", "")
             .param("category", "")
             .param("productName", "")
@@ -84,7 +80,7 @@ public class ProductControllerTest {
                         fieldWithPath("success").description("성공여부"),
                         fieldWithPath("message").description("메세지"),
                         fieldWithPath("data").description("상품 목록"),
-                        fieldWithPath("data.content").description("상품"),
+                        fieldWithPath("data.content").description("상품 정보"),
                         fieldWithPath("data.content.[].productId").description("상품 아이디"),
                         fieldWithPath("data.content.[].productName").description("상품 명"),
                         fieldWithPath("data.content.[].sellerId").description("셀러 아이디"),
@@ -98,28 +94,28 @@ public class ProductControllerTest {
                         fieldWithPath("data.content.[].productUpdatedAt").description("수정일자"),
                         fieldWithPath("data.content.[].productDeletedAt").description("삭제일자"),
                         fieldWithPath("data.content.[].productIsDeleted").description("삭제여부"),
-                        fieldWithPath("data.pageable").description("페이징 처리"),
-                        fieldWithPath("data.pageable.sort").description("페이징 처리"),
-                        fieldWithPath("data.pageable.sort.empty").description("페이징 처리"),
-                        fieldWithPath("data.pageable.sort.unsorted").description("페이징 처리"),
-                        fieldWithPath("data.pageable.sort.sorted").description("페이징 처리"),
-                        fieldWithPath("data.pageable.offset").description("페이징 처리"),
-                        fieldWithPath("data.pageable.pageNumber").description("페이징 처리"),
-                        fieldWithPath("data.pageable.pageSize").description("페이징 처리"),
-                        fieldWithPath("data.pageable.unpaged").description("페이징 처리"),
-                        fieldWithPath("data.pageable.paged").description("페이징 처리"),
+                        fieldWithPath("data.pageable").description("페이징 변수"),
+                        fieldWithPath("data.pageable.sort").description("정렬 정보"),
+                        fieldWithPath("data.pageable.sort.empty").description("정렬 정보 여부"),
+                        fieldWithPath("data.pageable.sort.sorted").description("정렬 처리 여부"),
+                        fieldWithPath("data.pageable.sort.unsorted").description("정렬 처리 여부"),
+                        fieldWithPath("data.pageable.offset").description("offset"),
+                        fieldWithPath("data.pageable.pageNumber").description("현재 페이지"),
+                        fieldWithPath("data.pageable.pageSize").description("페이지당 갯수"),
+                        fieldWithPath("data.pageable.unpaged").description("페이징 처리 여부"),
+                        fieldWithPath("data.pageable.paged").description("페이징 처리 여부"),
                         fieldWithPath("data.totalElements").description("총 항목 수"),
                         fieldWithPath("data.totalPages").description("총 페이지 수"),
-                        fieldWithPath("data.last").description(""),
-                        fieldWithPath("data.size").description(""),
-                        fieldWithPath("data.number").description(""),
-                        fieldWithPath("data.sort").description(""),
-                        fieldWithPath("data.sort.empty").description(""),
-                        fieldWithPath("data.sort.unsorted").description(""),
-                        fieldWithPath("data.sort.sorted").description(""),
+                        fieldWithPath("data.last").description("마지막 페이지 여부"),
+                        fieldWithPath("data.size").description("페이지당 항목 수"),
+                        fieldWithPath("data.number").description("현재 페이지"),
+                        fieldWithPath("data.sort").description("정렬 정보"),
+                        fieldWithPath("data.sort.empty").description("정렬 정보 여부"),
+                        fieldWithPath("data.sort.sorted").description("정렬처리여부"),
+                        fieldWithPath("data.sort.unsorted").description("정렬처리여부"),
                         fieldWithPath("data.numberOfElements").description("총 개수"),
-                        fieldWithPath("data.first").description(""),
-                        fieldWithPath("data.empty").description("")
+                        fieldWithPath("data.first").description("첫 페이지 여부"),
+                        fieldWithPath("data.empty").description("데이터 유무 여부")
                     )
                 )
             )
@@ -128,20 +124,20 @@ public class ProductControllerTest {
             .get("/api/v1/product/list");
     }
 
-    @Test
-    @DisplayName("상품 목록 생성")
-    public void createProduct() {
-        // given
-        Long userId = 1L;
-        Product product = new Product(new Seller(1L, "store"), 1, 50L,
-            "국밥", "img.jpg", "순대국밥", 10000L);
-
-        //when
-        Long productId = productService.saveProduct(1L, new ProductDto(product));
-
-        //then
-        Product getProduct = productRepository.findById(productId).orElseThrow();
-        assertThat(productId).isEqualTo(getProduct.getId());
-
-    }
+//    @Test
+//    @DisplayName("상품 생성")
+//    public void createProduct() {
+//        // given
+//        Long userId = 1L;
+//        Product product = new Product(new Seller(1L, "store"), 1, 50L,
+//            "국밥", "img.jpg", "순대국밥", 10000L);
+//
+//        //when
+//        Long productId = productService.saveProduct(1L, new ProductDto(product));
+//
+//        //then
+//        Product getProduct = productRepository.findById(productId).orElseThrow();
+//        assertThat(productId).isEqualTo(getProduct.getId());
+//
+//    }
 }
