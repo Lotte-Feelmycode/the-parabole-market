@@ -84,9 +84,16 @@ public class EventService {
                 String prizeType = eventPrizeParam.getType();
                 Long id = eventPrizeParam.getId();
                 if (prizeType.equals("PRODUCT")) {
+                    Product product = productRepository.findById(eventPrizeParam.getId())
+                        .orElseThrow(
+                            () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 상품이 없습니다")
+                        );
+
+                    product.removeRemains(Long.valueOf(eventPrizeParam.getStock()));
                     eventPrizeList.add(
                         new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
                 } else {
+
                     eventPrizeList.add(
                         new EventPrize(prizeType, eventPrizeParam.getStock(), getCoupon(id)));
                 }
@@ -133,7 +140,6 @@ public class EventService {
         Integer status = null;
         String title = null;
         String type = null;
-
 
         if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
             eventList = eventSearchRequestDto.getDateDiv() < 1
