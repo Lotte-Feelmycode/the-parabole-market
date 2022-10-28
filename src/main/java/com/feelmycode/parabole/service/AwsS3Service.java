@@ -24,13 +24,13 @@ public class AwsS3Service {
 
     private AmazonS3 amazonS3;
 
-        @Value("${cloud.aws.credentials.accessKey}")
+    @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
-        @Value("${cloud.aws.credentials.secretKey}")
+    @Value("${cloud.aws.credentials.secretKey}")
     private static String secretKey;
-        @Value("${cloud.aws.region.static}")
+    @Value("${cloud.aws.region.static}")
     private static String region;
-        @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private static String bucket;
 
     @PostConstruct
