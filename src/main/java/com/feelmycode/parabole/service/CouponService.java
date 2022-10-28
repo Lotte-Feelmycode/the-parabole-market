@@ -19,13 +19,13 @@ import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.feelmycode.parabole.repository.UserRepository;
-import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -49,28 +49,25 @@ public class CouponService {
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new NoDataException());
-
         Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
-            dto.getExpiresAt(), dto.getMaxDiscountAmount(), dto.getMinPaymentAmount(), dto.getDetail(), dto.getCnt());
-
+            dto.getExpiresAt(), dto.getDetail(), dto.getCnt());
         couponRepository.save(coupon);
-
         for (int i = 0; i < dto.getCnt(); i++) {
             coupon.addUserCoupon(new UserCoupon(coupon));
         }
-        return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), user.getUsername(), coupon.getType().getName(), coupon.getCnt());
     }
 
-//    public void giveoutUserCoupon(String couponSNo, Long userId) {
-//
-//        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
-//        if (userCoupon == null) {
-//            throw new NoDataException();
-//        }
-//
-//        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
-//        userCoupon.setUser(user);
-//    }
+    public void giveoutUserCoupon(String couponSNo, Long userId) {
+
+        UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
+        if (userCoupon == null) {
+            throw new NoDataException();
+        }
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+        userCoupon.setUser(user);
+    }
 
     public Coupon getCouponById(Long couponId) {
         return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
@@ -79,27 +76,27 @@ public class CouponService {
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+        List<Coupon> couponList = couponRepository.findAllValidCoupons(seller.getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
-            .map(CouponSellerResponseDto::new)
-            .collect(Collectors.toList());
+                                            .map(CouponSellerResponseDto::new)
+                                            .collect(Collectors.toList());
         return new PageImpl<>(dtos);
     }
 
-    public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
-
-        List<CouponSellerResponseDto> dtos = couponList.stream()
-            .map(CouponSellerResponseDto::new)
-            .collect(Collectors.toList());
-        return new PageImpl<>(dtos);
-    }
+//    public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
+//        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
+//        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+//
+//        List<CouponSellerResponseDto> dtos = couponList.stream()
+//            .map(CouponSellerResponseDto::new)
+//            .collect(Collectors.toList());
+//        return new PageImpl<>(dtos);
+//    }
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList = userCouponRepository.findAllByUserId(userId);
+        List<UserCoupon> couponList =  userCouponRepository.findAllValidUserCoupons(userId);
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
@@ -207,10 +204,10 @@ public class CouponService {
         if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰에 배정된 사용자가 없습니다. 사용자를 먼저 배정하세요.");
-        } else if (!user.getId().equals(userId)) {
+        } else if (!user.getId().equals(userId)){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
-        } else if (userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())) {
+        } else if(userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰이 만료되어 사용할 수 없습니다.");
         } else {
