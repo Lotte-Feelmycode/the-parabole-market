@@ -81,6 +81,10 @@ public class UserCoupon extends BaseEntity {
         this.useDate = LocalDateTime.now();
     }
 
+    public void setEventEnrolled() {
+        this.useState = CouponUseState.EventEnrolled;
+    }
+
 }
 
 

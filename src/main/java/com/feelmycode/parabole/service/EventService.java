@@ -93,9 +93,12 @@ public class EventService {
                     eventPrizeList.add(
                         new EventPrize(prizeType, eventPrizeParam.getStock(), getProduct(id)));
                 } else {
-
+                    Coupon coupon = couponRepository.findById(eventPrizeParam.getId()).orElseThrow(
+                        () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 쿠폰 없습니다")
+                    );
                     eventPrizeList.add(
                         new EventPrize(prizeType, eventPrizeParam.getStock(), getCoupon(id)));
+                    coupon.setCouponForEvent(eventPrizeParam.getStock());
                 }
             }
         }
