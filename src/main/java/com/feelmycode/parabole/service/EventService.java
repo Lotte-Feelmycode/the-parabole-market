@@ -86,7 +86,7 @@ public class EventService {
             for (EventPrizeCreateRequestDto eventPrizeParam : eventPrizeParams) {
                 String prizeType = eventPrizeParam.getType();
                 Long id = eventPrizeParam.getId();
-                if (prizeType.equals("PRODUCT")) {
+                if (prizeType.equals(PrizeType.PRODUCT.getCode())) {
                     Product product = productRepository.findById(eventPrizeParam.getId())
                         .orElseThrow(
                             () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당하는 상품이 없습니다")
