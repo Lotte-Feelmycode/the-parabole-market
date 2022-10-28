@@ -12,6 +12,7 @@ import com.feelmycode.parabole.dto.EventSearchRequestDto;
 import com.feelmycode.parabole.dto.EventSearchResponseDto;
 import com.feelmycode.parabole.enumtype.EventStatus;
 import com.feelmycode.parabole.enumtype.EventType;
+import com.feelmycode.parabole.enumtype.PrizeType;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ import org.springframework.util.StringUtils;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class EventService {
 
     private final EventRepository eventRepository;
@@ -179,11 +182,24 @@ public class EventService {
      */
     @Transactional
     public void cancelEvent(Long eventId) {
+        log.info("eventId : {}번 이벤트 삭제", eventId);
+
         Event event = eventRepository.findById(eventId)
             .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 이벤트가 존재하지 않습니다."));
+
         try {
             event.cancel();
+            for (EventPrize eventPrize : event.getEventPrizes()) {
+                if (eventPrize.getPrizeType().equals(PrizeType.PRODUCT.getCode())) {
+                    Product product = productRepository.findById(eventPrize.getProduct().getId())
+                        .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
+                            "취소하려는 이벤트의 경품 정보가 없습니다"));
+                    product.addRemains(Long.valueOf(eventPrize.getStock()));
+                }
+            }
             eventRepository.save(event);
+
+
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");
         }
