@@ -79,7 +79,7 @@ public class ProductControllerTest {
                     responseFields(
                         fieldWithPath("success").description("성공여부"),
                         fieldWithPath("message").description("메세지"),
-                        fieldWithPath("data").description("상품 목록"),
+                        fieldWithPath("data").description("응답 정보"),
                         fieldWithPath("data.content").description("상품 정보"),
                         fieldWithPath("data.content.[].productId").description("상품 아이디"),
                         fieldWithPath("data.content.[].productName").description("상품 명"),
