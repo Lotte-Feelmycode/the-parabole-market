@@ -49,3 +49,21 @@ include::{snippets}/cart-list/http-response.adoc[]
 `*Fields*`
 
 include::{snippets}/cart-list/response-fields.adoc[]
+
+=== 장바구니 상품 추가
+
+`*Request*`
+
+include::{snippets}/cart-product-add/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/cart-product-add/request-parameters.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-product-add/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-product-add/response-fields.adoc[]

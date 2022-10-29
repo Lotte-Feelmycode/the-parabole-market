@@ -20,6 +20,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import javax.transaction.Transactional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -121,11 +122,39 @@ public class CartControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("장바구니 상품 추가")
     public void addProductInCart() {
+        given(this.spec)
+            .param("userId","3")
+            .param("productId","3")
+            .param("cnt","3")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .filter(
+                document(
+                    "cart-product-add",
+                    preprocessRequest(modifyUris().scheme("https").host("parabole.com"), prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestParameters(
+                        parameterWithName("userId").description("사용자 아이디"),
+                        parameterWithName("productId").description("상품 아이디"),
+                        parameterWithName("cnt").description("추가할 상품 개수")
+                    ),
+                    responseFields(
+                        fieldWithPath("success").description("성공여부"),
+                        fieldWithPath("message").description("메시지"),
+                        fieldWithPath("data").description("응답 정보")
+                    )
+                )
+            )
+            .when()
+            .port(port)
+            .post("/api/v1/cart/product/add");
     }
 
     @Test
+    @Transactional
     @DisplayName("장바구니 상품 제거")
     public void deleteProductInCart() {
     }
