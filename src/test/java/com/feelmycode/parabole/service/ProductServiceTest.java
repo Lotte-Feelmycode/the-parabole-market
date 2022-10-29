@@ -1,14 +1,7 @@
 package com.feelmycode.parabole.service;
 
 
-import static org.junit.Assert.assertEquals;
-
-import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.repository.ProductRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -57,6 +50,26 @@ class ProductServiceTest {
         assertEquals("상품 썸네일", product.getThumbnailImg(), getProduct.getThumbnailImg());
         assertEquals("상품 이름", "순대국밥", getProduct.getName());
         assertEquals("상품 가격", product.getPrice(), getProduct.getPrice());
+    }
+
+    @Test
+    @DisplayName("상품 생성")
+    public void createProduct() {
+
+        // given
+        Long userId = 1L;
+        Product product = new Product(new Seller(1L, "store"), 1, 50L,
+            "국밥", "img.jpg", "순대국밥", 10000L);
+
+        //when
+        Long productId = productService.saveProduct(1L, new ProductDto(product));
+
+        //then
+        Product getProduct = productRepository.findById(productId).orElseThrow();
+        assertEquals(productId, getProduct.getId());
+
+        product
+
     }
 */
 }

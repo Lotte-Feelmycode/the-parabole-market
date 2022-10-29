@@ -12,8 +12,6 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-import com.feelmycode.parabole.repository.ProductRepository;
-import com.feelmycode.parabole.service.ProductService;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -25,7 +23,6 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -39,16 +36,11 @@ public class ProductControllerTest {
 
     @LocalServerPort
     int port;
+
     @Rule
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
     private RequestSpecification spec;
-
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @Before
     public void setUp() {
@@ -159,20 +151,5 @@ public class ProductControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
-//    @Test
-//    @DisplayName("상품 생성")
-//    public void createProduct() {
-//        // given
-//        Long userId = 1L;
-//        Product product = new Product(new Seller(1L, "store"), 1, 50L,
-//            "국밥", "img.jpg", "순대국밥", 10000L);
-//
-//        //when
-//        Long productId = productService.saveProduct(1L, new ProductDto(product));
-//
-//        //then
-//        Product getProduct = productRepository.findById(productId).orElseThrow();
-//        assertThat(productId).isEqualTo(getProduct.getId());
-//
-//    }
+
 }
