@@ -50,6 +50,7 @@ include::{snippets}/cart-list/http-response.adoc[]
 
 include::{snippets}/cart-list/response-fields.adoc[]
 
+
 === 장바구니 상품 추가
 
 `*Request*`
@@ -67,3 +68,39 @@ include::{snippets}/cart-product-add/http-response.adoc[]
 `*Fields*`
 
 include::{snippets}/cart-product-add/response-fields.adoc[]
+
+=== 장바구니 상품 수량 수정
+
+`*Request*`
+
+include::{snippets}/cart-update-cnt/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/cart-update-cnt/request-fields.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-update-cnt/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-update-cnt/response-fields.adoc[]
+
+=== 장바구니 상품 삭제
+
+`*Request*`
+
+include::{snippets}/cart-delete/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/cart-delete/request-parameters.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-delete/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-delete/response-fields.adoc[]
