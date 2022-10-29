@@ -53,6 +53,10 @@ public class ProductControllerTest {
     @Test
     @DisplayName("상품 목록 조회")
     public void productList() {
+
+        // Given
+
+        // When
         Response resp = given(this.spec)
             .param("sellerId", "1")
             .param("storeName", "")
@@ -148,6 +152,7 @@ public class ProductControllerTest {
             .port(port)
             .get("/api/v1/product/list");
 
+        // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 

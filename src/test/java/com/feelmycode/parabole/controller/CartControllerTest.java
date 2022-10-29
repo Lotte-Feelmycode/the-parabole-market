@@ -13,6 +13,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
+import com.feelmycode.parabole.domain.CartItem;
+import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.repository.CartItemRepository;
 import com.feelmycode.parabole.repository.CartRepository;
 import com.feelmycode.parabole.service.CartItemService;
@@ -22,8 +24,10 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import java.util.Optional;
 import net.minidev.json.JSONObject;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -31,19 +35,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @TestMethodOrder(OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
-@Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CartControllerTest {
 
     @LocalServerPort
@@ -71,12 +75,20 @@ public class CartControllerTest {
         this.spec = new RequestSpecBuilder().addFilter(
                 documentationConfiguration(this.restDocumentation))
             .build();
+
+        // Given
+        Optional<CartItem> cartItemOptional = cartItemRepository.findByCartIdAndProductId(3L,
+            3L);
+        cartItemOptional.ifPresent(cartItem -> cartItemRepository.deleteById(cartItem.getId()));
     }
 
     @Test
     @DisplayName("장바구니 목록 조회")
-    public void cartList() {
+    public void test01_cartList() {
 
+        // Given
+
+        // When
         Response resp = given(this.spec)
             .param("userId", "3")
             .accept(ContentType.JSON)
@@ -166,28 +178,21 @@ public class CartControllerTest {
             .port(port)
             .get("/api/v1/cart/list");
 
+        // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("장바구니 상품 추가")
-    @Transactional
-    public void addProductInCart() {
-//        동작하지 않음
-//        try {
-//            Cart cart = cartRepository.findByUserId(3L).orElseThrow();
-//            Optional<CartItem> cartItem = cartItemRepository.findByCartIdAndProductId(
-//                cart.getId(), 3L);
-//            cartItem.ifPresent(item -> cartItemRepository.deleteById(item.getId()));
-//        } catch (Exception e) {
-//            System.out.println("데이터 없음");
-//        }
+    public void test02_addProductInCart() {
 
+        // Given
         JSONObject request = new JSONObject();
         request.put("userId", 3L);
         request.put("productId", 3L);
         request.put("cnt", 3);
 
+        // When
         Response resp = given(this.spec)
             .body(request.toJSONString())
             .contentType(ContentType.JSON)
@@ -213,22 +218,24 @@ public class CartControllerTest {
             .port(port)
             .post("/api/v1/cart/product/add");
 
+        // Then
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("장바구니 상품 수량 변경")
-    public void updateProductCnt() {
+    public void test03_updateProductCnt() {
 
-//        CartItem cartItem = cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
-
+        // Given
+        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
         JSONObject request = new JSONObject();
-        request.put("cartItemId", 110L);
+        request.put("cartItemId", cartItemRepository.findByCartIdAndProductId(3L,
+            3L).get().getId());
         request.put("productId", 3L);
         request.put("userId", 3L);
         request.put("cnt", 10);
-        System.out.println(request.toJSONString());
 
+        // When
         Response resp = given(this.spec)
             .body(request.toJSONString())
             .accept(ContentType.JSON)
@@ -256,16 +263,22 @@ public class CartControllerTest {
             .port(port)
             .patch("/api/v1/cart/update/cnt");
 
+        // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("장바구니 상품 제거")
-    public void deleteProductInCart() {
+    public void test04_deleteProductInCart() {
 
+        // Given
+        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
+
+        // When
         Response resp = given(this.spec)
             .param("userId", 3L)
-            .param("cartItemId", 110L)
+            .param("cartItemId", cartItemRepository.findByCartIdAndProductId(3L,
+                3L).get().getId())
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(
@@ -289,6 +302,7 @@ public class CartControllerTest {
             .port(port)
             .delete("/api/v1/cart/delete");
 
+        // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 }
