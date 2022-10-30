@@ -71,18 +71,12 @@ public class ProductController {
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 
-    @PostMapping("/detail")
-    public ResponseEntity<ParaboleResponse> createProductDetail(@RequestBody ProductDetail productDetail, @RequestParam Long userId) {
-        productDetailService.createProductDetail(userId, productDetail);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 상세 정보 추가");
-    }
-
-    @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
-        productService.updateProduct(userId, product);
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
-    }
+//    @PatchMapping
+//    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
+//        productService.updateProduct(userId, product);
+//
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
+//    }
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {

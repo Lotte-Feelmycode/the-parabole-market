@@ -59,6 +59,131 @@ public class ProductControllerTest {
     }
 
     @Test
+    @DisplayName("판매자의 상품 리스트 가져오기")
+    public void getProductBySellerId() {
+        given(this.spec)
+            .param("productId", "1")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .filter(document("get-product-by-seller",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("userId").description("사용자(판매자) ID")
+                ),
+                responseFields(
+                    fieldWithPath("success").description("성공여부"),
+                    fieldWithPath("message").description("메세지"),
+                    fieldWithPath("data").description("반환하는 데이터 정보"),
+                    fieldWithPath("data.content").description("상품 정보"),
+                    fieldWithPath("data.content.productId").description("상품 ID"),
+                    fieldWithPath("data.content.productName").description("상품 명"),
+                    fieldWithPath("data.content.sellerId").description("판매자 ID"),
+                    fieldWithPath("data.content.storeName").description("판매자의 상호 이름"),
+                    fieldWithPath("data.content.productStatus").description("상품의 상태"),
+                    fieldWithPath("data.content.productRemains").description("상품 재고"),
+                    fieldWithPath("data.content.productPrice").description("상품 가격"),
+                    fieldWithPath("data.content.productCategory").description("상품의 카테고리"),
+                    fieldWithPath("data.content.productThumbnailImg").description("상품의 썸네일 이미지"),
+                    fieldWithPath("data.content.productCreatedAt").description("상품의 생성 일자"),
+                    fieldWithPath("data.content.productUpdatedAt").description("상품의 수정 일자"),
+                    fieldWithPath("data.content.productDeletedAt").description("상품의 삭제 일자"),
+                    fieldWithPath("data.content.productIsDeleted").description("상품의 삭제 여부")
+                )
+            ))
+            .when()
+            .port(port)
+            .get("/api/v1/product/seller/list");
+    }
+
+    @Test
+    @DisplayName("상품 정보 가져오기")
+    public void getProduct() {
+        given(this.spec)
+            .param("productId", "1")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .filter(document("get-product",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("productId").description("상품 ID")
+                ),
+                responseFields(
+                    fieldWithPath("success").description("성공여부"),
+                    fieldWithPath("message").description("메세지"),
+                    fieldWithPath("data").description("반환하는 데이터 정보"),
+                    fieldWithPath("data.content").description("상품 정보"),
+                    fieldWithPath("data.content.productId").description("상품 ID"),
+                    fieldWithPath("data.content.productName").description("상품 명"),
+                    fieldWithPath("data.content.storeName").description("판매자 상호 이름"),
+                    fieldWithPath("data.content.sellerId").description("판매자 ID"),
+                    fieldWithPath("data.content.storeName").description("판매자의 상호 이름"),
+                    fieldWithPath("data.content.productStatus").description("상품의 상태"),
+                    fieldWithPath("data.content.productRemains").description("상품 재고"),
+                    fieldWithPath("data.content.productPrice").description("상품 가격"),
+                    fieldWithPath("data.content.productCategory").description("상품의 카테고리"),
+                    fieldWithPath("data.content.productThumbnailImg").description("상품의 썸네일 이미지"),
+                    fieldWithPath("data.content.productCreatedAt").description("상품의 생성 일자"),
+                    fieldWithPath("data.content.productUpdatedAt").description("상품의 수정 일자"),
+                    fieldWithPath("data.content.productDeletedAt").description("상품의 삭제 일자"),
+                    fieldWithPath("data.content.productIsDeleted").description("상품의 삭제 여부"),
+                    fieldWithPath("data.content.productDetail").description("상품 이미지 정보"),
+                    fieldWithPath("data.content.productDetail.[].productDetailId").description("상품 상세 ID"),
+                    fieldWithPath("data.content.productDetail.[].productId").description("상품 ID"),
+                    fieldWithPath("data.content.productDetail.[].img").description("상품 이미지"),
+                    fieldWithPath("data.content.productDetail.[].imgCaption").description("상품 이미지 상세 설명")
+                )
+            ))
+            .when()
+            .port(port)
+            .get("/api/v1/product");
+        ;
+
+    }
+
+    @Test
+    @DisplayName("상품 생성")
+    public void createProduct() {
+        given(this.spec)
+            .param("userId", "1")
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .filter(document("create-product",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("ProductDto").description("상품정보"),
+                    parameterWithName("ProductDto.productId").description("상품 ID"),
+                    parameterWithName("ProductDto.productName").description("상품 명"),
+                    parameterWithName("ProductDto.sellerId").description("판매자 ID"),
+                    parameterWithName("ProductDto.storeName").description("판매자의 상호 이름"),
+                    parameterWithName("ProductDto.productStatus").description("상품의 상태"),
+                    parameterWithName("ProductDto.productRemains").description("상품 재고"),
+                    parameterWithName("ProductDto.productPrice").description("상품 가격"),
+                    parameterWithName("ProductDto.productCategory").description("상품의 카테고리"),
+                    parameterWithName("ProductDto.productThumbnailImg").description("상품의 썸네일 이미지"),
+                    parameterWithName("ProductDto.productCreatedAt").description("상품의 생성 일자"),
+                    parameterWithName("ProductDto.productUpdatedAt").description("상품의 수정 일자"),
+                    parameterWithName("ProductDto.productDeletedAt").description("상품의 삭제 일자"),
+                    parameterWithName("ProductDto.productIsDeleted").description("상품의 삭제 여부")
+                )
+            ))
+            .when()
+            .port(port)
+            .post("/api/v1/product");
+    }
+
+    @Test
     @DisplayName("상품 목록 테스트")
     public void productList() throws Exception {
         given(this.spec)
@@ -130,7 +255,7 @@ public class ProductControllerTest {
 
     @Test
     @DisplayName("상품 목록 생성")
-    public void createProduct() {
+    public void serviceCreateProduct() {
         // given
         Long userId = 1L;
         Product product = new Product(new Seller(1L, "store"), 1, 50L,
