@@ -53,7 +53,7 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseEntity<ParaboleResponse> getEventList(@RequestBody EventSearchRequestDto eventSearchRequestDto) {
         List<EventSearchResponseDto> response = eventService.getEventsSearch(eventSearchRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 검색 리스트 조회 성공", response);

@@ -7,8 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CouponUseState {
     NotUsed("NOT_USED", 1),
-    Used("USED", 2),
-    Expired("EXPIRED", 3);
+    Used("USED", 2);
 
     private final String state;
     private final int value;

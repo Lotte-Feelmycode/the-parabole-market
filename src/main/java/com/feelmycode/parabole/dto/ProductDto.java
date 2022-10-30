@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
 import java.time.LocalDateTime;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ public class ProductDto {
     private final Long productId;
     private final String productName;
     private final Long sellerId;
+    private final String storeName;
     private final Integer productStatus;
     private final Long productRemains;
     private final Long productPrice;
@@ -22,6 +24,7 @@ public class ProductDto {
     public ProductDto(Product product) {
         this.productId = product.getId();
         this.productName = product.getName();
+        this.storeName = product.getSeller().getStoreName();
         this.sellerId = product.getSeller().getId();
         this.productStatus = product.getSalesStatus();
         this.productRemains = product.getRemains();
@@ -32,5 +35,10 @@ public class ProductDto {
         this.productUpdatedAt = product.getUpdatedAt();
         this.productDeletedAt = product.getDeletedAt();
         this.productIsDeleted = product.isDeleted();
+    }
+
+    public Product dtoToEntity() {
+        return new Product(productId, new Seller(sellerId, storeName), productStatus, productRemains, productCategory,
+            productThumbnailImg, productName, productPrice);
     }
 }

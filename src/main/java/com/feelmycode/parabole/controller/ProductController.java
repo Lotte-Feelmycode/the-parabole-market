@@ -65,12 +65,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody Product product) {
-        log.info("TEST {}", "INFO");
-        log.warn("TEST {}", "WARN");
-        log.error("TEST {}", "ERROR");
-        log.error("TEST {}({})", "ERROR", "ERROR");
-        
+    public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody ProductDto product) {
         productService.saveProduct(userId, product);
         
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
