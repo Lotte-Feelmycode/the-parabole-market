@@ -4,11 +4,26 @@ ifndef::snippets[]
 endif::[]
 
 :toc: left
+== 이벤트 등록
+
+`*Request*`
+
+include::{snippets}/createEvent/http-request.adoc[]
+
+`*Response*`
+
+include::{snippets}/createEvent/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/createEvent/response-fields.adoc[]
 
 == 이벤트 조회
+
 === 이벤트 ID로 단건 조회
 
 `*Request*`
+
 include::{snippets}/eventById/http-request.adoc[]
 
 `*Response*`
@@ -22,6 +37,7 @@ include::{snippets}/eventById/response-fields.adoc[]
 === 셀러 ID로 단건 조회
 
 `*Request*`
+
 include::{snippets}/eventBySellerId/http-request.adoc[]
 
 `*Response*`
@@ -32,5 +48,18 @@ include::{snippets}/eventBySellerId/http-response.adoc[]
 
 include::{snippets}/eventBySellerId/response-fields.adoc[]
 
-'''
+== 이벤트 삭제
+
+`*Request*`
+
+include::{snippets}/deleteEvent/http-request.adoc[]
+
+`*Response*`
+
+include::{snippets}/deleteEvent/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/deleteEvent/response-fields.adoc[]
+
 

@@ -1,25 +1,45 @@
 package com.feelmycode.parabole.controller;
 
 import static io.restassured.RestAssured.given;
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyUris;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestPartBody;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.EventImage;
+import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.EventCreateRequestDto;
+import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
 import com.feelmycode.parabole.enumtype.CouponType;
+import com.feelmycode.parabole.repository.EventRepository;
+import com.feelmycode.parabole.repository.ProductRepository;
+import com.feelmycode.parabole.repository.SellerRepository;
+import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.service.EventService;
+import groovy.util.logging.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
+@Slf4j
 public class EventControllerTest {
 
     @LocalServerPort
@@ -49,8 +70,23 @@ public class EventControllerTest {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    EventRepository eventRepository;
+    @Autowired
+    SellerRepository sellerRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    UserRepository userRepository;
 
     String BASIC_PATH = "/api/v1/event";
+
+    public String toJsonString(Object data) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        mapper.setSerializationInclusion(Include.NON_NULL);
+        return mapper.writeValueAsString(data);
+    }
 
     @Before
     public void setUp() {
@@ -60,6 +96,65 @@ public class EventControllerTest {
             .build();
     }
 
+
+    @Test
+    @DisplayName("이벤트 등록")
+    @Transactional
+    public void createEvent() {
+
+        // given
+        /*
+        User user = userRepository.save(
+            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
+        Seller seller = new Seller("event Store Name", "3245918723");
+        user.setSeller(seller);
+        sellerRepository.save(seller);
+        */
+        LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
+        LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
+
+        Seller seller = sellerRepository.findById(1L).orElseThrow();
+        Product product = new Product(seller, 1, 50L, "CATEGORY", "thumb.img", "이벤트 테스트 상품",
+            50000L);
+        productRepository.save(product);
+
+        List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
+        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
+        EventCreateRequestDto requestDto = new EventCreateRequestDto(
+            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
+            "이벤트 설명 v2",
+            new EventImage("banner.url", "detail.url"), prizes
+        );
+
+        String requestJson = null;
+        try {
+            requestJson = toJsonString(requestDto);
+        } catch (JsonProcessingException e) {
+            System.out.println(e.getMessage());
+        }
+
+        // when
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .filter(document("createEvent",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").description("이벤트 번호")
+                )))
+            .body(requestJson).log().all()
+            .when().post(BASIC_PATH);
+
+//        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+    }
 
     @Test
     @DisplayName("이벤트 단건 조회")
@@ -132,18 +227,6 @@ public class EventControllerTest {
             )).when().get(BASIC_PATH + "/{eventId}", eventId);
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-
-    }
-
-
-
-    @Test
-    @DisplayName("이벤트 생성")
-    @Transactional
-    @Rollback(true)
-    public void createEvent() {
-
-        // given
 
     }
 
@@ -220,4 +303,47 @@ public class EventControllerTest {
 ////        System.out.println(resp.getBody().prettyPrint());
 //
 //    }
+
+
+    @Test
+    @DisplayName("이벤트 취소")
+//    @Transactional
+    public void deleteEvent() {
+
+        // given
+        LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
+        LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
+
+        Seller seller = sellerRepository.findById(1L).orElseThrow();
+        Product product = new Product(seller, 1, 50L, "CATEGORY", "thumb.img", "이벤트 테스트 상품",
+            50000L);
+        productRepository.save(product);
+
+        List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
+        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
+        EventCreateRequestDto requestDto = new EventCreateRequestDto(
+            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
+            "이벤트 설명 v2",
+            new EventImage("banner.url", "detail.url"), prizes
+        );
+        Long eventId = eventService.createEvent(requestDto);
+
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .filter(document("deleteEvent",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").description("이벤트 번호")
+                )))
+            .log().all()
+            .when().delete(BASIC_PATH+"/{eventId}", eventId);
+    }
 }
