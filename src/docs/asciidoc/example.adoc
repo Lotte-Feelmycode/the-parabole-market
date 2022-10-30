@@ -24,5 +24,20 @@ include::{snippets}/product-list/http-response.adoc[]
 
 include::{snippets}/product-list/response-fields.adoc[]
 
+
+=== 이벤트 조회 (단건)
+`*Request*`
+include::{snippets}/eventById/http-request.adoc[]
+
+`*Response*`
+
+include::{snippets}/eventById/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/eventById/response-fields.adoc[]
+
+
+
 '''
 
