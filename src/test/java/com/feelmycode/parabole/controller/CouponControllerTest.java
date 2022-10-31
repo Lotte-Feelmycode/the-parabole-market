@@ -24,17 +24,19 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CouponControllerTest {
-
+//    @SpringBootTest에서 MockMvc사용하기
     @LocalServerPort
     int port;
 
@@ -42,6 +44,10 @@ public class CouponControllerTest {
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
 
     private RequestSpecification spec;
+    @Autowired
+    private WebApplicationContext context;
+
+//    private MockMvc mvc;
 
     @Before
     public void setUp() {
@@ -56,33 +62,25 @@ public class CouponControllerTest {
     @DisplayName("쿠폰 목록 조회")
     public void couponList() {
 
-        // Given
-
         // When
         Response resp = given(this.spec)
-            .param("sellerId", "1")
-            .param("storeName", "")
-            .param("category", "")
-            .param("productName", "")
+            .param("userId", "1")
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
-            .filter(document("product-list",
+            .filter(document("coupon-list",
                     preprocessRequest(modifyUris()
                             .scheme("https")
                             .host("parabole.com"),
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     requestParameters(
-                        parameterWithName("sellerId").description("셀러 이름"),
-                        parameterWithName("storeName").description("셀러 스토어 이름"),
-                        parameterWithName("category").description("카테고리"),
-                        parameterWithName("productName").description("상품명")
+                        parameterWithName("userId").description("사용자 ID")
                     ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 정보"),
-                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("상품 정보"),
+                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("쿠폰 목록"),
                         fieldWithPath("data.content.[].productId").type(JsonFieldType.NUMBER)
                             .description("상품 아이디"),
                         fieldWithPath("data.content.[].productName").type(JsonFieldType.STRING)
