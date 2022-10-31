@@ -12,8 +12,6 @@ public class CouponCreateRequestDto {
         private Integer discountValue;
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
-        private Long maxDiscountAmount;
-        private Long minPaymentAmount;
         private String detail;
         private Integer cnt;
 

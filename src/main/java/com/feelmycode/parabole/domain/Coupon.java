@@ -1,9 +1,7 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
-import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -62,14 +60,6 @@ public class Coupon extends BaseEntity implements Serializable {
     @NotNull
     private LocalDateTime expiresAt;
 
-    @Column(name = "coupon_max_discount_amount")
-    @NotNull
-    private Long maxDiscountAmount;
-
-    @Column(name = "coupon_min_payment_amount")
-    @NotNull
-    private Long minPaymentAmount;
-
     @Column(name = "coupon_details")
     @NotNull
     private String detail;
@@ -86,8 +76,7 @@ public class Coupon extends BaseEntity implements Serializable {
 //    }
 
     public Coupon(String name, Seller seller, CouponType type, Integer discountValue,
-        LocalDateTime validAt, LocalDateTime expiresAt,
-        Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
+        LocalDateTime validAt, LocalDateTime expiresAt, String detail, Integer cnt) {
 
         this.name = name;
         this.seller = seller;
@@ -95,8 +84,6 @@ public class Coupon extends BaseEntity implements Serializable {
         this.discountValue = discountValue;
         this.validAt = validAt;
         this.expiresAt = expiresAt;
-        this.maxDiscountAmount = maxDiscountAmount;
-        this.minPaymentAmount = minPaymentAmount;
         this.detail = detail;
         this.cnt = cnt;
     }

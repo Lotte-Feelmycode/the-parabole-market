@@ -22,8 +22,6 @@ public class CouponUserResponseDto {
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
 
-        private Long maxDiscountAmount;
-        private Long minPaymentAmount;
 
         public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String sellerName) {
 
@@ -37,8 +35,6 @@ public class CouponUserResponseDto {
                 this.useDate = userCoupon.getUseDate();
                 this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
-                this.maxDiscountAmount = coupon.getMaxDiscountAmount();
-                this.minPaymentAmount = coupon.getMinPaymentAmount();
         }
 
 }
