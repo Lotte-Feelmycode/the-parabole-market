@@ -57,9 +57,9 @@ include::{snippets}/cart-list/response-fields.adoc[]
 
 include::{snippets}/cart-product-add/http-request.adoc[]
 
-`*Parameters*`
+`*Fields*`
 
-include::{snippets}/cart-product-add/request-parameters.adoc[]
+include::{snippets}/cart-product-add/request-fields.adoc[]
 
 `*Response*`
 
@@ -75,7 +75,7 @@ include::{snippets}/cart-product-add/response-fields.adoc[]
 
 include::{snippets}/cart-update-cnt/http-request.adoc[]
 
-`*Parameters*`
+`*Fields*`
 
 include::{snippets}/cart-update-cnt/request-fields.adoc[]
 
