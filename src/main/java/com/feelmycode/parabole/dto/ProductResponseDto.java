@@ -13,4 +13,6 @@ public class ProductResponseDto {
         this.productName = productName;
         this.productImg = productImg;
     }
+
 }
+
