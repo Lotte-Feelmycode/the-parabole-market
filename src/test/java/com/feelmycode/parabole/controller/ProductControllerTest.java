@@ -7,6 +7,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
@@ -31,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -71,27 +73,27 @@ public class ProductControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("userId").description("사용자(판매자) ID")
+                requestFields(
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자(판매자) ID")
                 ),
                 responseFields(
-                    fieldWithPath("success").description("성공여부"),
-                    fieldWithPath("message").description("메세지"),
-                    fieldWithPath("data").description("반환하는 데이터 정보"),
-                    fieldWithPath("data.content").description("상품 정보"),
-                    fieldWithPath("data.content.productId").description("상품 ID"),
-                    fieldWithPath("data.content.productName").description("상품 명"),
-                    fieldWithPath("data.content.sellerId").description("판매자 ID"),
-                    fieldWithPath("data.content.storeName").description("판매자의 상호 이름"),
-                    fieldWithPath("data.content.productStatus").description("상품의 상태"),
-                    fieldWithPath("data.content.productRemains").description("상품 재고"),
-                    fieldWithPath("data.content.productPrice").description("상품 가격"),
-                    fieldWithPath("data.content.productCategory").description("상품의 카테고리"),
-                    fieldWithPath("data.content.productThumbnailImg").description("상품의 썸네일 이미지"),
-                    fieldWithPath("data.content.productCreatedAt").description("상품의 생성 일자"),
-                    fieldWithPath("data.content.productUpdatedAt").description("상품의 수정 일자"),
-                    fieldWithPath("data.content.productDeletedAt").description("상품의 삭제 일자"),
-                    fieldWithPath("data.content.productIsDeleted").description("상품의 삭제 여부")
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("반환하는 데이터 정보"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("상품 정보"),
+                    fieldWithPath("data.content.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                    fieldWithPath("data.content.productName").type(JsonFieldType.STRING).description("상품 명"),
+                    fieldWithPath("data.content.sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
+                    fieldWithPath("data.content.storeName").type(JsonFieldType.STRING).description("판매자의 상호 이름"),
+                    fieldWithPath("data.content.productStatus").type(JsonFieldType.NUMBER).description("상품의 상태"),
+                    fieldWithPath("data.content.productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
+                    fieldWithPath("data.content.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
+                    fieldWithPath("data.content.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
+                    fieldWithPath("data.content.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
+                    fieldWithPath("data.content.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자"),
+                    fieldWithPath("data.content.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자"),
+                    fieldWithPath("data.content.productDeletedAt").type(JsonFieldType.STRING).description("상품의 삭제 일자"),
+                    fieldWithPath("data.content.productIsDeleted").type(JsonFieldType.STRING).description("상품의 삭제 여부")
                 )
             ))
             .when()
@@ -112,33 +114,33 @@ public class ProductControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("productId").description("상품 ID")
+                requestFields(
+                    fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 ID")
                 ),
                 responseFields(
-                    fieldWithPath("success").description("성공여부"),
-                    fieldWithPath("message").description("메세지"),
-                    fieldWithPath("data").description("반환하는 데이터 정보"),
-                    fieldWithPath("data.content").description("상품 정보"),
-                    fieldWithPath("data.content.productId").description("상품 ID"),
-                    fieldWithPath("data.content.productName").description("상품 명"),
-                    fieldWithPath("data.content.storeName").description("판매자 상호 이름"),
-                    fieldWithPath("data.content.sellerId").description("판매자 ID"),
-                    fieldWithPath("data.content.storeName").description("판매자의 상호 이름"),
-                    fieldWithPath("data.content.productStatus").description("상품의 상태"),
-                    fieldWithPath("data.content.productRemains").description("상품 재고"),
-                    fieldWithPath("data.content.productPrice").description("상품 가격"),
-                    fieldWithPath("data.content.productCategory").description("상품의 카테고리"),
-                    fieldWithPath("data.content.productThumbnailImg").description("상품의 썸네일 이미지"),
-                    fieldWithPath("data.content.productCreatedAt").description("상품의 생성 일자"),
-                    fieldWithPath("data.content.productUpdatedAt").description("상품의 수정 일자"),
-                    fieldWithPath("data.content.productDeletedAt").description("상품의 삭제 일자"),
-                    fieldWithPath("data.content.productIsDeleted").description("상품의 삭제 여부"),
-                    fieldWithPath("data.content.productDetail").description("상품 이미지 정보"),
-                    fieldWithPath("data.content.productDetail.[].productDetailId").description("상품 상세 ID"),
-                    fieldWithPath("data.content.productDetail.[].productId").description("상품 ID"),
-                    fieldWithPath("data.content.productDetail.[].img").description("상품 이미지"),
-                    fieldWithPath("data.content.productDetail.[].imgCaption").description("상품 이미지 상세 설명")
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("반환하는 데이터 정보"),
+                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("상품 정보"),
+                    fieldWithPath("data.content.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                    fieldWithPath("data.content.productName").type(JsonFieldType.STRING).description("상품 명"),
+                    fieldWithPath("data.content.storeName").type(JsonFieldType.STRING).description("판매자 상호 이름"),
+                    fieldWithPath("data.content.sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
+                    fieldWithPath("data.content.storeName").type(JsonFieldType.STRING).description("판매자의 상호 이름"),
+                    fieldWithPath("data.content.productStatus").type(JsonFieldType.NUMBER).description("상품의 상태"),
+                    fieldWithPath("data.content.productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
+                    fieldWithPath("data.content.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
+                    fieldWithPath("data.content.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
+                    fieldWithPath("data.content.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
+                    fieldWithPath("data.content.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자"),
+                    fieldWithPath("data.content.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자"),
+                    fieldWithPath("data.content.productDeletedAt").type(JsonFieldType.STRING).description("상품의 삭제 일자"),
+                    fieldWithPath("data.content.productIsDeleted").type(JsonFieldType.STRING).description("상품의 삭제 여부"),
+                    fieldWithPath("data.content.productDetail").type(JsonFieldType.STRING).description("상품 이미지 정보"),
+                    fieldWithPath("data.content.productDetail.[].productDetailId").type(JsonFieldType.NUMBER).description("상품 상세 ID"),
+                    fieldWithPath("data.content.productDetail.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                    fieldWithPath("data.content.productDetail.[].img").type(JsonFieldType.STRING).description("상품 이미지"),
+                    fieldWithPath("data.content.productDetail.[].imgCaption").type(JsonFieldType.STRING).description("상품 이미지 상세 설명")
                 )
             ))
             .when()
