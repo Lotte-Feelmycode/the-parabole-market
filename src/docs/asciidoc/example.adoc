@@ -26,3 +26,70 @@ include::{snippets}/product-list/response-fields.adoc[]
 
 '''
 
+== EventParticipant
+
+=== 이벤트 응모
+`*Request*`
+
+include::{snippets}/eventparticipant/curl-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/eventparticipant/request-body.adoc[]
+
+`*Response*`
+
+include::{snippets}/eventparticipant/http-response.adoc[]
+
+
+`*Fields*`
+
+include::{snippets}/eventparticipant/response-fields.adoc[]
+
+---
+
+=== 이벤트 응모 체크
+
+`*Request*`
+
+include::{snippets}/eventparticipant-check/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/eventparticipant-check/request-body.adoc[]
+
+`*Response*`
+
+include::{snippets}/eventparticipant-check/response-body.adoc[]
+
+`*Fields*`
+
+include::{snippets}/eventparticipant-check/response-fields.adoc[]
+
+=== 유저 이벤트 응모 리스트
+
+`*Request*`
+
+include::{snippets}/user-eventparticipant/http-request.adoc[]
+
+`*response*`
+
+include::{snippets}/user-eventparticipant/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/user-eventparticipant/response-fields.adoc[]
+
+=== 셀러 이벤트 응모 리스트
+
+`*Request*`
+
+include::{snippets}/seller-eventparticipant/http-request.adoc[]
+
+`*response*`
+
+include::{snippets}/seller-eventparticipant/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/seller-eventparticipant/response-fields.adoc[]
