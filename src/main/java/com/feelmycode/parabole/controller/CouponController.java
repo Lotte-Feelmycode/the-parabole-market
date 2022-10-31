@@ -4,18 +4,17 @@ import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
+import com.feelmycode.parabole.dto.CouponCreateRequestDto;
+import com.feelmycode.parabole.dto.CouponCreateResponseDto;
+import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
+import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.service.CouponService;
-import com.feelmycode.parabole.dto.CouponInfoResponseDto;
-import com.feelmycode.parabole.dto.CouponCreateRequestDto;
-import com.feelmycode.parabole.dto.CouponCreateResponseDto;
-import com.feelmycode.parabole.dto.CouponSellerResponseDto;
-import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -133,18 +131,19 @@ public class CouponController {
             true, "셀러 쿠폰 목록", sellerCouponList);
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<ParaboleResponse> getCouponInfo(@RequestParam String couponSNo) {
-
-        CouponInfoResponseDto response = couponService.getCouponInfo(couponSNo);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "쿠폰 정보 반환", response);
-    }
-
-    @PostMapping("/user/use")
-    public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestBody CouponUseAndAssignRequestDto dto) {
-
-        couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
-    }
+    // TODO: API 로는 필요없을 것 같다는 생각이 들었습니다. Service만 있고 다른 API 에서 호출해서 사용하면 될 듯.
+//    @GetMapping("/info")
+//    public ResponseEntity<ParaboleResponse> getCouponInfo(@RequestParam String couponSNo) {
+//
+//        CouponInfoResponseDto response = couponService.getCouponInfo(couponSNo);
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK,
+//            true, "쿠폰 정보 반환", response);
+//    }
+//
+//    @PostMapping("/user/use")
+//    public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestBody CouponUseAndAssignRequestDto dto) {
+//
+//        couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
+//    }
 }

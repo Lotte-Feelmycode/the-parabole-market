@@ -8,4 +8,9 @@ public class CouponAssignRequestDto {
 
     private Long couponId;
     private List<Long> userIdList;
+
+    public CouponAssignRequestDto(Long couponId, List<Long> userIdList) {
+        this.couponId = couponId;
+        this.userIdList = userIdList;
+    }
 }
