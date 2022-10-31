@@ -34,11 +34,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductControllerTest {
 
+    String outputDirectory = "./src/docs/asciidoc/snippets";
+
     @LocalServerPort
     int port;
 
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
 
     private RequestSpecification spec;
 
@@ -71,10 +73,10 @@ public class ProductControllerTest {
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
                     requestParameters(
-                        parameterWithName("sellerId").description("셀러 이름"),
-                        parameterWithName("storeName").description("셀러 스토어 이름"),
-                        parameterWithName("category").description("카테고리"),
-                        parameterWithName("productName").description("상품명")
+                        parameterWithName("sellerId").description("셀러 이름").optional(),
+                        parameterWithName("storeName").description("셀러 스토어 이름").optional(),
+                        parameterWithName("category").description("카테고리").optional(),
+                        parameterWithName("productName").description("상품명").optional()
                     ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
