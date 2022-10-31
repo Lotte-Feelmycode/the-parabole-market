@@ -1,8 +1,6 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.global.error.exception.NotSellerException;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -14,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,28 +27,37 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "user_email", length = 200)
-    @NotNull
+    @Column(name = "user_email", length = 200)//, nullable = false)
+//    @NotNull
     private String email;
 
     @Column(name = "user_name", length = 200)
-    @NotNull
-    private String name;
+//    @NotNull
+    private String username;
 
     @Column(name = "user_nickname", length = 200)
-    @NotNull
+//    @NotNull
     private String nickname;
 
     @Column(name = "user_phone", length = 200)
-    @NotNull
+//    @NotNull
     private String phone;
 
     @Column(name = "user_password", length = 200)
-    @NotNull
+//    @NotNull
     private String password;
 
+    @Column(name = "user_role", length = 200)
+    private String role;
+
+    @Column(name = "user_img_url", length = 200)
+    private String imageUrl;
+
+    @Column(name = "user_auth_provider", length = 200)
+    private String authProvider; // example : facebook
+
     @JoinColumn(name = "seller_id")
-    @NotNull
+//    @NotNull
     @OneToOne
     private Seller seller;
 
@@ -79,9 +87,28 @@ public class User extends BaseEntity {
     public User(String email, String name,
         String nickname, String phone, String password) {
         this.email = email;
-        this.name = name;
+        this.username = name;
         this.nickname = nickname;
         this.phone = phone;
         this.password = password;
     }
+
+    @Builder
+    public User(Long id, String email, String username, String nickname, String phone,
+        String password,
+        String role, String imageUrl, String authProvider, Seller seller,
+        List<UserCoupon> userCoupons) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.nickname = nickname;
+        this.phone = phone;
+        this.password = password;
+        this.role = role;
+        this.imageUrl = imageUrl;
+        this.authProvider = authProvider;
+        this.seller = seller;
+        this.userCoupons = userCoupons;
+    }
+
 }
