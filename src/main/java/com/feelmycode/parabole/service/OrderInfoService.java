@@ -30,6 +30,7 @@ public class OrderInfoService {
     private final OrderService orderService;
     private final ProductService productService;
     private final SellerService sellerService;
+    private final CouponService couponService;
 
     @Transactional
     public void saveOrderInfo(Long userId, OrderInfoSimpleDto orderInfoDto) {
@@ -97,7 +98,7 @@ public class OrderInfoService {
 
         HashMap<Long, Integer> sellerIdMap = new HashMap<>();
 
-        int idx = 1;
+        int idx = 0;
         for (OrderInfo orderInfo : orderInfoList) {
             Long sellerId = orderInfo.getSellerId();
             if (!sellerIdMap.containsKey(sellerId)) {
