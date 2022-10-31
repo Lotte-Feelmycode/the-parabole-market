@@ -49,7 +49,7 @@ public class TokenProvider {
 
         return Jwts.builder()
             .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-            .setSubject(userPrincipal.getName())
+            .setSubject(userPrincipal.getName())        // this means id(Long) in the form of String
             .setIssuedAt(new Date())
 //            .setExpiration(expiryDate)
             .compact();
