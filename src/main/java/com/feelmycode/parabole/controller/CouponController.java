@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
+import com.feelmycode.parabole.dto.CouponDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
@@ -142,5 +143,13 @@ public class CouponController {
 
         couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
+    }
+
+    @GetMapping("/data")
+    public CouponDto getCouponData(@RequestParam Long couponId){
+        Coupon coupon = couponService.getCouponById(couponId);
+        CouponDto couponDto = new CouponDto(coupon.getId(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt());
+        System.out.println(couponDto.toString());
+        return couponDto;
     }
 }

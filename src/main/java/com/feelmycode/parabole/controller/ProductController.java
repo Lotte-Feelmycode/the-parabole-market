@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.ProductDetail;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
@@ -89,5 +90,12 @@ public class ProductController {
         ProductDetailListResponseDto response = productService.getProductDetail(productId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", response);
     }
-    
+
+    @GetMapping("/data")
+    public ProductResponseDto getProducts(@RequestParam Long productId){
+        Product response = productService.getProduct(productId);
+        ProductResponseDto dto=new ProductResponseDto(response.getId(),response.getName(),response.getThumbnailImg());
+        return dto;
+    }
+
 }
