@@ -53,6 +53,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
     testImplementation 'io.rest-assured:rest-assured'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 ext {
