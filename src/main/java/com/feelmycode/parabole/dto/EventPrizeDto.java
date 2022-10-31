@@ -36,11 +36,19 @@ public class EventPrizeDto {
             couponDiscountValue = coupon.getDiscountValue();
             this.stock = eventPrize.getStock();
             this.expiresAt = coupon.getExpiresAt();
+            this.productId = -1L;
+            this.productName = "";
+            this.productImg = "";
         } else if (this.prizeType.equals("PRODUCT")) {
             this.productId = product.getId();
             this.stock = eventPrize.getStock();
             this.productName = product.getName();
             this.productImg = product.getThumbnailImg();
+            this.couponId = -1L;
+            this.couponDetail = "";
+            this.type = CouponType.AMOUNT;
+            this.couponDiscountValue = -1;
+            this.expiresAt = LocalDateTime.MIN;
         }
     }
 

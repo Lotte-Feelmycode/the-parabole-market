@@ -14,14 +14,17 @@ import com.feelmycode.parabole.enumtype.EventStatus;
 import com.feelmycode.parabole.enumtype.EventType;
 import com.feelmycode.parabole.enumtype.PrizeType;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -140,27 +143,30 @@ public class EventService {
      * 검색 조건으로 이벤트 목록 조회 (경품 목록 제외)
      */
     public List<EventSearchResponseDto> getEventsSearch(
-        EventSearchRequestDto eventSearchRequestDto) {
+        String eventType, String eventTitle, Integer dateDiv, LocalDateTime fromDateTime,
+        LocalDateTime toDateTime, Integer eventStatus) {
 
         List<Event> eventList = null;
-        Integer status = null;
-        String title = null;
-        String type = null;
+        List<String> types =
+            eventType.equals("") ? Arrays.asList("RAFFLE", "FCFS") : Arrays.asList(eventType);
+        List<Integer> statuses =
+            eventStatus < 0 ? Arrays.asList(0, 1, 2) : Arrays.asList(eventStatus);
 
-        if (!StringUtils.isEmpty(eventSearchRequestDto.getDateDiv())) {
-            eventList = eventSearchRequestDto.getDateDiv() < 1
-                ? eventRepository.findAllByStartAtBetweenAndIsDeleted(
-                eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(),
+
+        System.out.println("eventStatus" + eventStatus);
+        System.out.println("statues "+ statuses);
+        if (dateDiv > -1) {
+            eventList = dateDiv < 1
+                ? eventRepository.findAllByStartAtBetweenAndIsDeleted(fromDateTime, toDateTime,
                 false)
-                : eventRepository.findAllByEndAtBetweenAndIsDeleted(
-                    eventSearchRequestDto.getFromDateTime(), eventSearchRequestDto.getToDateTime(),
+                : eventRepository.findAllByEndAtBetweenAndIsDeleted(fromDateTime, toDateTime,
                     false);
+        } else if (eventTitle.equals("")) {
+            eventList = eventRepository.findAllByTypeInAndStatusInAndIsDeleted(
+                types, statuses, false);
         } else {
-            status = eventSearchRequestDto.getEventStatus().getValue();
-            title = eventSearchRequestDto.getEventTitle();
-            type = eventSearchRequestDto.getEventType().getCode();
-            eventList = eventRepository.findAllByTypeAndStatusAndTitleContainingAndIsDeleted(type,
-                status, title, false);
+            eventList = eventRepository.findAllByTypeInAndStatusInAndTitleContainingAndIsDeleted(
+                types, statuses, eventTitle, false);
         }
 
         return eventList.stream()
