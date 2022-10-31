@@ -161,21 +161,21 @@ public class ProductControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("ProductDto").description("상품정보"),
-                    parameterWithName("ProductDto.productId").description("상품 ID"),
-                    parameterWithName("ProductDto.productName").description("상품 명"),
-                    parameterWithName("ProductDto.sellerId").description("판매자 ID"),
-                    parameterWithName("ProductDto.storeName").description("판매자의 상호 이름"),
-                    parameterWithName("ProductDto.productStatus").description("상품의 상태"),
-                    parameterWithName("ProductDto.productRemains").description("상품 재고"),
-                    parameterWithName("ProductDto.productPrice").description("상품 가격"),
-                    parameterWithName("ProductDto.productCategory").description("상품의 카테고리"),
-                    parameterWithName("ProductDto.productThumbnailImg").description("상품의 썸네일 이미지"),
-                    parameterWithName("ProductDto.productCreatedAt").description("상품의 생성 일자"),
-                    parameterWithName("ProductDto.productUpdatedAt").description("상품의 수정 일자"),
-                    parameterWithName("ProductDto.productDeletedAt").description("상품의 삭제 일자"),
-                    parameterWithName("ProductDto.productIsDeleted").description("상품의 삭제 여부")
+                requestFields(
+                    fieldWithPath("ProductDto").type(JsonFieldType.OBJECT).description("상품정보"),
+                    fieldWithPath("ProductDto.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                    fieldWithPath("ProductDto.productName").type(JsonFieldType.STRING).description("상품 명"),
+                    fieldWithPath("ProductDto.sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
+                    fieldWithPath("ProductDto.storeName").type(JsonFieldType.STRING).description("판매자의 상호 이름"),
+                    fieldWithPath("ProductDto.productStatus").type(JsonFieldType.NUMBER).description("상품의 상태"),
+                    fieldWithPath("ProductDto.productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
+                    fieldWithPath("ProductDto.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
+                    fieldWithPath("ProductDto.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
+                    fieldWithPath("ProductDto.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
+                    fieldWithPath("ProductDto.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자"),
+                    fieldWithPath("ProductDto.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자"),
+                    fieldWithPath("ProductDto.productDeletedAt").type(JsonFieldType.STRING).description("상품의 삭제 일자"),
+                    fieldWithPath("ProductDto.productIsDeleted").type(JsonFieldType.BOOLEAN).description("상품의 삭제 여부")
                 )
             ))
             .when()
