@@ -14,12 +14,14 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 import com.feelmycode.parabole.repository.EventParticipantRepository;
+import com.feelmycode.parabole.service.EventParticipantService;
 import groovy.util.logging.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import javax.transaction.Transactional;
 import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -57,6 +59,9 @@ public class EventApplyControllerTest {
     @Autowired
     EventParticipantRepository eventParticipantRepository;
 
+    @Autowired
+    EventParticipantService eventParticipantService;
+
 
     @Before
     public void setUp() {
@@ -71,11 +76,12 @@ public class EventApplyControllerTest {
     @Test
     @DisplayName("이벤트 응모")
     public void test_insertEventApply() {
-
+        Long userId = 6L;
+        Long eventId = 2L;
         //given
         JSONObject request = new JSONObject();
-        request.put("userId", 5L);
-        request.put("eventId", 2L);
+        request.put("userId", userId);
+        request.put("eventId", eventId);
         request.put("eventPrizeId", 1L);
 
         Response resp = given(this.spec)
@@ -102,16 +108,18 @@ public class EventApplyControllerTest {
             .post("/api/v1/event/participant");
 
         //then
-        assertEquals(HttpStatus.ALREADY_REPORTED.value(), resp.statusCode());
+        assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
+        eventParticipantRepository.deleteByUserIdAndEventId(userId, eventId);
     }
 
     @Test
     @DisplayName("이벤트 응모 여부")
     public void test1_eventApplyCheck() {
-
+        Long userId = 4L;
+        Long eventId = 2L;
         JSONObject request = new JSONObject();
-        request.put("userId", 4L);
-        request.put("eventId", 2L);
+        request.put("userId", userId);
+        request.put("eventId", eventId);
 
         Response resp = given(this.spec)
             .body(request.toJSONString())
@@ -181,7 +189,7 @@ public class EventApplyControllerTest {
 
     @Test
     @DisplayName("셀러용 이벤트 응모 리스트 조회")
-    public void test_getEventParticipants(){
+    public void test_getEventParticipants() {
 
         Long eventId = 2L;
 
@@ -211,27 +219,38 @@ public class EventApplyControllerTest {
                             .description("유저 핸드폰 번호"),
                         fieldWithPath("data.[].eventPrizes.[]").type(JsonFieldType.ARRAY)
                             .description("유저 응모 상품 정보"),
-                        fieldWithPath("data.[].eventPrizes.[].eventPrizeId").type(JsonFieldType.NUMBER).optional()
+                        fieldWithPath("data.[].eventPrizes.[].eventPrizeId").type(JsonFieldType.NUMBER)
+                            .optional()
                             .description("이벤트 상품 아이디"),
-                        fieldWithPath("data.[].eventPrizes.[].prizeType").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].prizeType").type(JsonFieldType.STRING)
+                            .optional()
                             .description("이벤트 상품 타입"),
-                        fieldWithPath("data.[].eventPrizes.[].stock").type(JsonFieldType.NUMBER).optional()
+                        fieldWithPath("data.[].eventPrizes.[].stock").type(JsonFieldType.NUMBER)
+                            .optional()
                             .description("이벤트 상품 재고"),
-                        fieldWithPath("data.[].eventPrizes.[].productId").type(JsonFieldType.NUMBER).optional()
+                        fieldWithPath("data.[].eventPrizes.[].productId").type(JsonFieldType.NUMBER)
+                            .optional()
                             .description("상품 아이디"),
-                        fieldWithPath("data.[].eventPrizes.[].productName").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].productName").type(JsonFieldType.STRING)
+                            .optional()
                             .description("상품 이름"),
-                        fieldWithPath("data.[].eventPrizes.[].productImg").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].productImg").type(JsonFieldType.STRING)
+                            .optional()
                             .description("상품 이미지"),
-                        fieldWithPath("data.[].eventPrizes.[].couponId").type(JsonFieldType.NUMBER).optional()
+                        fieldWithPath("data.[].eventPrizes.[].couponId").type(JsonFieldType.NUMBER)
+                            .optional()
                             .description("쿠폰 아이디"),
-                        fieldWithPath("data.[].eventPrizes.[].couponDetail").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].couponDetail").type(JsonFieldType.STRING)
+                            .optional()
                             .description("쿠폰 상세"),
-                        fieldWithPath("data.[].eventPrizes.[].type").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].type").type(JsonFieldType.STRING)
+                            .optional()
                             .description("쿠폰 타입"),
-                        fieldWithPath("data.[].eventPrizes.[].couponDiscountValue").type(JsonFieldType.NUMBER).optional()
+                        fieldWithPath("data.[].eventPrizes.[].couponDiscountValue").type(
+                                JsonFieldType.NUMBER).optional()
                             .description("쿠폰 할인량"),
-                        fieldWithPath("data.[].eventPrizes.[].expiresAt").type(JsonFieldType.STRING).optional()
+                        fieldWithPath("data.[].eventPrizes.[].expiresAt").type(JsonFieldType.STRING)
+                            .optional()
                             .description("쿠폰 유효기간"),
                         fieldWithPath("data.[].eventTimeStartAt").type(JsonFieldType.STRING)
                             .description("이벤트 시작시간")
