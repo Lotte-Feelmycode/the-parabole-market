@@ -1,6 +1,7 @@
-package com.feelmycode.parabole.security;
+package com.feelmycode.parabole.security.utils;
 
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.security.model.ApplicationOAuth2User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,7 +28,7 @@ public class TokenProvider {
             .setSubject(User.getId().toString()) // sub
             .setIssuer("The Parabole app") // iss
             .setIssuedAt(new Date()) // iat
-            .setExpiration(expiryDate) // exp
+//            .setExpiration(expiryDate) // exp
             .compact();
     }
 
@@ -47,10 +48,10 @@ public class TokenProvider {
                 .plus(1, ChronoUnit.DAYS));
 
         return Jwts.builder()
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
             .setSubject(userPrincipal.getName())
             .setIssuedAt(new Date())
-            .setExpiration(expiryDate)
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+//            .setExpiration(expiryDate)
             .compact();
     }
 }

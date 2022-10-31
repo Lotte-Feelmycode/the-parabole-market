@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.security;
 
+import com.feelmycode.parabole.security.utils.TokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,14 +21,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-/* TODO: 인증 부분만 구현, 유효 시간 검사는 생략 */
     @Autowired
     private TokenProvider tokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = null;
         try {
-            String token = parseBearerToken(request);
+            token = parseBearerToken(request);
             log.info("Filter is running...");
 
             if (token != null && !token.equalsIgnoreCase("null")) {
@@ -45,9 +46,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.setContext(securityContext);
             }
         } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
+            log.error("Could not set user authentication in security context", ex);
         }
-
+        request.setAttribute("userToken", token);
         filterChain.doFilter(request, response);
     }
 

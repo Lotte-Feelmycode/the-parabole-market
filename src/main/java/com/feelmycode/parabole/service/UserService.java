@@ -1,19 +1,32 @@
 package com.feelmycode.parabole.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSearchDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
+import com.feelmycode.parabole.security.model.KakaoProfile;
+import com.feelmycode.parabole.security.model.OauthToken;
+import com.feelmycode.parabole.security.utils.TokenProvider;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -21,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
     private final CartService cartService;
 
@@ -130,6 +144,103 @@ public class UserService {
             throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
         }
         return dtos;
+    }
+
+    @Value(value = "${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String clientId;
+    @Value(value = "${spring.security.oauth2.client.registration.kakao.client-secret}")
+    private String clientSecret;
+    //    @Value(value = "${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String redirectUrl = "http://localhost:8080/oauth2/code/kakao";
+    @Value(value = "${spring.security.oauth2.client.provider.kakao.token-uri}")
+    private String tokenUrl;
+    @Value(value = "${spring.security.oauth2.client.provider.kakao.authorization-uri}")
+    private String authorizationUrl;
+
+    public OauthToken getAccessToken(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", clientId);
+        params.add("redirect_uri", redirectUrl);
+        params.add("code", code);
+//        params.add("client_secret", clientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            tokenUrl,
+            HttpMethod.POST,
+            kakaoTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        OauthToken oauthToken = null;
+        try {
+            oauthToken = objectMapper.readValue(accessTokenResponse.getBody(), OauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return oauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    public KakaoProfile findProfile(String token) {
+
+        RestTemplate rt = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
+            new HttpEntity<>(headers);
+
+        // Http 요청 (POST 방식) 후, response 변수에 응답을 받음
+        ResponseEntity<String> kakaoProfileResponse = rt.exchange(
+            "https://kapi.kakao.com/v2/user/me",
+            HttpMethod.POST,
+            kakaoProfileRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+        try {
+            kakaoProfile = objectMapper.readValue(kakaoProfileResponse.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("kakaoProfile {}", kakaoProfile);
+        return kakaoProfile;
+    }
+
+    @Transactional
+    public String saveUserAndGetToken(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        KakaoProfile profile = findProfile(token);
+        log.info(profile.toString());
+
+        User user = userRepository.findByEmail(profile.getKakao_account().getEmail());
+        if(user == null) {
+            user = User.builder()
+                .id(profile.getId())
+                .imageUrl(profile.getKakao_account().getProfile().getProfile_image_url())
+                .nickname(profile.getKakao_account().getProfile().getNickname())
+                .email(profile.getKakao_account().getEmail())
+                .authProvider("Kakao")
+                .username(profile.getKakao_account().getProfile().getNickname())
+//                .phone(user.getPhone())
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        return tokenProvider.create(user);
     }
 
 }

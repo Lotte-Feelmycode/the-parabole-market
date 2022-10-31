@@ -1,6 +1,8 @@
 package com.feelmycode.parabole.security;
 
 import static com.feelmycode.parabole.security.RedirectUrlCookieFilter.REDIRECT_URI_PARAM;
+
+import com.feelmycode.parabole.security.utils.TokenProvider;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;

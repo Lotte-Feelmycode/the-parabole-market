@@ -1,4 +1,4 @@
-package com.feelmycode.parabole.security;
+package com.feelmycode.parabole.security.model;
 
 import java.util.Collection;
 import java.util.Collections;

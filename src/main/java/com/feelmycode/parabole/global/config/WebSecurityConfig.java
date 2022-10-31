@@ -41,15 +41,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
             .and()
-            .authorizeRequests() // /와 /auth/** 경로는 인증 안해도 됨.
-            .antMatchers("/","/api/v1/auth/**", "/api/v1/product/", "/api/v1/product/list", "/api/v1/event/list").permitAll()
-            .anyRequest() // /와 /auth/**이외의 모든 경로는 인증 해야됨.
+            .authorizeRequests()
+            .antMatchers("/","/api/v1/auth/**", "/oauth2/code/**",
+                "/api/v1/product/", "/api/v1/product/list", "/api/v1/event/list").permitAll()
+            .anyRequest()
             .authenticated()
 
             .and()
             .oauth2Login()
             .redirectionEndpoint()
-            .baseUri("/oauth2/callback/*")
+            .baseUri("/oauth2/callback/**")
 
             .and()
             .authorizationEndpoint()
@@ -66,15 +67,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .exceptionHandling()
             .authenticationEntryPoint(new Http403ForbiddenEntryPoint()); // Http403ForbiddenEntryPoint 추가
 
-        // filter 등록.
-        // 매 리퀘스트마다 CorsFilter 실행한 후에 jwtAuthenticationFilter 실행한다.
+        // CorsFilter -> jwtAuthFilter -> .... -> redirectUrlFilter -> OAuth2AuthorizationRequestRedirectFilter
         http.addFilterAfter(
             jwtAuthenticationFilter,
             CorsFilter.class
         );
-        http.addFilterBefore( // Before
+        http.addFilterBefore(
             redirectUrlFilter,
-            OAuth2AuthorizationRequestRedirectFilter.class // 리디렉트가 되기 전에 필터를 실행해야 한다.
+            OAuth2AuthorizationRequestRedirectFilter.class
         );
     }
 }
