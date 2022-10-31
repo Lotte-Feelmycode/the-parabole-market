@@ -195,6 +195,14 @@ public class EventService {
                         .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
                             "취소하려는 이벤트의 경품 정보가 없습니다"));
                     product.addRemains(Long.valueOf(eventPrize.getStock()));
+                } else {
+                    Coupon coupon = couponRepository.findById(eventPrize.getCoupon().getId())
+                        .orElseThrow(
+                            () -> new ParaboleException(HttpStatus.NOT_FOUND,
+                                "취소하려는 이벤트 경품 쿠폰 정보가 없습니다.")
+                        );
+                    coupon.cancelCouponEvent(eventPrize.getStock());
+
                 }
             }
             eventRepository.save(event);

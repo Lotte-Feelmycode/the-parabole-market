@@ -85,6 +85,10 @@ public class UserCoupon extends BaseEntity {
         this.useState = CouponUseState.EventEnrolled;
     }
 
+    public void setNotUsed() {
+        this.useState = CouponUseState.NotUsed;
+    }
+
 }
 
 
