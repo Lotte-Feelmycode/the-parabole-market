@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 01 Nov 2022 02:25:23 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 108
+
+{
+  "success" : true,
+  "message" : "사용자의 상세 주문 배송 정보 수정",
+  "data" : null
+}
+----

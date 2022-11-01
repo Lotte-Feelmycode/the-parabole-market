@@ -1,0 +1,11 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:51213/api/v1/orderinfo' -i -X PATCH \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "userId" : 3,
+  "orderInfoId" : 1,
+  "orderState" : "BEFORE_PAY"
+}'
+----

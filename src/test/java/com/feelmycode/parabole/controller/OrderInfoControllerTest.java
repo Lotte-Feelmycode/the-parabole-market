@@ -16,6 +16,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
+import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -40,7 +41,7 @@ public class OrderInfoControllerTest {
     @LocalServerPort
     int port;
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
 
     private RequestSpecification spec;
 
@@ -75,7 +76,7 @@ public class OrderInfoControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 수정 정보")
+                    fieldWithPath("data").type(JsonFieldType.NULL).description("주문 완료 후 데이터")
                 )
             ))
             .when()
@@ -87,7 +88,7 @@ public class OrderInfoControllerTest {
     @DisplayName("상세 주문 목록")
     public void getOrderInfoList() {
         given(this.spec)
-            .param("userId", "1")
+            .param("userId", 1L)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(document("get-orderinfo-list",
@@ -96,18 +97,15 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("userId").type(JsonFieldType.STRING).description("사용자 이름")
-                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.STRING).description("주문 정보 목록"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
                     fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("상품 아이디"),
                     fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("상품 명"),
                     fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
                     fieldWithPath("data.[].userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
-                    fieldWithPath("data.[].productId").type(JsonFieldType.STRING).description("상품 ID"),
+                    fieldWithPath("data.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                     fieldWithPath("data.[].productName").type(JsonFieldType.STRING).description("상품 명"),
                     fieldWithPath("data.[].productCnt").type(JsonFieldType.NUMBER).description("상품 개수"),
                     fieldWithPath("data.[].productRemain").type(JsonFieldType.NUMBER).description("상품 재고"),
@@ -124,7 +122,7 @@ public class OrderInfoControllerTest {
     @Test
     @DisplayName("상세 주문 수정")
     public void updateOrderInfo() {
-        OrderInfoRequestDto dto = new OrderInfoRequestDto(1L, 1L, "BEFORE_PAY");
+        OrderInfoRequestDto dto = new OrderInfoRequestDto(3L, 1L, "BEFORE_PAY");
         given(this.spec)
             .accept(ContentType.JSON)
             .body(dto)
@@ -138,7 +136,7 @@ public class OrderInfoControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 수정 정보")
+                    fieldWithPath("data").type(JsonFieldType.NULL).description("주문 수정 정보")
                 )
             ))
             .when()
