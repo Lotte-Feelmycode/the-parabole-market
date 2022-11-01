@@ -12,7 +12,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 02:58:59 GMT
+Date: Tue, 01 Nov 2022 06:34:15 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 458
@@ -26,7 +26,7 @@ Content-Length: 458
     "name" : "user1",
     "nickname" : "nickname1",
     "phone" : "01011111111",
-    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NSIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyNzE1MzksImV4cCI6MTY2NzM1NzkzOX0.lFiw8G7yNkG0YOoDvEIKi7POuu_a0qbP_hvJKABlhiY",
+    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NSIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyODQ0NTUsImV4cCI6MTY2NzM3MDg1NX0.6FfLx1NLmE8bZzeLD2QKlgZbbcpfop3ciTH8__5LoMY",
     "password" : null,
     "passwordConfirmation" : null
   }

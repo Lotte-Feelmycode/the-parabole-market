@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "사용자에게 쿠폰 배정 성공",
+  "data" : null
+}
+----

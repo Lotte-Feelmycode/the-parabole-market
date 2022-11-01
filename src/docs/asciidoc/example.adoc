@@ -1,28 +1,140 @@
 :hardbreaks:
 ifndef::snippets[]
-:snippets: ./build/generated-snippets
+:resource-dir: ./snippets
 endif::[]
-
+ifdef::snippets[]
+:resource-dir: ./src/docs/asciidoc/snippets
+endif::[]
 :toc: left
 
-= Product
+= The Parabole
+
+== Product
 
 === 상품 목록
 `*Request*`
 
-include::{snippets}/product-list/http-request.adoc[]
+include::{resource-dir}/product-list/http-request.adoc[]
 
 `*Parameters*`
 
-include::{snippets}/product-list/request-parameters.adoc[]
+include::{resource-dir}/product-list/request-parameters.adoc[]
 
 `*Response*`
 
-include::{snippets}/product-list/http-response.adoc[]
+include::{resource-dir}/product-list/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/product-list/response-fields.adoc[]
+include::{resource-dir}/product-list/response-fields.adoc[]
+
+
+= Coupon
+
+=== 유저 쿠폰 목록 조회
+`*Request*`
+
+include::{resource-dir}/coupon-list-user/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/coupon-list-user/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/coupon-list-user/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/coupon-list-user/response-fields.adoc[]
+
+=== 셀러 쿠폰 목록 조회
+`*Request*`
+
+include::{resource-dir}/coupon-list-seller/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/coupon-list-seller/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/coupon-list-seller/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/coupon-list-seller/response-fields.adoc[]
+
+=== 셀러 쿠폰 등록(발급)
+`*Request*`
+
+include::{resource-dir}/coupon-add-seller/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/coupon-add-seller/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/coupon-add-seller/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/coupon-add-seller/response-fields.adoc[]
+
+=== 사용자 쿠폰 배정
+`*Request*`
+
+include::{resource-dir}/coupon-assign/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/coupon-assign/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/coupon-assign/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/coupon-assign/response-fields.adoc[]
+
+
+= Auth
+
+=== 기본 회원가입
+`*Request*`
+
+include::{resource-dir}/auth-signup/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/auth-signup/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/auth-signup/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/auth-signup/response-fields.adoc[]
+
+=== 기본 로그인
+`*Request*`
+
+include::{resource-dir}/auth-signin/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/auth-signin/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/auth-signin/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/auth-signin/response-fields.adoc[]
 
 '''
 

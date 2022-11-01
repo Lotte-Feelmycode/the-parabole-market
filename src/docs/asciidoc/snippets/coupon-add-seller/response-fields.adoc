@@ -1,0 +1,32 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Object+`
+|등록한 쿠폰 정보
+
+|`+data.couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.sellerName+`
+|`+String+`
+|판매자 이름
+
+|`+data.type+`
+|`+String+`
+|쿠폰 유형
+
+|`+data.cnt+`
+|`+Number+`
+|쿠폰 발행 수량
+
+|===

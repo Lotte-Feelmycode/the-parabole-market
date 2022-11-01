@@ -1,0 +1,20 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/coupon/new HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVGhlIFBhcmFib2xlIGFwcCIsImlhdCI6MTY2NzI4NDM5NCwiZXhwIjoxNjY3MzcwNzk0fQ.I_turDWldyfufxElCyzXGb5x_PxqxzhJupYPYZOMPy8
+Content-Type: application/json
+Host: parabole.com:56856
+Content-Length: 253
+
+{
+  "name" : "크리스마스 기념 쿠폰",
+  "userId" : 1,
+  "type" : 2,
+  "discountValue" : 2000,
+  "validAt" : [ 2022, 9, 16, 0, 0 ],
+  "expiresAt" : [ 2022, 11, 30, 0, 0 ],
+  "detail" : "행복한 크리스마스 되세요",
+  "cnt" : 5
+}
+----

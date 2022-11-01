@@ -2,8 +2,10 @@ package com.feelmycode.parabole.dto;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class CouponAssignRequestDto {
 
     private Long couponId;

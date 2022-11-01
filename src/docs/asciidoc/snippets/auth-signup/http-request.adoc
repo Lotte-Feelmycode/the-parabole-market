@@ -3,17 +3,17 @@
 POST /api/v1/auth/signup HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:50597
+Host: parabole.com:57299
 Content-Length: 218
 
 {
   "id" : null,
-  "email" : "user1@naver.com",
-  "name" : "user1",
-  "nickname" : "nickname1",
-  "phone" : "01011111111",
+  "email" : "user2@naver.com",
+  "name" : "user2",
+  "nickname" : "nickname2",
+  "phone" : "01022222222",
   "token" : null,
-  "password" : "password1",
-  "passwordConfirmation" : "password1"
+  "password" : "password2",
+  "passwordConfirmation" : "password2"
 }
 ----

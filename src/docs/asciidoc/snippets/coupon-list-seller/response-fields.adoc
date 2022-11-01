@@ -1,0 +1,132 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Object+`
+|응답 정보
+
+|`+data.content+`
+|`+Array+`
+|쿠폰 목록
+
+|`+data.content.[].couponId+`
+|`+Number+`
+|쿠폰 ID
+
+|`+data.content.[].name+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.content.[].type+`
+|`+String+`
+|쿠폰 유형
+
+|`+data.content.[].discountValue+`
+|`+Number+`
+|할인 값(비율/금액)
+
+|`+data.content.[].createdAt+`
+|`+String+`
+|생성일자
+
+|`+data.content.[].validAt+`
+|`+String+`
+|유효시작일자
+
+|`+data.content.[].expiresAt+`
+|`+String+`
+|만료일자
+
+|`+data.content.[].detail+`
+|`+String+`
+|쿠폰 상세 설명
+
+|`+data.content.[].cnt+`
+|`+Number+`
+|쿠폰 발행 수량
+
+|`+data.content.[].remains+`
+|`+Number+`
+|쿠폰 잔여 수량
+
+|`+data.pageable+`
+|`+String+`
+|페이징 변수
+
+|`+data.last+`
+|`+Boolean+`
+|마지막 페이지 여부
+
+|`+data.totalPages+`
+|`+Number+`
+|전체 페이지 갯수
+
+|`+data.totalElements+`
+|`+Number+`
+|총 요청 갯수
+
+|`+data.size+`
+|`+Number+`
+|페이지 당 출력 갯수
+
+|`+data.number+`
+|`+Number+`
+|현재 페이지
+
+|`+data.sort+`
+|`+Object+`
+|정렬
+
+|`+data.sort.empty+`
+|`+Boolean+`
+|정렬 정보 여부
+
+|`+data.sort.sorted+`
+|`+Boolean+`
+|정렬 처리 여부
+
+|`+data.sort.unsorted+`
+|`+Boolean+`
+|미정렬 처리 여부
+
+|`+data.first+`
+|`+Boolean+`
+|첫 페이지 여부
+
+|`+data.numberOfElements+`
+|`+Number+`
+|총 항목 갯수
+
+|`+data.last+`
+|`+Boolean+`
+|마지막 페이지 여부
+
+|`+data.size+`
+|`+Number+`
+|페이지당 항목 수
+
+|`+data.number+`
+|`+Number+`
+|현재 페이지
+
+|`+data.sort+`
+|`+Object+`
+|정렬 정보
+
+|`+data.sort.empty+`
+|`+Boolean+`
+|정렬 정보 여부
+
+|`+data.empty+`
+|`+Boolean+`
+|빈 여부
+
+|===

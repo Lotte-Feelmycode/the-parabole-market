@@ -1,0 +1,46 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "셀러 쿠폰 목록",
+  "data" : {
+    "content" : [ {
+      "couponId" : 8,
+      "name" : "저는 판매자에요",
+      "type" : "RATE",
+      "discountValue" : 10,
+      "createdAt" : "2022-11-01T15:04:42",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-12-30T00:00:00",
+      "detail" : "userId37 이 판매자3이라구요",
+      "cnt" : 3,
+      "remains" : 1
+    }, {
+      "couponId" : 9,
+      "name" : "test 2요",
+      "type" : "RATE",
+      "discountValue" : 10,
+      "createdAt" : "2022-11-01T15:23:59",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-12-30T00:00:00",
+      "detail" : "userId37 이 판매자3이라구요",
+      "cnt" : 15,
+      "remains" : 13
+    } ],
+    "pageable" : "INSTANCE",
+    "last" : true,
+    "totalPages" : 1,
+    "totalElements" : 2,
+    "size" : 2,
+    "number" : 0,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "first" : true,
+    "numberOfElements" : 2,
+    "empty" : false
+  }
+}
+----

@@ -2,12 +2,12 @@
 ----
 {
   "id" : null,
-  "email" : "user1@naver.com",
-  "name" : "user1",
-  "nickname" : "nickname1",
-  "phone" : "01011111111",
+  "email" : "user2@naver.com",
+  "name" : "user2",
+  "nickname" : "nickname2",
+  "phone" : "01022222222",
   "token" : null,
-  "password" : "password1",
-  "passwordConfirmation" : "password1"
+  "password" : "password2",
+  "passwordConfirmation" : "password2"
 }
 ----

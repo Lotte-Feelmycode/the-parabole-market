@@ -55,9 +55,9 @@ public class AuthControllerTest {
     @DisplayName("회원가입")
     public void signup() {
 
-        UserDto dto = UserDto.builder().email("user1@naver.com")
-            .name("user1").nickname("nickname1").phone("01011111111").password("password1")
-            .passwordConfirmation("password1").build();
+        UserDto dto = UserDto.builder().email("user2@naver.com")
+            .name("user2").nickname("nickname2").phone("01022222222").password("password2")
+            .passwordConfirmation("password2").build();
 
         // When
         Response resp = given(this.spec)

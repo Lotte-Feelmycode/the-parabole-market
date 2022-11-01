@@ -1,0 +1,48 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Object+`
+|응답 정보
+
+|`+data.token+`
+|`+String+`
+|사용자 토큰
+
+|`+data.email+`
+|`+String+`
+|이메일
+
+|`+data.name+`
+|`+String+`
+|사용자명
+
+|`+data.nickname+`
+|`+String+`
+|닉네임
+
+|`+data.phone+`
+|`+String+`
+|휴대전화
+
+|`+data.password+`
+|`+String+`
+|비밀번호
+
+|`+data.passwordConfirmation+`
+|`+String+`
+|비밀번호 재확인
+
+|`+data.id+`
+|`+Number+`
+|유저 ID
+
+|===

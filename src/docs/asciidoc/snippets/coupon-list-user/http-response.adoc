@@ -1,0 +1,52 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 01 Nov 2022 06:33:14 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 815
+
+{
+  "success" : true,
+  "message" : "유저 쿠폰 목록",
+  "data" : {
+    "content" : [ {
+      "name" : "3월 3일인데 쿠폰을 드립니다",
+      "serialNo" : "3h5h3h4h-24f3-4557-a296-4b1e710d51a5",
+      "sellerName" : "11111111",
+      "type" : "AMOUNT",
+      "discountValue" : 1000,
+      "useState" : "NOT_USED",
+      "useDate" : null,
+      "acquiredDate" : "2022-10-05T12:04:16",
+      "validAt" : "2022-10-05T12:04:16",
+      "expiresAt" : "2022-11-30T00:00:00"
+    } ],
+    "pageable" : "INSTANCE",
+    "last" : true,
+    "totalPages" : 1,
+    "totalElements" : 1,
+    "size" : 1,
+    "number" : 0,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "first" : true,
+    "numberOfElements" : 1,
+    "empty" : false
+  }
+}
+----

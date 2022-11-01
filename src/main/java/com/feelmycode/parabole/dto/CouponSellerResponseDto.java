@@ -12,7 +12,7 @@ public class CouponSellerResponseDto {
 
         private Long couponId;
         private String name;
-        private Integer type;
+        private String type;
         private Integer discountValue;
         private LocalDateTime createdAt;
         private LocalDateTime validAt;
@@ -24,7 +24,7 @@ public class CouponSellerResponseDto {
         public CouponSellerResponseDto(Coupon coupon) {
                 this.couponId = coupon.getId();
                 this.name = coupon.getName();
-                this.type = coupon.getType().getValue();
+                this.type = coupon.getType().getName();
                 this.discountValue = coupon.getDiscountValue();
                 this.createdAt = coupon.getCreatedAt();
                 this.validAt = coupon.getValidAt();

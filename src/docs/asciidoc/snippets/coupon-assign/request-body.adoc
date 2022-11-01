@@ -1,0 +1,7 @@
+[source,options="nowrap"]
+----
+{
+  "couponId" : 9,
+  "userIdList" : [ 36, 45 ]
+}
+----

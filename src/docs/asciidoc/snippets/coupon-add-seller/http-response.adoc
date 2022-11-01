@@ -12,23 +12,19 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 06:34:15 GMT
+Date: Tue, 01 Nov 2022 06:33:14 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 287
+Content-Length: 230
 
 {
   "success" : true,
-  "message" : "기본 회원가입 성공",
+  "message" : "쿠폰 등록 성공",
   "data" : {
-    "id" : 46,
-    "email" : "user2@naver.com",
-    "name" : "user2",
-    "nickname" : null,
-    "phone" : null,
-    "token" : null,
-    "password" : null,
-    "passwordConfirmation" : null
+    "couponName" : "크리스마스 기념 쿠폰",
+    "sellerName" : "정다은/컴퓨터공학전공",
+    "type" : "AMOUNT",
+    "cnt" : 5
   }
 }
 ----

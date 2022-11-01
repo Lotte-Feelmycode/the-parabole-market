@@ -1,0 +1,7 @@
+[source,bash]
+----
+$ http GET 'https://parabole.com:56856/api/v1/coupon/list' \
+    'authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNyIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyODQzOTMsImV4cCI6MTY2NzM3MDc5M30.ncBf5tBgFrpT2xJNmI0X-HqKYtSNYIjGybjVtzZqFWg' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

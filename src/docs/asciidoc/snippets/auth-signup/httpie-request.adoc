@@ -2,14 +2,14 @@
 ----
 $ echo '{
   "id" : null,
-  "email" : "user1@naver.com",
-  "name" : "user1",
-  "nickname" : "nickname1",
-  "phone" : "01011111111",
+  "email" : "user2@naver.com",
+  "name" : "user2",
+  "nickname" : "nickname2",
+  "phone" : "01022222222",
   "token" : null,
-  "password" : "password1",
-  "passwordConfirmation" : "password1"
-}' | http POST 'https://parabole.com:50597/api/v1/auth/signup' \
+  "password" : "password2",
+  "passwordConfirmation" : "password2"
+}' | http POST 'https://parabole.com:57299/api/v1/auth/signup' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----
