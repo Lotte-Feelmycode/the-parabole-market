@@ -90,7 +90,7 @@ public class OrderInfoService {
         return orderInfoRepository.findAllByOrderId(orderId);
     }
 
-    public List<OrderWithCouponResponseDto>[] getOrderInfoGroupBySellerIdOrderByIdDesc(Long userId) {
+    public List<OrderWithCouponResponseDto> getOrderInfoGroupBySellerIdOrderByIdDesc(Long userId) {
 
         Order order = orderService.getOrder(userId);
 
@@ -109,7 +109,7 @@ public class OrderInfoService {
             }
         }
 
-        List<OrderInfoResponseDto>[] getOrderInfoList = new ArrayList[sellerIdMap.size() + 1];
+        List<OrderInfoResponseDto>[] getOrderInfoList = new ArrayList[sellerIdMap.size()+1];
         for (int i = 0; i <= sellerIdMap.size(); i++) {
             getOrderInfoList[i] = new ArrayList<>();
         }
@@ -121,26 +121,21 @@ public class OrderInfoService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<OrderWithCouponResponseDto>[] orderInfoWithCoupon = new ArrayList[sellerIdMap.size()
-            + 1];
-
-        for (int i = 0; i <= sellerIdMap.size(); i++) {
-            orderInfoWithCoupon[i] = new ArrayList<>();
-        }
+        List<OrderWithCouponResponseDto> orderInfoWithCoupon = new ArrayList<>();
 
         HashSet<Long> orderWithCouponSet = new HashSet<>();
 
         for (Long sellerId : sellerIdMap.keySet()) {
             if (orderWithCouponSet.add(sellerId)) {
                 if (couponList.isEmpty()) {
-                    orderInfoWithCoupon[sellerIdMap.get(sellerId)].add(
+                    orderInfoWithCoupon.add(
                         new OrderWithCouponResponseDto(sellerId,
                             sellerService.getSellerBySellerId(sellerId).getStoreName(),
                             getOrderInfoList[sellerIdMap.get(sellerId)],
                             new CouponResponseDto()));
                 }
             } else {
-                orderInfoWithCoupon[sellerIdMap.get(sellerId)].add(
+                orderInfoWithCoupon.add(
                     new OrderWithCouponResponseDto(sellerId,
                         sellerService.getSellerBySellerId(sellerId).getStoreName(),
                         getOrderInfoList[sellerIdMap.get(sellerId)],

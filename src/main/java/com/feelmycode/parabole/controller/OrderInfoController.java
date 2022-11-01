@@ -58,8 +58,8 @@ public class OrderInfoController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
-        List<OrderWithCouponResponseDto>[] orderInfoList = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
-        if(orderInfoList == null || orderInfoList.length == 0)
+        List<OrderWithCouponResponseDto> orderInfoList = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
+        if(orderInfoList == null || orderInfoList.isEmpty())
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 내역이 없습니다.");
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }

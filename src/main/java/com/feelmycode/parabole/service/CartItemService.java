@@ -95,7 +95,7 @@ public class CartItemService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
     }
 
-    public List<CartWithCouponResponseDto>[] getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+    public List<CartWithCouponResponseDto> getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
 
         Cart cart = cartService.getCart(userId);
 
@@ -127,11 +127,7 @@ public class CartItemService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<CartWithCouponResponseDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()+1];
-
-        for(int i = 0; i <= sellerIdMap.size(); i++) {
-            cartItemWithCoupon[i] = new ArrayList<>();
-        }
+        List<CartWithCouponResponseDto> cartItemWithCoupon = new ArrayList<>();
 
         HashSet<Long> cartWithCouponDto = new HashSet<>();
 
@@ -140,17 +136,16 @@ public class CartItemService {
             String storeName = key.split("\\$")[1];
             if(cartWithCouponDto.add(sellerId)) {
                 if(couponList.isEmpty()) {
-                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                    cartItemWithCoupon.add(
                         new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
-                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                    cartItemWithCoupon.add(
                         new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
                 }
             }
         }
-
         return cartItemWithCoupon;
     }
 

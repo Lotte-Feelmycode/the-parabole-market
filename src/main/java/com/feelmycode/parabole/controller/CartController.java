@@ -56,7 +56,7 @@ public class CartController {
     // 상품정보와 쿠폰을 셀러기준으로 grouping하여 가져옴
     @GetMapping(value="/items")
     public ResponseEntity<ParaboleResponse> getCartItems(@RequestParam Long userId) {
-        List<CartWithCouponResponseDto>[] cartItems = cartItemService.getCartItemGroupBySellerIdOrderByIdDesc(userId);
+        List<CartWithCouponResponseDto> cartItems = cartItemService.getCartItemGroupBySellerIdOrderByIdDesc(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "seller로 grouping한 장바구니 상품", cartItems);
     }
 
