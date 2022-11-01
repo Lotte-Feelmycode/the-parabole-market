@@ -7,7 +7,6 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
-import com.feelmycode.parabole.dto.CartItemGetResponseDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
 import com.feelmycode.parabole.dto.CartWithCouponResponseDto;
 import com.feelmycode.parabole.dto.CouponResponseDto;
@@ -34,7 +33,6 @@ public class CartItemService {
     private final CartService cartService;
     private final ProductService productService;
     private final CouponService couponService;
-    private final SellerService sellerService;
 
     @Transactional
     public void addItem(CartAddItemRequestDto dto) {
@@ -74,15 +72,6 @@ public class CartItemService {
 
         currentCartItem.setCnt(cartItemDto.getCnt());
         cartItemRepository.save(currentCartItem);
-    }
-
-    public CartItemGetResponseDto getCartItemList(Long userId) {
-        Cart cart = cartService.getCart(userId);
-        List<CartItemDto> cartItemList = cartItemRepository.findAllByCartId(cart.getId())
-            .stream().sorted(Comparator.comparing(CartItem::getId).reversed())
-            .map(CartItemDto::new).toList();
-
-        return new CartItemGetResponseDto(cart.getId(), cartItemList, cartItemList.size());
     }
 
     @Transactional
@@ -147,6 +136,14 @@ public class CartItemService {
                     cartItemWithCoupon[sellerIdMap.get(key)].add(
                         new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
+                }
+            }
+        }
+
+        for(List<CartWithCouponResponseDto> cartWithCouponResponseDtos : cartItemWithCoupon){
+            for(CartWithCouponResponseDto dto : cartWithCouponResponseDtos) {
+                if(dto.getCouponDto() == null) {
+                    dto.makeNotNullResponseDto();
                 }
             }
         }
