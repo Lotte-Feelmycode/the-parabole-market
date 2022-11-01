@@ -17,11 +17,15 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventImage;
+import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
+import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
@@ -36,6 +40,9 @@ import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,10 +63,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class EventControllerTest {
 
+    String outputDirectory = "./src/docs/asciidoc/snippets";
+
     @LocalServerPort
     int port;
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
 
     private RequestSpecification spec;
 
@@ -73,6 +82,8 @@ public class EventControllerTest {
     ProductRepository productRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    EventPrizeRepository eventPrizeRepository;
 
     String BASIC_PATH = "/api/v1/event";
 
@@ -82,6 +93,7 @@ public class EventControllerTest {
         mapper.setSerializationInclusion(Include.NON_NULL);
         return mapper.writeValueAsString(data);
     }
+
 
     @Before
     public void setUp() {
@@ -94,16 +106,16 @@ public class EventControllerTest {
 
     @Test
     @DisplayName("이벤트 등록")
-    public void createEvent() {
+    public void createEvent() throws JSONException {
 
         // given
-        /*
-        User user = userRepository.save(
-            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
-        Seller seller = new Seller("event Store Name", "3245918723");
-        user.setSeller(seller);
-        sellerRepository.save(seller);
-        */
+
+//        User user = userRepository.save(
+//            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
+//        Seller seller = new Seller("event Store Name", "3245918723");
+//        user.setSeller(seller);
+//        sellerRepository.save(seller);
+
         LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
         LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
 
@@ -132,7 +144,7 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .filter(document("createEvent",
+            .filter(document("event-create",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -147,6 +159,14 @@ public class EventControllerTest {
             .when().post(BASIC_PATH);
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
+
+        /**
+         * DELETE
+         */
+        JSONObject jObj = new JSONObject(resp.getBody().asString());
+        Integer eventId = (Integer) jObj.get("data");
+        eventRepository.delete(eventRepository.findById(Long.valueOf(eventId)).orElseThrow());
+        productRepository.delete(product);
 
     }
 
@@ -163,7 +183,7 @@ public class EventControllerTest {
             .contentType(ContentType.JSON)
             .port(port)
 
-            .filter(document("eventById",
+            .filter(document("event-id",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -234,7 +254,7 @@ public class EventControllerTest {
             .contentType(ContentType.JSON)
             .port(port)
 
-            .filter(document("allEvents",
+            .filter(document("event-all",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -308,7 +328,7 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .filter(document("eventBySellerId",
+            .filter(document("event-sellerId",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -390,7 +410,7 @@ public class EventControllerTest {
             .param("fromDateTime", "")
             .param("toDateTime", "")
             .param("eventStatus", "")
-            .filter(document("eventBySearch",
+            .filter(document("event-search",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -464,7 +484,7 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .filter(document("deleteEvent",
+            .filter(document("event-delete",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
@@ -479,6 +499,12 @@ public class EventControllerTest {
             .when().delete(BASIC_PATH + "/{eventId}", eventId);
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+        /**
+         * DELETE
+         */
+        eventRepository.delete(eventRepository.findById(eventId).orElseThrow());
+        productRepository.delete(product);
 
     }
 
