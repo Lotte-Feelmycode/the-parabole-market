@@ -169,13 +169,13 @@ public class EventApplyControllerTest {
                         fieldWithPath("data.[].eventId").type(JsonFieldType.NUMBER)
                             .description("이벤트 번호"),
                         fieldWithPath("data.[].eventTimeStartAt").type(JsonFieldType.STRING)
-                            .description("이벤트 시작시간"),
+                            .description("이벤트 시작시간(yyyy-MM-dd'T'HH:mm:ss.SSSSSS)"),
                         fieldWithPath("data.[].eventTitle").type(JsonFieldType.STRING)
                             .description("이벤트 제목"),
                         fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
-                            .description("이벤트 시작시간"),
+                            .description("이벤트 시작시간(yyyy-MM-dd'T'HH:mm:ss.SSSSSS)"),
                         fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
-                            .description("이벤트 종료시간"),
+                            .description("이벤트 종료시간(yyyy-MM-dd'T'HH:mm:ss.SSSSSS)"),
                         fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
                             .description("이벤트 상태"),
                         fieldWithPath("data.[].eventImg").type(JsonFieldType.STRING)
@@ -254,7 +254,7 @@ public class EventApplyControllerTest {
                             .optional()
                             .description("쿠폰 유효기간"),
                         fieldWithPath("data.[].eventTimeStartAt").type(JsonFieldType.STRING)
-                            .description("이벤트 시작시간")
+                            .description("이벤트 시작시간(yyyy-MM-dd`T`HH:mm:ss)")
                     )
                 )
             ).when().port(port)
