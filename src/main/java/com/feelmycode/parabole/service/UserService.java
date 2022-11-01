@@ -8,19 +8,21 @@ import com.feelmycode.parabole.dto.UserInfoResponseDto;
 import com.feelmycode.parabole.dto.UserSearchDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
+import com.feelmycode.parabole.security.model.KakaoOauthToken;
 import com.feelmycode.parabole.security.model.KakaoProfile;
-import com.feelmycode.parabole.security.model.OauthToken;
+import com.feelmycode.parabole.security.model.NaverOauthToken;
+import com.feelmycode.parabole.security.model.NaverProfile;
 import com.feelmycode.parabole.security.utils.TokenProvider;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,54 +148,80 @@ public class UserService {
         return dtos;
     }
 
-    @Value(value = "${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String clientId;
-    @Value(value = "${spring.security.oauth2.client.registration.kakao.client-secret}")
-    private String clientSecret;
-    //    @Value(value = "${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String redirectUrl = "http://localhost:8080/oauth2/code/kakao";
-    @Value(value = "${spring.security.oauth2.client.provider.kakao.token-uri}")
-    private String tokenUrl;
-    @Value(value = "${spring.security.oauth2.client.provider.kakao.authorization-uri}")
-    private String authorizationUrl;
-
-    public OauthToken getAccessToken(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
+    public KakaoOauthToken getAccessTokenKakao(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
 
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", clientId);
-        params.add("redirect_uri", redirectUrl);
         params.add("code", code);
-//        params.add("client_secret", clientSecret);
+        params.add("client_id", "${spring.security.oauth2.client.registration.kakao.client-id}");
+        params.add("redirect_uri", "${spring.security.oauth2.client.registration.kakao.redirect-uri}");
+//        params.add("client_secret", "${spring.security.oauth2.client.registration.kakao.client-secret}");
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
             new HttpEntity<>(params, headers);
 
         ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
-            tokenUrl,
+            "https://kauth.kakao.com/oauth/token",
             HttpMethod.POST,
             kakaoTokenRequest,
             String.class
         );
 
         ObjectMapper objectMapper = new ObjectMapper();
-        OauthToken oauthToken = null;
+        KakaoOauthToken kakaoOauthToken = null;
         try {
-            oauthToken = objectMapper.readValue(accessTokenResponse.getBody(), OauthToken.class);
+            kakaoOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOauthToken.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return oauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+        return kakaoOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
     }
 
-    public KakaoProfile findProfile(String token) {
+    public NaverOauthToken getAccessTokenNaver(String code, String state) {
 
-        RestTemplate rt = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("state", state);
+        params.add("client_id", "${spring.security.oauth2.client.registration.naver.client-id}");
+        params.add("redirect_uri", "${spring.security.oauth2.client.registration.naver.redirect-uri}");
+        params.add("client_secret", "${spring.security.oauth2.client.registration.naver.client-secret}");
+
+        HttpEntity<MultiValueMap<String, String>> naverTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://nid.naver.com/oauth2.0/token",
+            HttpMethod.POST,
+            naverTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverOauthToken naverOauthToken = null;
+        try {
+            naverOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), NaverOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return naverOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    public KakaoProfile findProfileKakao(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token); //(1-4)
@@ -202,8 +230,7 @@ public class UserService {
         HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
             new HttpEntity<>(headers);
 
-        // Http 요청 (POST 방식) 후, response 변수에 응답을 받음
-        ResponseEntity<String> kakaoProfileResponse = rt.exchange(
+        ResponseEntity<String> kakaoProfileResponse = restTemplate.exchange(
             "https://kapi.kakao.com/v2/user/me",
             HttpMethod.POST,
             kakaoProfileRequest,
@@ -222,8 +249,8 @@ public class UserService {
     }
 
     @Transactional
-    public String saveUserAndGetToken(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
-        KakaoProfile profile = findProfile(token);
+    public String saveUserAndGetTokenKakao(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        KakaoProfile profile = findProfileKakao(token);
         log.info(profile.toString());
 
         User user = userRepository.findByEmail(profile.getKakao_account().getEmail());
@@ -236,6 +263,59 @@ public class UserService {
                 .authProvider("Kakao")
                 .username(profile.getKakao_account().getProfile().getNickname())
 //                .phone(user.getPhone())
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        return tokenProvider.create(user);
+    }
+
+    public NaverProfile findProfileNaver(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest =
+            new HttpEntity<>(headers);
+
+        // Http 요청 (POST 방식) 후, response 변수에 응답을 받음
+        ResponseEntity<String> naverProfileResponse = restTemplate.exchange(
+            "https://openapi.naver.com/v1/nid/me",
+            HttpMethod.GET,
+            naverProfileRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverProfile naverProfile = null;
+        try {
+            naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("naverProfile {}", naverProfile);
+        return naverProfile;
+    }
+
+    @Transactional
+    public String saveUserAndGetTokenNaver(String token) {
+        NaverProfile profile = findProfileNaver(token);
+        log.info(profile.toString());
+
+        User user = userRepository.findByEmail(profile.response.getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.response.getId())
+                .imageUrl(profile.response.getProfile_image())
+                .nickname(profile.response.getNickname())
+                .email(profile.response.getEmail())
+                .authProvider("Kakao")
+                .username(profile.response.getNickname())
+                .phone(profile.response.getMobile())
+
                 .role("ROLE_USER").build();
 
             userRepository.save(user);

@@ -49,6 +49,7 @@ public class OAuthUserServiceImpl extends DefaultOAuth2UserService {
                 .username(googleName)
                 .imageUrl(googlePic)
                 .nickname("")
+                .role("ROLE_USER")
                 .authProvider(authProvider)
                 .build();
             user = userRepository.save(user);

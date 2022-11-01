@@ -4,7 +4,8 @@ import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.security.model.JwtProperties;
-import com.feelmycode.parabole.security.model.OauthToken;
+import com.feelmycode.parabole.security.model.KakaoOauthToken;
+import com.feelmycode.parabole.security.model.NaverOauthToken;
 import com.feelmycode.parabole.security.utils.TokenProvider;
 import com.feelmycode.parabole.service.UserService;
 import java.io.IOException;
@@ -38,15 +39,15 @@ public class AuthController {
     @PostMapping("/api/v1/auth/signup")
     public ResponseEntity<ParaboleResponse> registerUser(@RequestBody UserDto userDTO) {
         try {
-            // 리퀘스트를 이용해 저장할 유저 만들기
             User user = User.builder()
                 .email(userDTO.getEmail())
                 .username(userDTO.getName())
                 .nickname(userDTO.getNickname())
                 .phone(userDTO.getPhone())
                 .password(userDTO.getPassword())
+                .role("ROLE_USER")
                 .build();
-            // 서비스를 이용해 리파지토리에 유저 저장
+
             User registeredUser = userService.create(user);
             UserDto responseUserDTO = UserDto.builder()
                 .email(registeredUser.getEmail())
@@ -107,9 +108,9 @@ public class AuthController {
     public HttpServletResponse getKakaoLogin(@RequestParam(required = false) String code, HttpServletResponse httpServletResponse) throws IOException {
 
         // 넘어온 인가 코드를 통해 access_token 발급
-        OauthToken oauthToken = userService.getAccessToken(code);
+        KakaoOauthToken kakaoOauthToken = userService.getAccessTokenKakao(code);
         // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
-        String jwtToken = userService.saveUserAndGetToken(oauthToken.getAccess_token());
+        String jwtToken = userService.saveUserAndGetTokenKakao(kakaoOauthToken.getAccess_token());
 
         String Front_URL = "http://localhost:3000";
 
@@ -118,4 +119,20 @@ public class AuthController {
         return httpServletResponse;
     }
 
+    @GetMapping("/oauth2/code/naver")
+    public HttpServletResponse getNaverLogin(@RequestParam(required = false) String code,
+        @RequestParam(required = false) String state,
+        HttpServletResponse httpServletResponse) throws IOException {
+
+        // 넘어온 인가 코드를 통해 access_token 발급
+        NaverOauthToken naverOauthToken = userService.getAccessTokenNaver(code, state);
+        // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        String jwtToken = userService.saveUserAndGetTokenNaver(naverOauthToken.getAccess_token());
+
+        String Front_URL = "http://localhost:3000";
+
+        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        httpServletResponse.sendRedirect(Front_URL + "/oauthnaver?token=" + jwtToken);
+        return httpServletResponse;
+    }
 }
