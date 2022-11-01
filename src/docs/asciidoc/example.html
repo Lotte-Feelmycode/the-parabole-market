@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <title>Product</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -84,10 +84,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -443,6 +443,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel2">
 <li><a href="#_상품_목록">상품 목록</a></li>
+<li><a href="#_이벤트_등록">이벤트 등록</a></li>
+<li><a href="#_이벤트_조회">이벤트 조회</a>
+<ul class="sectlevel2">
+<li><a href="#_이벤트_id로_단건_조회">이벤트 ID로 단건 조회</a></li>
+<li><a href="#_셀러_id로_목록_조회">셀러 ID로 목록 조회</a></li>
+<li><a href="#_이벤트_전체_조회">이벤트 전체 조회</a></li>
+<li><a href="#_검색_조건으로_이벤트_목록_조회">검색 조건으로 이벤트 목록 조회</a></li>
+</ul>
+</li>
+<li><a href="#_이벤트_삭제">이벤트 삭제</a></li>
 </ul>
 </div>
 </div>
@@ -452,47 +462,138 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><code><strong>Request</strong></code></p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/product/list?sellerId=&amp;storeName=&amp;category=&amp;productName= HTTP/1.1
-Accept: application/json, application/javascript, text/javascript, text/json
-Content-Type: application/json
-Host: parabole.com:50890</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in example.adoc - include::C:/SpringBoot/parabole-be/the-parabole-mono-be/build/generated-snippets/product-list/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p><code><strong>Parameters</strong></code></p>
 </div>
+<div class="paragraph">
+<p>Unresolved directive in example.adoc - include::C:/SpringBoot/parabole-be/the-parabole-mono-be/build/generated-snippets/product-list/request-parameters.adoc[]</p>
+</div>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in example.adoc - include::C:/SpringBoot/parabole-be/the-parabole-mono-be/build/generated-snippets/product-list/http-response.adoc[]</p>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in example.adoc - include::C:/SpringBoot/parabole-be/the-parabole-mono-be/build/generated-snippets/product-list/response-fields.adoc[]</p>
+</div>
+<hr>
+</div>
+<div class="sect1">
+<h2 id="_이벤트_등록">이벤트 등록</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">POST /api/v1/event HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:52126
+Content-Length: 435
+
+{
+  &quot;userId&quot; : 1,
+  &quot;createdBy&quot; : &quot;SELLER&quot;,
+  &quot;type&quot; : &quot;RAFFLE&quot;,
+  &quot;title&quot; : &quot;이벤트 제목 BY REST DOCS&quot;,
+  &quot;startAt&quot; : &quot;2022-11-10 24:00:00&quot;,
+  &quot;endAt&quot; : &quot;2022-11-28 18:00:00&quot;,
+  &quot;descript&quot; : &quot;이벤트 설명 v2&quot;,
+  &quot;eventImage&quot; : {
+    &quot;eventBannerImg&quot; : &quot;banner.url&quot;,
+    &quot;eventDetailImg&quot; : &quot;detail.url&quot;
+  },
+  &quot;eventPrizeCreateRequestDtos&quot; : [ {
+    &quot;id&quot; : 19,
+    &quot;type&quot; : &quot;PRODUCT&quot;,
+    &quot;stock&quot; : 40
+  } ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 31 Oct 2022 01:21:21 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 82
+
+{
+  &quot;success&quot; : true,
+  &quot;message&quot; : &quot;이벤트 등록 성공&quot;,
+  &quot;data&quot; : 13
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sellerId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>storeName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 스토어 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">카테고리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>productName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_이벤트_조회">이벤트 조회</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_이벤트_id로_단건_조회">이벤트 ID로 단건 조회</h3>
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/event/1 HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:55946</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p><code><strong>Response</strong></code></p>
 </div>
@@ -504,83 +605,54 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 25 Oct 2022 01:59:33 GMT
+Date: Mon, 31 Oct 2022 01:06:27 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 2040
+Content-Length: 1701
 
 {
   &quot;success&quot; : true,
-  &quot;message&quot; : &quot;상품 전시&quot;,
+  &quot;message&quot; : &quot;1번 이벤트 조회 성공&quot;,
   &quot;data&quot; : {
-    &quot;content&quot; : [ {
+    &quot;id&quot; : 1,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;러버덕 할로윈 콘테스트&quot;,
+    &quot;startAt&quot; : &quot;2022-10-31T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-12-01T07:00:00&quot;,
+    &quot;status&quot; : 0,
+    &quot;descript&quot; : &quot;러버덕 할로윈 콘테스트 2022&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12905/2/M001402/278229/P8CB1E6B4CAEFE2760EBE65F00A06849FBE13305B33EA0EC1AC9A578E79E7E109/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P1B8BDC87A8EBE485D7E4C11436BCD0620D7AD633381B31FA5B53714620E734D9/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 2,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
       &quot;productId&quot; : 1,
-      &quot;productName&quot; : &quot;순대국밥&quot;,
-      &quot;sellerId&quot; : 1,
-      &quot;storeName&quot; : &quot;u1-s1's store&quot;,
-      &quot;productStatus&quot; : 1,
-      &quot;productRemains&quot; : 50,
-      &quot;productPrice&quot; : 10000,
-      &quot;productCategory&quot; : &quot;국밥&quot;,
-      &quot;productThumbnailImg&quot; : &quot;img.jpg&quot;,
-      &quot;productCreatedAt&quot; : &quot;2022-10-24T18:09:22&quot;,
-      &quot;productUpdatedAt&quot; : &quot;2022-10-24T18:09:22&quot;,
-      &quot;productDeletedAt&quot; : null,
-      &quot;productIsDeleted&quot; : false
+      &quot;productName&quot; : &quot;막국수&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : null,
+      &quot;couponDetail&quot; : null,
+      &quot;type&quot; : null,
+      &quot;couponDiscountValue&quot; : null,
+      &quot;expiresAt&quot; : null
     }, {
+      &quot;eventPrizeId&quot; : 3,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
       &quot;productId&quot; : 2,
-      &quot;productName&quot; : &quot;순대국밥&quot;,
-      &quot;sellerId&quot; : 1,
-      &quot;storeName&quot; : &quot;u1-s1's store&quot;,
-      &quot;productStatus&quot; : 1,
-      &quot;productRemains&quot; : 50,
-      &quot;productPrice&quot; : 10000,
-      &quot;productCategory&quot; : &quot;국밥&quot;,
-      &quot;productThumbnailImg&quot; : &quot;img.jpg&quot;,
-      &quot;productCreatedAt&quot; : &quot;2022-10-24T18:10:33&quot;,
-      &quot;productUpdatedAt&quot; : &quot;2022-10-24T18:10:33&quot;,
-      &quot;productDeletedAt&quot; : null,
-      &quot;productIsDeleted&quot; : false
-    }, {
-      &quot;productId&quot; : 3,
-      &quot;productName&quot; : &quot;순대국밥&quot;,
-      &quot;sellerId&quot; : 1,
-      &quot;storeName&quot; : &quot;u1-s1's store&quot;,
-      &quot;productStatus&quot; : 1,
-      &quot;productRemains&quot; : 50,
-      &quot;productPrice&quot; : 10000,
-      &quot;productCategory&quot; : &quot;국밥&quot;,
-      &quot;productThumbnailImg&quot; : &quot;img.jpg&quot;,
-      &quot;productCreatedAt&quot; : &quot;2022-10-24T18:11:34&quot;,
-      &quot;productUpdatedAt&quot; : &quot;2022-10-24T18:11:34&quot;,
-      &quot;productDeletedAt&quot; : null,
-      &quot;productIsDeleted&quot; : false
-    } ],
-    &quot;pageable&quot; : {
-      &quot;sort&quot; : {
-        &quot;empty&quot; : true,
-        &quot;sorted&quot; : false,
-        &quot;unsorted&quot; : true
-      },
-      &quot;offset&quot; : 0,
-      &quot;pageSize&quot; : 20,
-      &quot;pageNumber&quot; : 0,
-      &quot;paged&quot; : true,
-      &quot;unpaged&quot; : false
-    },
-    &quot;last&quot; : true,
-    &quot;totalElements&quot; : 3,
-    &quot;totalPages&quot; : 1,
-    &quot;size&quot; : 20,
-    &quot;number&quot; : 0,
-    &quot;sort&quot; : {
-      &quot;empty&quot; : true,
-      &quot;sorted&quot; : false,
-      &quot;unsorted&quot; : true
-    },
-    &quot;first&quot; : true,
-    &quot;numberOfElements&quot; : 3,
-    &quot;empty&quot; : false
+      &quot;productName&quot; : &quot;한우국밥&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : null,
+      &quot;couponDetail&quot; : null,
+      &quot;type&quot; : null,
+      &quot;couponDiscountValue&quot; : null,
+      &quot;expiresAt&quot; : null
+    } ]
   }
 }</code></pre>
 </div>
@@ -615,196 +687,1249 @@ Content-Length: 2040
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 정보</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].sellerId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].storeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.storeName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">셀러 스토어 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productStatus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.sellerId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 번호</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productRemains</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.createdBy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 생성자 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.startAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 시작 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.endAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 종료 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 진행 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.descript</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 이미지 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventImage.eventBannerImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 배너 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventImage.eventDetailImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].eventPrizeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].prizeType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].stock</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 재고</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].productId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 가격</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productCategory</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].productName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 카테고리</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productThumbnailImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].productImg</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상품 썸네일</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productCreatedAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">생성일자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productUpdatedAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">수정일자</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productDeletedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].couponId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">삭제일자</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.content.[].productIsDeleted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">삭제여부</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].couponDetail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 상세 설명</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인 유형</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].couponDiscountValue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인값</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.offset</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.pageNumber</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.pageSize</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.unpaged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.pageable.paged</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 처리</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.totalElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 항목 수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.totalPages</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 페이지 수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.last</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.sort</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.sort.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.sort.unsorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.sort.sorted</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.numberOfElements</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">총 개수</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.first</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.eventPrizes.[].expiresAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 만료 일시</p></td>
 </tr>
 </tbody>
 </table>
-<hr>
+</div>
+<div class="sect2">
+<h3 id="_셀러_id로_목록_조회">셀러 ID로 목록 조회</h3>
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/event/seller/11 HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:65125</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 31 Oct 2022 03:38:38 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1662
+
+{
+  &quot;success&quot; : true,
+  &quot;message&quot; : &quot;이벤트 리스트 조회 성공&quot;,
+  &quot;data&quot; : [ {
+    &quot;id&quot; : 17,
+    &quot;storeName&quot; : &quot;u11-s4's store&quot;,
+    &quot;sellerId&quot; : 4,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;카카오 T와 함께 하는 펫스티벌!&quot;,
+    &quot;startAt&quot; : &quot;2022-10-21T21:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-11-02T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;카카오 T펫 X 롯데온이 함께 하는 펫스티벌!&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282434/P308B736482A8224CD0631309FAE17DB01163792DAB38EC6CD03C5BDC19EB63A7/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P2035EDA8A67E77DD734303E9486E2C6947ABF2E188E19365ED95C2587DF8179C/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 34,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 1,
+      &quot;couponDetail&quot; : &quot;3월 3일 쿠폰&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : 5000,
+      &quot;expiresAt&quot; : &quot;2022-11-30T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 35,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 5,
+      &quot;productName&quot; : &quot;비빔냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  } ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].storeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 스토어 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].sellerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].createdBy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 생성자 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].startAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 시작 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].endAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 종료 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 진행 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].descript</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 이미지 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventBannerImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 배너 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventDetailImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].eventPrizeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].prizeType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].stock</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 재고</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes.[].productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].productName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].productImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponDetail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponDiscountValue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인값</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].expiresAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 만료 일시</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_이벤트_전체_조회">이벤트 전체 조회</h3>
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/event HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:62065</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 31 Oct 2022 03:44:29 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 15761
+
+{
+  &quot;success&quot; : true,
+  &quot;message&quot; : &quot;이벤트 리스트 조회 성공&quot;,
+  &quot;data&quot; : [ {
+    &quot;id&quot; : 1,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;러버덕 할로윈 콘테스트&quot;,
+    &quot;startAt&quot; : &quot;2022-10-11T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-31T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;러버덕 할로윈 콘테스트 2022&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12905/2/M001402/278229/P8CB1E6B4CAEFE2760EBE65F00A06849FBE13305B33EA0EC1AC9A578E79E7E109/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P1B8BDC87A8EBE485D7E4C11436BCD0620D7AD633381B31FA5B53714620E734D9/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 1,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
+      &quot;productId&quot; : 1,
+      &quot;productName&quot; : &quot;한우국밥&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 2,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
+      &quot;productId&quot; : 2,
+      &quot;productName&quot; : &quot;돼지국밥&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 2,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;라페스타 세일 UP TO 80%&quot;,
+    &quot;startAt&quot; : &quot;2022-10-09T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-31T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;LA FESTA를 즐기기 위한 준비&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshop/41845/PBA61D8ABA4A3AE91B28E7A34F3B6B909B64BD4E8ED5F75E669FF0832C32FACA1/file&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P550F79770C9B2A35CF9329CA0F879AE81999250ABBCE7452DAA18BF56D78364B/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 3,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 100,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 1,
+      &quot;couponDetail&quot; : &quot;3월 3일 쿠폰&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : 5000,
+      &quot;expiresAt&quot; : &quot;2022-11-30T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 4,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
+      &quot;productId&quot; : 4,
+      &quot;productName&quot; : &quot;차돌 짬뽕 국밥 210gx6팩&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 5,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 50,
+      &quot;productId&quot; : 5,
+      &quot;productName&quot; : &quot;비빔냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 56,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 2,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 14,
+      &quot;couponDetail&quot; : &quot;할로윈 이벤트 쿠폰&quot;,
+      &quot;type&quot; : &quot;RATE&quot;,
+      &quot;couponDiscountValue&quot; : 10,
+      &quot;expiresAt&quot; : &quot;2022-11-30T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 3,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;FCFS&quot;,
+    &quot;title&quot; : &quot;LOTTE VIBE ON&quot;,
+    &quot;startAt&quot; : &quot;2022-10-21T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-21T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;바로 이곳이 브랜드 컬렉션&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshop/43932/PE5649CB6BADF5069F7CD6125D126865125D9EDF5EFA6EAD420A61716312E2E5E/file&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 6,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 10,
+      &quot;productId&quot; : 6,
+      &quot;productName&quot; : &quot;물냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 7,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 20,
+      &quot;productId&quot; : 7,
+      &quot;productName&quot; : &quot;막국수&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 17,
+    &quot;storeName&quot; : &quot;u11-s4's store&quot;,
+    &quot;sellerId&quot; : 4,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;카카오 T와 함께 하는 펫스티벌!&quot;,
+    &quot;startAt&quot; : &quot;2022-10-21T21:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-11-02T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;카카오 T펫 X 롯데온이 함께 하는 펫스티벌!&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282434/P308B736482A8224CD0631309FAE17DB01163792DAB38EC6CD03C5BDC19EB63A7/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P2035EDA8A67E77DD734303E9486E2C6947ABF2E188E19365ED95C2587DF8179C/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 34,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 1,
+      &quot;couponDetail&quot; : &quot;3월 3일 쿠폰&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : 5000,
+      &quot;expiresAt&quot; : &quot;2022-11-30T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 35,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 5,
+      &quot;productName&quot; : &quot;비빔냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 18,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;비스포크 추첨증정&quot;,
+    &quot;startAt&quot; : &quot;2022-10-19T22:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-26T23:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;요리하다 구매고객 비스포크 추첨 증정 행사&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282011/P85148A5C7FABAB042D95126A67DAB7D6C14E9502B82676811754E78209CBD91B/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P305972B21565D707552257D357C0863ABAC4BC7267BE647AA23ADC076B782FFA/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 36,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 7,
+      &quot;productName&quot; : &quot;막국수&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 37,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 6,
+      &quot;productName&quot; : &quot;물냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 38,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 5,
+      &quot;productName&quot; : &quot;비빔냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 20,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;45만원 상당 쿠폰&quot;,
+    &quot;startAt&quot; : &quot;2022-10-21T09:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-12-01T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;지금만 드리는 혜택 놓치지마세요!&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://cdn.class101.net/images/cd91f36c-e133-42ba-b410-0d146bccf574/2048xauto.webp&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://cdn.class101.net/images/cd91f36c-e133-42ba-b410-0d146bccf574/2048xauto.webp&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 42,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 9,
+      &quot;couponDetail&quot; : &quot;창사를 축하해요&quot;,
+      &quot;type&quot; : &quot;RATE&quot;,
+      &quot;couponDiscountValue&quot; : 1000,
+      &quot;expiresAt&quot; : &quot;2022-10-30T08:59:59&quot;
+    }, {
+      &quot;eventPrizeId&quot; : 43,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : 10,
+      &quot;productName&quot; : &quot;레고 달 탐사 차량 (60348)&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/LM/57/02/01/71/61/73/0_/00/1/LM5702017161730_001_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 25,
+    &quot;storeName&quot; : &quot;u4-s2's store&quot;,
+    &quot;sellerId&quot; : 2,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;컬러피스 아이블렌더&quot;,
+    &quot;startAt&quot; : &quot;2022-10-09T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-21T07:00:00&quot;,
+    &quot;status&quot; : 2,
+    &quot;descript&quot; : &quot;롯데온&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/ec/public/PD429DCCF0983EDE5D0D4BF88A9D2EA5BB65636605BB0078EC9BCAC43946BB68E/file/dims/optimize/dims/resizef/361x154&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P0B71AAF440E306FE404174C04FA071DA7C4F8980625B9B443BE7D088D2FA9BE6/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 50,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 3,
+      &quot;productId&quot; : 2,
+      &quot;productName&quot; : &quot;돼지국밥&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 28,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;ff&quot;,
+    &quot;startAt&quot; : &quot;2022-10-01T21:18:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-28T21:18:00&quot;,
+    &quot;status&quot; : 0,
+    &quot;descript&quot; : &quot;ff&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;dummyimage&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 55,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 30,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 1,
+      &quot;couponDetail&quot; : &quot;3월 3일 쿠폰&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : 5000,
+      &quot;expiresAt&quot; : &quot;2022-11-30T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 29,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;FCFS&quot;,
+    &quot;title&quot; : &quot;선착순 이벤트&quot;,
+    &quot;startAt&quot; : &quot;2022-10-31T19:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-31T19:50:00&quot;,
+    &quot;status&quot; : 0,
+    &quot;descript&quot; : &quot;선착순&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;dummyimage&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 57,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 10000,
+      &quot;productId&quot; : 5,
+      &quot;productName&quot; : &quot;비빔냉면&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 31,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;JGHJGH&quot;,
+    &quot;startAt&quot; : &quot;2022-10-26T17:44:00&quot;,
+    &quot;endAt&quot; : &quot;2022-12-13T03:45:00&quot;,
+    &quot;status&quot; : 0,
+    &quot;descript&quot; : &quot;JGHJGHJGHJG&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;dummyimage&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 59,
+      &quot;prizeType&quot; : &quot;PRODUCT&quot;,
+      &quot;stock&quot; : 16,
+      &quot;productId&quot; : 7,
+      &quot;productName&quot; : &quot;막국수&quot;,
+      &quot;productImg&quot; : &quot;https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554&quot;,
+      &quot;couponId&quot; : -1,
+      &quot;couponDetail&quot; : &quot;&quot;,
+      &quot;type&quot; : &quot;AMOUNT&quot;,
+      &quot;couponDiscountValue&quot; : -1,
+      &quot;expiresAt&quot; : &quot;-999999999-01-01T00:00:00&quot;
+    } ]
+  }, {
+    &quot;id&quot; : 32,
+    &quot;storeName&quot; : &quot;u1-s1's store&quot;,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;테스트...&quot;,
+    &quot;startAt&quot; : &quot;2022-10-31T18:30:00&quot;,
+    &quot;endAt&quot; : &quot;2022-11-22T14:30:00&quot;,
+    &quot;status&quot; : 0,
+    &quot;descript&quot; : &quot;쿠폰 수량 재고ㅓ&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;dummyimage&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file&quot;
+    },
+    &quot;eventPrizes&quot; : [ {
+      &quot;eventPrizeId&quot; : 60,
+      &quot;prizeType&quot; : &quot;COUPON&quot;,
+      &quot;stock&quot; : 13,
+      &quot;productId&quot; : -1,
+      &quot;productName&quot; : &quot;&quot;,
+      &quot;productImg&quot; : &quot;&quot;,
+      &quot;couponId&quot; : 10,
+      &quot;couponDetail&quot; : &quot;실시간 BEST 10 6/5만원 쿠폰팩&quot;,
+      &quot;type&quot; : &quot;RATE&quot;,
+      &quot;couponDiscountValue&quot; : 30,
+      &quot;expiresAt&quot; : &quot;2022-11-22T09:00:00&quot;
+    } ]
+  } ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].storeName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 스토어 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].sellerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].createdBy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 생성자 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].startAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 시작 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].endAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 종료 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 진행 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].descript</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 이미지 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventBannerImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 배너 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventDetailImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].eventPrizeId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].prizeType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 경품 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].stock</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 재고</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes.[].productId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].productName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].productImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponDetail</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].couponDiscountValue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 할인값</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventPrizes[].expiresAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 만료 일시</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_검색_조건으로_이벤트_목록_조회">검색 조건으로 이벤트 목록 조회</h3>
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">GET /api/v1/event/list?eventType=RAFFLE&amp;eventTitle=%EB%9F%AC%EB%B2%84%EB%8D%95&amp;dateDiv=&amp;fromDateTime=&amp;toDateTime=&amp;eventStatus= HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:57636</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Parameters</strong></code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eventType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 타입</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eventTitle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>dateDiv</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">날짜 검색 구분</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>fromDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색 시작 일자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>toDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색 종료 일자</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eventStatus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상태</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 31 Oct 2022 03:17:36 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 753
+
+{
+  &quot;success&quot; : true,
+  &quot;message&quot; : &quot;이벤트 검색 리스트 조회 성공&quot;,
+  &quot;data&quot; : [ {
+    &quot;id&quot; : 1,
+    &quot;sellerId&quot; : 1,
+    &quot;createdBy&quot; : &quot;SELLER&quot;,
+    &quot;type&quot; : &quot;RAFFLE&quot;,
+    &quot;title&quot; : &quot;러버덕 할로윈 콘테스트&quot;,
+    &quot;startAt&quot; : &quot;2022-10-11T00:00:00&quot;,
+    &quot;endAt&quot; : &quot;2022-10-31T07:00:00&quot;,
+    &quot;status&quot; : 1,
+    &quot;descript&quot; : &quot;러버덕 할로윈 콘테스트 2022&quot;,
+    &quot;eventImage&quot; : {
+      &quot;eventBannerImg&quot; : &quot;https://contents.lotteon.com/display/dshoplnk/12905/2/M001402/278229/P8CB1E6B4CAEFE2760EBE65F00A06849FBE13305B33EA0EC1AC9A578E79E7E109/file/dims/optimize&quot;,
+      &quot;eventDetailImg&quot; : &quot;https://contents.lotteon.com/ec/public/P1B8BDC87A8EBE485D7E4C11436BCD0620D7AD633381B31FA5B53714620E734D9/file&quot;
+    }
+  } ]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">응답 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].sellerId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">셀러 번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].createdBy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 생성자 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 유형</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].startAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 시작 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].endAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 종료 일시</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 진행 상태</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].descript</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 이미지 정보</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventBannerImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 배너 이미지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].eventImage.eventDetailImg</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 상세 이미지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_이벤트_삭제">이벤트 삭제</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code><strong>Request</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">DELETE /api/v1/event/8 HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:56080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Response</strong></code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 31 Oct 2022 01:12:50 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 84
+
+{
+  &quot;success&quot; : true,
+  &quot;message&quot; : &quot;이벤트 취소 성공&quot;,
+  &quot;data&quot; : null
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code><strong>Fields</strong></code></p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">성공여부</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">메세지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이벤트 번호</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-10-25 10:59:19 +0900
+Last updated 2022-10-31 14:20:56 +0900
 </div>
 </div>
 </body>
