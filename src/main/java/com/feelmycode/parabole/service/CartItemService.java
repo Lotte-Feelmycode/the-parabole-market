@@ -141,7 +141,7 @@ public class CartItemService {
         }
         
         for(CartWithCouponResponseDto dto : cartItemWithCoupon){
-            if(dto.getCouponDto() == null) {
+            if(dto.getCouponList() == null) {
                 dto.makeNotNullResponseDto();
             }
         }
