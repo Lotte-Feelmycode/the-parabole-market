@@ -44,7 +44,7 @@ public class AuthController {
                 .username(userDTO.getName())
                 .nickname(userDTO.getNickname())
                 .phone(userDTO.getPhone())
-                .password(userDTO.getPassword())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
                 .role("ROLE_USER")
                 .build();
 
@@ -67,10 +67,8 @@ public class AuthController {
     public ResponseEntity authenticate(@RequestBody UserDto userDTO) {
         User user = userService.getByCredentials(
             userDTO.getEmail(),
-            userDTO.getPassword(), passwordEncoder
-            );
-        log.info(userDTO.getEmail());
-        log.info(userDTO.getPassword());
+            userDTO.getPassword(), passwordEncoder);
+
         if (user != null) {
             // 토큰 생성
             final String token = tokenProvider.create(user);

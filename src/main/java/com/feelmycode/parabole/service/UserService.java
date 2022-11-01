@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
@@ -17,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -148,10 +149,17 @@ public class UserService {
         return dtos;
     }
 
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    private String kakaoClientId;
+    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    private String kakaoRedirectUri;
+    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+    private String kakaoClientSecret;
+
     public KakaoOauthToken getAccessTokenKakao(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -159,9 +167,9 @@ public class UserService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("code", code);
-        params.add("client_id", "${spring.security.oauth2.client.registration.kakao.client-id}");
-        params.add("redirect_uri", "${spring.security.oauth2.client.registration.kakao.redirect-uri}");
-//        params.add("client_secret", "${spring.security.oauth2.client.registration.kakao.client-secret}");
+        params.add("client_id", kakaoClientId);
+        params.add("redirect_uri", kakaoRedirectUri);
+//        params.add("client_secret", kakaoClientSecret);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
             new HttpEntity<>(params, headers);
@@ -183,10 +191,17 @@ public class UserService {
         return kakaoOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
     }
 
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
+    private String naverClientId;
+    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
+    private String naverRedirectUri;
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
+    private String naverClientSecret;
+
     public NaverOauthToken getAccessTokenNaver(String code, String state) {
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -195,9 +210,9 @@ public class UserService {
         params.add("grant_type", "authorization_code");
         params.add("code", code);
         params.add("state", state);
-        params.add("client_id", "${spring.security.oauth2.client.registration.naver.client-id}");
-        params.add("redirect_uri", "${spring.security.oauth2.client.registration.naver.redirect-uri}");
-        params.add("client_secret", "${spring.security.oauth2.client.registration.naver.client-secret}");
+        params.add("client_id", naverClientId);
+        params.add("redirect_uri", naverRedirectUri);
+        params.add("client_secret", naverClientSecret);
 
         HttpEntity<MultiValueMap<String, String>> naverTokenRequest =
             new HttpEntity<>(params, headers);
@@ -289,33 +304,39 @@ public class UserService {
             String.class
         );
 
+        log.info("naverProfileResponse {}",naverProfileResponse.toString());
+
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        이 설정을 통해 JSON의 모든 데이터를 파싱하는 것이 아닌 내가 필요로 하는 데이터, 즉 내가 필드로 선언한 데이터들만 파싱할 수 있다.
+
         NaverProfile naverProfile = null;
         try {
             naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
+            System.out.println(naverProfile.getResultcode());
+            System.out.println(naverProfile.getMessage());
+            System.out.println(naverProfile.getResponse());
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        log.info("naverProfile {}", naverProfile);
         return naverProfile;
     }
 
     @Transactional
     public String saveUserAndGetTokenNaver(String token) {
         NaverProfile profile = findProfileNaver(token);
-        log.info(profile.toString());
 
         User user = userRepository.findByEmail(profile.response.getEmail());
         if(user == null) {
             user = User.builder()
 //                .id(profile.response.getId())
-                .imageUrl(profile.response.getProfile_image())
-                .nickname(profile.response.getNickname())
-                .email(profile.response.getEmail())
-                .authProvider("Kakao")
-                .username(profile.response.getNickname())
-                .phone(profile.response.getMobile())
-
+                .imageUrl(profile.getResponse().getProfile_image())
+                .nickname(profile.getResponse().getNickname())
+                .email(profile.getResponse().getEmail())
+                .authProvider("Naver")
+                .username(profile.getResponse().getNickname())
+                .phone(profile.getResponse().getMobile())
                 .role("ROLE_USER").build();
 
             userRepository.save(user);
