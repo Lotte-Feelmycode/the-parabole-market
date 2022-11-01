@@ -59,6 +59,8 @@ public class OrderInfoController {
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
         log.info("Get Order List. userId: {}", userId);
         List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
+        if(orderInfoList.isEmpty())
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 내역이 없습니다.");
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 
