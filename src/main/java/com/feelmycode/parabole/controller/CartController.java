@@ -8,6 +8,7 @@ import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.CartItemService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/cart")
@@ -28,6 +30,7 @@ public class CartController {
 
     @PostMapping(value = "/product/add")
     public ResponseEntity<ParaboleResponse> addProductInCart(@RequestBody CartAddItemRequestDto cartItemDto) {
+        log.info("addProductInCart : {}", cartItemDto.toString());
         cartItemService.addItem(cartItemDto);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "장바구니 상품 추가");
     }
