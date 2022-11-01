@@ -7,7 +7,9 @@ ifdef::snippets[]
 endif::[]
 :toc: left
 
-= Product
+= The Parabole
+
+== Product
 
 === 상품 목록
 `*Request*`
@@ -26,7 +28,8 @@ include::{resource-dir}/product-list/http-response.adoc[]
 
 include::{resource-dir}/product-list/response-fields.adoc[]
 
-'''
+---
+
 
 == EventParticipant
 
@@ -95,3 +98,4 @@ include::{resource-dir}/seller-eventparticipant/http-response.adoc[]
 `*Fields*`
 
 include::{resource-dir}/seller-eventparticipant/response-fields.adoc[]
+
