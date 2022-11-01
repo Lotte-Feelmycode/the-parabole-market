@@ -1,0 +1,4 @@
+[source,bash]
+----
+$ curl 'http://parabole.com:51862/api/v1/event/user/participant/3' -i -X GET
+----
