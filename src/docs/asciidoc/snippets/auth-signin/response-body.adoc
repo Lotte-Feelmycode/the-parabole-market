@@ -1,0 +1,17 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "기본 로그인 성공",
+  "data" : {
+    "id" : 45,
+    "email" : "user1@naver.com",
+    "name" : "user1",
+    "nickname" : "nickname1",
+    "phone" : "01011111111",
+    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NSIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyNzE1MzksImV4cCI6MTY2NzM1NzkzOX0.lFiw8G7yNkG0YOoDvEIKi7POuu_a0qbP_hvJKABlhiY",
+    "password" : null,
+    "passwordConfirmation" : null
+  }
+}
+----

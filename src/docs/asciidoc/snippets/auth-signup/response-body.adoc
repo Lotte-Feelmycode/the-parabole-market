@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : false,
+  "message" : "기본 회원가입 실패",
+  "data" : null
+}
+----

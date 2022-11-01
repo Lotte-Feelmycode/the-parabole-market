@@ -1,0 +1,16 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:50634/api/v1/auth/signin' -i -X POST \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "id" : null,
+  "email" : "user1@naver.com",
+  "name" : null,
+  "nickname" : null,
+  "phone" : null,
+  "token" : null,
+  "password" : "password1",
+  "passwordConfirmation" : null
+}'
+----
