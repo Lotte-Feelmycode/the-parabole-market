@@ -72,6 +72,8 @@ public class OrderInfoService {
     // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoListByUserId(Long userId) {
         Order order = orderService.getOrder(userId);
+        if(order == null || order.getId() == 0)
+            return new ArrayList<>();
         List<OrderInfo> getOrderInfoList = getOrderInfoListByOrderId(order.getId());
         return changeEntityToDto(getOrderInfoList);
     }
@@ -88,8 +90,7 @@ public class OrderInfoService {
         return orderInfoRepository.findAllByOrderId(orderId);
     }
 
-    public List<OrderWithCouponResponseDto>[] getOrderInfoGroupBySellerIdOrderByIdDesc(
-        Long userId) {
+    public List<OrderWithCouponResponseDto>[] getOrderInfoGroupBySellerIdOrderByIdDesc(Long userId) {
 
         Order order = orderService.getOrder(userId);
 
