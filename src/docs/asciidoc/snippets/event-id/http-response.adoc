@@ -4,18 +4,12 @@ HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 02:00:45 GMT
+Date: Tue, 01 Nov 2022 07:39:12 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1751
+Content-Length: 1709
 
 {
   "success" : true,
@@ -42,11 +36,11 @@ Content-Length: 1751
       "productId" : 1,
       "productName" : "한우국밥",
       "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 2,
       "prizeType" : "PRODUCT",
@@ -54,11 +48,11 @@ Content-Length: 1751
       "productId" : 2,
       "productName" : "돼지국밥",
       "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }
 }

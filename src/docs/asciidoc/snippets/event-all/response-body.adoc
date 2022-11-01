@@ -25,11 +25,11 @@
       "productId" : 1,
       "productName" : "한우국밥",
       "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 2,
       "prizeType" : "PRODUCT",
@@ -37,11 +37,11 @@
       "productId" : 2,
       "productName" : "돼지국밥",
       "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 2,
@@ -62,9 +62,9 @@
       "eventPrizeId" : 3,
       "prizeType" : "COUPON",
       "stock" : 100,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 1,
       "couponDetail" : "3월 3일 쿠폰",
       "type" : "AMOUNT",
@@ -77,11 +77,11 @@
       "productId" : 4,
       "productName" : "차돌 짬뽕 국밥 210gx6팩",
       "productImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 5,
       "prizeType" : "PRODUCT",
@@ -89,18 +89,18 @@
       "productId" : 5,
       "productName" : "비빔냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 56,
       "prizeType" : "COUPON",
       "stock" : 2,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 14,
       "couponDetail" : "할로윈 이벤트 쿠폰",
       "type" : "RATE",
@@ -129,11 +129,11 @@
       "productId" : 6,
       "productName" : "물냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 7,
       "prizeType" : "PRODUCT",
@@ -141,11 +141,11 @@
       "productId" : 7,
       "productName" : "막국수",
       "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 17,
@@ -166,9 +166,9 @@
       "eventPrizeId" : 34,
       "prizeType" : "COUPON",
       "stock" : 30,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 1,
       "couponDetail" : "3월 3일 쿠폰",
       "type" : "AMOUNT",
@@ -181,11 +181,11 @@
       "productId" : 5,
       "productName" : "비빔냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 18,
@@ -209,11 +209,11 @@
       "productId" : 7,
       "productName" : "막국수",
       "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 37,
       "prizeType" : "PRODUCT",
@@ -221,11 +221,11 @@
       "productId" : 6,
       "productName" : "물냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     }, {
       "eventPrizeId" : 38,
       "prizeType" : "PRODUCT",
@@ -233,11 +233,11 @@
       "productId" : 5,
       "productName" : "비빔냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 20,
@@ -258,9 +258,9 @@
       "eventPrizeId" : 42,
       "prizeType" : "COUPON",
       "stock" : 30,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 9,
       "couponDetail" : "창사를 축하해요",
       "type" : "RATE",
@@ -273,11 +273,11 @@
       "productId" : 10,
       "productName" : "레고 달 탐사 차량 (60348)",
       "productImg" : "https://contents.lotteon.com/itemimage/LM/57/02/01/71/61/73/0_/00/1/LM5702017161730_001_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 25,
@@ -301,11 +301,11 @@
       "productId" : 2,
       "productName" : "돼지국밥",
       "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 28,
@@ -326,9 +326,9 @@
       "eventPrizeId" : 55,
       "prizeType" : "COUPON",
       "stock" : 30,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 1,
       "couponDetail" : "3월 3일 쿠폰",
       "type" : "AMOUNT",
@@ -357,11 +357,11 @@
       "productId" : 5,
       "productName" : "비빔냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   }, {
     "id" : 31,
@@ -385,11 +385,11 @@
       "productId" : 7,
       "productName" : "막국수",
       "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   } ]
 }

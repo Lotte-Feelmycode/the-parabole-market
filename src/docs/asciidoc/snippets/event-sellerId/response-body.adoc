@@ -22,9 +22,9 @@
       "eventPrizeId" : 34,
       "prizeType" : "COUPON",
       "stock" : 30,
-      "productId" : -1,
-      "productName" : "",
-      "productImg" : "",
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
       "couponId" : 1,
       "couponDetail" : "3월 3일 쿠폰",
       "type" : "AMOUNT",
@@ -37,11 +37,11 @@
       "productId" : 5,
       "productName" : "비빔냉면",
       "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "couponId" : -1,
-      "couponDetail" : "",
-      "type" : "AMOUNT",
-      "couponDiscountValue" : -1,
-      "expiresAt" : "-999999999-01-01T00:00:00"
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
     } ]
   } ]
 }

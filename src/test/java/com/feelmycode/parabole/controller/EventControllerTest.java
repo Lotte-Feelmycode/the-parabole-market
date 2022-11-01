@@ -109,7 +109,7 @@ public class EventControllerTest {
     public void createEvent() throws JSONException {
 
         // given
-
+        // user, seller 있다고 가정
 //        User user = userRepository.save(
 //            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
 //        Seller seller = new Seller("event Store Name", "3245918723");
@@ -220,22 +220,22 @@ public class EventControllerTest {
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.eventPrizes.[].prizeType").type(JsonFieldType.STRING)
                         .description("이벤트 경품 유형"),
-                    fieldWithPath("data.eventPrizes.[].stock")
+                    fieldWithPath("data.eventPrizes.[].stock").optional()
                         .description("상품 재고"),
-                    fieldWithPath("data.eventPrizes.[].productId")
+                    fieldWithPath("data.eventPrizes.[].productId").optional()
                         .description("상품 아이디"),
-                    fieldWithPath("data.eventPrizes.[].productName")
+                    fieldWithPath("data.eventPrizes.[].productName").optional()
                         .description("상품명"),
-                    fieldWithPath("data.eventPrizes.[].productImg")
+                    fieldWithPath("data.eventPrizes.[].productImg").optional()
                         .description("상품 이미지"),
-                    fieldWithPath("data.eventPrizes.[].couponId")
+                    fieldWithPath("data.eventPrizes.[].couponId").optional()
                         .description("쿠폰 아이디"),
-                    fieldWithPath("data.eventPrizes.[].couponDetail")
-                        .description("쿠폰 상세 설명"),
+                    fieldWithPath("data.eventPrizes.[].couponDetail").optional()
+                        .description("쿠폰 상세 설명").optional(),
                     fieldWithPath("data.eventPrizes.[].type")
-                        .description("쿠폰 할인 유형"),
-                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").description("쿠폰 할인값"),
-                    fieldWithPath("data.eventPrizes.[].expiresAt")
+                        .description("쿠폰 할인 유형").optional(),
+                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").optional().description("쿠폰 할인값"),
+                    fieldWithPath("data.eventPrizes.[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
             )).when().get(BASIC_PATH + "/{eventId}", eventId);
@@ -293,22 +293,22 @@ public class EventControllerTest {
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.[].eventPrizes[].prizeType").type(JsonFieldType.STRING)
                         .description("이벤트 경품 유형"),
-                    fieldWithPath("data.[].eventPrizes[].stock")
+                    fieldWithPath("data.[].eventPrizes[].stock").optional()
                         .description("상품 재고"),
-                    fieldWithPath("data.[].eventPrizes.[].productId")
+                    fieldWithPath("data.[].eventPrizes.[].productId").optional()
                         .description("상품 아이디"),
-                    fieldWithPath("data.[].eventPrizes[].productName")
+                    fieldWithPath("data.[].eventPrizes[].productName").optional()
                         .description("상품명"),
-                    fieldWithPath("data.[].eventPrizes[].productImg")
+                    fieldWithPath("data.[].eventPrizes[].productImg").optional()
                         .description("상품 이미지"),
-                    fieldWithPath("data.[].eventPrizes[].couponId")
+                    fieldWithPath("data.[].eventPrizes[].couponId").optional()
                         .description("쿠폰 아이디"),
-                    fieldWithPath("data.[].eventPrizes[].couponDetail")
+                    fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
-                    fieldWithPath("data.[].eventPrizes[].type").description("쿠폰 할인 유형"),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").description(
+                    fieldWithPath("data.[].eventPrizes[].type").description("쿠폰 할인 유형").optional(),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
                         "쿠폰 할인값"),
-                    fieldWithPath("data.[].eventPrizes[].expiresAt")
+                    fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
             )).when().get(BASIC_PATH);
@@ -367,22 +367,22 @@ public class EventControllerTest {
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.[].eventPrizes[].prizeType").type(JsonFieldType.STRING)
                         .description("이벤트 경품 유형"),
-                    fieldWithPath("data.[].eventPrizes[].stock")
+                    fieldWithPath("data.[].eventPrizes[].stock").optional()
                         .description("상품 재고"),
-                    fieldWithPath("data.[].eventPrizes.[].productId")
+                    fieldWithPath("data.[].eventPrizes.[].productId").optional()
                         .description("상품 아이디"),
-                    fieldWithPath("data.[].eventPrizes[].productName")
+                    fieldWithPath("data.[].eventPrizes[].productName").optional()
                         .description("상품명"),
-                    fieldWithPath("data.[].eventPrizes[].productImg")
+                    fieldWithPath("data.[].eventPrizes[].productImg").optional()
                         .description("상품 이미지"),
-                    fieldWithPath("data.[].eventPrizes[].couponId")
+                    fieldWithPath("data.[].eventPrizes[].couponId").optional()
                         .description("쿠폰 아이디"),
-                    fieldWithPath("data.[].eventPrizes[].couponDetail")
+                    fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
-                    fieldWithPath("data.[].eventPrizes[].type").description("쿠폰 할인 유형"),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").description(
+                    fieldWithPath("data.[].eventPrizes[].type").optional().description("쿠폰 할인 유형"),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
                         "쿠폰 할인값"),
-                    fieldWithPath("data.[].eventPrizes[].expiresAt")
+                    fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
             )).when().get(BASIC_PATH + "/seller/{userId}", userId);
