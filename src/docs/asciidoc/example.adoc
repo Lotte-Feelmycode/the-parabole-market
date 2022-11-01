@@ -1,28 +1,11 @@
 :hardbreaks:
 ifndef::snippets[]
-:snippets: ./build/generated-snippets
+:resource-dir: ./snippets
 endif::[]
-
+ifdef::snippets[]
+:resource-dir: src/docs/asciidoc/snippets
+endif::[]
 :toc: left
-
-== Product
-
-=== 상품 목록
-`*Request*`
-
-include::{snippets}/product-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/product-list/request-parameters.adoc[]
-
-`*Response*`
-
-include::{snippets}/product-list/http-response.adoc[]
-
-`*Fields*`
-
-include::{snippets}/product-list/response-fields.adoc[]
 
 == Order
 
@@ -30,51 +13,43 @@ include::{snippets}/product-list/response-fields.adoc[]
 
 `*Request*`
 
-include::{snippets}/get-order-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/get-order-list/request-parameters.adoc[]
+include::{resource-dir}/get-order-list/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/get-order-list/http-response.adoc[]
+include::{resource-dir}/get-order-list/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/get-order-list/response-fields.adoc[]
+include::{resource-dir}/get-order-list/response-fields.adoc[]
 
 === 주문 수정
 
 `*Request*`
 
-include::{snippets}/update-order/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/update-order/request-parameters.adoc[]
+include::{resource-dir}/update-order/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/update-order/http-response.adoc[]
+include::{resource-dir}/update-order/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/update-order/response-fields.adoc[]
+include::{resource-dir}/update-order/response-fields.adoc[]
 
 === 주문 배달 수정
 
 `*Request*`
 
-include::{snippets}/update-order-delivery/http-request.adoc[]
+include::{resource-dir}/update-order-delivery/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/update-order-delivery/http-response.adoc[]
+include::{resource-dir}/update-order-delivery/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/update-order-delivery/response-fields.adoc[]
+include::{resource-dir}/update-order-delivery/response-fields.adoc[]
 
 == OrderInfo
 
@@ -82,54 +57,42 @@ include::{snippets}/update-order-delivery/response-fields.adoc[]
 
 `*Request*`
 
-include::{snippets}/create-orderinfo/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/create-orderinfo/request-parameters.adoc[]
+include::{resource-dir}/create-orderinfo/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/create-orderinfo/http-response.adoc[]
+include::{resource-dir}/create-orderinfo/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/create-orderinfo/response-fields.adoc[]
+include::{resource-dir}/create-orderinfo/response-fields.adoc[]
 
 === 주문 상세정보 리스트
 
 `*Request*`
 
-include::{snippets}/get-orderinfo-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/get-orderinfo-list/request-parameters.adoc[]
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/get-orderinfo-list/http-response.adoc[]
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/get-orderinfo-list/response-fields.adoc[]
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
 
 === 주문 상세정보 리스트
 
 `*Request*`
 
-include::{snippets}/get-orderinfo-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/get-orderinfo-list/request-parameters.adoc[]
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/get-orderinfo-list/http-response.adoc[]
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/get-orderinfo-list/response-fields.adoc[]
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
 
 
