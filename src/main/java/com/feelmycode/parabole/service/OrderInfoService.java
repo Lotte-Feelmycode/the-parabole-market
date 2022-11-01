@@ -6,6 +6,7 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
+import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.dto.OrderWithCouponResponseDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
@@ -90,7 +91,9 @@ public class OrderInfoService {
         return orderInfoRepository.findAllByOrderId(orderId);
     }
 
-    public List<OrderWithCouponResponseDto> getOrderInfoGroupBySellerIdOrderByIdDesc(Long userId) {
+    public OrderResponseDto getOrderInfoGroupBySellerIdOrderByIdDesc(Long userId) {
+
+        Long cnt = 0L;
 
         Order order = orderService.getOrder(userId);
 
@@ -103,6 +106,7 @@ public class OrderInfoService {
 
         int idx = 0;
         for (OrderInfo orderInfo : orderInfoList) {
+            cnt += orderInfo.getProductCnt();
             Long sellerId = orderInfo.getSellerId();
             if (!sellerIdMap.containsKey(sellerId)) {
                 sellerIdMap.put(sellerId, idx++);
@@ -143,7 +147,7 @@ public class OrderInfoService {
             }
         }
 
-        return orderInfoWithCoupon;
+        return new OrderResponseDto(order.getId(), cnt, orderInfoWithCoupon);
     }
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {

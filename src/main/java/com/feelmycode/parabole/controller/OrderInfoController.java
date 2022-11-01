@@ -5,7 +5,7 @@ import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
-import com.feelmycode.parabole.dto.OrderWithCouponResponseDto;
+import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderInfoService;
@@ -58,10 +58,10 @@ public class OrderInfoController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
-        List<OrderWithCouponResponseDto> orderInfoList = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
-        if(orderInfoList == null || orderInfoList.isEmpty())
+        OrderResponseDto orderResponseDto = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
+        if(orderResponseDto.getOrderWithCoupon() == null || orderResponseDto.getOrderWithCoupon().isEmpty())
             throw new ParaboleException(HttpStatus.NOT_FOUND, "주문 내역이 없습니다.");
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderResponseDto);
     }
 
     @GetMapping("/seller")

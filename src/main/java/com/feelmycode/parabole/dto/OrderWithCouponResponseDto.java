@@ -9,13 +9,13 @@ public class OrderWithCouponResponseDto {
         private Long sellerId;
         private String storeName;
         private List<OrderInfoResponseDto> getItemList;
-        private CouponResponseDto responseDto;
+        private CouponResponseDto getCouponList;
 
         public OrderWithCouponResponseDto(Long sellerId, String storeName,
-            List<OrderInfoResponseDto> getItemList, CouponResponseDto responseDto) {
+            List<OrderInfoResponseDto> getItemList, CouponResponseDto getCouponList) {
             this.sellerId = sellerId;
             this.storeName = storeName;
             this.getItemList = getItemList;
-            this.responseDto = responseDto;
+            this.getCouponList = getCouponList;
         }
     }

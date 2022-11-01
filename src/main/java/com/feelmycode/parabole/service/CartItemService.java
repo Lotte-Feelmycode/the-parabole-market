@@ -5,6 +5,7 @@ import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
+import com.feelmycode.parabole.dto.CartResponseDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
@@ -84,7 +85,9 @@ public class CartItemService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
     }
 
-    public List<CartWithCouponResponseDto> getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+    public CartResponseDto getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+
+        Long cnt = 0L;
 
         Cart cart = cartService.getCart(userId);
 
@@ -109,6 +112,7 @@ public class CartItemService {
         }
 
         for (CartItem item : getCartItems) {
+            cnt += item.getCnt();
             Seller seller = item.getProduct().getSeller();
             String key = seller.getId()+"$"+seller.getStoreName();
             getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
@@ -142,7 +146,7 @@ public class CartItemService {
             }
         }
 
-        return cartItemWithCoupon;
+        return new CartResponseDto(cart.getId(), cnt, cartItemWithCoupon);
     }
 
 }
