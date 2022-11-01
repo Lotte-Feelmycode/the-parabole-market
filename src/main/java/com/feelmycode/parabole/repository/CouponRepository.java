@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
     List<Coupon> findAllBySellerId(Long sellerId);
-
     List<Coupon> findAllByNameAndSellerId(String couponName, Long sellerId);
 }

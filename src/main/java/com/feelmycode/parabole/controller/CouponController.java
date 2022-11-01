@@ -55,8 +55,7 @@ public class CouponController {
 
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
         CouponCreateResponseDto response = couponService.addCoupon(dto);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "쿠폰 등록 성공", response);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰 등록 성공", response);
     }
 
 //    @PostMapping("/giveout")
