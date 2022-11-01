@@ -1,5 +1,8 @@
 package com.feelmycode.parabole.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.feelmycode.parabole.domain.EventImage;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,9 +27,13 @@ public class EventCreateRequestDto {
     @NotBlank(message = "이벤트 제목을 입력해주세요.")
     private String title;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     @NotNull
     private LocalDateTime startAt;
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
     @NotNull
     private LocalDateTime endAt;
 

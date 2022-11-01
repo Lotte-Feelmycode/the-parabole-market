@@ -5,9 +5,9 @@ import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.CartAddItemRequestDto;
+import com.feelmycode.parabole.dto.CartResponseDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
-import com.feelmycode.parabole.dto.CartItemGetResponseDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
 import com.feelmycode.parabole.dto.CartWithCouponResponseDto;
 import com.feelmycode.parabole.dto.CouponResponseDto;
@@ -34,7 +34,6 @@ public class CartItemService {
     private final CartService cartService;
     private final ProductService productService;
     private final CouponService couponService;
-    private final SellerService sellerService;
 
     @Transactional
     public void addItem(CartAddItemRequestDto dto) {
@@ -76,15 +75,6 @@ public class CartItemService {
         cartItemRepository.save(currentCartItem);
     }
 
-    public CartItemGetResponseDto getCartItemList(Long userId) {
-        Cart cart = cartService.getCart(userId);
-        List<CartItemDto> cartItemList = cartItemRepository.findAllByCartId(cart.getId())
-            .stream().sorted(Comparator.comparing(CartItem::getId).reversed())
-            .map(CartItemDto::new).toList();
-
-        return new CartItemGetResponseDto(cart.getId(), cartItemList, cartItemList.size());
-    }
-
     @Transactional
     public void cartListDelete(CartItemDeleteRequestDto cartItemRequestDto) {
         cartItemRepository.deleteById(cartItemRequestDto.getCartItemId());
@@ -95,7 +85,9 @@ public class CartItemService {
             .orElseThrow(() -> new ParaboleException(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."));
     }
 
-    public List<CartWithCouponResponseDto>[] getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+    public CartResponseDto getCartItemGroupBySellerIdOrderByIdDesc(Long userId) {
+
+        Long cnt = 0L;
 
         Cart cart = cartService.getCart(userId);
 
@@ -120,6 +112,7 @@ public class CartItemService {
         }
 
         for (CartItem item : getCartItems) {
+            cnt += item.getCnt();
             Seller seller = item.getProduct().getSeller();
             String key = seller.getId()+"$"+seller.getStoreName();
             getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
@@ -127,11 +120,7 @@ public class CartItemService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<CartWithCouponResponseDto>[] cartItemWithCoupon = new ArrayList[sellerIdMap.size()+1];
-
-        for(int i = 0; i <= sellerIdMap.size(); i++) {
-            cartItemWithCoupon[i] = new ArrayList<>();
-        }
+        List<CartWithCouponResponseDto> cartItemWithCoupon = new ArrayList<>();
 
         HashSet<Long> cartWithCouponDto = new HashSet<>();
 
@@ -140,18 +129,24 @@ public class CartItemService {
             String storeName = key.split("\\$")[1];
             if(cartWithCouponDto.add(sellerId)) {
                 if(couponList.isEmpty()) {
-                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                    cartItemWithCoupon.add(
                         new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
-                    cartItemWithCoupon[sellerIdMap.get(key)].add(
+                    cartItemWithCoupon.add(
                         new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
                 }
             }
         }
+        
+        for(CartWithCouponResponseDto dto : cartItemWithCoupon){
+            if(dto.getCouponList() == null) {
+                dto.makeNotNullResponseDto();
+            }
+        }
 
-        return cartItemWithCoupon;
+        return new CartResponseDto(cart.getId(), cnt, cartItemWithCoupon);
     }
 
 }

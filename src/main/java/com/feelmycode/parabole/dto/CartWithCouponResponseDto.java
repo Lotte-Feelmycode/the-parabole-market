@@ -8,14 +8,18 @@ public class CartWithCouponResponseDto {
 
     private Long sellerId;
     private String storeName;
-    private List<CartItemDto> getItemList;
-    private CouponResponseDto responseDto;
+    private List<CartItemDto> cartItemList;
+    private CouponResponseDto couponList;
 
     public CartWithCouponResponseDto(Long sellerId, String storeName,
-        List<CartItemDto> getItemList,CouponResponseDto responseDto) {
+        List<CartItemDto> cartItemList,CouponResponseDto couponList) {
         this.sellerId = sellerId;
         this.storeName = storeName;
-        this.getItemList = getItemList;
-        this.responseDto = responseDto;
+        this.cartItemList = cartItemList;
+        this.couponList = couponList;
+    }
+
+    public void makeNotNullResponseDto() {
+        this.couponList = new CouponResponseDto();
     }
 }

@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|사용자 아이디
+
+|`+productId+`
+|`+Number+`
+|상품 아이디
+
+|`+cnt+`
+|`+Number+`
+|수량
+
+|===
