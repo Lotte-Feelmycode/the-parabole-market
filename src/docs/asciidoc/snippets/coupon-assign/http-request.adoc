@@ -1,14 +1,14 @@
 [source,http,options="nowrap"]
 ----
 POST /api/v1/coupon/assign HTTP/1.1
-authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNyIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyODQzOTUsImV4cCI6MTY2NzM3MDc5NX0.zjDY3NxsvNOh9K7wkwNZt1lN0qdOVDSTXbWbgtC60Kk
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNyIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyOTU1NDUsImV4cCI6MTY2NzM4MTk0NX0.bNl5M_RKwY1uohEjtza6o_4EshAKSL3VU7EgTVZe6A0
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:56856
-Content-Length: 52
+Host: parabole.com:65089
+Content-Length: 53
 
 {
-  "couponId" : 9,
+  "couponId" : 21,
   "userIdList" : [ 36, 45 ]
 }
 ----

@@ -9,7 +9,7 @@
     "name" : "user1",
     "nickname" : "nickname1",
     "phone" : "01011111111",
-    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NSIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyODQ0NTUsImV4cCI6MTY2NzM3MDg1NX0.6FfLx1NLmE8bZzeLD2QKlgZbbcpfop3ciTH8__5LoMY",
+    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0NSIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyOTU1ODcsImV4cCI6MTY2NzM4MTk4N30.MCCN5kc5rxiO1BvdBcqr-ANrxRFTIfYPt2XlH5h7ZIo",
     "password" : null,
     "passwordConfirmation" : null
   }

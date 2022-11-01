@@ -25,21 +25,76 @@
       "expiresAt" : "2022-12-30T00:00:00",
       "detail" : "userId37 이 판매자3이라구요",
       "cnt" : 15,
-      "remains" : 13
+      "remains" : 11
+    }, {
+      "couponId" : 11,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : "AMOUNT",
+      "discountValue" : 2000,
+      "createdAt" : "2022-11-01T18:02:37",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
+    }, {
+      "couponId" : 12,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : "AMOUNT",
+      "discountValue" : 2000,
+      "createdAt" : "2022-11-01T18:06:23",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
+    }, {
+      "couponId" : 13,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : "AMOUNT",
+      "discountValue" : 2000,
+      "createdAt" : "2022-11-01T18:11:41",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
+    }, {
+      "couponId" : 16,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : "AMOUNT",
+      "discountValue" : 2000,
+      "createdAt" : "2022-11-01T18:35:27",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
+    }, {
+      "couponId" : 18,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : "AMOUNT",
+      "discountValue" : 2000,
+      "createdAt" : "2022-11-01T18:38:25",
+      "validAt" : "2022-09-16T00:00:00",
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
     } ],
     "pageable" : "INSTANCE",
     "last" : true,
     "totalPages" : 1,
-    "totalElements" : 2,
-    "size" : 2,
+    "totalElements" : 7,
+    "size" : 7,
     "number" : 0,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
     "first" : true,
-    "numberOfElements" : 2,
+    "numberOfElements" : 7,
     "empty" : false
   }
 }

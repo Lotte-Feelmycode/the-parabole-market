@@ -2,14 +2,14 @@
 ----
 POST /api/v1/coupon/new HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVGhlIFBhcmFib2xlIGFwcCIsImlhdCI6MTY2NzI4NDM5NCwiZXhwIjoxNjY3MzcwNzk0fQ.I_turDWldyfufxElCyzXGb5x_PxqxzhJupYPYZOMPy8
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNyIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyOTU1NDQsImV4cCI6MTY2NzM4MTk0NH0.ifvaE3E1vAcN5OVjWfI9sjtBlMZhj4vBOH1t3dpc8RQ
 Content-Type: application/json
-Host: parabole.com:56856
-Content-Length: 253
+Host: parabole.com:65089
+Content-Length: 254
 
 {
   "name" : "크리스마스 기념 쿠폰",
-  "userId" : 1,
+  "userId" : 37,
   "type" : 2,
   "discountValue" : 2000,
   "validAt" : [ 2022, 9, 16, 0, 0 ],

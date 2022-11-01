@@ -9,7 +9,7 @@ $ echo '{
   "token" : null,
   "password" : "password2",
   "passwordConfirmation" : "password2"
-}' | http POST 'https://parabole.com:57299/api/v1/auth/signup' \
+}' | http POST 'https://parabole.com:65312/api/v1/auth/signup' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----

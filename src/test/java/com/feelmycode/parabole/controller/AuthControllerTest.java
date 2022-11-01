@@ -11,6 +11,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.repository.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -42,6 +44,8 @@ public class AuthControllerTest {
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
 
     private RequestSpecification spec;
+    @Autowired
+    private UserRepository userRepository;
 
     @Before
     public void setUp() {
@@ -99,6 +103,8 @@ public class AuthControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+        userRepository.delete(userRepository.findByEmail(dto.getEmail()));
     }
 
 

@@ -4,7 +4,7 @@
   "success" : true,
   "message" : "기본 회원가입 성공",
   "data" : {
-    "id" : 46,
+    "id" : 53,
     "email" : "user2@naver.com",
     "name" : "user2",
     "nickname" : null,

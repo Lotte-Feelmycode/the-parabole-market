@@ -1,12 +1,12 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:56856/api/v1/coupon/new' -i -X POST \
+$ curl 'https://parabole.com:65089/api/v1/coupon/new' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
-    -H 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiVGhlIFBhcmFib2xlIGFwcCIsImlhdCI6MTY2NzI4NDM5NCwiZXhwIjoxNjY3MzcwNzk0fQ.I_turDWldyfufxElCyzXGb5x_PxqxzhJupYPYZOMPy8' \
+    -H 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzNyIsImlzcyI6IlRoZSBQYXJhYm9sZSBhcHAiLCJpYXQiOjE2NjcyOTU1NDQsImV4cCI6MTY2NzM4MTk0NH0.ifvaE3E1vAcN5OVjWfI9sjtBlMZhj4vBOH1t3dpc8RQ' \
     -H 'Content-Type: application/json' \
     -d '{
   "name" : "크리스마스 기념 쿠폰",
-  "userId" : 1,
+  "userId" : 37,
   "type" : 2,
   "discountValue" : 2000,
   "validAt" : [ 2022, 9, 16, 0, 0 ],

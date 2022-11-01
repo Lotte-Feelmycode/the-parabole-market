@@ -4,8 +4,9 @@
   "success" : true,
   "message" : "쿠폰 등록 성공",
   "data" : {
+    "couponId" : 20,
     "couponName" : "크리스마스 기념 쿠폰",
-    "sellerName" : "정다은/컴퓨터공학전공",
+    "sellerName" : "r",
     "type" : "AMOUNT",
     "cnt" : 5
   }

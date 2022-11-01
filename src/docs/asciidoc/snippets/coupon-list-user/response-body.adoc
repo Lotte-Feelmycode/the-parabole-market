@@ -24,8 +24,8 @@
     "number" : 0,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
     "first" : true,
     "numberOfElements" : 1,

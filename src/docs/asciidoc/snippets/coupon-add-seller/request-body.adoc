@@ -2,7 +2,7 @@
 ----
 {
   "name" : "크리스마스 기념 쿠폰",
-  "userId" : 1,
+  "userId" : 37,
   "type" : 2,
   "discountValue" : 2000,
   "validAt" : [ 2022, 9, 16, 0, 0 ],

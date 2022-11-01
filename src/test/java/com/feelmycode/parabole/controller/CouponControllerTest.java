@@ -10,11 +10,17 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
+import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
+import com.feelmycode.parabole.global.error.exception.NotSellerException;
+import com.feelmycode.parabole.repository.CouponRepository;
+import com.feelmycode.parabole.repository.UserCouponRepository;
+import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.security.TokenProvider;
+import com.feelmycode.parabole.service.CouponService;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -23,12 +29,14 @@ import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -50,6 +58,15 @@ public class CouponControllerTest {
 
     private RequestSpecification spec;
     private TokenProvider tokenProvider = new TokenProvider();
+
+    @Autowired
+    private CouponService couponService;
+    @Autowired
+    private CouponRepository couponRepository;
+    @Autowired
+    private UserCouponRepository userCouponRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Before
     public void setUp() {
@@ -144,6 +161,7 @@ public class CouponControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
     }
 
 
@@ -237,7 +255,7 @@ public class CouponControllerTest {
     @DisplayName("셀러 새로운 쿠폰 등록")
     public void addCoupon() {
 
-        Long userId = 1L;
+        Long userId = 37L;
         String userToken = this.tokenProvider.create(
             User.builder().seller(new Seller()).id(userId).email("s1-u2@naver.com").build());     // 셀러 계정
 
@@ -263,6 +281,8 @@ public class CouponControllerTest {
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("등록한 쿠폰 정보"),
+                        fieldWithPath("data.couponId").type(JsonFieldType.NUMBER)
+                            .description("쿠폰 ID"),
                         fieldWithPath("data.couponName").type(JsonFieldType.STRING)
                             .description("쿠폰 이름"),
                         fieldWithPath("data.sellerName").type(JsonFieldType.STRING)
@@ -280,6 +300,20 @@ public class CouponControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+        // Rollback Code
+       List<Coupon> list = couponRepository.findAllByNameAndSellerId(dto.getName(),
+            userRepository.findById(dto.getUserId()).orElseThrow(() -> new NotSellerException())
+                .getSeller().getId());
+
+        Coupon createdCoupon = list.get(list.size() - 1);
+        couponRepository.delete(createdCoupon);
+
+//        List<UserCoupon> userCouponList = userCouponRepository.findAllByCoupon(
+//            createdCoupon.getId());
+//
+//        userCouponRepository.deleteAll(userCouponList);
+//        couponRepository.delete(createdCoupon);
     }
 
     @Test
@@ -289,13 +323,21 @@ public class CouponControllerTest {
         Long userId = 37L;
         String userToken = this.tokenProvider.create(
             User.builder().id(userId).email("r").password("r").build());     // 셀러 계정
-        CouponAssignRequestDto dto = new CouponAssignRequestDto(9L, Arrays.asList(36L, 45L));
+
+        LocalDateTime validAt = LocalDateTime.parse("2022-09-16T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime expiresAt = LocalDateTime.parse("2022-11-30T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        CouponCreateRequestDto dto = new CouponCreateRequestDto("크리스마스 기념 쿠폰", userId, 2, 2000,
+            validAt, expiresAt, "행복한 크리스마스 되세요", 5);
+
+        Long newCouponId = couponService.addCoupon(dto).getCouponId();
+        CouponAssignRequestDto assignRequestDto = new CouponAssignRequestDto(newCouponId, Arrays.asList(36L, 45L));
 
         Response resp = given(this.spec)
             .header("authorization", "Bearer " + userToken)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
-            .body(dto)
+            .body(assignRequestDto)
             .filter(document("coupon-assign",
                     preprocessRequest(modifyUris()
                             .scheme("https")
@@ -315,6 +357,10 @@ public class CouponControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+        // Rollback Code
+        couponRepository.deleteById(newCouponId);
+
     }
 
 }

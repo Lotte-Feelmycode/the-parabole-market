@@ -12,7 +12,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 06:34:15 GMT
+Date: Tue, 01 Nov 2022 09:39:47 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 287
@@ -21,7 +21,7 @@ Content-Length: 287
   "success" : true,
   "message" : "기본 회원가입 성공",
   "data" : {
-    "id" : 46,
+    "id" : 53,
     "email" : "user2@naver.com",
     "name" : "user2",
     "nickname" : null,
