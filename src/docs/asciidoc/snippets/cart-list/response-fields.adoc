@@ -1,0 +1,152 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메시지
+
+|`+data+`
+|`+Array+`
+|응답 정보
+
+|`+data.[]+`
+|`+Array+`
+|장바구니 목록
+
+|`+data.[].[]+`
+|`+Array+`
+|장바구니 목록 정보
+
+|`+data.[].[].sellerId+`
+|`+Number+`
+|판매자 아이디
+
+|`+data.[].[].storeName+`
+|`+String+`
+|스토어 이름
+
+|`+data.[].[].getItemList+`
+|`+Array+`
+|상품 목록
+
+|`+data.[].[].getItemList.[].cartItemId+`
+|`+Number+`
+|장바구니 아이템 아이디
+
+|`+data.[].[].getItemList.[].product+`
+|`+Object+`
+|상품 정보
+
+|`+data.[].[].getItemList.[].product.productId+`
+|`+Number+`
+|상품 아이디
+
+|`+data.[].[].getItemList.[].product.productName+`
+|`+String+`
+|상품 명
+
+|`+data.[].[].getItemList.[].product.sellerId+`
+|`+Number+`
+|셀러 아이디
+
+|`+data.[].[].getItemList.[].product.storeName+`
+|`+String+`
+|스토어 이름
+
+|`+data.[].[].getItemList.[].product.productStatus+`
+|`+Number+`
+|상품 상태
+
+|`+data.[].[].getItemList.[].product.productRemains+`
+|`+Number+`
+|상품 재고
+
+|`+data.[].[].getItemList.[].product.productPrice+`
+|`+Number+`
+|상품 가격
+
+|`+data.[].[].getItemList.[].product.productCategory+`
+|`+String+`
+|상품 카테고리
+
+|`+data.[].[].getItemList.[].product.productThumbnailImg+`
+|`+String+`
+|상품 썸네일
+
+|`+data.[].[].getItemList.[].product.productCreatedAt+`
+|`+String+`
+|생성일자
+
+|`+data.[].[].getItemList.[].product.productUpdatedAt+`
+|`+String+`
+|수정일자
+
+|`+data.[].[].getItemList.[].product.productDeletedAt+`
+|`+Null+`
+|삭제일자
+
+|`+data.[].[].getItemList.[].product.productIsDeleted+`
+|`+Boolean+`
+|삭제여부
+
+|`+data.[].[].getItemList.[].count+`
+|`+Number+`
+|상품 개수
+
+|`+data.[].[].couponDto+`
+|`+Object+`
+|보유 쿠폰
+
+|`+data.[].[].couponDto.rateCoupon+`
+|`+Array+`
+|할인율 적용 쿠폰
+
+|`+data.[].[].couponDto.rateCoupon.[]+`
+|`+Array+`
+|쿠폰 정보
+
+|`+data.[].[].couponDto.rateCoupon.[].couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.[].[].couponDto.rateCoupon.[].storeName+`
+|`+String+`
+|스토어 이름
+
+|`+data.[].[].couponDto.rateCoupon.[].type+`
+|`+String+`
+|쿠폰 유형
+
+|`+data.[].[].couponDto.rateCoupon.[].discountValue+`
+|`+Number+`
+|할인 값
+
+|`+data.[].[].couponDto.amountCoupon+`
+|`+Array+`
+|할인율 적용 쿠폰
+
+|`+data.[].[].couponDto.amountCoupon.[]+`
+|`+Array+`
+|쿠폰 정보
+
+|`+data.[].[].couponDto.amountCoupon.[].couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.[].[].couponDto.amountCoupon.[].storeName+`
+|`+String+`
+|스토어 이름
+
+|`+data.[].[].couponDto.amountCoupon.[].type+`
+|`+String+`
+|쿠폰 유형
+
+|`+data.[].[].couponDto.amountCoupon.[].discountValue+`
+|`+Number+`
+|할인 값
+
+|===

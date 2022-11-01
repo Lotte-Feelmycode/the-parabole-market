@@ -7,7 +7,9 @@ ifdef::snippets[]
 endif::[]
 :toc: left
 
-= Product
+= The Parabole
+
+== Product
 
 === 상품 목록
 `*Request*`
@@ -25,6 +27,7 @@ include::{snippets}/product-list/http-response.adoc[]
 `*Fields*`
 
 include::{snippets}/product-list/response-fields.adoc[]
+
 
 '''
 == 이벤트 등록
@@ -116,5 +119,81 @@ include::{resource-dir}/event-delete/http-response.adoc[]
 
 include::{resource-dir}/event-delete/response-fields.adoc[]
 
+---
+
+=== 상품 추가
+
+== Cart
+
+=== 장바구니 목록 조회
+
+`*Request*`
+
+include::{snippets}/cart-list/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/cart-list/request-parameters.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-list/response-fields.adoc[]
 
 
+=== 장바구니 상품 추가
+
+`*Request*`
+
+include::{snippets}/cart-product-add/http-request.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-product-add/request-fields.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-product-add/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-product-add/response-fields.adoc[]
+
+=== 장바구니 상품 수량 수정
+
+`*Request*`
+
+include::{snippets}/cart-update-cnt/http-request.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-update-cnt/request-fields.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-update-cnt/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-update-cnt/response-fields.adoc[]
+
+=== 장바구니 상품 삭제
+
+`*Request*`
+
+include::{snippets}/cart-delete/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/cart-delete/request-parameters.adoc[]
+
+`*Response*`
+
+include::{snippets}/cart-delete/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/cart-delete/response-fields.adoc[]
