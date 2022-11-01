@@ -15,6 +15,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
 import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
+import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
@@ -37,7 +38,7 @@ public class OrderControllerTest {
     @LocalServerPort
     int port;
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation();
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
 
     private RequestSpecification spec;
 
@@ -52,7 +53,7 @@ public class OrderControllerTest {
     @Test
     @DisplayName("주문 수정")
     public void updateOrder() {
-        OrderUpdateRequestDto dto = new OrderUpdateRequestDto(1L, "NAVER_PAY");
+        OrderUpdateRequestDto dto = new OrderUpdateRequestDto(3L, "NAVER_PAY");
         given(this.spec)
             .accept(ContentType.JSON)
             .body(dto)
@@ -66,7 +67,7 @@ public class OrderControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 수정 정보")
+                    fieldWithPath("data").type(JsonFieldType.NULL).description("주문 수정 정보")
                 )
             ))
             .when()
@@ -77,7 +78,7 @@ public class OrderControllerTest {
     @Test
     @DisplayName("배송 정보 수정")
     public void updateDelivery() {
-        OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(1L, "김파라", "para@bole.com",
+        OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(3L, "김파라", "para@bole.com",
             "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
             "문앞에 두고 연락주세요", "PAY_COMPLETE", "DELIVERY", "TOSS");
         given(this.spec)
@@ -93,7 +94,7 @@ public class OrderControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 수정 정보")
+                    fieldWithPath("data").type(JsonFieldType.NULL).description("주문 수정 정보")
                 )
             ))
             .when()
@@ -105,7 +106,7 @@ public class OrderControllerTest {
     @DisplayName("주문 목록")
     public void getOrderList() {
         given(this.spec)
-            .param("userId", 1L)
+            .param("userId", 3L)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(document("get-order-list",
@@ -114,13 +115,10 @@ public class OrderControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestFields(
-                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID")
-                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 정보"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
                     fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("상품 아이디"),
                     fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("상품 명"),
                     fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
