@@ -1,0 +1,23 @@
+[source,http,options="nowrap"]
+----
+PATCH /api/v1/order HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:51041
+Content-Length: 403
+
+{
+  "userId" : 3,
+  "userName" : "김파라",
+  "userEmail" : "para@bole.com",
+  "userPhone" : "010-2345-6789",
+  "receiverName" : "김파라",
+  "receiverPhone" : "010-2345-6789",
+  "addressSimple" : "광진구",
+  "addressDetail" : "12-33",
+  "deliveryComment" : "문앞에 두고 연락주세요",
+  "orderState" : "PAY_COMPLETE",
+  "orderInfoState" : "DELIVERY",
+  "payState" : "TOSS"
+}
+----
