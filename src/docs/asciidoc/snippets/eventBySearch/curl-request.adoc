@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:63684/api/v1/event/list?eventType=RAFFLE&eventTitle=%EB%9F%AC%EB%B2%84%EB%8D%95&dateDiv=&fromDateTime=&toDateTime=&eventStatus=' -i -X GET \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json'
+----

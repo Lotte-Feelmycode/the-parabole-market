@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.enumtype;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public enum EventType {
