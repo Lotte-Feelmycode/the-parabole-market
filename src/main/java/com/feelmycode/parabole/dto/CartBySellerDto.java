@@ -8,14 +8,14 @@ public class CartBySellerDto {
 
     private Long sellerId;
     private String storeName;
-    private List<CartItemDto> cartBySellerDtoList;
+    private List<CartItemDto> cartItemDtoList;
     private CouponResponseDto couponDto;
 
     public CartBySellerDto(Long sellerId, String storeName,
-        List<CartItemDto> cartBySellerDtoList, CouponResponseDto couponDto) {
+        List<CartItemDto> cartItemDtoList, CouponResponseDto couponDto) {
         this.sellerId = sellerId;
         this.storeName = storeName;
-        this.cartBySellerDtoList = cartBySellerDtoList;
+        this.cartItemDtoList = cartItemDtoList;
         this.couponDto = couponDto;
     }
 

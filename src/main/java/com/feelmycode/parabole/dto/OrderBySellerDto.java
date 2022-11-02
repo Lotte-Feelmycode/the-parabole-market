@@ -8,14 +8,14 @@ public class OrderBySellerDto {
 
         private Long sellerId;
         private String storeName;
-        private List<OrderInfoResponseDto> orderBySellerDtoList;
+        private List<OrderInfoResponseDto> orderInfoResponseDtos;
         private CouponResponseDto couponDto;
 
         public OrderBySellerDto(Long sellerId, String storeName,
-            List<OrderInfoResponseDto> orderBySellerDtoList, CouponResponseDto couponDto) {
+            List<OrderInfoResponseDto> orderInfoResponseDtos, CouponResponseDto couponDto) {
             this.sellerId = sellerId;
             this.storeName = storeName;
-            this.orderBySellerDtoList = orderBySellerDtoList;
+            this.orderInfoResponseDtos = orderInfoResponseDtos;
             this.couponDto = couponDto;
         }
     }
