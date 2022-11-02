@@ -13,9 +13,20 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByIsDeleted(boolean isDeleted);
+
     List<Event> findAllBySellerAndIsDeleted(Seller seller, boolean isDeleted);
+
     List<Event> findAllBySellerIdOrderByStartAtAsc(Long SellerId);
-    List<Event> findAllByStartAtBetweenAndIsDeleted(LocalDateTime startDateTime, LocalDateTime endDateTime, boolean isDeleted);
-    List<Event> findAllByEndAtBetweenAndIsDeleted(LocalDateTime startDateTime, LocalDateTime endDateTime, boolean isDeleted);
-    List<Event> findAllByTypeAndStatusAndTitleContainingAndIsDeleted(String eventType, Integer eventStauts, String eventTitle, boolean isDeleted);
+
+    List<Event> findAllByStartAtBetweenAndIsDeleted(LocalDateTime startDateTime,
+        LocalDateTime endDateTime, boolean isDeleted);
+
+    List<Event> findAllByEndAtBetweenAndIsDeleted(LocalDateTime startDateTime,
+        LocalDateTime endDateTime, boolean isDeleted);
+
+    List<Event> findAllByTypeInAndStatusInAndIsDeleted(List<String> eventType,
+        List<Integer> eventStauts, boolean isDeleted);
+
+    List<Event> findAllByTypeInAndStatusInAndTitleContainingAndIsDeleted(List<String> eventType,
+        List<Integer> eventStauts, String eventTitle, boolean isDeleted);
 }

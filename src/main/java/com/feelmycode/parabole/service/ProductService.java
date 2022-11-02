@@ -65,21 +65,21 @@ public class ProductService {
         Page<Product> data;
         if(!sellerId.equals(0L)) {
             if (category.equals("")) {
-                data = productRepository.findAllBySellerId(sellerId, pageable);
+                data = productRepository.findAllBySellerIdAndIsDeletedFalse(sellerId, pageable);
             } else {
-                data = productRepository.findAllBySellerIdAndCategory(sellerId, category,
+                data = productRepository.findAllBySellerIdAndCategoryAndIsDeletedFalse(sellerId, category,
                     pageable);
             }
         } else if(!productName.equals("")) {
             if (category.equals("")) {
-                data = productRepository.findAllByNameContaining(productName, pageable);
+                data = productRepository.findAllByNameContainingAndIsDeletedFalse(productName, pageable);
             } else {
-                data = productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
+                data = productRepository.findAllByNameContainingAndCategoryAndIsDeletedFalse(productName, category, pageable);
             }
         } else if(category.equals("")) {
             data = productRepository.findAll(pageable);
         } else {
-            data = productRepository.findAllByCategory(category, pageable);
+            data = productRepository.findAllByCategoryAndIsDeletedFalse(category, pageable);
         }
 
         return data.map(ProductDto::new);

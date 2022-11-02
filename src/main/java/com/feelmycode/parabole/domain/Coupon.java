@@ -1,7 +1,9 @@
 package com.feelmycode.parabole.domain;
 
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
+import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -60,6 +62,14 @@ public class Coupon extends BaseEntity implements Serializable {
     @NotNull
     private LocalDateTime expiresAt;
 
+    @Column(name = "coupon_max_discount_amount")
+    @NotNull
+    private Long maxDiscountAmount;
+
+    @Column(name = "coupon_min_payment_amount")
+    @NotNull
+    private Long minPaymentAmount;
+
     @Column(name = "coupon_details")
     @NotNull
     private String detail;
@@ -76,7 +86,8 @@ public class Coupon extends BaseEntity implements Serializable {
 //    }
 
     public Coupon(String name, Seller seller, CouponType type, Integer discountValue,
-        LocalDateTime validAt, LocalDateTime expiresAt, String detail, Integer cnt) {
+        LocalDateTime validAt, LocalDateTime expiresAt,
+        Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
 
         this.name = name;
         this.seller = seller;
@@ -84,6 +95,8 @@ public class Coupon extends BaseEntity implements Serializable {
         this.discountValue = discountValue;
         this.validAt = validAt;
         this.expiresAt = expiresAt;
+        this.maxDiscountAmount = maxDiscountAmount;
+        this.minPaymentAmount = minPaymentAmount;
         this.detail = detail;
         this.cnt = cnt;
     }
@@ -96,7 +109,7 @@ public class Coupon extends BaseEntity implements Serializable {
     public int getUsedUserCouponCnt() {
         int cnt = 0;
         for (UserCoupon uc : userCoupons) {
-            if(uc.getUseState().equals(CouponUseState.Used)){
+            if (uc.getUseState().equals(CouponUseState.Used)) {
                 cnt++;
             }
         }
@@ -106,7 +119,7 @@ public class Coupon extends BaseEntity implements Serializable {
     public int getNotUsedUserCouponCnt() {
         int cnt = 0;
         for (UserCoupon uc : userCoupons) {
-            if(uc.getUseState().equals(CouponUseState.NotUsed)){
+            if (uc.getUseState().equals(CouponUseState.NotUsed)) {
                 cnt++;
             }
         }
@@ -128,10 +141,18 @@ public class Coupon extends BaseEntity implements Serializable {
     public List<UserCoupon> getNotAssignedUserCouponList() {
         List<UserCoupon> list = new ArrayList<>();
         for (UserCoupon uc : userCoupons) {
-            if(uc.getUser() == null){
+            if (uc.getUser() == null) {
                 list.add(uc);
             }
         }
         return list;
+    }
+
+    public void setCouponForEvent(Integer inputStock) {
+        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setEventEnrolled);
+    }
+
+    public void cancelCouponEvent(Integer inputStock) {
+        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setNotUsed);
     }
 }
