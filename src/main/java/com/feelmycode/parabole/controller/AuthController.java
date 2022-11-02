@@ -3,12 +3,10 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
-import com.feelmycode.parabole.security.model.JwtProperties;
 import com.feelmycode.parabole.security.utils.TokenProvider;
 import com.feelmycode.parabole.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/auth/signin")
-    public ResponseEntity authenticate(@RequestBody UserDto userDTO) {
+    public ResponseEntity<ParaboleResponse> authenticate(@RequestBody UserDto userDTO) {
         User user = userService.getByCredentials(
             userDTO.getEmail(),
             userDTO.getPassword(), passwordEncoder);
@@ -75,12 +73,14 @@ public class AuthController {
                 .phone(user.getPhone())
                 .build();
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.set(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
 
-            return ResponseEntity.ok().headers(headers)
-                .body(ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 로그인 성공",
-                    responseUserDTO));
+//            return ResponseEntity.ok().headers(headers)
+//                .body(ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 로그인 성공",
+//                    responseUserDTO));
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "기본 로그인 성공",
+                responseUserDTO);
         } else {
             return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST, false, "기본 로그인 실패");
         }

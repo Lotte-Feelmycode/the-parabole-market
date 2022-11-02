@@ -1,6 +1,5 @@
 package com.feelmycode.parabole.controller;
 
-import com.feelmycode.parabole.security.model.JwtProperties;
 import com.feelmycode.parabole.security.model.KakaoOauthToken;
 import com.feelmycode.parabole.security.model.NaverOauthToken;
 import com.feelmycode.parabole.service.UserService;
@@ -32,7 +31,7 @@ public class AuthSocialController {
 
         String Front_URL = "http://localhost:3000";
 
-        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+//        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
         httpServletResponse.sendRedirect(Front_URL + "/oauthkakao?token=" + jwtToken);
         return httpServletResponse;
     }
@@ -49,7 +48,7 @@ public class AuthSocialController {
 
         String Front_URL = "http://localhost:3000";
 
-        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+//        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
         httpServletResponse.sendRedirect(Front_URL + "/oauthnaver?token=" + jwtToken);
         return httpServletResponse;
     }
