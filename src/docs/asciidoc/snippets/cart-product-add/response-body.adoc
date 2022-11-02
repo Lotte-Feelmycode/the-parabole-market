@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "장바구니 상품 추가",
+  "data" : null
+}
+----

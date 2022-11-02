@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "사용자의 상세 주문 배송 정보 수정",
+  "data" : null
+}
+----

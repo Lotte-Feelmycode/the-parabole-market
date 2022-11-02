@@ -1,0 +1,64 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Array+`
+|응답 정보
+
+|`+data.[].id+`
+|`+Number+`
+|이벤트 번호
+
+|`+data.[].sellerId+`
+|`+Number+`
+|셀러 번호
+
+|`+data.[].createdBy+`
+|`+String+`
+|이벤트 생성자 유형
+
+|`+data.[].type+`
+|`+String+`
+|이벤트 유형
+
+|`+data.[].title+`
+|`+String+`
+|이벤트 제목
+
+|`+data.[].startAt+`
+|`+String+`
+|이벤트 시작 일시
+
+|`+data.[].endAt+`
+|`+String+`
+|이벤트 종료 일시
+
+|`+data.[].status+`
+|`+Number+`
+|이벤트 진행 상태
+
+|`+data.[].descript+`
+|`+String+`
+|이벤트 상세 설명
+
+|`+data.[].eventImage+`
+|`+Object+`
+|이벤트 이미지 정보
+
+|`+data.[].eventImage.eventBannerImg+`
+|`+String+`
+|이벤트 배너 이미지
+
+|`+data.[].eventImage.eventDetailImg+`
+|`+String+`
+|이벤트 상세 이미지
+
+|===

@@ -1,0 +1,7 @@
+[source,options="nowrap"]
+----
+{
+  "userId" : 3,
+  "orderPayState" : "NAVER_PAY"
+}
+----

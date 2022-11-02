@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "이벤트 취소 성공",
+  "data" : null
+}
+----
