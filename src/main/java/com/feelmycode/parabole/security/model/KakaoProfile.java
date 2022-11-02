@@ -1,8 +1,10 @@
 package com.feelmycode.parabole.security.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class KakaoProfile {
 
     public Long id;
@@ -10,14 +12,16 @@ public class KakaoProfile {
     public Properties properties;
     public KakaoAccount kakao_account;
 
-    @Data
+    @Getter
+    @NoArgsConstructor
     public class Properties { //(1)
         public String nickname;
         public String profile_image; // 이미지 경로 필드1
         public String thumbnail_image;
     }
 
-    @Data
+    @Getter
+    @NoArgsConstructor
     public class KakaoAccount { //(2)
         public Boolean profile_nickname_needs_agreement;
         public Boolean profile_image_needs_agreement;
@@ -28,7 +32,8 @@ public class KakaoProfile {
         public Boolean is_email_verified;
         public String email;
 
-        @Data
+        @Getter
+        @NoArgsConstructor
         public class Profile {
             public String nickname;
             public String thumbnail_image_url;
@@ -36,5 +41,4 @@ public class KakaoProfile {
             public Boolean is_default_image;
         }
     }
-
 }

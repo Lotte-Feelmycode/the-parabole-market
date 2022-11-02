@@ -1,8 +1,10 @@
 package com.feelmycode.parabole.security.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class KakaoOauthToken {
     private String token_type;
     private String access_token;

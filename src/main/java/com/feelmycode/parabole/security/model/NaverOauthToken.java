@@ -1,8 +1,10 @@
 package com.feelmycode.parabole.security.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@NoArgsConstructor
 public class NaverOauthToken {
     private String access_token;
     private String refresh_token;
