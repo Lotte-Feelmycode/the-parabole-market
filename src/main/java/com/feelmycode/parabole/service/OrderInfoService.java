@@ -80,13 +80,12 @@ public class OrderInfoService {
         return changeEntityToDto(getOrderInfoList);
     }
 
+    // TODO: 잘 동작하는지 확인 후 stream으로 선택적으로 데이터 가져올 것
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
 //            .stream()
 //            .filter(state -> state.getState() != -1)
 //            .collect(Collectors.toList());
-        System.out.println("SELLER ORDER INFOS, "+getOrderInfoList.size());
-        getOrderInfoList.forEach(System.out::println);
         return changeEntityToDto(getOrderInfoList);
     }
 
