@@ -4,12 +4,8 @@ import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.security.model.JwtProperties;
-import com.feelmycode.parabole.security.model.KakaoOauthToken;
-import com.feelmycode.parabole.security.model.NaverOauthToken;
 import com.feelmycode.parabole.security.utils.TokenProvider;
 import com.feelmycode.parabole.service.UserService;
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -90,47 +84,5 @@ public class AuthController {
         } else {
             return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST, false, "기본 로그인 실패");
         }
-    }
-
-    @GetMapping("/api/v1/auth/signout")
-    public ResponseEntity logout() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.clear();
-
-        return ResponseEntity.ok().headers(headers)
-            .body(ParaboleResponse.CommonResponse(HttpStatus.OK, true, "로그아웃 성공"));
-    }
-
-    // 프론트에서 인가코드 받아오는 url
-    @GetMapping("/oauth2/code/kakao")
-    public HttpServletResponse getKakaoLogin(@RequestParam(required = false) String code, HttpServletResponse httpServletResponse) throws IOException {
-
-        // 넘어온 인가 코드를 통해 access_token 발급
-        KakaoOauthToken kakaoOauthToken = userService.getAccessTokenKakao(code);
-        // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
-        String jwtToken = userService.saveUserAndGetTokenKakao(kakaoOauthToken.getAccess_token());
-
-        String Front_URL = "http://localhost:3000";
-
-        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-        httpServletResponse.sendRedirect(Front_URL + "/oauthkakao?token=" + jwtToken);
-        return httpServletResponse;
-    }
-
-    @GetMapping("/oauth2/code/naver")
-    public HttpServletResponse getNaverLogin(@RequestParam(required = false) String code,
-        @RequestParam(required = false) String state,
-        HttpServletResponse httpServletResponse) throws IOException {
-
-        // 넘어온 인가 코드를 통해 access_token 발급
-        NaverOauthToken naverOauthToken = userService.getAccessTokenNaver(code, state);
-        // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
-        String jwtToken = userService.saveUserAndGetTokenNaver(naverOauthToken.getAccess_token());
-
-        String Front_URL = "http://localhost:3000";
-
-        httpServletResponse.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-        httpServletResponse.sendRedirect(Front_URL + "/oauthnaver?token=" + jwtToken);
-        return httpServletResponse;
     }
 }
