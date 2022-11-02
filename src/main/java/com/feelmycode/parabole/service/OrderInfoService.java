@@ -130,21 +130,21 @@ public class OrderInfoService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<OrderBySellerDto> orderInfoWithCoupon = new ArrayList<>();
+        List<OrderBySellerDto> orderBySellerDtoList = new ArrayList<>();
 
-        HashSet<Long> orderWithCouponSet = new HashSet<>();
+        HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for (Long sellerId : sellerIdMap.keySet()) {
-            if (orderWithCouponSet.add(sellerId)) {
+            if (checkContainsSellerId.add(sellerId)) {
                 if (couponList.isEmpty()) {
-                    orderInfoWithCoupon.add(
+                    orderBySellerDtoList.add(
                         new OrderBySellerDto(sellerId,
                             sellerService.getSellerBySellerId(sellerId).getStoreName(),
                             getOrderInfoList[sellerIdMap.get(sellerId)],
                             new CouponResponseDto()));
                 }
             } else {
-                orderInfoWithCoupon.add(
+                orderBySellerDtoList.add(
                     new OrderBySellerDto(sellerId,
                         sellerService.getSellerBySellerId(sellerId).getStoreName(),
                         getOrderInfoList[sellerIdMap.get(sellerId)],
@@ -152,7 +152,7 @@ public class OrderInfoService {
             }
         }
 
-        return new OrderResponseDto(order.getId(), cnt, orderInfoWithCoupon);
+        return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);
     }
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {

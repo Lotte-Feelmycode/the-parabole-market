@@ -120,33 +120,33 @@ public class CartItemService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<CartBySellerDto> cartItemWithCoupon = new ArrayList<>();
+        List<CartBySellerDto> cartBySellerDtoList = new ArrayList<>();
 
-        HashSet<Long> cartWithCouponDto = new HashSet<>();
+        HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for(String key : sellerIdMap.keySet()) {
             Long sellerId = Long.parseLong(key.split("\\$")[0]);
             String storeName = key.split("\\$")[1];
-            if(cartWithCouponDto.add(sellerId)) {
+            if(checkContainsSellerId.add(sellerId)) {
                 if(couponList.isEmpty()) {
-                    cartItemWithCoupon.add(
+                    cartBySellerDtoList.add(
                         new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
-                    cartItemWithCoupon.add(
+                    cartBySellerDtoList.add(
                         new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
                 }
             }
         }
         
-        for(CartBySellerDto dto : cartItemWithCoupon){
+        for(CartBySellerDto dto : cartBySellerDtoList){
             if(dto.getCouponDto() == null) {
                 dto.makeNotNullResponseDto();
             }
         }
 
-        return new CartResponseDto(cart.getId(), cnt, cartItemWithCoupon);
+        return new CartResponseDto(cart.getId(), cnt, cartBySellerDtoList);
     }
 
 }
