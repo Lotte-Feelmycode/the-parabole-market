@@ -46,12 +46,6 @@ public class ProductControllerTest {
 
     private RequestSpecification spec;
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private ProductRepository productRepository;
-
     @Before
     public void setUp() {
         RestAssured.port = port;
@@ -255,20 +249,4 @@ public class ProductControllerTest {
             .get("/api/v1/product/list");
     }
 
-    @Test
-    @DisplayName("상품 목록 생성")
-    public void serviceCreateProduct() {
-        // given
-        Long userId = 1L;
-        Product product = new Product(new Seller(1L, "store"), 1, 50L,
-            "국밥", "img.jpg", "순대국밥", 10000L);
-
-        //when
-        Long productId = productService.saveProduct(1L, new ProductDto(product));
-
-        //then
-        Product getProduct = productRepository.findById(productId).orElseThrow();
-        assertThat(productId).isEqualTo(getProduct.getId());
-
-    }
 }
