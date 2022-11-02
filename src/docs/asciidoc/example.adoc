@@ -11,7 +11,7 @@ endif::[]
 
 == Product
 
-== Order
+== 주문
 
 === 주문 리스트
 
@@ -55,7 +55,7 @@ include::{resource-dir}/update-order-delivery/http-response.adoc[]
 
 include::{resource-dir}/update-order-delivery/response-fields.adoc[]
 
-== OrderInfo
+== 주문 상세정보
 
 === 주문 상세정보 생성
 
@@ -99,7 +99,9 @@ include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
 
 include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
 
-== 이벤트 등록
+== 이벤트
+
+=== 이벤트 등록
 
 `*Request*`
 

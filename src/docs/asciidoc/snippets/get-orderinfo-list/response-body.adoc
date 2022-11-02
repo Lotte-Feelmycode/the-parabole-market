@@ -14,7 +14,8 @@
     "productRemain" : 1000,
     "productPrice" : 33000,
     "productDiscountPrice" : 30000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+    "createdAt" : "2022-11-02T02:39:51"
   }, {
     "id" : 2,
     "state" : "BEFORE_PAY",
@@ -26,7 +27,8 @@
     "productRemain" : 500,
     "productPrice" : 24000,
     "productDiscountPrice" : 22000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+    "createdAt" : "2022-11-02T02:39:51"
   }, {
     "id" : 3,
     "state" : "BEFORE_PAY",
@@ -38,7 +40,8 @@
     "productRemain" : 10000,
     "productPrice" : 33000,
     "productDiscountPrice" : 30000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+    "createdAt" : "2022-11-02T02:39:51"
   }, {
     "id" : 4,
     "state" : "BEFORE_PAY",
@@ -50,7 +53,8 @@
     "productRemain" : 2000,
     "productPrice" : 24000,
     "productDiscountPrice" : 22000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+    "createdAt" : "2022-11-02T02:39:51"
   } ]
 }
 ----

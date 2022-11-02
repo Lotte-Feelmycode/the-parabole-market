@@ -112,7 +112,7 @@ public class CartItemService {
         }
 
         for (CartItem item : getCartItems) {
-            cnt += item.getCnt();
+            cnt++;
             Seller seller = item.getProduct().getSeller();
             String key = seller.getId()+"$"+seller.getStoreName();
             getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
@@ -141,7 +141,7 @@ public class CartItemService {
         }
         
         for(CartWithCouponResponseDto dto : cartItemWithCoupon){
-            if(dto.getCouponList() == null) {
+            if(dto.getCouponDto() == null) {
                 dto.makeNotNullResponseDto();
             }
         }

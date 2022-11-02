@@ -101,9 +101,11 @@ public class OrderInfoControllerTest {
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
-                    fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("상품 아이디"),
-                    fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("상품 명"),
-                    fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                    fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                    fieldWithPath("data.cnt").type(JsonFieldType.NUMBER).description("총 주문한 상품의 개수"),
+                    fieldWithPath("data.[].id").type(JsonFieldType.STRING).description("주문 상세정보 ID"),
+                    fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("주문 상태"),
+                    fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
                     fieldWithPath("data.[].userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
                     fieldWithPath("data.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                     fieldWithPath("data.[].productName").type(JsonFieldType.STRING).description("상품 명"),
@@ -111,7 +113,22 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.[].productRemain").type(JsonFieldType.NUMBER).description("상품 재고"),
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격"),
-                    fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지")
+                    fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
+                    fieldWithPath("data.[].createdAt").type(JsonFieldType.STRING).description("주문 생성일자"),
+                    fieldWithPath("data.couponList").type(JsonFieldType.STRING).description("주문 생성일자"),
+                    fieldWithPath("data.couponList.[].createdAt").type(JsonFieldType.STRING).description("주문 생성일자"),
+                    fieldWithPath("data.couponList.[].rateCoupon").type(JsonFieldType.ARRAY).description("할인율 쿠폰 목록"),
+//                    fieldWithPath("data.couponList.[].rateCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름"),
+//                    fieldWithPath("data.couponList.[].rateCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰 발행 스토어 이름"),
+//                    fieldWithPath("data.couponList.[].rateCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(할인율)"),
+//                    fieldWithPath("data.couponList.[].rateCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("할인 퍼센티지"),
+                    fieldWithPath("data.couponList.[].amountCoupon").type(JsonFieldType.ARRAY).description("주문 생성일자")/*,*/
+//                    fieldWithPath("data.couponList.[].amountCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름"),
+//                    fieldWithPath("data.couponList.[].amountCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰 발행 스토어 이름"),
+//                    fieldWithPath("data.couponList.[].amountCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(금액)"),
+//                    fieldWithPath("data.couponList.[].amountCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("할인 금액")
+
+
                 )
             ))
             .when()

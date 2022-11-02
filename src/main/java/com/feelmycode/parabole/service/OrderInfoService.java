@@ -10,6 +10,7 @@ import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.dto.OrderWithCouponResponseDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,10 +82,12 @@ public class OrderInfoService {
     }
 
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
-            .stream()
-            .filter(state -> state.getState() != -1)
-            .collect(Collectors.toList());
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
+//            .stream()
+//            .filter(state -> state.getState() != -1)
+//            .collect(Collectors.toList());
+        System.out.println("SELLER ORDER INFOS, "+getOrderInfoList.size());
+        getOrderInfoList.forEach(System.out::println);
         return changeEntityToDto(getOrderInfoList);
     }
 
@@ -97,6 +101,9 @@ public class OrderInfoService {
 
         Order order = orderService.getOrder(userId);
 
+        if(order == null)
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문 내역이 없습니다.");
+
         List<OrderInfo> orderInfoList = getOrderInfoListByOrderId(order.getId())
             .stream()
             .sorted(Comparator.comparing(OrderInfo::getProductId).reversed())
@@ -106,7 +113,7 @@ public class OrderInfoService {
 
         int idx = 0;
         for (OrderInfo orderInfo : orderInfoList) {
-            cnt += orderInfo.getProductCnt();
+            cnt++;
             Long sellerId = orderInfo.getSellerId();
             if (!sellerIdMap.containsKey(sellerId)) {
                 sellerIdMap.put(sellerId, idx++);
