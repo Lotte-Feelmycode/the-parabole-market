@@ -7,18 +7,19 @@ import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
-import com.feelmycode.parabole.dto.OrderWithCouponResponseDto;
+import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
+import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,11 +80,12 @@ public class OrderInfoService {
         return changeEntityToDto(getOrderInfoList);
     }
 
+    // TODO: 잘 동작하는지 확인 후 stream으로 선택적으로 데이터 가져올 것
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
-            .stream()
-            .filter(state -> state.getState() != -1)
-            .collect(Collectors.toList());
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
+//            .stream()
+//            .filter(state -> state.getState() != -1)
+//            .collect(Collectors.toList());
         return changeEntityToDto(getOrderInfoList);
     }
 
@@ -97,6 +99,9 @@ public class OrderInfoService {
 
         Order order = orderService.getOrder(userId);
 
+        if(order == null)
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문 내역이 없습니다.");
+
         List<OrderInfo> orderInfoList = getOrderInfoListByOrderId(order.getId())
             .stream()
             .sorted(Comparator.comparing(OrderInfo::getProductId).reversed())
@@ -106,7 +111,7 @@ public class OrderInfoService {
 
         int idx = 0;
         for (OrderInfo orderInfo : orderInfoList) {
-            cnt += orderInfo.getProductCnt();
+            cnt++;
             Long sellerId = orderInfo.getSellerId();
             if (!sellerIdMap.containsKey(sellerId)) {
                 sellerIdMap.put(sellerId, idx++);
@@ -125,29 +130,29 @@ public class OrderInfoService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<OrderWithCouponResponseDto> orderInfoWithCoupon = new ArrayList<>();
+        List<OrderBySellerDto> orderBySellerDtoList = new ArrayList<>();
 
-        HashSet<Long> orderWithCouponSet = new HashSet<>();
+        HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for (Long sellerId : sellerIdMap.keySet()) {
-            if (orderWithCouponSet.add(sellerId)) {
+            if (checkContainsSellerId.add(sellerId)) {
                 if (couponList.isEmpty()) {
-                    orderInfoWithCoupon.add(
-                        new OrderWithCouponResponseDto(sellerId,
+                    orderBySellerDtoList.add(
+                        new OrderBySellerDto(sellerId,
                             sellerService.getSellerBySellerId(sellerId).getStoreName(),
                             getOrderInfoList[sellerIdMap.get(sellerId)],
                             new CouponResponseDto()));
                 }
             } else {
-                orderInfoWithCoupon.add(
-                    new OrderWithCouponResponseDto(sellerId,
+                orderBySellerDtoList.add(
+                    new OrderBySellerDto(sellerId,
                         sellerService.getSellerBySellerId(sellerId).getStoreName(),
                         getOrderInfoList[sellerIdMap.get(sellerId)],
                         couponList.get(sellerId)));
             }
         }
 
-        return new OrderResponseDto(order.getId(), cnt, orderInfoWithCoupon);
+        return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);
     }
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {

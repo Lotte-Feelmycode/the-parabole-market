@@ -8,12 +8,12 @@ public class OrderResponseDto {
 
     private Long orderId;
     private Long cnt;
-    List<OrderWithCouponResponseDto> orderWithCoupon;
+    List<OrderBySellerDto> orderBySellerDtoList;
 
-    public OrderResponseDto(Long orderId, Long cnt, List<OrderWithCouponResponseDto> orderWithCoupon) {
+    public OrderResponseDto(Long orderId, Long cnt, List<OrderBySellerDto> orderBySellerDtoList) {
         this.orderId = orderId;
         this.cnt = cnt;
-        this.orderWithCoupon = orderWithCoupon;
+        this.orderBySellerDtoList = orderBySellerDtoList;
     }
 
 }

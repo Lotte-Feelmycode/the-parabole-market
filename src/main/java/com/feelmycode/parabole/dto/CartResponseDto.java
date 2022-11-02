@@ -8,11 +8,11 @@ public class CartResponseDto {
 
     private Long cartId;
     private Long cnt;
-    private List<CartWithCouponResponseDto> cartWithCoupon;
+    private List<CartBySellerDto> cartBySellerDtoList;
 
-    public CartResponseDto(Long cartId, Long cnt, List<CartWithCouponResponseDto> cartWithCoupon) {
+    public CartResponseDto(Long cartId, Long cnt, List<CartBySellerDto> cartBySellerDtoList) {
         this.cartId = cartId;
         this.cnt = cnt;
-        this.cartWithCoupon = cartWithCoupon;
+        this.cartBySellerDtoList = cartBySellerDtoList;
     }
 }

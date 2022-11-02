@@ -1,0 +1,18 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 400 Bad Request
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Wed, 02 Nov 2022 00:31:14 GMT
+Connection: close
+Content-Length: 109
+
+{
+  "success" : false,
+  "message" : "결제할 상품을 추가할 수 없습니다.",
+  "data" : null
+}
+----

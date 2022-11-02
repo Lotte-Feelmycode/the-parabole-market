@@ -11,26 +11,97 @@ endif::[]
 
 == Product
 
-=== 상품 목록
+== 주문
+
+=== 주문 리스트
+
 `*Request*`
 
-include::{snippets}/product-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/product-list/request-parameters.adoc[]
+include::{resource-dir}/get-order-list/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/product-list/http-response.adoc[]
+include::{resource-dir}/get-order-list/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/product-list/response-fields.adoc[]
+include::{resource-dir}/get-order-list/response-fields.adoc[]
 
+=== 주문 수정
 
-'''
-== 이벤트 등록
+`*Request*`
+
+include::{resource-dir}/update-order/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order/response-fields.adoc[]
+
+=== 주문 배달 수정
+
+`*Request*`
+
+include::{resource-dir}/update-order-delivery/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order-delivery/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order-delivery/response-fields.adoc[]
+
+== 주문 상세정보
+
+=== 주문 상세정보 생성
+
+`*Request*`
+
+include::{resource-dir}/create-orderinfo/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/create-orderinfo/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/create-orderinfo/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+== 이벤트
+
+=== 이벤트 등록
 
 `*Request*`
 
@@ -119,81 +190,4 @@ include::{resource-dir}/event-delete/http-response.adoc[]
 
 include::{resource-dir}/event-delete/response-fields.adoc[]
 
----
 
-=== 상품 추가
-
-== Cart
-
-=== 장바구니 목록 조회
-
-`*Request*`
-
-include::{snippets}/cart-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/cart-list/request-parameters.adoc[]
-
-`*Response*`
-
-include::{snippets}/cart-list/http-response.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-list/response-fields.adoc[]
-
-
-=== 장바구니 상품 추가
-
-`*Request*`
-
-include::{snippets}/cart-product-add/http-request.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-product-add/request-fields.adoc[]
-
-`*Response*`
-
-include::{snippets}/cart-product-add/http-response.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-product-add/response-fields.adoc[]
-
-=== 장바구니 상품 수량 수정
-
-`*Request*`
-
-include::{snippets}/cart-update-cnt/http-request.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-update-cnt/request-fields.adoc[]
-
-`*Response*`
-
-include::{snippets}/cart-update-cnt/http-response.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-update-cnt/response-fields.adoc[]
-
-=== 장바구니 상품 삭제
-
-`*Request*`
-
-include::{snippets}/cart-delete/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/cart-delete/request-parameters.adoc[]
-
-`*Response*`
-
-include::{snippets}/cart-delete/http-response.adoc[]
-
-`*Fields*`
-
-include::{snippets}/cart-delete/response-fields.adoc[]

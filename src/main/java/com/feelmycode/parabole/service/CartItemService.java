@@ -9,7 +9,7 @@ import com.feelmycode.parabole.dto.CartResponseDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
-import com.feelmycode.parabole.dto.CartWithCouponResponseDto;
+import com.feelmycode.parabole.dto.CartBySellerDto;
 import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
@@ -112,7 +112,7 @@ public class CartItemService {
         }
 
         for (CartItem item : getCartItems) {
-            cnt += item.getCnt();
+            cnt++;
             Seller seller = item.getProduct().getSeller();
             String key = seller.getId()+"$"+seller.getStoreName();
             getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
@@ -120,33 +120,33 @@ public class CartItemService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<CartWithCouponResponseDto> cartItemWithCoupon = new ArrayList<>();
+        List<CartBySellerDto> cartBySellerDtoList = new ArrayList<>();
 
-        HashSet<Long> cartWithCouponDto = new HashSet<>();
+        HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for(String key : sellerIdMap.keySet()) {
             Long sellerId = Long.parseLong(key.split("\\$")[0]);
             String storeName = key.split("\\$")[1];
-            if(cartWithCouponDto.add(sellerId)) {
+            if(checkContainsSellerId.add(sellerId)) {
                 if(couponList.isEmpty()) {
-                    cartItemWithCoupon.add(
-                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
+                    cartBySellerDtoList.add(
+                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
-                    cartItemWithCoupon.add(
-                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
+                    cartBySellerDtoList.add(
+                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
                 }
             }
         }
         
-        for(CartWithCouponResponseDto dto : cartItemWithCoupon){
-            if(dto.getCouponList() == null) {
+        for(CartBySellerDto dto : cartBySellerDtoList){
+            if(dto.getCouponDto() == null) {
                 dto.makeNotNullResponseDto();
             }
         }
 
-        return new CartResponseDto(cart.getId(), cnt, cartItemWithCoupon);
+        return new CartResponseDto(cart.getId(), cnt, cartBySellerDtoList);
     }
 
 }

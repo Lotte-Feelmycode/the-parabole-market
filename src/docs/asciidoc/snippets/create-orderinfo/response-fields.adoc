@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Null+`
+|주문 완료 후 데이터
+
+|===
