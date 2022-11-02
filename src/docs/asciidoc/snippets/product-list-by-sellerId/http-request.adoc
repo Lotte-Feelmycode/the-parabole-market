@@ -1,8 +1,8 @@
 [source,http,options="nowrap"]
 ----
-GET /api/v1/product/list?storeName=&category=&productName= HTTP/1.1
+GET /api/v1/product/seller/list?userId=1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:52344
+Host: parabole.com:55151
 
 ----

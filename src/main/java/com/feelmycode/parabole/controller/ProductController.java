@@ -67,7 +67,6 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody ProductDto product) {
         productService.saveProduct(userId, product);
-        
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 

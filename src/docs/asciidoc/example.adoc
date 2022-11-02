@@ -11,23 +11,49 @@ endif::[]
 
 == Product
 
-=== 상품 목록
+=== 상품 생성
+
 `*Request*`
 
-include::{snippets}/product-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{snippets}/product-list/request-parameters.adoc[]
+include::{resource-dir}/create-product/http-request.adoc[]
 
 `*Response*`
 
-include::{snippets}/product-list/http-response.adoc[]
+include::{resource-dir}/create-product/http-response.adoc[]
 
 `*Fields*`
 
-include::{snippets}/product-list/response-fields.adoc[]
+include::{resource-dir}/create-product/response-fields.adoc[]
 
+=== 상품 목록 조회
+`*Request*`
+
+include::{resource-dir}/product-list/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/product-list/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/product-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/product-list/response-fields.adoc[]
+
+=== 상품 목록 조회(판매자)
+`*Request*`
+
+include::{resource-dir}/product-list-by-sellerId/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/product-list-by-sellerId/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/product-list-by-sellerId/response-fields.adoc[]
 
 '''
 == 이벤트 등록
@@ -93,6 +119,7 @@ include::{resource-dir}/event-all/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/event-search/http-request.adoc[]
+
 `*Parameters*`
 
 include::{resource-dir}/event-search/request-parameters.adoc[]

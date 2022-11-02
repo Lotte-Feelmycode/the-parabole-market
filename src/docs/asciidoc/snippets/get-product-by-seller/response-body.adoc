@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : false,
+  "message" : "Required request parameter 'userId' for method parameter type Long is not present",
+  "data" : null
+}
+----
