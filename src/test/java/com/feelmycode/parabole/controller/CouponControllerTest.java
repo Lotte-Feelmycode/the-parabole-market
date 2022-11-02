@@ -17,7 +17,6 @@ import com.feelmycode.parabole.dto.CouponAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.global.error.exception.NotSellerException;
 import com.feelmycode.parabole.repository.CouponRepository;
-import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.security.TokenProvider;
 import com.feelmycode.parabole.service.CouponService;
@@ -63,8 +62,6 @@ public class CouponControllerTest {
     private CouponService couponService;
     @Autowired
     private CouponRepository couponRepository;
-    @Autowired
-    private UserCouponRepository userCouponRepository;
     @Autowired
     private UserRepository userRepository;
 
