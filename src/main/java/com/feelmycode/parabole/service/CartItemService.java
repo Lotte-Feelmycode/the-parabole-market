@@ -9,7 +9,7 @@ import com.feelmycode.parabole.dto.CartResponseDto;
 import com.feelmycode.parabole.dto.CartItemDeleteRequestDto;
 import com.feelmycode.parabole.dto.CartItemDto;
 import com.feelmycode.parabole.dto.CartItemUpdateRequestDto;
-import com.feelmycode.parabole.dto.CartWithCouponResponseDto;
+import com.feelmycode.parabole.dto.CartBySellerDto;
 import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
@@ -120,7 +120,7 @@ public class CartItemService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<CartWithCouponResponseDto> cartItemWithCoupon = new ArrayList<>();
+        List<CartBySellerDto> cartItemWithCoupon = new ArrayList<>();
 
         HashSet<Long> cartWithCouponDto = new HashSet<>();
 
@@ -130,17 +130,17 @@ public class CartItemService {
             if(cartWithCouponDto.add(sellerId)) {
                 if(couponList.isEmpty()) {
                     cartItemWithCoupon.add(
-                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
+                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             new CouponResponseDto()));
                 } else {
                     cartItemWithCoupon.add(
-                        new CartWithCouponResponseDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
+                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
                             couponList.get(sellerId)));
                 }
             }
         }
         
-        for(CartWithCouponResponseDto dto : cartItemWithCoupon){
+        for(CartBySellerDto dto : cartItemWithCoupon){
             if(dto.getCouponDto() == null) {
                 dto.makeNotNullResponseDto();
             }

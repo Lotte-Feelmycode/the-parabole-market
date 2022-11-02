@@ -7,7 +7,7 @@ import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
-import com.feelmycode.parabole.dto.OrderWithCouponResponseDto;
+import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -132,7 +131,7 @@ public class OrderInfoService {
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
 
-        List<OrderWithCouponResponseDto> orderInfoWithCoupon = new ArrayList<>();
+        List<OrderBySellerDto> orderInfoWithCoupon = new ArrayList<>();
 
         HashSet<Long> orderWithCouponSet = new HashSet<>();
 
@@ -140,14 +139,14 @@ public class OrderInfoService {
             if (orderWithCouponSet.add(sellerId)) {
                 if (couponList.isEmpty()) {
                     orderInfoWithCoupon.add(
-                        new OrderWithCouponResponseDto(sellerId,
+                        new OrderBySellerDto(sellerId,
                             sellerService.getSellerBySellerId(sellerId).getStoreName(),
                             getOrderInfoList[sellerIdMap.get(sellerId)],
                             new CouponResponseDto()));
                 }
             } else {
                 orderInfoWithCoupon.add(
-                    new OrderWithCouponResponseDto(sellerId,
+                    new OrderBySellerDto(sellerId,
                         sellerService.getSellerBySellerId(sellerId).getStoreName(),
                         getOrderInfoList[sellerIdMap.get(sellerId)],
                         couponList.get(sellerId)));

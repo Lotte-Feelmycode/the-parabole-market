@@ -8,9 +8,9 @@ public class CartResponseDto {
 
     private Long cartId;
     private Long cnt;
-    private List<CartWithCouponResponseDto> cartWithCoupon;
+    private List<CartBySellerDto> cartWithCoupon;
 
-    public CartResponseDto(Long cartId, Long cnt, List<CartWithCouponResponseDto> cartWithCoupon) {
+    public CartResponseDto(Long cartId, Long cnt, List<CartBySellerDto> cartWithCoupon) {
         this.cartId = cartId;
         this.cnt = cnt;
         this.cartWithCoupon = cartWithCoupon;
