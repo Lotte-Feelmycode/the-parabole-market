@@ -19,14 +19,17 @@ import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -54,7 +57,8 @@ public class OrderControllerTest {
     @DisplayName("주문 수정")
     public void updateOrder() {
         OrderUpdateRequestDto dto = new OrderUpdateRequestDto(3L, "NAVER_PAY");
-        given(this.spec)
+
+        Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(dto)
             .contentType(ContentType.JSON)
@@ -73,6 +77,9 @@ public class OrderControllerTest {
             .when()
             .port(port)
             .post("/api/v1/order");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
@@ -81,7 +88,8 @@ public class OrderControllerTest {
         OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(3L, "김파라", "para@bole.com",
             "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
             "문앞에 두고 연락주세요", "PAY_COMPLETE", "DELIVERY", "TOSS");
-        given(this.spec)
+
+        Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(dto)
             .contentType(ContentType.JSON)
@@ -100,12 +108,15 @@ public class OrderControllerTest {
             .when()
             .port(port)
             .patch("/api/v1/order");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("주문 목록")
     public void getOrderList() {
-        given(this.spec)
+        Response resp = given(this.spec)
             .param("userId", 3L)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -135,6 +146,9 @@ public class OrderControllerTest {
             .when()
             .port(port)
             .get("/api/v1/order");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
 }

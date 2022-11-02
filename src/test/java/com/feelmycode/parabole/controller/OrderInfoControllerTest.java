@@ -20,16 +20,19 @@ import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -63,7 +66,7 @@ public class OrderInfoControllerTest {
         orderInfoDto.add(dto);
         OrderInfoListDto list = new OrderInfoListDto(1L, orderInfoDto);
 
-        given(this.spec)
+        Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(list)
             .contentType(ContentType.JSON)
@@ -82,12 +85,15 @@ public class OrderInfoControllerTest {
             .when()
             .port(port)
             .post("/api/v1/orderinfo");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("상세 주문 목록")
     public void getOrderInfoList() {
-        given(this.spec)
+        Response resp = given(this.spec)
             .param("userId", 1L)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -116,13 +122,14 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
                     fieldWithPath("data.[].createdAt").type(JsonFieldType.STRING).description("주문 생성일자"),
                     fieldWithPath("data.couponList").type(JsonFieldType.STRING).description("주문 생성일자"),
-                    fieldWithPath("data.couponList.[].createdAt").type(JsonFieldType.STRING).description("주문 생성일자"),
-                    fieldWithPath("data.couponList.[].rateCoupon").type(JsonFieldType.ARRAY).description("할인율 쿠폰 목록"),
+                    fieldWithPath("data.couponList.[].createdAt").type(JsonFieldType.STRING).description("주문 생성일자")/*,*/
+                    // coupon정보가 없을 때 안읽힘
+//                    fieldWithPath("data.couponList.[].rateCoupon").type(JsonFieldType.ARRAY).description("할인율 쿠폰 목록"),
 //                    fieldWithPath("data.couponList.[].rateCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름"),
 //                    fieldWithPath("data.couponList.[].rateCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰 발행 스토어 이름"),
 //                    fieldWithPath("data.couponList.[].rateCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(할인율)"),
 //                    fieldWithPath("data.couponList.[].rateCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("할인 퍼센티지"),
-                    fieldWithPath("data.couponList.[].amountCoupon").type(JsonFieldType.ARRAY).description("주문 생성일자")/*,*/
+//                    fieldWithPath("data.couponList.[].amountCoupon").type(JsonFieldType.ARRAY).description("주문 생성일자")/*,*/
 //                    fieldWithPath("data.couponList.[].amountCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름"),
 //                    fieldWithPath("data.couponList.[].amountCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰 발행 스토어 이름"),
 //                    fieldWithPath("data.couponList.[].amountCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(금액)"),
@@ -134,13 +141,17 @@ public class OrderInfoControllerTest {
             .when()
             .port(port)
             .get("/api/v1/orderinfo/seller");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("상세 주문 수정")
     public void updateOrderInfo() {
         OrderInfoRequestDto dto = new OrderInfoRequestDto(3L, 1L, "BEFORE_PAY");
-        given(this.spec)
+
+        Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(dto)
             .contentType(ContentType.JSON)
@@ -159,6 +170,9 @@ public class OrderInfoControllerTest {
             .when()
             .port(port)
             .patch("/api/v1/orderinfo");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
 }
