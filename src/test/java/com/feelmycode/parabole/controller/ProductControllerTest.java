@@ -56,7 +56,7 @@ public class ProductControllerTest {
     @Test
     @DisplayName("판매자의 상품 리스트 가져오기")
     public void getProductBySellerId() {
-        given(this.spec)
+        Response resp = given(this.spec)
             .param("productId", "1")
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -92,12 +92,15 @@ public class ProductControllerTest {
             .when()
             .port(port)
             .get("/api/v1/product/seller/list");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("상품 정보 가져오기")
     public void getProduct() {
-        given(this.spec)
+        Response resp = given(this.spec)
             .param("productId", "1")
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -139,14 +142,15 @@ public class ProductControllerTest {
             .when()
             .port(port)
             .get("/api/v1/product");
-        ;
 
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("상품 생성")
     public void createProduct() {
-        given(this.spec)
+        Response resp = given(this.spec)
             .param("userId", "1")
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
@@ -176,12 +180,14 @@ public class ProductControllerTest {
             .when()
             .port(port)
             .post("/api/v1/product");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("상품 목록 조회")
     public void productList() {
-
         Response resp = given(this.spec)
             .param("storeName", "")
             .param("category", "")
@@ -275,6 +281,9 @@ public class ProductControllerTest {
             .when()
             .port(port)
             .get("/api/v1/product/list");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
 }
