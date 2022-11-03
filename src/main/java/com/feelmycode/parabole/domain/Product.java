@@ -153,4 +153,15 @@ public class Product extends BaseEntity {
         this.productDetailList = productDetailList;
     }
 
+    public Product(String name, Long remain, Long price, String category) {
+        this.name = name;
+        this.remains = remain;
+        this.price = price;
+        this.category = category;
+    }
+
+    public Product(Long id) {
+        this.id = id;
+    }
+
 }

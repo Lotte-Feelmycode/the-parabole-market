@@ -11,12 +11,16 @@ endif::[]
 
 == Product
 
-=== 상품 목록
-`*Request*`
+== 주문
+
 
 include::{resource-dir}/product-list/http-request.adoc[]
+=======
+=== 주문 리스트
 
-`*Parameters*`
+
+`*Request*`
+
 
 include::{resource-dir}/product-list/request-parameters.adoc[]
 
@@ -28,9 +32,92 @@ include::{resource-dir}/product-list/http-response.adoc[]
 
 include::{resource-dir}/product-list/response-fields.adoc[]
 
+include::{resource-dir}/get-order-list/http-request.adoc[]
 
-'''
-== 이벤트 등록
+`*Response*`
+
+include::{resource-dir}/get-order-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-order-list/response-fields.adoc[]
+
+
+=== 주문 수정
+
+`*Request*`
+
+include::{resource-dir}/update-order/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order/response-fields.adoc[]
+
+=== 주문 배달 수정
+
+`*Request*`
+
+include::{resource-dir}/update-order-delivery/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order-delivery/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order-delivery/response-fields.adoc[]
+
+== 주문 상세정보
+
+=== 주문 상세정보 생성
+
+`*Request*`
+
+include::{resource-dir}/create-orderinfo/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/create-orderinfo/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/create-orderinfo/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+== 이벤트
+
+=== 이벤트 등록
 
 `*Request*`
 
@@ -42,14 +129,47 @@ include::{resource-dir}/event-create/http-response.adoc[]
 
 `*Fields*`
 
+
+include::{resource-dir}/event-delete/response-fields.adoc[]
+
+---
+
+
+
 include::{resource-dir}/event-create/response-fields.adoc[]
 
 == 이벤트 조회
 
 === 이벤트 ID로 단건 조회
 
+
+=== 이벤트 응모
 `*Request*`
 
+
+include::{resource-dir}/eventparticipant/curl-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/eventparticipant/request-body.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/eventparticipant/http-response.adoc[]
+
+
+`*Fields*`
+
+include::{resource-dir}/eventparticipant/response-fields.adoc[]
+
+---
+
+=== 이벤트 응모 체크
+
+`*Request*`
+
+include::{resource-dir}/eventparticipant-check/http-request.adoc[]
+=======
 include::{resource-dir}/event-id/http-request.adoc[]
 
 `*Response*`
@@ -70,8 +190,26 @@ include::{resource-dir}/event-sellerId/http-request.adoc[]
 
 include::{resource-dir}/event-sellerId/http-response.adoc[]
 
+
+`*Parameters*`
+
+
+include::{resource-dir}/eventparticipant-check/request-body.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/eventparticipant-check/response-body.adoc[]
+
 `*Fields*`
 
+include::{resource-dir}/eventparticipant-check/response-fields.adoc[]
+
+=== 유저 이벤트 응모 리스트
+
+`*Request*`
+
+include::{resource-dir}/user-eventparticipant/http-request.adoc[]
+=======
 include::{resource-dir}/event-sellerId/response-fields.adoc[]
 
 === 이벤트 전체 조회
@@ -97,78 +235,9 @@ include::{resource-dir}/event-search/http-request.adoc[]
 
 include::{resource-dir}/event-search/request-parameters.adoc[]
 
-`*Response*`
-
-include::{resource-dir}/event-search/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/event-search/response-fields.adoc[]
-
-== 이벤트 삭제
-
-`*Request*`
-
-include::{resource-dir}/event-delete/http-request.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/event-delete/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/event-delete/response-fields.adoc[]
-
----
-
-
-== EventParticipant
-
-=== 이벤트 응모
-`*Request*`
-
-include::{resource-dir}/eventparticipant/curl-request.adoc[]
-
-`*Parameters*`
-
-include::{resource-dir}/eventparticipant/request-body.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/eventparticipant/http-response.adoc[]
-
-
-`*Fields*`
-
-include::{resource-dir}/eventparticipant/response-fields.adoc[]
-
----
-
-=== 이벤트 응모 체크
-
-`*Request*`
-
-include::{resource-dir}/eventparticipant-check/http-request.adoc[]
-
-`*Parameters*`
-
-include::{resource-dir}/eventparticipant-check/request-body.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/eventparticipant-check/response-body.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/eventparticipant-check/response-fields.adoc[]
-
-=== 유저 이벤트 응모 리스트
-
-`*Request*`
-
-include::{resource-dir}/user-eventparticipant/http-request.adoc[]
 
 `*response*`
+
 
 include::{resource-dir}/user-eventparticipant/http-response.adoc[]
 
@@ -189,4 +258,26 @@ include::{resource-dir}/seller-eventparticipant/http-response.adoc[]
 `*Fields*`
 
 include::{resource-dir}/seller-eventparticipant/response-fields.adoc[]
+=======
+include::{resource-dir}/event-search/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/event-search/response-fields.adoc[]
+
+== 이벤트 삭제
+
+`*Request*`
+
+include::{resource-dir}/event-delete/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/event-delete/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/event-delete/response-fields.adoc[]
+
+
 

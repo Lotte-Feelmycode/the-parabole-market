@@ -1,0 +1,10 @@
+[source,options="nowrap"]
+----
+{
+  "userId" : 1,
+  "orderInfoDto" : [ {
+    "productId" : 1,
+    "productCnt" : 1
+  } ]
+}
+----

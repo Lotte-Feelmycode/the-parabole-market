@@ -4,18 +4,18 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class CartWithCouponResponseDto {
+public class CartBySellerDto {
 
     private Long sellerId;
     private String storeName;
-    private List<CartItemDto> getItemList;
+    private List<CartItemDto> cartItemDtoList;
     private CouponResponseDto couponDto;
 
-    public CartWithCouponResponseDto(Long sellerId, String storeName,
-        List<CartItemDto> getItemList,CouponResponseDto couponDto) {
+    public CartBySellerDto(Long sellerId, String storeName,
+        List<CartItemDto> cartItemDtoList, CouponResponseDto couponDto) {
         this.sellerId = sellerId;
         this.storeName = storeName;
-        this.getItemList = getItemList;
+        this.cartItemDtoList = cartItemDtoList;
         this.couponDto = couponDto;
     }
 
