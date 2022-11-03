@@ -1,0 +1,7 @@
+[source,options="nowrap"]
+----
+{
+  "eventId" : 2,
+  "userId" : 4
+}
+----

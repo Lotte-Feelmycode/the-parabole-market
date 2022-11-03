@@ -1,0 +1,8 @@
+[source,bash]
+----
+$ echo '{
+  "eventId" : 2,
+  "userId" : 4
+}' | http POST 'http://parabole.com:59768/api/v1/event/participant/check' \
+    'Content-Type:application/json'
+----

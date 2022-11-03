@@ -1,0 +1,4 @@
+[source,options="nowrap"]
+----
+{"success":true,"message":"2번 이벤트에 이미 응모하였습니다","data":false}
+----
