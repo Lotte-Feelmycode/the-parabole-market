@@ -114,6 +114,10 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
+    public UserCoupon getUserCouponBySerialNo(String serialNo) {
+        return userCouponRepository.findBySerialNo(serialNo);
+    }
+
     public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
         return coupon.getUserCoupons();

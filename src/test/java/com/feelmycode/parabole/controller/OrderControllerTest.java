@@ -6,15 +6,12 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
-import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
+import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -56,7 +53,7 @@ public class OrderControllerTest {
     @Test
     @DisplayName("주문 수정")
     public void updateOrder() {
-        OrderUpdateRequestDto dto = new OrderUpdateRequestDto(3L, "NAVER_PAY");
+        OrderRequestDto dto = new OrderRequestDto(3L, "NAVER_PAY");
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
