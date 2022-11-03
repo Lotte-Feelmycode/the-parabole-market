@@ -6,33 +6,33 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 02 Nov 2022 07:33:18 GMT
+Date: Thu, 03 Nov 2022 07:54:36 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1025
+Content-Length: 1026
 
 {
   "success" : true,
   "message" : "상품 상세 정보",
   "data" : {
     "product" : {
-      "productId" : 1,
+      "productId" : 2,
       "productName" : "한우국밥",
       "sellerId" : 2,
       "storeName" : "u4-s2's store",
       "productStatus" : 1,
-      "productRemains" : 960,
+      "productRemains" : 1000,
       "productPrice" : 10000,
       "productCategory" : "국밥",
       "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "productCreatedAt" : "2022-10-06T16:52:06",
-      "productUpdatedAt" : "2022-10-31T18:07:01",
+      "productCreatedAt" : "2022-11-03T20:10:18",
+      "productUpdatedAt" : "2022-11-03T20:10:18",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     },
     "productDetail" : [ {
-      "productDetailId" : 1,
-      "productId" : 1,
+      "productDetailId" : 3,
+      "productId" : 2,
       "img" : "https://gi.esmplus.com/kgcbrand1/0329_%EC%8B%A0%EA%B7%9C%EB%93%B1%EB%A1%9D%EC%83%81%ED%92%88/100%ED%91%B8%EB%93%9C/kj_213_01.jpg",
       "imgCaption" : "한우국밥 상세이미지"
     } ],

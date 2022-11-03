@@ -16,6 +16,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.ProductRepository;
 import com.feelmycode.parabole.service.ProductService;
 import io.restassured.RestAssured;
@@ -42,13 +43,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ProductControllerTest {
 
-    String outputDirectory = "./src/docs/asciidoc/snippets";
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private ProductRepository productRepository;
 
     @LocalServerPort
     int port;
 
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
 
     private RequestSpecification spec;
 
@@ -61,38 +65,61 @@ public class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("판매자의 상품 리스트 가져오기")
-    public void getProductBySellerId() {
+    @DisplayName("상품 목록 조회(판매자)")
+    public void productListBySellerId() {
         Response resp = given(this.spec)
-            .param("productId", "1")
+            .param("userId", 1)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
-            .filter(document("get-product-by-seller",
-                preprocessRequest(modifyUris()
-                        .scheme("https")
-                        .host("parabole.com"),
-                    prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.OBJECT).description("반환하는 데이터 정보"),
-                    fieldWithPath("data.content").type(JsonFieldType.STRING).description("상품 정보"),
-                    fieldWithPath("data.content.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
-                    fieldWithPath("data.content.productName").type(JsonFieldType.STRING).description("상품 명"),
-                    fieldWithPath("data.content.sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
-                    fieldWithPath("data.content.storeName").type(JsonFieldType.STRING).description("판매자의 상호 이름"),
-                    fieldWithPath("data.content.productStatus").type(JsonFieldType.NUMBER).description("상품의 상태"),
-                    fieldWithPath("data.content.productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
-                    fieldWithPath("data.content.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
-                    fieldWithPath("data.content.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
-                    fieldWithPath("data.content.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
-                    fieldWithPath("data.content.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자"),
-                    fieldWithPath("data.content.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자"),
-                    fieldWithPath("data.content.productDeletedAt").type(JsonFieldType.STRING).description("상품의 삭제 일자"),
-                    fieldWithPath("data.content.productIsDeleted").type(JsonFieldType.STRING).description("상품의 삭제 여부")
+            .filter(document("product-list-by-sellerId",
+                    preprocessRequest(modifyUris()
+                            .scheme("https")
+                            .host("parabole.com"),
+                        prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 정보"),
+                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("상품 정보"),
+                        fieldWithPath("data.content.[].productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
+                        fieldWithPath("data.content.[].productName").type(JsonFieldType.STRING).description("상품 명"),
+                        fieldWithPath("data.content.[].sellerId").type(JsonFieldType.NUMBER).description("셀러 아이디"),
+                        fieldWithPath("data.content.[].storeName").type(JsonFieldType.STRING).description("셀러 스토어 이름"),
+                        fieldWithPath("data.content.[].productStatus").type(JsonFieldType.NUMBER).description("상품 상태"),
+                        fieldWithPath("data.content.[].productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
+                        fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
+                        fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
+                        fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
+                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자"),
+                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자"),
+                        fieldWithPath("data.content.[].productDeletedAt").type(JsonFieldType.NULL).description("삭제일자"),
+                        fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
+                        fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
+                        fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
+                        fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 여부"),
+                        fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 처리 여부"),
+                        fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 처리 여부"),
+                        fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
+                        fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지"),
+                        fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("페이지당 갯수"),
+                        fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징 처리 여부"),
+                        fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 처리 여부"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("총 항목 수"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지당 항목 수"),
+                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지"),
+                        fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
+                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 여부"),
+                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬처리여부"),
+                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬처리여부"),
+                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("총 개수"),
+                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("데이터 유무 여부")
+                    )
                 )
-            ))
+            )
             .when()
             .port(port)
             .get("/api/v1/product/seller/list");
@@ -105,7 +132,7 @@ public class ProductControllerTest {
     @DisplayName("상품 정보 가져오기")
     public void getProduct() {
         Response resp = given(this.spec)
-            .param("productId", "1")
+            .param("productId", 2)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(document("get-product",
@@ -149,11 +176,6 @@ public class ProductControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private ProductRepository productRepository;
-
     /*
     TODO: 상품생성하는 코드에서 500에러 발생.
           parameter로 userId를 받고 requestBody를 받는데 두 가지가 공존할 수 없는 문제.
@@ -165,7 +187,6 @@ public class ProductControllerTest {
             new Seller(1L, "TEST"), "테스트", 1, 30L, 500L, "테스트",
 "img.jpg", new ArrayList<>()));
         Long productId = productService.saveProduct(1L, p);
-        productRepository.deleteById(productId);
 
         Response resp = given(this.spec)
             .body(p)
@@ -205,13 +226,15 @@ public class ProductControllerTest {
             .post("/api/v1/product");
 
         // Then
+        productRepository.deleteById(productId);
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
     }
 
     @Test
-    @DisplayName("상품 목록 조회")
+    @DisplayName("상품 목록 검색 및 조회")
     public void productList() {
         Response resp = given(this.spec)
+            .param("sellerId", 1)
             .param("storeName", "")
             .param("category", "")
             .param("productName", "")
@@ -275,70 +298,6 @@ public class ProductControllerTest {
             .when()
             .port(port)
             .get("/api/v1/product/list");
-
-        // Then
-        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-    }
-
-    @Test
-    @DisplayName("상품 목록 조회")
-    public void productListBySellerId() {
-        Response resp = given(this.spec)
-            .param("userId", 1)
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .filter(document("product-list-by-sellerId",
-                    preprocessRequest(modifyUris()
-                            .scheme("https")
-                            .host("parabole.com"),
-                        prettyPrint()),
-                    preprocessResponse(prettyPrint()),
-                    responseFields(
-                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                        fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 정보"),
-                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("상품 정보"),
-                        fieldWithPath("data.content.[].productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
-                        fieldWithPath("data.content.[].productName").type(JsonFieldType.STRING).description("상품 명"),
-                        fieldWithPath("data.content.[].sellerId").type(JsonFieldType.NUMBER).description("셀러 아이디"),
-                        fieldWithPath("data.content.[].storeName").type(JsonFieldType.STRING).description("셀러 스토어 이름"),
-                        fieldWithPath("data.content.[].productStatus").type(JsonFieldType.NUMBER).description("상품 상태"),
-                        fieldWithPath("data.content.[].productRemains").type(JsonFieldType.NUMBER).description("상품 재고"),
-                        fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
-                        fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
-                        fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
-                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자"),
-                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자"),
-                        fieldWithPath("data.content.[].productDeletedAt").type(JsonFieldType.NULL).description("삭제일자"),
-                        fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
-                        fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
-                        fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
-                        fieldWithPath("data.pageable.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 여부"),
-                        fieldWithPath("data.pageable.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 처리 여부"),
-                        fieldWithPath("data.pageable.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬 처리 여부"),
-                        fieldWithPath("data.pageable.offset").type(JsonFieldType.NUMBER).description("offset"),
-                        fieldWithPath("data.pageable.pageNumber").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                        fieldWithPath("data.pageable.pageSize").type(JsonFieldType.NUMBER).description("페이지당 갯수"),
-                        fieldWithPath("data.pageable.unpaged").type(JsonFieldType.BOOLEAN).description("페이징 처리 여부"),
-                        fieldWithPath("data.pageable.paged").type(JsonFieldType.BOOLEAN).description("페이징 처리 여부"),
-                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("총 항목 수"),
-                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
-                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
-                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지당 항목 수"),
-                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지"),
-                        fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
-                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 정보 여부"),
-                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬처리여부"),
-                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("정렬처리여부"),
-                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("총 개수"),
-                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("데이터 유무 여부")
-                    )
-                )
-            )
-            .when()
-            .port(port)
-            .get("/api/v1/product/seller/list");
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());

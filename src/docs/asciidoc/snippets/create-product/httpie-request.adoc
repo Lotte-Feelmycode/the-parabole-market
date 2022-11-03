@@ -14,7 +14,7 @@ $ echo '{
   "productUpdatedAt" : null,
   "productDeletedAt" : null,
   "productIsDeleted" : false
-}' | http POST 'https://parabole.com:54912/api/v1/product' \
+}' | http POST 'https://parabole.com:56065/api/v1/product' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----
