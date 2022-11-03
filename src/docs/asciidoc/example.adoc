@@ -71,33 +71,33 @@ include::{resource-dir}/create-orderinfo/http-response.adoc[]
 
 include::{resource-dir}/create-orderinfo/response-fields.adoc[]
 
+=== 주문 상세정보 리스트(사용자)
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list-by-user/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list-by-user/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list-by-user/response-fields.adoc[]
+
 === 주문 상세정보 리스트
 
 `*Request*`
 
-include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+include::{resource-dir}/get-orderinfo-list-by-seller/http-request.adoc[]
 
 `*Response*`
 
-include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+include::{resource-dir}/get-orderinfo-list-by-seller/http-response.adoc[]
 
 `*Fields*`
 
-include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
-
-=== 주문 상세정보 리스트
-
-`*Request*`
-
-include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+include::{resource-dir}/get-orderinfo-list-by-seller/response-fields.adoc[]
 
 == 이벤트
 
