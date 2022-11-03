@@ -99,9 +99,95 @@ include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
 
 include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
 
-== 이벤트
+== 주문
 
-=== 이벤트 등록
+=== 주문 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-order-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-order-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-order-list/response-fields.adoc[]
+
+=== 주문 수정
+
+`*Request*`
+
+include::{resource-dir}/update-order/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order/response-fields.adoc[]
+
+=== 주문 배달 수정
+
+`*Request*`
+
+include::{resource-dir}/update-order-delivery/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/update-order-delivery/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/update-order-delivery/response-fields.adoc[]
+
+== 주문 상세정보
+
+=== 주문 상세정보 생성
+
+`*Request*`
+
+include::{resource-dir}/create-orderinfo/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/create-orderinfo/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/create-orderinfo/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+=== 주문 상세정보 리스트
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-orderinfo-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-orderinfo-list/response-fields.adoc[]
+
+== 이벤트
 
 `*Request*`
 
@@ -189,5 +275,3 @@ include::{resource-dir}/event-delete/http-response.adoc[]
 `*Fields*`
 
 include::{resource-dir}/event-delete/response-fields.adoc[]
-
-

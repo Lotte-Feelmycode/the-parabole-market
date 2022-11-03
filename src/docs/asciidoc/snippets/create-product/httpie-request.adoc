@@ -1,0 +1,20 @@
+[source,bash]
+----
+$ echo '{
+  "productId" : null,
+  "productName" : "테스트",
+  "sellerId" : 1,
+  "storeName" : "TEST",
+  "productStatus" : 1,
+  "productRemains" : 30,
+  "productPrice" : 500,
+  "productCategory" : "테스트",
+  "productThumbnailImg" : "img.jpg",
+  "productCreatedAt" : null,
+  "productUpdatedAt" : null,
+  "productDeletedAt" : null,
+  "productIsDeleted" : false
+}' | http POST 'https://parabole.com:54912/api/v1/product' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----
