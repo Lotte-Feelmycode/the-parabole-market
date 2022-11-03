@@ -17,12 +17,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.feelmycode.parabole.domain.Event;
 import com.feelmycode.parabole.domain.EventImage;
-import com.feelmycode.parabole.domain.EventPrize;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
-import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
@@ -40,7 +37,6 @@ import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -56,7 +52,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)
