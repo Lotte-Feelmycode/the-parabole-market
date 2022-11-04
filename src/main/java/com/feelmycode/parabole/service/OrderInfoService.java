@@ -3,13 +3,17 @@ package com.feelmycode.parabole.service;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.domain.Product;
+import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponResponseDto;
+import com.feelmycode.parabole.dto.OrderInfoRequestListDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
+import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
+import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
@@ -55,6 +59,21 @@ public class OrderInfoService {
         orderInfo.setState(-1);
 
         orderInfoRepository.save(orderInfo);
+    }
+
+    @Transactional
+    public void setCouponToOrderInfo(OrderRequestDto orderDto) {
+        List<OrderInfoRequestListDto> orderInfoDto = orderDto.getOrderInfoRequestList();
+        for(OrderInfoRequestListDto dto : orderInfoDto) {
+            List<Long> orderInfoId = dto.getOrderInfoIdList();
+            for(Long id : orderInfoId) {
+                OrderInfo getOrderInfo = orderInfoRepository.findById(id)
+                    .orElseThrow(() -> new NoDataException());
+                couponService.useUserCoupon(dto.getCouponSerialNo(), orderDto.getUserId());
+                UserCoupon getUserCoupon = couponService.getUserCouponBySerialNo(dto.getCouponSerialNo());
+                getOrderInfo.setUserCoupon(getUserCoupon);
+            }
+        }
     }
 
     public List<OrderInfoResponseDto> getOrderInfoListByUserId(List<Order> orderList) {
