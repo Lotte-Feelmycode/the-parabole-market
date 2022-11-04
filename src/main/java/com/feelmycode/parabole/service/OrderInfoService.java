@@ -142,16 +142,15 @@ public class OrderInfoService {
                             sellerService.getSellerBySellerId(sellerId).getStoreName(),
                             getOrderInfoList[sellerIdMap.get(sellerId)],
                             new CouponResponseDto()));
+                } else {
+                    orderBySellerDtoList.add(
+                        new OrderBySellerDto(sellerId,
+                            sellerService.getSellerBySellerId(sellerId).getStoreName(),
+                            getOrderInfoList[sellerIdMap.get(sellerId)],
+                            couponList.get(sellerId)));
                 }
-            } else {
-                orderBySellerDtoList.add(
-                    new OrderBySellerDto(sellerId,
-                        sellerService.getSellerBySellerId(sellerId).getStoreName(),
-                        getOrderInfoList[sellerIdMap.get(sellerId)],
-                        couponList.get(sellerId)));
             }
         }
-
         return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);
     }
 
