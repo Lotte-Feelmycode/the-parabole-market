@@ -9,11 +9,11 @@ Transfer-Encoding: chunked
 Date: Thu, 03 Nov 2022 07:54:10 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 2414
+Content-Length: 2437
 
 {
   "success" : true,
-  "message" : "상품 전시",
+  "message" : "판매자가 등록한 상품 목록",
   "data" : {
     "content" : [ {
       "productId" : 6,
