@@ -6,10 +6,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 07:39:10 GMT
+Date: Fri, 04 Nov 2022 09:47:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 14599
+Content-Length: 15397
 
 {
   "success" : true,
@@ -396,6 +396,34 @@ Content-Length: 14599
       "productId" : 7,
       "productName" : "막국수",
       "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 64,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "이벤트 제목 BY REST DOCS",
+    "startAt" : "2022-11-10T00:00:00",
+    "endAt" : "2022-11-28T18:00:00",
+    "status" : 0,
+    "descript" : "이벤트 설명 v2",
+    "eventImage" : {
+      "eventBannerImg" : "banner.url",
+      "eventDetailImg" : "detail.url"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 92,
+      "prizeType" : "PRODUCT",
+      "stock" : 40,
+      "productId" : 69,
+      "productName" : "이벤트 테스트 상품",
+      "productImg" : "thumb.img",
       "couponId" : null,
       "couponDetail" : null,
       "type" : null,

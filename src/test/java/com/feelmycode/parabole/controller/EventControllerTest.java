@@ -7,8 +7,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
@@ -145,12 +147,34 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                    fieldWithPath("createdBy").type(JsonFieldType.STRING).description("이벤트 생성자"),
+                    fieldWithPath("type").type(JsonFieldType.STRING).description("이벤트 유형"),
+                    fieldWithPath("title").type(JsonFieldType.STRING).description("이벤트 제목"),
+                    fieldWithPath("startAt").type(JsonFieldType.STRING).description("이벤트 시작 일시"),
+                    fieldWithPath("endAt").type(JsonFieldType.STRING).description("이벤트 종료 일시"),
+                    fieldWithPath("descript").type(JsonFieldType.STRING).description("이벤트 설명"),
+                    fieldWithPath("eventImage").type(JsonFieldType.OBJECT).description("이벤트 이미지"),
+                    fieldWithPath("eventImage.eventBannerImg").type(JsonFieldType.STRING)
+                        .description("이벤트 배너 이미지"),
+                    fieldWithPath("eventImage.eventDetailImg").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 이미지"),
+                    fieldWithPath("eventPrizeCreateRequestDtos").type(JsonFieldType.ARRAY)
+                        .description("이벤트 경품 정보"),
+                    fieldWithPath("eventPrizeCreateRequestDtos.[].id").type(JsonFieldType.NUMBER)
+                        .description("이벤트 경품 ID"),
+                    fieldWithPath("eventPrizeCreateRequestDtos.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 경품 유형"),
+                    fieldWithPath("eventPrizeCreateRequestDtos.[].stock").type(JsonFieldType.NUMBER)
+                        .description("이벤트 경품 재고")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").description("이벤트 번호")
                 )))
-            .body(requestJson).log().all()
+            .body(requestJson)
             .when().post(BASIC_PATH);
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
@@ -184,6 +208,7 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("eventId").description("이벤트 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -229,11 +254,14 @@ public class EventControllerTest {
                         .description("쿠폰 상세 설명").optional(),
                     fieldWithPath("data.eventPrizes.[].type")
                         .description("쿠폰 할인 유형").optional(),
-                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").optional().description("쿠폰 할인값"),
+                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").optional()
+                        .description("쿠폰 할인값"),
                     fieldWithPath("data.eventPrizes.[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
             )).when().get(BASIC_PATH + "/{eventId}", eventId);
+
+        System.out.println(resp.prettyPrint());
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
@@ -301,8 +329,9 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
                     fieldWithPath("data.[].eventPrizes[].type").description("쿠폰 할인 유형").optional(),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
-                        "쿠폰 할인값"),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional()
+                        .description(
+                            "쿠폰 할인값"),
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
@@ -329,6 +358,7 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("userId").description("사용자 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -375,8 +405,9 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
                     fieldWithPath("data.[].eventPrizes[].type").optional().description("쿠폰 할인 유형"),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
-                        "쿠폰 할인값"),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional()
+                        .description(
+                            "쿠폰 할인값"),
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시")
                 )
@@ -485,12 +516,12 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("eventId").description("이벤트 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").description("이벤트 번호")
                 )))
-            .log().all()
             .when().delete(BASIC_PATH + "/{eventId}", eventId);
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());

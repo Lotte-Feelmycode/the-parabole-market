@@ -391,6 +391,34 @@
       "couponDiscountValue" : null,
       "expiresAt" : null
     } ]
+  }, {
+    "id" : 64,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "이벤트 제목 BY REST DOCS",
+    "startAt" : "2022-11-10T00:00:00",
+    "endAt" : "2022-11-28T18:00:00",
+    "status" : 0,
+    "descript" : "이벤트 설명 v2",
+    "eventImage" : {
+      "eventBannerImg" : "banner.url",
+      "eventDetailImg" : "detail.url"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 92,
+      "prizeType" : "PRODUCT",
+      "stock" : 40,
+      "productId" : 69,
+      "productName" : "이벤트 테스트 상품",
+      "productImg" : "thumb.img",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
   } ]
 }
 ----

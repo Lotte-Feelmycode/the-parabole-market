@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:50273/api/v1/event' -i -X GET \
+$ curl 'https://parabole.com:50667/api/v1/event' -i -X GET \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json'
 ----

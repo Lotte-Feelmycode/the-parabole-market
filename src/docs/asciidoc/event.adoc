@@ -15,6 +15,10 @@ endif::[]
 
 include::{resource-dir}/event-create/http-request.adoc[]
 
+`*Fields*`
+
+include::{resource-dir}/event-create/request-fields.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/event-create/http-response.adoc[]
@@ -31,6 +35,10 @@ include::{resource-dir}/event-create/response-fields.adoc[]
 
 include::{resource-dir}/event-id/http-request.adoc[]
 
+`*Path Variables*`
+
+include::{resource-dir}/event-id/path-parameters.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/event-id/http-response.adoc[]
@@ -44,6 +52,10 @@ include::{resource-dir}/event-id/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/event-sellerId/http-request.adoc[]
+
+`*Path Variables*`
+
+include::{resource-dir}/event-sellerId/path-parameters.adoc[]
 
 `*Response*`
 
@@ -91,6 +103,10 @@ include::{resource-dir}/event-search/response-fields.adoc[]
 
 include::{resource-dir}/event-delete/http-request.adoc[]
 
+`*Path Variables*`
+
+include::{resource-dir}/event-delete/path-parameters.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/event-delete/http-response.adoc[]
@@ -105,7 +121,7 @@ include::{resource-dir}/event-delete/response-fields.adoc[]
 
 `*Request*`
 
-include::{resource-dir}/eventparticipant/curl-request.adoc[]
+include::{resource-dir}/eventparticipant/http-request.adoc[]
 
 `*Parameters*`
 
@@ -123,6 +139,9 @@ include::{resource-dir}/eventparticipant/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/eventparticipant-check/http-request.adoc[]
+
+
+include::{resource-dir}/eventparticipant-check/request-fields.adoc[]
 
 `*Response*`
 

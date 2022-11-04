@@ -6,7 +6,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 01 Nov 2022 07:39:12 GMT
+Date: Fri, 04 Nov 2022 09:47:15 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 82
@@ -14,6 +14,6 @@ Content-Length: 82
 {
   "success" : true,
   "message" : "이벤트 등록 성공",
-  "data" : 63
+  "data" : 67
 }
 ----

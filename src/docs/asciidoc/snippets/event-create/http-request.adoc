@@ -3,7 +3,7 @@
 POST /api/v1/event HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:50273
+Host: parabole.com:50667
 Content-Length: 435
 
 {
@@ -19,7 +19,7 @@ Content-Length: 435
     "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 63,
+    "id" : 72,
     "type" : "PRODUCT",
     "stock" : 40
   } ]

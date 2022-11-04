@@ -1,4 +1,5 @@
-*|===*
+.+/api/v1/event/seller/{userId}+
+|===
 |Parameter|Description
 
 |`+userId+`
