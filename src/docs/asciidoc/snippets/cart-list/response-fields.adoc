@@ -83,15 +83,15 @@
 
 |`+data.cartBySellerDtoList.[].cartItemDtoList.[].product.productCreatedAt+`
 |`+String+`
-|상품 등록일자
+|상품 등록일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.cartBySellerDtoList.[].cartItemDtoList.[].product.productUpdatedAt+`
 |`+String+`
-|상품 수정일자
+|상품 수정일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.cartBySellerDtoList.[].cartItemDtoList.[].product.productDeletedAt+`
 |`+String+`
-|상품 삭제일자
+|상품 삭제일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.cartBySellerDtoList.[].cartItemDtoList.[].product.productIsDeleted+`
 |`+Boolean+`
