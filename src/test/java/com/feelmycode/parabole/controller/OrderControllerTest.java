@@ -60,6 +60,8 @@ public class OrderControllerTest {
         List<Long> orderInfoList = new ArrayList<>();
         orderInfoList.add(1L);
         orderInfoList.add(2L);
+        orderInfoList.add(3L);
+        orderInfoList.add(4L);
         orderInfoRequestListDtoList.add(new OrderInfoRequestListDto(orderInfoList, "_쿠폰시리얼넘버_"));
         OrderRequestDto dto = new OrderRequestDto(3L, 1L, orderInfoRequestListDtoList, "NAVER_PAY");
 
@@ -84,6 +86,7 @@ public class OrderControllerTest {
             .post("/api/v1/order");
 
         // Then
+        // 쿠폰 시리얼 넘버가 존재하지 않기 때문에 실패하는 메세지가 뜸
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
@@ -92,7 +95,7 @@ public class OrderControllerTest {
     public void updateDelivery() {
         OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(3L, "김파라", "para@bole.com",
             "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
-            "문앞에 두고 연락주세요", "PAY_COMPLETE", "DELIVERY", "TOSS");
+            "문앞에 두고 연락주세요", "BEFORE_PAY", "BEFORE_PAY", "TOSS");
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
@@ -146,7 +149,7 @@ public class OrderControllerTest {
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격"),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.STRING).description("주문 생성 일자")
+                    fieldWithPath("data.[].updatedAt").description("주문 생성 일자")
                 )
             ))
             .when()

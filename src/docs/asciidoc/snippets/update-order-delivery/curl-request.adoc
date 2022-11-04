@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:54152/api/v1/order' -i -X PATCH \
+$ curl 'https://parabole.com:64716/api/v1/order' -i -X PATCH \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -13,8 +13,8 @@ $ curl 'https://parabole.com:54152/api/v1/order' -i -X PATCH \
   "addressSimple" : "광진구",
   "addressDetail" : "12-33",
   "deliveryComment" : "문앞에 두고 연락주세요",
-  "orderState" : "PAY_COMPLETE",
-  "orderInfoState" : "DELIVERY",
+  "orderState" : "BEFORE_PAY",
+  "orderInfoState" : "BEFORE_PAY",
   "payState" : "TOSS"
 }'
 ----

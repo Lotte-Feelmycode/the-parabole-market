@@ -40,7 +40,11 @@ public class UpdateService {
     public void updateDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
         Order order = orderService.getOrder(deliveryDto.getUserId());
         order.saveDeliveryInfo(deliveryDto);
-        updateOrderInfoState(new OrderInfoRequestDto(deliveryDto.getUserId(), deliveryDto.getOrderState()));
+        List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
+        for(OrderInfo orderInfo : getOrderInfoList) {
+            updateOrderInfoState(
+                new OrderInfoRequestDto(deliveryDto.getUserId(), orderInfo.getId(), deliveryDto.getOrderState()));
+        }
     }
 
     @Transactional

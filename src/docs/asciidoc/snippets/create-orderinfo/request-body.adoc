@@ -3,7 +3,7 @@
 {
   "userId" : 1,
   "orderInfoDto" : [ {
-    "productId" : 1,
+    "productId" : 2,
     "productCnt" : 1
   } ]
 }

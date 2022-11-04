@@ -10,8 +10,8 @@
   "addressSimple" : "광진구",
   "addressDetail" : "12-33",
   "deliveryComment" : "문앞에 두고 연락주세요",
-  "orderState" : "PAY_COMPLETE",
-  "orderInfoState" : "DELIVERY",
+  "orderState" : "BEFORE_PAY",
+  "orderInfoState" : "BEFORE_PAY",
   "payState" : "TOSS"
 }
 ----

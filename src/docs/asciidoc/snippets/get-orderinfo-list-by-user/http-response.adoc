@@ -6,7 +6,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 02:13:44 GMT
+Date: Sun, 06 Nov 2022 14:03:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1942
@@ -47,6 +47,19 @@ Content-Length: 1942
         "productThumbnailImg" : null,
         "updatedAt" : null
       }, {
+        "id" : 1,
+        "state" : "BEFORE_PAY",
+        "userId" : 3,
+        "userEmail" : "test3@test.com",
+        "productId" : 2,
+        "productName" : "한우국밥",
+        "productCnt" : 3,
+        "productRemain" : null,
+        "productPrice" : 33000,
+        "productDiscountPrice" : 30000,
+        "productThumbnailImg" : null,
+        "updatedAt" : null
+      }, {
         "id" : 2,
         "state" : "BEFORE_PAY",
         "userId" : 3,
@@ -57,19 +70,6 @@ Content-Length: 1942
         "productRemain" : null,
         "productPrice" : 24000,
         "productDiscountPrice" : 22000,
-        "productThumbnailImg" : null,
-        "updatedAt" : null
-      }, {
-        "id" : 1,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "test3@test.com",
-        "productId" : 1,
-        "productName" : "한우국밥",
-        "productCnt" : 3,
-        "productRemain" : null,
-        "productPrice" : 33000,
-        "productDiscountPrice" : 30000,
         "productThumbnailImg" : null,
         "updatedAt" : null
       } ],

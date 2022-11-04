@@ -1,21 +1,14 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:56065/api/v1/product' -i -X POST \
+$ curl 'https://parabole.com:62062/api/v1/product' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json' \
     -d '{
-  "productId" : null,
+  "userId" : 1,
   "productName" : "테스트",
-  "sellerId" : 1,
-  "storeName" : "TEST",
-  "productStatus" : 1,
   "productRemains" : 30,
   "productPrice" : 500,
   "productCategory" : "테스트",
-  "productThumbnailImg" : "img.jpg",
-  "productCreatedAt" : null,
-  "productUpdatedAt" : null,
-  "productDeletedAt" : null,
-  "productIsDeleted" : false
+  "productThumbnailImg" : "img.jpg"
 }'
 ----
