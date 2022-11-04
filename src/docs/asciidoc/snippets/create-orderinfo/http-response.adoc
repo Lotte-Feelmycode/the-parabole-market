@@ -1,18 +1,19 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 400 Bad Request
+HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 02:16:37 GMT
-Connection: close
-Content-Length: 109
+Date: Sun, 06 Nov 2022 14:12:40 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 106
 
 {
-  "success" : false,
-  "message" : "결제할 상품을 추가할 수 없습니다.",
+  "success" : true,
+  "message" : "결제목록에 상품을 추가했습니다.",
   "data" : null
 }
 ----

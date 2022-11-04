@@ -7,102 +7,30 @@ ifdef::snippets[]
 endif::[]
 :toc: left
 
-= The Parabole
-
-== Product
-
-=== 상품 목록
-`*Request*`
-
-include::{resource-dir}/product-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{resource-dir}/product-list/request-parameters.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/product-list/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/product-list/response-fields.adoc[]
-
-'''
-
-=== 상품 추가
-
-== Cart
-
-=== 장바구니 목록 조회
-
-`*Request*`
-
-include::{resource-dir}/cart-list/http-request.adoc[]
-
-`*Parameters*`
-
-include::{resource-dir}/cart-list/request-parameters.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/cart-list/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/cart-list/response-fields.adoc[]
+= link:index.html[The Parabole]
 
 
-=== 장바구니 상품 추가
+== Go To The Parabole Market (더 파라볼래 사이트로 이동)
 
-`*Request*`
+https://theParabole.show[Go To The Parabole Market (더 파라볼래 사이트로 이동)]
 
-include::{resource-dir}/cart-product-add/http-request.adoc[]
 
-`*Fields*`
+== Product (상품)
 
-include::{resource-dir}/cart-product-add/request-fields.adoc[]
+link:product.html[Go To Product Page]
 
-`*Response*`
+== Cart (장바구니)
 
-include::{resource-dir}/cart-product-add/http-response.adoc[]
+link:cart.html[Go To Cart Page]
 
-`*Fields*`
+== Order (주문)
 
-include::{resource-dir}/cart-product-add/response-fields.adoc[]
+link:order.html[Go To Order Page]
 
-=== 장바구니 상품 수량 수정
+== Event (이벤트)
 
-`*Request*`
+link:event.html[Go To Event Page]
 
-include::{resource-dir}/cart-update-cnt/http-request.adoc[]
+== User (사용자)
 
-`*Fields*`
-
-include::{resource-dir}/cart-update-cnt/request-fields.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/cart-update-cnt/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/cart-update-cnt/response-fields.adoc[]
-
-=== 장바구니 상품 삭제
-
-`*Request*`
-
-include::{resource-dir}/cart-delete/http-request.adoc[]
-
-`*Parameters*`
-
-include::{resource-dir}/cart-delete/request-parameters.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/cart-delete/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/cart-delete/response-fields.adoc[]
+link:user.html[Go To Event Page]

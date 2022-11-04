@@ -4,7 +4,7 @@
   "userId" : 3,
   "orderId" : 1,
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2 ],
+    "orderInfoIdList" : [ 1, 2, 3, 4 ],
     "couponSerialNo" : "_쿠폰시리얼넘버_"
   } ],
   "orderPayState" : "NAVER_PAY"

@@ -112,6 +112,11 @@ public class Order extends BaseEntity {
         this.user = user;
         this.setTotal(getOrderInfoList());
         this.deliveryFee = deliveryFee;
+        this.addressSimple = "";
+        this.addressDetail = "";
+        this.deliveryComment = "";
+        this.state = -99;
+        this.payState = -99;
         this.setState(-1);
     }
 

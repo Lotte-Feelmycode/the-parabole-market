@@ -3,10 +3,10 @@
 $ echo '{
   "userId" : 1,
   "orderInfoDto" : [ {
-    "productId" : 1,
+    "productId" : 2,
     "productCnt" : 1
   } ]
-}' | http POST 'https://parabole.com:61384/api/v1/orderinfo' \
+}' | http POST 'https://parabole.com:50656/api/v1/orderinfo' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----
