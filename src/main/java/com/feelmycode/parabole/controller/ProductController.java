@@ -32,9 +32,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class ProductController {
 
+    private final static int DEFAULT_SIZE = 20;
     private final ProductService productService;
     private final ProductDetailService productDetailService;
-    private final static int DEFAULT_SIZE = 20;
 
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
@@ -68,22 +68,15 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody ProductDto product) {
         productService.saveProduct(userId, product);
-        
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
     }
 
-    @PostMapping("/detail")
-    public ResponseEntity<ParaboleResponse> createProductDetail(@RequestBody ProductDetail productDetail, @RequestParam Long userId) {
-        productDetailService.createProductDetail(userId, productDetail);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 상세 정보 추가");
-    }
-
-    @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
-        productService.updateProduct(userId, product);
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
-    }
+//    @PatchMapping
+//    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
+//        productService.updateProduct(userId, product);
+//
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
+//    }
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {
@@ -92,10 +85,18 @@ public class ProductController {
     }
 
     @GetMapping("/data")
-    public ProductResponseDto getProducts(@RequestParam Long productId){
+    public ProductResponseDto getProducts(@RequestParam Long productId) {
         Product response = productService.getProduct(productId);
-        ProductResponseDto dto=new ProductResponseDto(response.getId(),response.getName(),response.getThumbnailImg());
+        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(),
+            response.getThumbnailImg());
         return dto;
+    }
+    
+    @GetMapping("/seller/list")
+    public ResponseEntity<ParaboleResponse> getProductBySellerId(@RequestParam Long userId, @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+        log.info("Get Product By Seller Id : {} ", userId);
+        Page<ProductDto> response = productService.getProductList(userId, "", "", "", pageable);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);
     }
 
 }
