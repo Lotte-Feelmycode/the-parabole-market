@@ -24,6 +24,8 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.global.util.DatabaseCleaner;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
@@ -44,6 +46,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -68,7 +71,7 @@ public class EventControllerTest {
     public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
 
     private RequestSpecification spec;
-
+    private DatabaseCleaner databaseCleaner;
     @Autowired
     private EventService eventService;
     @Autowired
@@ -100,6 +103,10 @@ public class EventControllerTest {
             .build();
     }
 
+    @AfterEach
+    void tearDown() {
+        databaseCleaner.execute();
+    }
 
     @Test
     @DisplayName("이벤트 등록")
@@ -178,14 +185,6 @@ public class EventControllerTest {
             .when().post(BASIC_PATH);
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
-
-        /**
-         * DELETE
-         */
-        JSONObject jObj = new JSONObject(resp.getBody().asString());
-        Integer eventId = (Integer) jObj.get("data");
-        eventRepository.delete(eventRepository.findById(Long.valueOf(eventId)).orElseThrow());
-        productRepository.delete(product);
 
     }
 
@@ -526,13 +525,5 @@ public class EventControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
-        /**
-         * DELETE
-         */
-        eventRepository.delete(eventRepository.findById(eventId).orElseThrow());
-        productRepository.delete(product);
-
     }
-
-
 }
