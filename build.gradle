@@ -50,7 +50,7 @@ dependencies {
 }
 
 ext {
-    snippetsDir = file("./src/main/resources/snippets")
+    snippetsDir = file("./src/docs/asciidoc/snippets")
 }
 
 test {
@@ -90,4 +90,8 @@ task ymlSecurity(type: Copy) {
     from './src/main/resources/submodule-security'
     include '*.yml'
     into './src/main/resources'
+}
+
+clean {
+    delete "./src/main/resources/static/", "docs"
 }
