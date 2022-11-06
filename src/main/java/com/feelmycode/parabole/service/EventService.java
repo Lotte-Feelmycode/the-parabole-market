@@ -22,6 +22,7 @@ import com.feelmycode.parabole.repository.SellerRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder.In;
@@ -151,10 +152,7 @@ public class EventService {
             eventType.equals("") ? Arrays.asList("RAFFLE", "FCFS") : Arrays.asList(eventType);
         List<Integer> statuses =
             eventStatus < 0 ? Arrays.asList(0, 1, 2) : Arrays.asList(eventStatus);
-
-
-        System.out.println("eventStatus" + eventStatus);
-        System.out.println("statues "+ statuses);
+        
         if (dateDiv > -1) {
             eventList = dateDiv < 1
                 ? eventRepository.findAllByStartAtBetweenAndIsDeleted(fromDateTime, toDateTime,
@@ -181,7 +179,20 @@ public class EventService {
         return eventRepository.findAllByIsDeleted(false);
     }
 
-    // TODO : 이벤트 수정
+    /**
+     * 이벤트 조회 (셀러 오피스 이벤트 목록 조회용)
+     */
+    public List<EventSearchResponseDto> getEventsMonthAfter() {
+        LocalDateTime nowDate = LocalDateTime.now();
+        LocalDateTime weekAfterDate = nowDate.plusMonths(1L);
+        return eventRepository.findAllByStartAtBetweenAndIsDeleted(nowDate,
+                weekAfterDate, false)
+            .stream()
+            .filter(event -> event.getType().equals("FCFS"))
+            .sorted(Comparator.comparing(Event::getStartAt))
+            .map(EventSearchResponseDto::new)
+            .collect(Collectors.toList());
+    }
 
     /**
      * 이벤트 취소
