@@ -152,7 +152,7 @@ public class EventService {
             eventType.equals("") ? Arrays.asList("RAFFLE", "FCFS") : Arrays.asList(eventType);
         List<Integer> statuses =
             eventStatus < 0 ? Arrays.asList(0, 1, 2) : Arrays.asList(eventStatus);
-        
+
         if (dateDiv > -1) {
             eventList = dateDiv < 1
                 ? eventRepository.findAllByStartAtBetweenAndIsDeleted(fromDateTime, toDateTime,
@@ -184,9 +184,9 @@ public class EventService {
      */
     public List<EventSearchResponseDto> getEventsMonthAfter() {
         LocalDateTime nowDate = LocalDateTime.now();
-        LocalDateTime weekAfterDate = nowDate.plusMonths(1L);
+        LocalDateTime monthAfterDate = nowDate.plusMonths(1L);
         return eventRepository.findAllByStartAtBetweenAndIsDeleted(nowDate,
-                weekAfterDate, false)
+                monthAfterDate, false)
             .stream()
             .filter(event -> event.getType().equals("FCFS"))
             .sorted(Comparator.comparing(Event::getStartAt))
