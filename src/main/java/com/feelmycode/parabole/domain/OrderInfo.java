@@ -22,6 +22,23 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_infos")
 public class OrderInfo extends BaseEntity {
 
+    @Override
+    public String toString() {
+        return "OrderInfo{" +
+            "id=" + id +
+            ", order=" + order +
+            ", userCoupon=" + userCoupon +
+            ", state=" + state +
+            ", productId=" + productId +
+            ", productName='" + productName + '\'' +
+            ", productCnt=" + productCnt +
+            ", productPrice=" + productPrice +
+            ", productDiscountPrice=" + productDiscountPrice +
+            ", sellerId=" + sellerId +
+            ", sellerStoreName='" + sellerStoreName + '\'' +
+            '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_info_id")
@@ -90,7 +107,7 @@ public class OrderInfo extends BaseEntity {
     public OrderInfoResponseDto toDto() {
         return new OrderInfoResponseDto(id, OrderInfoState.returnNameByValue(state), order.getUser().getId(),
             order.getUser().getEmail(), productId, productName, productCnt, productPrice,
-            productDiscountPrice, getUpdatedAt());
+            productDiscountPrice, "", getUpdatedAt());
     }
 
 }
