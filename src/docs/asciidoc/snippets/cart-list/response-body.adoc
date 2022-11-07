@@ -3,42 +3,48 @@
 {
   "success" : true,
   "message" : "seller로 grouping한 장바구니 상품",
-  "data" : [ [ ], [ {
-    "sellerId" : 2,
-    "storeName" : "u4-s2's store",
-    "getItemList" : [ {
-      "cartItemId" : 98,
-      "product" : {
-        "productId" : 2,
-        "productName" : "돼지국밥",
-        "sellerId" : 2,
-        "storeName" : "u4-s2's store",
-        "productStatus" : 1,
-        "productRemains" : 500,
-        "productPrice" : 8000,
-        "productCategory" : "국밥",
-        "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-        "productCreatedAt" : "2022-10-06T16:52:06",
-        "productUpdatedAt" : "2022-10-06T16:52:06",
-        "productDeletedAt" : null,
-        "productIsDeleted" : false
-      },
-      "count" : 1
-    } ],
-    "couponDto" : {
-      "rateCoupon" : [ {
-        "couponName" : "u4=s2 의 쿠폰",
-        "storeName" : "u4-s2's store",
-        "type" : "RATE",
-        "discountValue" : 10
+  "data" : {
+    "cartId" : 3,
+    "cnt" : 1,
+    "cartBySellerDtoList" : [ {
+      "sellerId" : 2,
+      "storeName" : "u4-s2's store",
+      "cartItemDtoList" : [ {
+        "cartItemId" : 172,
+        "product" : {
+          "productId" : 4,
+          "productName" : "차돌 짬뽕 국밥 210gx6팩",
+          "sellerId" : 2,
+          "storeName" : "u4-s2's store",
+          "productStatus" : 1,
+          "productRemains" : 2000,
+          "productPrice" : 12000,
+          "productCategory" : "국밥",
+          "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+          "productCreatedAt" : "2022-10-06T16:52:06",
+          "productUpdatedAt" : "2022-10-06T16:52:06",
+          "productDeletedAt" : null,
+          "productIsDeleted" : false
+        },
+        "count" : 1
       } ],
-      "amountCoupon" : [ {
-        "couponName" : "쉿! 비밀이야",
-        "storeName" : "u4-s2's store",
-        "type" : "AMOUNT",
-        "discountValue" : 100
-      } ]
-    }
-  } ] ]
+      "couponDto" : {
+        "rateCoupon" : [ {
+          "couponName" : "u4=s2 의 쿠폰",
+          "serialNo" : "76fb092c-2c7a-4e7c-911a-1b3f93e4f88a",
+          "storeName" : "u4-s2's store",
+          "type" : "RATE",
+          "discountValue" : 10
+        } ],
+        "amountCoupon" : [ {
+          "couponName" : "쉿! 비밀이야",
+          "serialNo" : "b9e9682a-d7c7-418c-b16a-37748f89b213",
+          "storeName" : "u4-s2's store",
+          "type" : "AMOUNT",
+          "discountValue" : 100
+        } ]
+      }
+    } ]
+  }
 }
 ----
