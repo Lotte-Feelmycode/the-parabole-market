@@ -56,7 +56,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("주문 수정")
+    @DisplayName("주문 저장/수정")
     public void updateOrder() {
 
         // Given
