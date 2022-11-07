@@ -122,7 +122,7 @@ public class EventControllerTest {
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            seller.getUser().getId(), "SELLER", "RAFFLE", "fasdsdsadCS", startAt, endAt,
+            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 등록 BY REST DOCS", startAt, endAt,
             "이벤트 설명 v2",
             new EventImage("banner.url", "detail.url"), prizes
         );
