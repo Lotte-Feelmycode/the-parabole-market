@@ -6,13 +6,14 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestListDto;
-import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -21,6 +22,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.List;
+import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,18 +58,28 @@ public class OrderControllerTest {
     @Test
     @DisplayName("주문 수정")
     public void updateOrder() {
-        List<OrderInfoRequestListDto> orderInfoRequestListDtoList = new ArrayList<>();
-        List<Long> orderInfoList = new ArrayList<>();
-        orderInfoList.add(1L);
-        orderInfoList.add(2L);
-        orderInfoList.add(3L);
-        orderInfoList.add(4L);
-        orderInfoRequestListDtoList.add(new OrderInfoRequestListDto(orderInfoList, "_쿠폰시리얼넘버_"));
-        OrderRequestDto dto = new OrderRequestDto(3L, 1L, orderInfoRequestListDtoList, "NAVER_PAY");
 
+        // Given
+        JSONObject request = new JSONObject();
+        request.put("userId", 3);
+        request.put("orderId", 1);
+
+        List<Long> orderInfoIdList = new ArrayList<>();
+        orderInfoIdList.add(1L);
+        orderInfoIdList.add(2L);
+        orderInfoIdList.add(3L);
+
+        List<OrderInfoRequestListDto> requestListDto = new ArrayList<>();
+        requestListDto.add(new OrderInfoRequestListDto(orderInfoIdList, ""));
+
+        request.put("orderInfoRequestList", requestListDto);
+        request.put("orderPayState", "NAVER_PAY");
+
+        System.out.println(request.toJSONString());
+        // When
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
-            .body(dto)
+            .body(request.toJSONString())
             .contentType(ContentType.JSON)
             .filter(document("update-order",
                 preprocessRequest(modifyUris()
@@ -75,6 +87,14 @@ public class OrderControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                    fieldWithPath("orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                    fieldWithPath("orderInfoRequestList").type(JsonFieldType.ARRAY).description("상세주문 정보 목록"),
+                    fieldWithPath("orderInfoRequestList.[].couponSerialNo").type(JsonFieldType.STRING).description("쿠폰 시리얼 넘버"),
+                    fieldWithPath("orderInfoRequestList.[].orderInfoIdList").type(JsonFieldType.ARRAY).description("쿠폰을 적용할 상세주문 ID"),
+                    fieldWithPath("orderPayState").type(JsonFieldType.STRING).description("주문 결제 수단. {\'CARD\': \'카드결제\', \'BANK_TRANSFER\': \'실시간 계좌 이체\', \'PHONE\': \'휴대폰 결제\', \'VIRTUAL_ACCOUNT\': \'가상계좌\', \'KAKAO_PAY\': \'카카오 페이\', \'TOSS\': \'토스\', \'WITHOUT_BANK\': \'무통장 입금\', \'WITHOUT_BANK_PAY\': \'무통장 입금 결제 완료\', \'NAVER_PAY\': \'네이버 페이\', \'ERROR\': \'에러\'}")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -86,20 +106,33 @@ public class OrderControllerTest {
             .post("/api/v1/order");
 
         // Then
-        // 쿠폰 시리얼 넘버가 존재하지 않기 때문에 실패하는 메세지가 뜸
+        // 쿠폰 시리얼 넘버가 존재하지 않기 때문에 400 ERROR
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
     @DisplayName("배송 정보 수정")
     public void updateDelivery() {
-        OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(3L, "김파라", "para@bole.com",
-            "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
-            "문앞에 두고 연락주세요", "BEFORE_PAY", "BEFORE_PAY", "TOSS");
 
+        // Given
+        JSONObject request = new JSONObject();
+        request.put("userId", 3L);
+        request.put("userName", "김파라");
+        request.put("userEmail", "para@bole.com'");
+        request.put("userPhone", "010-2345-6789");
+        request.put("receiverName", "김파라");
+        request.put("receiverPhone", "010-2345-6789");
+        request.put("addressSimple", "광진구");
+        request.put("addressDetail", "12-33");
+        request.put("deliveryComment", "문앞에 두고 연락주세요");
+        request.put("orderState", "BEFORE_PAY");
+        request.put("orderInfoState", "BEFORE_PAY");
+        request.put("payState", "TOSS");
+
+        // When
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
-            .body(dto)
+            .body(request.toJSONString())
             .contentType(ContentType.JSON)
             .filter(document("update-order-delivery",
                 preprocessRequest(modifyUris()
@@ -107,6 +140,20 @@ public class OrderControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                    fieldWithPath("userName").type(JsonFieldType.STRING).description("사용자 이름"),
+                    fieldWithPath("userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
+                    fieldWithPath("userPhone").type(JsonFieldType.STRING).description("사용자 전화번호"),
+                    fieldWithPath("receiverName").type(JsonFieldType.STRING).description("받는사람 이름"),
+                    fieldWithPath("receiverPhone").type(JsonFieldType.STRING).description("받는사람 전화번호"),
+                    fieldWithPath("addressSimple").type(JsonFieldType.STRING).description("간단한 주소"),
+                    fieldWithPath("addressDetail").type(JsonFieldType.STRING).description("상세 주소"),
+                    fieldWithPath("deliveryComment").type(JsonFieldType.STRING).description("배송 메세지"),
+                    fieldWithPath("orderState").type(JsonFieldType.STRING).description("주문 상태"),
+                    fieldWithPath("orderInfoState").type(JsonFieldType.STRING).description("주문 배송 상태"),
+                    fieldWithPath("payState").type(JsonFieldType.STRING).description("주문 결제 수단. {\'CARD\': \'카드결제\', \'BANK_TRANSFER\': \'실시간 계좌 이체\', \'PHONE\': \'휴대폰 결제\', \'VIRTUAL_ACCOUNT\': \'가상계좌\', \'KAKAO_PAY\': \'카카오 페이\', \'TOSS\': \'토스\', \'WITHOUT_BANK\': \'무통장 입금\', \'WITHOUT_BANK_PAY\': \'무통장 입금 결제 완료\', \'NAVER_PAY\': \'네이버 페이\', \'ERROR\': \'에러\'}")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -134,6 +181,9 @@ public class OrderControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("userId").description("사용자 ID")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -147,9 +197,9 @@ public class OrderControllerTest {
                     fieldWithPath("data.[].productCnt").type(JsonFieldType.NUMBER).description("상품 개수"),
                     fieldWithPath("data.[].productRemain").type(JsonFieldType.NUMBER).description("상품 재고"),
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
-                    fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격"),
+                    fieldWithPath("data.[].productDiscountPrice").description("상품 할인 가격"),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").description("주문 생성 일자")
+                    fieldWithPath("data.[].updatedAt").description("주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss")
                 )
             ))
             .when()

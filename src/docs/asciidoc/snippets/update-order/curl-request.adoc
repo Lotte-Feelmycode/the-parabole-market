@@ -1,15 +1,15 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:52071/api/v1/order' -i -X POST \
+$ curl 'https://parabole.com:61336/api/v1/order' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json' \
     -d '{
-  "userId" : 3,
   "orderId" : 1,
+  "orderPayState" : "NAVER_PAY",
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2, 3, 4 ],
-    "couponSerialNo" : "_쿠폰시리얼넘버_"
+    "couponSerialNo" : "",
+    "orderInfoIdList" : [ 1, 2, 3 ]
   } ],
-  "orderPayState" : "NAVER_PAY"
+  "userId" : 3
 }'
 ----

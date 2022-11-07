@@ -22,6 +22,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -74,6 +75,9 @@ public class ProductControllerTest {
                             .host("parabole.com"),
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
+                    requestParameters(
+                        parameterWithName("userId").description("사용자 ID(판매자)")
+                    ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -88,9 +92,9 @@ public class ProductControllerTest {
                         fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                         fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
                         fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
-                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자"),
-                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자"),
-                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자").optional(),
+                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
                         fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
@@ -138,6 +142,9 @@ public class ProductControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("productId").description("상품 ID")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -153,9 +160,9 @@ public class ProductControllerTest {
                     fieldWithPath("data.product.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.product.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
                     fieldWithPath("data.product.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
-                    fieldWithPath("data.product.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자"),
-                    fieldWithPath("data.product.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자"),
-                    fieldWithPath("data.product.productDeletedAt").description("상품의 삭제 일자").optional(),
+                    fieldWithPath("data.product.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                    fieldWithPath("data.product.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                    fieldWithPath("data.product.productDeletedAt").description("상품의 삭제 일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
                     fieldWithPath("data.product.productIsDeleted").type(JsonFieldType.BOOLEAN).description("상품의 삭제 여부").optional(),
                     fieldWithPath("data.productDetail").type(JsonFieldType.ARRAY).description("상품 이미지 정보"),
                     fieldWithPath("data.productDetail.[].productDetailId").type(JsonFieldType.NUMBER).description("상품 상세 ID"),
@@ -183,8 +190,16 @@ public class ProductControllerTest {
         ProductRequestDto p = new ProductRequestDto(1L, "테스트", 30L, 500L, "테스트", "img.jpg");
         Long productId = productService.saveProduct(p);
 
+        JSONObject request = new JSONObject();
+        request.put("userId", 1);
+        request.put("productName", "테스트");
+        request.put("productRemains", 30L);
+        request.put("productPrice", 500L);
+        request.put("productCategory", "테스트");
+        request.put("productThumbnailImg", "img.jpg");
+
         Response resp = given(this.spec)
-            .body(p)
+            .body(request.toJSONString())
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(document("create-product",
@@ -254,9 +269,9 @@ public class ProductControllerTest {
                         fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                         fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
                         fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
-                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자"),
-                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자"),
-                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자").optional(),
+                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
                         fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),

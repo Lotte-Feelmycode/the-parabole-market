@@ -50,7 +50,7 @@
 |상품 가격
 
 |`+data.[].productDiscountPrice+`
-|`+Number+`
+|`+Null+`
 |상품 할인 가격
 
 |`+data.[].productThumbnailImg+`
@@ -58,7 +58,7 @@
 |상품 썸네일 이미지
 
 |`+data.[].updatedAt+`
-|`+Null+`
-|주문 생성 일자
+|`+String+`
+|주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss
 
 |===

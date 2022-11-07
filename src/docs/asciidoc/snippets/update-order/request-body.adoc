@@ -1,12 +1,12 @@
 [source,options="nowrap"]
 ----
 {
-  "userId" : 3,
   "orderId" : 1,
+  "orderPayState" : "NAVER_PAY",
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2, 3, 4 ],
-    "couponSerialNo" : "_쿠폰시리얼넘버_"
+    "couponSerialNo" : "",
+    "orderInfoIdList" : [ 1, 2, 3 ]
   } ],
-  "orderPayState" : "NAVER_PAY"
+  "userId" : 3
 }
 ----

@@ -1,17 +1,17 @@
 [source,options="nowrap"]
 ----
 {
-  "userId" : 3,
-  "userName" : "김파라",
-  "userEmail" : "para@bole.com",
-  "userPhone" : "010-2345-6789",
-  "receiverName" : "김파라",
-  "receiverPhone" : "010-2345-6789",
   "addressSimple" : "광진구",
+  "receiverPhone" : "010-2345-6789",
   "addressDetail" : "12-33",
+  "receiverName" : "김파라",
+  "userPhone" : "010-2345-6789",
   "deliveryComment" : "문앞에 두고 연락주세요",
-  "orderState" : "BEFORE_PAY",
+  "userEmail" : "para@bole.com'",
+  "payState" : "TOSS",
+  "userName" : "김파라",
   "orderInfoState" : "BEFORE_PAY",
-  "payState" : "TOSS"
+  "userId" : 3,
+  "orderState" : "BEFORE_PAY"
 }
 ----

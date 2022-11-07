@@ -471,6 +471,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p><code><strong>Request</strong></code></p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/order?userId=3 HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:64970</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p><code><strong>Response</strong></code></p>
 </div>
@@ -482,10 +490,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 02 Nov 2022 00:30:09 GMT
+Date: Sun, 06 Nov 2022 14:02:18 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 2078
+Content-Length: 1966
 
 {
   "success" : true,
@@ -494,54 +502,54 @@ Content-Length: 2078
     "id" : 1,
     "state" : "BEFORE_PAY",
     "userId" : 3,
-    "userEmail" : "useremail3@naver.com",
-    "productId" : 1,
+    "userEmail" : "test3@test.com",
+    "productId" : 2,
     "productName" : "한우국밥",
     "productCnt" : 3,
     "productRemain" : 1000,
     "productPrice" : 33000,
     "productDiscountPrice" : 30000,
     "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-    "createdAt" : "2022-11-02T02:39:51"
+    "updatedAt" : null
   }, {
     "id" : 2,
     "state" : "BEFORE_PAY",
     "userId" : 3,
-    "userEmail" : "useremail3@naver.com",
+    "userEmail" : "test3@test.com",
     "productId" : 2,
     "productName" : "돼지국밥",
     "productCnt" : 3,
-    "productRemain" : 500,
+    "productRemain" : 1000,
     "productPrice" : 24000,
     "productDiscountPrice" : 22000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-    "createdAt" : "2022-11-02T02:39:51"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+    "updatedAt" : null
   }, {
     "id" : 3,
     "state" : "BEFORE_PAY",
     "userId" : 3,
-    "userEmail" : "useremail3@naver.com",
+    "userEmail" : "test3@test.com",
     "productId" : 5,
     "productName" : "비빔냉면",
     "productCnt" : 3,
-    "productRemain" : 10000,
+    "productRemain" : 2000,
     "productPrice" : 33000,
     "productDiscountPrice" : 30000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-    "createdAt" : "2022-11-02T02:39:51"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : null
   }, {
     "id" : 4,
     "state" : "BEFORE_PAY",
     "userId" : 3,
-    "userEmail" : "useremail3@naver.com",
+    "userEmail" : "test3@test.com",
     "productId" : 4,
     "productName" : "머리국밥",
     "productCnt" : 3,
-    "productRemain" : 2000,
+    "productRemain" : 3000,
     "productPrice" : 24000,
     "productDiscountPrice" : 22000,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
-    "createdAt" : "2022-11-02T02:39:51"
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v135732/LM/L0/00/00/44/87/51/7_/00/1/LML000004487517_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : null
   } ]
 }</code></pre>
 </div>
@@ -634,8 +642,8 @@ Content-Length: 2078
 <td class="tableblock halign-left valign-top"><p class="tableblock">상품 썸네일 이미지</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].createdAt</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.[].updatedAt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">주문 생성 일자</p></td>
 </tr>
 </tbody>
@@ -651,14 +659,14 @@ Content-Length: 2078
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/order HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:54098
-Content-Length: 197
+Host: parabole.com:64201
+Content-Length: 203
 
 {
   "userId" : 3,
   "orderId" : 1,
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2 ],
+    "orderInfoIdList" : [ 1, 2, 3, 4 ],
     "couponSerialNo" : "_쿠폰시리얼넘버_"
   } ],
   "orderPayState" : "NAVER_PAY"
@@ -676,7 +684,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 05:56:03 GMT
+Date: Sun, 06 Nov 2022 13:21:05 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 131
@@ -733,7 +741,7 @@ Content-Length: 131
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /api/v1/order HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:54152
+Host: parabole.com:64716
 Content-Length: 403
 
 {
@@ -746,8 +754,8 @@ Content-Length: 403
   "addressSimple" : "광진구",
   "addressDetail" : "12-33",
   "deliveryComment" : "문앞에 두고 연락주세요",
-  "orderState" : "PAY_COMPLETE",
-  "orderInfoState" : "DELIVERY",
+  "orderState" : "BEFORE_PAY",
+  "orderInfoState" : "BEFORE_PAY",
   "payState" : "TOSS"
 }</code></pre>
 </div>
@@ -757,20 +765,20 @@ Content-Length: 403
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 401 Unauthorized
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 05:57:08 GMT
+Date: Sun, 06 Nov 2022 14:00:57 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 124
+Content-Length: 88
 
 {
-  "success" : false,
-  "message" : "주문정보를 수정하는 중 문제가 발생했습니다.",
+  "success" : true,
+  "message" : "주문 정보 저장 완료",
   "data" : null
 }</code></pre>
 </div>
@@ -825,13 +833,13 @@ Content-Length: 124
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/v1/orderinfo HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:61384
+Host: parabole.com:50656
 Content-Length: 96
 
 {
   "userId" : 1,
   "orderInfoDto" : [ {
-    "productId" : 1,
+    "productId" : 2,
     "productCnt" : 1
   } ]
 }</code></pre>
@@ -842,19 +850,20 @@ Content-Length: 96
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 400 Bad Request
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 02:16:37 GMT
-Connection: close
-Content-Length: 109
+Date: Sun, 06 Nov 2022 14:12:40 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 106
 
 {
-  "success" : false,
-  "message" : "결제할 상품을 추가할 수 없습니다.",
+  "success" : true,
+  "message" : "결제목록에 상품을 추가했습니다.",
   "data" : null
 }</code></pre>
 </div>
@@ -904,7 +913,7 @@ Content-Length: 109
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/orderinfo?userId=3 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:61228</code></pre>
+Host: parabole.com:65098</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -918,7 +927,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 02:13:44 GMT
+Date: Sun, 06 Nov 2022 14:03:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1942
@@ -959,6 +968,19 @@ Content-Length: 1942
         "productThumbnailImg" : null,
         "updatedAt" : null
       }, {
+        "id" : 1,
+        "state" : "BEFORE_PAY",
+        "userId" : 3,
+        "userEmail" : "test3@test.com",
+        "productId" : 2,
+        "productName" : "한우국밥",
+        "productCnt" : 3,
+        "productRemain" : null,
+        "productPrice" : 33000,
+        "productDiscountPrice" : 30000,
+        "productThumbnailImg" : null,
+        "updatedAt" : null
+      }, {
         "id" : 2,
         "state" : "BEFORE_PAY",
         "userId" : 3,
@@ -969,19 +991,6 @@ Content-Length: 1942
         "productRemain" : null,
         "productPrice" : 24000,
         "productDiscountPrice" : 22000,
-        "productThumbnailImg" : null,
-        "updatedAt" : null
-      }, {
-        "id" : 1,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "test3@test.com",
-        "productId" : 1,
-        "productName" : "한우국밥",
-        "productCnt" : 3,
-        "productRemain" : null,
-        "productPrice" : 33000,
-        "productDiscountPrice" : 30000,
         "productThumbnailImg" : null,
         "updatedAt" : null
       } ],
@@ -1029,157 +1038,157 @@ Content-Length: 1942
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.cnt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문한 상품들의 총 개수</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">판매자별로 정렬된 상품 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].sellerId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">판매자 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].storeName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">판매자 상호 명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문한 상품 정보</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상세 주문 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상세 주문 상태</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userEmail</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이메일</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 ID</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productCnt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문한 상품 개수</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productRemain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">남아있는 상품 재고</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 총 가격</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 할인 가격</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상품 썸네일</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Null</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">주문 수정 날짜</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 정보</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">할인율 쿠폰 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon.[].couponName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 이름</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon.[].serialNo</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 시리얼 넘버</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon.[].storeName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰을 발행한 판매자 상호 명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon.[].type</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 타입(할인율)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.rateCoupon.[].discountValue</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">할인되는 퍼센티지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">금액 할인 쿠폰 목록</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon.[].couponName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 이름</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon.[].serialNo</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 시리얼 넘버</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon.[].storeName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰을 발행한 판매자 상호 명</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon.[].type</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">쿠폰 타입(금액)</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.orderBySellerDtoList.[].couponDto.amountCoupon.[].discountValue</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">주문 정보</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">할인되는 금액</p></td>
 </tr>
 </tbody>
 </table>
@@ -1194,7 +1203,7 @@ Content-Length: 1942
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/v1/orderinfo/seller?userId=1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:63735</code></pre>
+Host: parabole.com:65098</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1208,7 +1217,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 03:12:51 GMT
+Date: Sun, 06 Nov 2022 14:03:00 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 1986
@@ -1373,7 +1382,7 @@ Content-Length: 1986
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-04 15:34:11 +0900
+Last updated 2022-11-07 09:29:11 +0900
 </div>
 </div>
 </body>

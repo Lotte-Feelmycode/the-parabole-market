@@ -1,19 +1,18 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 404 Not Found
+HTTP/1.1 400 Bad Request
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 07 Nov 2022 00:40:21 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 131
+Date: Mon, 07 Nov 2022 03:48:05 GMT
+Connection: close
+Content-Length: 88
 
 {
   "success" : false,
-  "message" : "해당 일련번호를 가지는 쿠폰이 존재하지 않습니다.",
+  "message" : "데이터가 없습니다.",
   "data" : null
 }
 ----

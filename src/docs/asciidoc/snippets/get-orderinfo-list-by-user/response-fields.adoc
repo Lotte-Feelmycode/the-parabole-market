@@ -43,7 +43,7 @@
 
 |`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state+`
 |`+String+`
-|상세 주문 상태
+|상세 주문 상태. {'BEFORE_PAY': '입금 전', 'PAY_COMPLETE': '주문완료(결제)', 'BEFORE_DELIVERY': '배송 준비', 'DELIVERY': '배송 중', 'DELIVERY_COMPLETE': '배송 완료', 'BEFORE_ORDER': '주문 전', 'ORDER_CANCEL': '주문 취소', 'REFUND': '환불', 'ERROR': '에러'}
 
 |`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userId+`
 |`+Number+`

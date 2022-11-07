@@ -3,15 +3,15 @@
 POST /api/v1/product HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:58043
+Host: parabole.com:61406
 Content-Length: 177
 
 {
+  "productThumbnailImg" : "img.jpg",
+  "productRemains" : 30,
   "userId" : 1,
   "productName" : "테스트",
-  "productRemains" : 30,
   "productPrice" : 500,
-  "productCategory" : "테스트",
-  "productThumbnailImg" : "img.jpg"
+  "productCategory" : "테스트"
 }
 ----

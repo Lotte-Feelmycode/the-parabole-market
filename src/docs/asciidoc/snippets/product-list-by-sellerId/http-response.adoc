@@ -6,31 +6,31 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 07 Nov 2022 00:46:13 GMT
+Date: Mon, 07 Nov 2022 03:52:52 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 4792
+Content-Length: 3847
 
 {
   "success" : true,
   "message" : "판매자가 등록한 상품 목록",
   "data" : {
     "content" : [ {
-      "productId" : 6,
+      "productId" : 5,
       "productName" : "비빔냉면",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
       "productStatus" : 1,
-      "productRemains" : 10000,
+      "productRemains" : 10,
       "productPrice" : 5000,
       "productCategory" : "면",
       "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "productCreatedAt" : "2022-11-03T20:10:18",
-      "productUpdatedAt" : "2022-11-03T20:10:18",
+      "productCreatedAt" : "2022-10-06T16:52:06",
+      "productUpdatedAt" : "2022-10-28T10:38:43",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     }, {
-      "productId" : 7,
+      "productId" : 6,
       "productName" : "물냉면",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
@@ -39,119 +39,91 @@ Content-Length: 4792
       "productPrice" : 6000,
       "productCategory" : "면",
       "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "productCreatedAt" : "2022-11-03T20:10:18",
-      "productUpdatedAt" : "2022-11-03T20:10:18",
+      "productCreatedAt" : "2022-10-06T16:52:06",
+      "productUpdatedAt" : "2022-10-28T15:23:15",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     }, {
-      "productId" : 8,
+      "productId" : 7,
       "productName" : "막국수",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
       "productStatus" : 1,
-      "productRemains" : 20000,
+      "productRemains" : 19984,
       "productPrice" : 7000,
       "productCategory" : "면",
       "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "productCreatedAt" : "2022-11-03T20:10:18",
-      "productUpdatedAt" : "2022-11-03T20:10:18",
+      "productCreatedAt" : "2022-10-06T16:52:06",
+      "productUpdatedAt" : "2022-10-28T12:42:24",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     }, {
-      "productId" : 14,
+      "productId" : 66,
       "productName" : "테스트",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
-      "productStatus" : 0,
+      "productStatus" : 1,
       "productRemains" : 30,
       "productPrice" : 500,
       "productCategory" : "테스트",
       "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-06T21:52:23",
-      "productUpdatedAt" : "2022-11-06T21:52:23",
+      "productCreatedAt" : "2022-11-03T17:38:55",
+      "productUpdatedAt" : "2022-11-03T17:38:55",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     }, {
-      "productId" : 15,
+      "productId" : 67,
       "productName" : "테스트",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
-      "productStatus" : 0,
+      "productStatus" : 1,
       "productRemains" : 30,
       "productPrice" : 500,
       "productCategory" : "테스트",
       "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-06T21:52:24",
-      "productUpdatedAt" : "2022-11-06T21:52:24",
+      "productCreatedAt" : "2022-11-03T17:39:43",
+      "productUpdatedAt" : "2022-11-03T17:39:43",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     }, {
-      "productId" : 16,
+      "productId" : 68,
       "productName" : "테스트",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
-      "productStatus" : 0,
+      "productStatus" : 1,
       "productRemains" : 30,
       "productPrice" : 500,
       "productCategory" : "테스트",
       "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-06T22:07:38",
-      "productUpdatedAt" : "2022-11-06T22:07:38",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 17,
-      "productName" : "테스트",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 0,
-      "productRemains" : 30,
-      "productPrice" : 500,
-      "productCategory" : "테스트",
-      "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-06T22:07:39",
-      "productUpdatedAt" : "2022-11-06T22:07:39",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 19,
-      "productName" : "테스트",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 0,
-      "productRemains" : 30,
-      "productPrice" : 500,
-      "productCategory" : "테스트",
-      "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-06T22:08:33",
-      "productUpdatedAt" : "2022-11-06T22:08:33",
+      "productCreatedAt" : "2022-11-03T17:44:38",
+      "productUpdatedAt" : "2022-11-03T17:44:38",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     } ],
     "pageable" : {
       "sort" : {
         "empty" : true,
-        "sorted" : false,
-        "unsorted" : true
+        "unsorted" : true,
+        "sorted" : false
       },
       "offset" : 0,
-      "pageSize" : 20,
       "pageNumber" : 0,
-      "paged" : true,
-      "unpaged" : false
+      "pageSize" : 20,
+      "unpaged" : false,
+      "paged" : true
     },
-    "totalElements" : 8,
-    "totalPages" : 1,
     "last" : true,
+    "totalPages" : 1,
+    "totalElements" : 6,
     "size" : 20,
     "number" : 0,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
-    "numberOfElements" : 8,
     "first" : true,
+    "numberOfElements" : 6,
     "empty" : false
   }
 }

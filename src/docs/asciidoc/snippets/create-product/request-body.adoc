@@ -1,11 +1,11 @@
 [source,options="nowrap"]
 ----
 {
+  "productThumbnailImg" : "img.jpg",
+  "productRemains" : 30,
   "userId" : 1,
   "productName" : "테스트",
-  "productRemains" : 30,
   "productPrice" : 500,
-  "productCategory" : "테스트",
-  "productThumbnailImg" : "img.jpg"
+  "productCategory" : "테스트"
 }
 ----

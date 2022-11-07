@@ -32,6 +32,10 @@ include::{resource-dir}/product-list-by-sellerId/response-fields.adoc[]
 
 include::{resource-dir}/get-product/http-request.adoc[]
 
+`*Fields*`
+
+include::{resource-dir}/get-product/request-parameters.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/get-product/http-response.adoc[]
