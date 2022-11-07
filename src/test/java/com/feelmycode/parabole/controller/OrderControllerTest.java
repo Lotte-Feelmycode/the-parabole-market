@@ -157,7 +157,7 @@ public class OrderControllerTest {
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격").optional(),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").description("주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss")
+                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.STRING).description("주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss").optional()
                 )
             ))
             .when()
