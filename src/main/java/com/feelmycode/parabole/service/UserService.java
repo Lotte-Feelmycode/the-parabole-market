@@ -1,5 +1,10 @@
 package com.feelmycode.parabole.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.GoogleOauthToken;
+import com.feelmycode.parabole.domain.GoogleProfile;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
@@ -15,11 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -32,6 +45,12 @@ public class UserService {
     private final CartService cartService;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Value("${sns.google.client-id}")
+    private String googleClientId;
+    @Value("${sns.google.client-secret}")
+    private String googleClientSecret;
+    @Value("${sns.google.redirect-uri}")
+    private String googleRedirectUri;
 
     @Transactional
     public UserDto create(UserDto userDTO) {
@@ -118,4 +137,94 @@ public class UserService {
         return dtos;
     }
 
+    public GoogleOauthToken getAccessTokenGoogle(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", googleClientId);
+        params.add("client_secret", googleClientSecret);
+        params.add("redirect_uri", googleRedirectUri);
+        params.add("grant_type", "authorization_code");
+        HttpEntity<MultiValueMap<String, String>> googleTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://oauth2.googleapis.com/token",
+            HttpMethod.POST,
+            googleTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        GoogleOauthToken googleOauthToken = null;
+        try {
+            googleOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), GoogleOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        log.info(">>>>>>> googleOauthToken {}", googleOauthToken);
+        return googleOauthToken;
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenGoogle(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        GoogleProfile profile = findProfileGoogle(token);
+        log.info(" >>>>>>>>>>>> Google Profile {}", profile.toString());
+
+        User user = userRepository.findByEmail(profile.getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.getId())
+                .imageUrl(profile.getPicture())
+                .email(profile.getEmail())
+                .username(profile.getName())
+                .nickname(profile.getName())
+                .authProvider("Google")
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+        log.info(" >>>>>>>>>>>> Generated Custom Jwt token {}", userToken);
+
+        return UserLoginResponseDto.builder().userId(user.getId()).email(user.getEmail())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).role(user.getRole())
+            .imageUrl(user.getImageUrl()).authProvider("Google").build();
+    }
+
+    public GoogleProfile findProfileGoogle(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> googleProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> googleProfileResponse = restTemplate.exchange(
+            "https://www.googleapis.com/oauth2/v2/userinfo?alt=json",
+            HttpMethod.GET,
+            googleProfileRequest,
+            String.class
+        );
+        log.info("ResponseEntity<String> googleProfileResponse RestTemplate {}",googleProfileResponse.toString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        GoogleProfile googleProfile = null;
+        try {
+            googleProfile = objectMapper.readValue(googleProfileResponse.getBody(), GoogleProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        log.info(" >>>>>>>>>>>> GoogleProfile Form {}", googleProfile.toString());
+        return googleProfile;
+    }
 }
