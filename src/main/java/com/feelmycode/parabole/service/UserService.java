@@ -2,17 +2,21 @@ package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
+import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
+import com.feelmycode.parabole.dto.UserLoginResponseDto;
 import com.feelmycode.parabole.dto.UserSearchDto;
 import com.feelmycode.parabole.global.error.exception.NoSuchAccountException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.JwtUtils;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,30 +30,50 @@ public class UserService {
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final CartService cartService;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
     @Transactional
-    public User create(final User user) {
-        if(user == null || user.getEmail() == null ) {
-            throw new ParaboleException(HttpStatus.BAD_REQUEST, "잘못된 이메일입니다.");
+    public UserDto create(UserDto userDTO) {
+        String email = userDTO.getEmail();
+        if(StringUtil.controllerParamIsBlank(email)) {
+            throw new ParaboleException(HttpStatus.BAD_REQUEST, "이메일을 입력하세요.");
         }
-        final String email = user.getEmail();
         if(userRepository.existsByEmail(email)) {
             log.warn("Email already exists {}", email);
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 사용중인 이메일입니다.");
         }
 
-        User save = userRepository.save(user);
-        Long cartId = cartService.createCart(save.getId());
-        log.info("{} - 카트 생성완료: {}", save.getId(), cartId);
-        return save;
+        User user = User.builder()
+            .email(userDTO.getEmail())
+            .username(userDTO.getName())
+            .nickname(userDTO.getNickname())
+            .phone(userDTO.getPhone())
+            .password(passwordEncoder.encode(userDTO.getPassword()))
+            .imageUrl("https://ssl.pstatic.net/static/cafe/cafe_pc/default/cafe_profile_77.png")
+            .role("ROLE_USER")
+            .authProvider("Home")
+            .build();
+        User newUser = userRepository.save(user);
+
+        return UserDto.builder()
+            .id(newUser.getId())
+            .name(newUser.getUsername())
+            .nickname(newUser.getNickname())
+            .build();       // welcome page 위한 부분
     }
 
-    public User getByCredentials(final String email, final String password, final PasswordEncoder encoder) {
-        final User originalUser = userRepository.findByEmail(email);
-        if(originalUser != null && encoder.matches(password, originalUser.getPassword())) {
-            return originalUser;
+    public UserLoginResponseDto getByCredentials(UserDto userDto) {
+        User originalUser = userRepository.findByEmail(userDto.getEmail());
+
+        if(originalUser != null && passwordEncoder.matches(userDto.getPassword(), originalUser.getPassword())) {
+            String token = jwtUtils.generateToken(originalUser);
+            log.info("generated Token {}", token);
+
+            return new UserLoginResponseDto(originalUser, token);
+        } else {
+            throw new NoSuchAccountException();
         }
-        return null;
     }
 
     public boolean isSeller(Long userId) {
