@@ -1,8 +1,8 @@
 [source,http,options="nowrap"]
 ----
-DELETE /api/v1/event/100 HTTP/1.1
+DELETE /api/v1/event/102 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:56955
+Host: parabole.com:57029
 
 ----

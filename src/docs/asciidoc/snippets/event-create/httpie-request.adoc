@@ -13,11 +13,11 @@ $ echo '{
     "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 130,
+    "id" : 132,
     "type" : "PRODUCT",
     "stock" : 40
   } ]
-}' | http POST 'https://parabole.com:56955/api/v1/event' \
+}' | http POST 'https://parabole.com:57029/api/v1/event' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----

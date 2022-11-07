@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:56955/api/v1/event' -i -X POST \
+$ curl 'https://parabole.com:57029/api/v1/event' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -16,7 +16,7 @@ $ curl 'https://parabole.com:56955/api/v1/event' -i -X POST \
     "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 130,
+    "id" : 132,
     "type" : "PRODUCT",
     "stock" : 40
   } ]

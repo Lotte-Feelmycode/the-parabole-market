@@ -6,10 +6,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 07 Nov 2022 03:10:18 GMT
+Date: Mon, 07 Nov 2022 03:13:43 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 18563
+Content-Length: 14599
 
 {
   "success" : true,
@@ -396,146 +396,6 @@ Content-Length: 18563
       "productId" : 7,
       "productName" : "막국수",
       "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 85,
-    "storeName" : "u1-s1's store",
-    "sellerId" : 1,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "????????????",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 113,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 90,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 87,
-    "storeName" : "u1-s1's store",
-    "sellerId" : 1,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "????????????",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 115,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 92,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 89,
-    "storeName" : "u1-s1's store",
-    "sellerId" : 1,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 117,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 118,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 91,
-    "storeName" : "u1-s1's store",
-    "sellerId" : 1,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 119,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 120,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 93,
-    "storeName" : "u1-s1's store",
-    "sellerId" : 1,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 121,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 122,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
       "couponId" : null,
       "couponDetail" : null,
       "type" : null,

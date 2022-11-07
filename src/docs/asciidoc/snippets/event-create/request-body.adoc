@@ -13,7 +13,7 @@
     "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 130,
+    "id" : 132,
     "type" : "PRODUCT",
     "stock" : 40
   } ]
