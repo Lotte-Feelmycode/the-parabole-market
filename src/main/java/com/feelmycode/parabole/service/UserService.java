@@ -6,14 +6,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserInfoResponseDto;
+import com.feelmycode.parabole.dto.UserLoginResponseDto;
 import com.feelmycode.parabole.dto.UserSearchDto;
+import com.feelmycode.parabole.global.error.exception.NoSuchAccountException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserRepository;
+import com.feelmycode.parabole.security.model.GoogleOauthToken;
+import com.feelmycode.parabole.security.model.GoogleProfile;
 import com.feelmycode.parabole.security.model.KakaoOauthToken;
 import com.feelmycode.parabole.security.model.KakaoProfile;
 import com.feelmycode.parabole.security.model.NaverOauthToken;
 import com.feelmycode.parabole.security.model.NaverProfile;
-import com.feelmycode.parabole.security.utils.TokenProvider;
+import com.feelmycode.parabole.security.utils.JwtUtils;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +41,29 @@ import org.springframework.web.client.RestTemplate;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final TokenProvider tokenProvider;
+    private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final CartService cartService;
+
+    @Value("${sns.google.client-id}")
+    private String googleClientId;
+    @Value("${sns.google.client-secret}")
+    private String googleClientSecret;
+    @Value("${sns.google.redirect-uri}")
+    private String googleRedirectUri;
+    @Value("${sns.naver.client-id}")
+    private String naverClientId;
+    @Value("${sns.naver.client-secret}")
+    private String naverClientSecret;
+    @Value("${sns.naver.redirect-uri}")
+    private String naverRedirectUri;
+
+    @Value("${sns.kakao.client-id}")
+    private String kakaoClientId;
+    //    @Value("${sns.kakao.client-secret}")
+//    private String kakaoClientSecret;
+    @Value("${sns.kakao.redirect-uri}")
+    private String kakaoRedirectUri;
 
     @Transactional
     public User create(final User user) {
@@ -102,7 +126,8 @@ public class UserService {
 //    }
 
     public boolean isSeller(Long userId) {
-        return !getUser(userId).sellerIsNull();
+        return userRepository.findById(userId).orElseThrow(() -> new NoSuchAccountException())
+            .getRole().equals("ROLE_SELLER");
     }
 
     public Seller getSeller(Long userId) {
@@ -112,7 +137,7 @@ public class UserService {
     public UserInfoResponseDto getUserInfo(Long userId) {
 
         User user = getUser(userId);
-        if(user.sellerIsNull()){
+        if(user.getRole().equals("ROLE_USER")){
             return new UserInfoResponseDto(user.getEmail(), user.getUsername(), user.getNickname(), "USER", user.getPhone());
         }
         return new UserInfoResponseDto(user.getEmail(), user.getUsername(), user.getNickname(), "SELLER", user.getPhone());
@@ -121,10 +146,6 @@ public class UserService {
     public User getUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(
             () -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 사용자Id로 조회되는 사용자가 존재하지 않습니다."));
-    }
-
-    public void changeRoleToSeller(User user, Seller seller) {
-        user.setSeller(seller);
     }
 
     public List<UserSearchDto> getNonSellerUsers(String userName) {
@@ -149,54 +170,98 @@ public class UserService {
         return dtos;
     }
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    private String kakaoClientId;
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
-    private String kakaoRedirectUri;
-    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
-    private String kakaoClientSecret;
+// =========================================================================================================
 
-    public KakaoOauthToken getAccessTokenKakao(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
-
+    public GoogleOauthToken getAccessTokenGoogle(String code) {
         RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
         params.add("code", code);
-        params.add("client_id", kakaoClientId);
-        params.add("redirect_uri", kakaoRedirectUri);
-//        params.add("client_secret", kakaoClientSecret);
-
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+        params.add("client_id", googleClientId);
+        params.add("client_secret", googleClientSecret);
+        params.add("redirect_uri", googleRedirectUri);
+        params.add("grant_type", "authorization_code");
+        HttpEntity<MultiValueMap<String, String>> googleTokenRequest =
             new HttpEntity<>(params, headers);
 
         ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
-            "https://kauth.kakao.com/oauth/token",
+            "https://oauth2.googleapis.com/token",
             HttpMethod.POST,
-            kakaoTokenRequest,
+            googleTokenRequest,
             String.class
         );
 
         ObjectMapper objectMapper = new ObjectMapper();
-        KakaoOauthToken kakaoOauthToken = null;
+        GoogleOauthToken googleOauthToken = null;
         try {
-            kakaoOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOauthToken.class);
+            googleOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), GoogleOauthToken.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return kakaoOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+//        log.info(">>>>>>> googleOauthToken {}", googleOauthToken);
+        return googleOauthToken;
     }
 
-    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
-    private String naverClientId;
-    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
-    private String naverRedirectUri;
-    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
-    private String naverClientSecret;
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenGoogle(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        GoogleProfile profile = findProfileGoogle(token);
+        log.info(" >>>>>>>>>>>> Google Profile {}", profile.toString());
+
+        User user = userRepository.findByEmail(profile.getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.getId())
+                .imageUrl(profile.getPicture())
+                .email(profile.getEmail())
+                .username(profile.getName())
+                .nickname(profile.getName())
+                .authProvider("Google")
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+        log.info(" >>>>>>>>>>>> Generated Custom Jwt token {}", userToken);
+
+        return UserLoginResponseDto.builder().id(user.getId()).email(user.getEmail())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).role(user.getRole())
+            .imageUrl(user.getImageUrl()).authProvider("Google").build();
+    }
+
+    public GoogleProfile findProfileGoogle(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> googleProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> googleProfileResponse = restTemplate.exchange(
+            "https://www.googleapis.com/oauth2/v2/userinfo?alt=json",
+            HttpMethod.GET,
+            googleProfileRequest,
+            String.class
+        );
+        log.info("ResponseEntity<String> googleProfileResponse RestTemplate {}",googleProfileResponse.toString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        GoogleProfile googleProfile = null;
+        try {
+            googleProfile = objectMapper.readValue(googleProfileResponse.getBody(), GoogleProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        log.info(" >>>>>>>>>>>> GoogleProfile Form {}", googleProfile.toString());
+        return googleProfile;
+    }
 
     public NaverOauthToken getAccessTokenNaver(String code, String state) {
 
@@ -234,6 +299,131 @@ public class UserService {
         return naverOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
     }
 
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenNaver(String token) {
+        NaverProfile profile = findProfileNaver(token);
+
+//        String name = new String(profile.getResponse().getName().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+//        String nickname = new String(profile.getResponse().getNickname().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+
+        User user = userRepository.findByEmail(profile.getResponse().getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.response.getId())
+                .imageUrl(profile.getResponse().getProfile_image())
+                .username(profile.getResponse().getName())
+                .nickname(profile.getResponse().getNickname())
+//                .username(name)
+//                .nickname(nickname)
+                .email(profile.getResponse().getEmail())
+                .authProvider("Naver")
+                .phone(profile.getResponse().getMobile())
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+
+        return UserLoginResponseDto.builder().id(user.getId()).email(user.getEmail()).role(user.getRole())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).phone(user.getPhone())
+            .imageUrl(user.getImageUrl()).authProvider("Naver").build();
+    }
+
+    public NaverProfile findProfileNaver(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> naverProfileResponse = restTemplate.exchange(
+            "https://openapi.naver.com/v1/nid/me",
+            HttpMethod.GET,
+            naverProfileRequest,
+            String.class
+        );
+        log.info("naverProfileResponse RestTemplate{}",naverProfileResponse.toString());    // 한글 깨짐 발생
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        NaverProfile naverProfile = null;
+        try {
+            naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("naverProfileResponse RestTemplate{}",naverProfile.toString());            // 한글 정상
+
+        return naverProfile;
+    }
+
+
+    public KakaoOauthToken getAccessTokenKakao(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
+
+        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("client_id", kakaoClientId);
+        params.add("redirect_uri", kakaoRedirectUri);
+//        params.add("client_secret", kakaoClientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://kauth.kakao.com/oauth/token",
+            HttpMethod.POST,
+            kakaoTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoOauthToken kakaoOauthToken = null;
+        try {
+            kakaoOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return kakaoOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenKakao(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        KakaoProfile profile = findProfileKakao(token);
+        log.info(">>>>>>>>>>>> KakaoProfile sent from Kakao (Before Custom) {}", profile.toString());
+
+        User user = userRepository.findByEmail(profile.getKakao_account().getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.getId())
+                .imageUrl(profile.getKakao_account().getProfile().getProfile_image_url())
+                .username(profile.getKakao_account().getProfile().getNickname())
+                .nickname(profile.getKakao_account().getProfile().getNickname())
+                .email(profile.getKakao_account().getEmail())
+                .authProvider("Kakao")
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+
+        return UserLoginResponseDto.builder().id(user.getId()).email(user.getEmail())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).role(user.getRole())
+            .imageUrl(user.getImageUrl()).authProvider("Kakao").build();
+
+    }
+
     public KakaoProfile findProfileKakao(String token) {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -242,8 +432,7 @@ public class UserService {
         headers.add("Authorization", "Bearer " + token); //(1-4)
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
-            new HttpEntity<>(headers);
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
 
         ResponseEntity<String> kakaoProfileResponse = restTemplate.exchange(
             "https://kapi.kakao.com/v2/user/me",
@@ -259,89 +448,8 @@ public class UserService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        log.info("kakaoProfile {}", kakaoProfile);
+
         return kakaoProfile;
-    }
-
-    @Transactional
-    public String saveUserAndGetTokenKakao(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
-        KakaoProfile profile = findProfileKakao(token);
-        log.info(profile.toString());
-
-        User user = userRepository.findByEmail(profile.getKakao_account().getEmail());
-        if(user == null) {
-            user = User.builder()
-                .id(profile.getId())
-                .imageUrl(profile.getKakao_account().getProfile().getProfile_image_url())
-                .nickname(profile.getKakao_account().getProfile().getNickname())
-                .email(profile.getKakao_account().getEmail())
-                .authProvider("Kakao")
-                .username(profile.getKakao_account().getProfile().getNickname())
-//                .phone(user.getPhone())
-                .role("ROLE_USER").build();
-
-            userRepository.save(user);
-        }
-        return tokenProvider.create(user);
-    }
-
-    public NaverProfile findProfileNaver(String token) {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token); //(1-4)
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> naverProfileRequest =
-            new HttpEntity<>(headers);
-
-        // Http 요청 (POST 방식) 후, response 변수에 응답을 받음
-        ResponseEntity<String> naverProfileResponse = restTemplate.exchange(
-            "https://openapi.naver.com/v1/nid/me",
-            HttpMethod.GET,
-            naverProfileRequest,
-            String.class
-        );
-
-        log.info("naverProfileResponse {}",naverProfileResponse.toString());
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        이 설정을 통해 JSON의 모든 데이터를 파싱하는 것이 아닌 내가 필요로 하는 데이터, 즉 내가 필드로 선언한 데이터들만 파싱할 수 있다.
-
-        NaverProfile naverProfile = null;
-        try {
-            naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
-            System.out.println(naverProfile.getResultcode());
-            System.out.println(naverProfile.getMessage());
-            System.out.println(naverProfile.getResponse());
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return naverProfile;
-    }
-
-    @Transactional
-    public String saveUserAndGetTokenNaver(String token) {
-        NaverProfile profile = findProfileNaver(token);
-
-        User user = userRepository.findByEmail(profile.response.getEmail());
-        if(user == null) {
-            user = User.builder()
-//                .id(profile.response.getId())
-                .imageUrl(profile.getResponse().getProfile_image())
-                .nickname(profile.getResponse().getNickname())
-                .email(profile.getResponse().getEmail())
-                .authProvider("Naver")
-                .username(profile.getResponse().getNickname())
-                .phone(profile.getResponse().getMobile())
-                .role("ROLE_USER").build();
-
-            userRepository.save(user);
-        }
-        return tokenProvider.create(user);
     }
 
 }
