@@ -74,16 +74,11 @@ public class OrderControllerTest {
 
         request.put("orderInfoRequestList", requestListDto);
         request.put("orderPayState", "NAVER_PAY");
-        request.put("userName", "김파라");
-        request.put("userEmail", "para@bole.com");
-        request.put("userPhone", "010-2345-6789");
         request.put("receiverName", "김파라");
         request.put("receiverPhone", "010-2345-6789");
-        request.put("addressSimple", "광진구");
-        request.put("addressDetail", "12-33");
+        request.put("addressSimple", "광진구 12-33");
+        request.put("addressDetail", "광진구 12-33");
         request.put("deliveryComment", "문앞에 두고 연락주세요");
-        request.put("orderState", "PAY_COMPLETE");
-        request.put("orderInfoState", "DELIVERY");
 
         // When
         Response resp = given(this.spec)
@@ -102,16 +97,11 @@ public class OrderControllerTest {
                     fieldWithPath("orderInfoRequestList").type(JsonFieldType.ARRAY).description("상세주문과 적용한 쿠폰 정보"),
                     fieldWithPath("orderInfoRequestList.[].orderInfoIdList").type(JsonFieldType.ARRAY).description("상세주문 ID 리스트"),
                     fieldWithPath("orderInfoRequestList.[].couponSerialNo").type(JsonFieldType.STRING).description("쿠폰 시리얼 넘버"),
-                    fieldWithPath("userName").type(JsonFieldType.STRING).description("사용자 이름"),
-                    fieldWithPath("userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
-                    fieldWithPath("userPhone").type(JsonFieldType.STRING).description("사용자 전화번호"),
                     fieldWithPath("receiverName").type(JsonFieldType.STRING).description("받는사람 이름"),
                     fieldWithPath("receiverPhone").type(JsonFieldType.STRING).description("받는사람 전화번호"),
                     fieldWithPath("addressSimple").type(JsonFieldType.STRING).description("주소지"),
-                    fieldWithPath("addressDetail").type(JsonFieldType.STRING).description("상세 주소지"),
+                    fieldWithPath("addressDetail").type(JsonFieldType.STRING).description("상세 주소지(현재는 주소록API와 연결되지 않아 Simple/Detail을 동일하게 사용)"),
                     fieldWithPath("deliveryComment").type(JsonFieldType.STRING).description("배송 메세지"),
-                    fieldWithPath("orderState").type(JsonFieldType.STRING).description("주문 상태. {\'BEFORE_PAY\': \'주문 확정 전\', \'PAY_COMPLETE\': \'주문 확정\', \'DELIVERY_COMPLETE\': \'모든 배송 완료\', \'ERROR\': \'에러\'}"),
-                    fieldWithPath("orderInfoState").type(JsonFieldType.STRING).description("상세주문 상태. {\'BEFORE_PAY\': \'입금 전\', \'PAY_COMPLETE\': \'주문완료(결제)\', \'BEFORE_DELIVERY\': \'배송준비\', \'DELIVERY\': \'배송중\', \'DELIVERY_COMPLETE\': \'배송완료\', \'BEFORE_ORDER\': \'주문 전\', \'ORDER_CANCEL\': \'주문 취소\', \'REFUND\': \'환불\', \'ERROR\': \'에러\'}"),
                     fieldWithPath("orderPayState").type(JsonFieldType.STRING).description("주문 결제 수단. {\'CARD\': \'카드결제\', \'BANK_TRANSFER\': \'실시간 계좌 이체\', \'PHONE\': \'휴대폰 결제\', \'VIRTUAL_ACCOUNT\': \'가상계좌\', \'KAKAO_PAY\': \'카카오 페이\', \'TOSS\': \'토스\', \'WITHOUT_BANK\': \'무통장 입금\', \'WITHOUT_BANK_PAY\': \'무통장 입금 결제 완료\', \'NAVER_PAY\': \'네이버 페이\', \'ERROR\': \'에러\'}")
                 ),
                 responseFields(

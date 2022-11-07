@@ -1,24 +1,19 @@
 [source,bash]
 ----
 $ echo '{
-  "addressSimple" : "광진구",
+  "addressSimple" : "광진구 12-33",
+  "receiverPhone" : "010-2345-6789",
+  "addressDetail" : "광진구 12-33",
   "orderId" : 1,
   "orderPayState" : "NAVER_PAY",
   "receiverName" : "김파라",
-  "userPhone" : "010-2345-6789",
   "deliveryComment" : "문앞에 두고 연락주세요",
-  "userName" : "김파라",
-  "userId" : 3,
-  "orderState" : "PAY_COMPLETE",
-  "receiverPhone" : "010-2345-6789",
-  "addressDetail" : "12-33",
-  "userEmail" : "para@bole.com",
   "orderInfoRequestList" : [ {
     "couponSerialNo" : "",
     "orderInfoIdList" : [ 1, 2, 3 ]
   } ],
-  "orderInfoState" : "DELIVERY"
-}' | http POST 'https://parabole.com:51479/api/v1/order' \
+  "userId" : 3
+}' | http POST 'https://parabole.com:54408/api/v1/order' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----
