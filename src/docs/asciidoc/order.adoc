@@ -46,24 +46,6 @@ include::{resource-dir}/update-order/http-response.adoc[]
 
 include::{resource-dir}/update-order/response-fields.adoc[]
 
-=== 주문 배달 수정
-
-`*Request*`
-
-include::{resource-dir}/update-order-delivery/http-request.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/update-order-delivery/request-fields.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/update-order-delivery/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/update-order-delivery/response-fields.adoc[]
-
 == 주문 상세정보
 
 === 주문 상세정보 생성

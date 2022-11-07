@@ -37,17 +37,6 @@ public class UpdateService {
     private final CartService cartService;
 
     @Transactional
-    public void updateDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
-        Order order = orderService.getOrder(deliveryDto.getUserId());
-        order.saveDeliveryInfo(deliveryDto);
-        List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
-        for(OrderInfo orderInfo : getOrderInfoList) {
-            updateOrderInfoState(
-                new OrderInfoRequestDto(deliveryDto.getUserId(), orderInfo.getId(), deliveryDto.getOrderState()));
-        }
-    }
-
-    @Transactional
     public void updateOrderInfoState(OrderInfoRequestDto orderInfoRequestDto) {
         try {
             OrderInfo getOrderInfo = orderInfoRepository.findById(orderInfoRequestDto.getOrderInfoId())
@@ -86,6 +75,9 @@ public class UpdateService {
         if(order.getState() < 1) {
             order.setState(order.getState()+1);
         }
+
+        order.saveDeliveryInfo(orderUpdateRequestDto);
+        updateOrderInfoState(new OrderInfoRequestDto(orderUpdateRequestDto.getUserId(), orderUpdateRequestDto.getOrderState()));
 
         // 쿠폰정보를 orderInfo에 저장
         orderInfoService.setCouponToOrderInfo(orderUpdateRequestDto);

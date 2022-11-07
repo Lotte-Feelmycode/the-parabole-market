@@ -11,15 +11,55 @@
 
 |`+orderInfoRequestList+`
 |`+Array+`
-|상세주문 정보 목록
+|상세주문과 적용한 쿠폰 정보
+
+|`+orderInfoRequestList.[].orderInfoIdList+`
+|`+Array+`
+|상세주문 ID 리스트
 
 |`+orderInfoRequestList.[].couponSerialNo+`
 |`+String+`
 |쿠폰 시리얼 넘버
 
-|`+orderInfoRequestList.[].orderInfoIdList+`
-|`+Array+`
-|쿠폰을 적용할 상세주문 ID
+|`+userName+`
+|`+String+`
+|사용자 이름
+
+|`+userEmail+`
+|`+String+`
+|사용자 이메일
+
+|`+userPhone+`
+|`+String+`
+|사용자 전화번호
+
+|`+receiverName+`
+|`+String+`
+|받는사람 이름
+
+|`+receiverPhone+`
+|`+String+`
+|받는사람 전화번호
+
+|`+addressSimple+`
+|`+String+`
+|주소지
+
+|`+addressDetail+`
+|`+String+`
+|상세 주소지
+
+|`+deliveryComment+`
+|`+String+`
+|배송 메세지
+
+|`+orderState+`
+|`+String+`
+|주문 상태. {'BEFORE_PAY': '주문 확정 전', 'PAY_COMPLETE': '주문 확정', 'DELIVERY_COMPLETE': '모든 배송 완료', 'ERROR': '에러'}
+
+|`+orderInfoState+`
+|`+String+`
+|상세주문 상태. {'BEFORE_PAY': '입금 전', 'PAY_COMPLETE': '주문완료(결제)', 'BEFORE_DELIVERY': '배송준비', 'DELIVERY': '배송중', 'DELIVERY_COMPLETE': '배송완료', 'BEFORE_ORDER': '주문 전', 'ORDER_CANCEL': '주문 취소', 'REFUND': '환불', 'ERROR': '에러'}
 
 |`+orderPayState+`
 |`+String+`
