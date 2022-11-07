@@ -136,7 +136,7 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice").description("상품 할인 가격"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg").description("상품 썸네일"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt").description("주문 수정 날짜"),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto").type(JsonFieldType.OBJECT).description("쿠폰 정보").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto").type(JsonFieldType.OBJECT).description("쿠폰 정보(할인율 쿠폰:RATE, 금액 할인 쿠폰:AMOUNT)").optional(),
                     fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon").type(JsonFieldType.ARRAY).description("할인율 쿠폰 목록").optional(),
                     fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름").optional(),
                     fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].serialNo").type(JsonFieldType.STRING).description("쿠폰 시리얼 넘버").optional(),

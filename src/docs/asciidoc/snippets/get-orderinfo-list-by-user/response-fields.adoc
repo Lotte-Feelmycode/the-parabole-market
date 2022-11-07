@@ -87,7 +87,7 @@
 
 |`+data.orderBySellerDtoList.[].couponDto+`
 |`+Object+`
-|쿠폰 정보
+|쿠폰 정보(할인율 쿠폰:RATE, 금액 할인 쿠폰:AMOUNT)
 
 |`+data.orderBySellerDtoList.[].couponDto.rateCoupon+`
 |`+Array+`
