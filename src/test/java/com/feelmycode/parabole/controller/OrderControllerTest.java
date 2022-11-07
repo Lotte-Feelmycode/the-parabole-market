@@ -129,7 +129,7 @@ public class OrderControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
-        @Test
+    @Test
     @DisplayName("주문 목록")
     public void getOrderList() {
         Response resp = given(this.spec)
