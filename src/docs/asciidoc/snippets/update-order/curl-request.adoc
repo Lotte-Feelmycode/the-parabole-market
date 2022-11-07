@@ -1,15 +1,25 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:54098/api/v1/order' -i -X POST \
+$ curl 'https://parabole.com:51479/api/v1/order' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json' \
     -d '{
-  "userId" : 3,
+  "addressSimple" : "광진구",
   "orderId" : 1,
+  "orderPayState" : "NAVER_PAY",
+  "receiverName" : "김파라",
+  "userPhone" : "010-2345-6789",
+  "deliveryComment" : "문앞에 두고 연락주세요",
+  "userName" : "김파라",
+  "userId" : 3,
+  "orderState" : "PAY_COMPLETE",
+  "receiverPhone" : "010-2345-6789",
+  "addressDetail" : "12-33",
+  "userEmail" : "para@bole.com",
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2 ],
-    "couponSerialNo" : "_쿠폰시리얼넘버_"
+    "couponSerialNo" : "",
+    "orderInfoIdList" : [ 1, 2, 3 ]
   } ],
-  "orderPayState" : "NAVER_PAY"
+  "orderInfoState" : "DELIVERY"
 }'
 ----

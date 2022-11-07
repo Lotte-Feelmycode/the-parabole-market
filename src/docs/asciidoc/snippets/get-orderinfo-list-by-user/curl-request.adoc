@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:61228/api/v1/orderinfo?userId=3' -i -X GET \
+$ curl 'https://parabole.com:54870/api/v1/orderinfo?userId=3' -i -X GET \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json'
 ----
