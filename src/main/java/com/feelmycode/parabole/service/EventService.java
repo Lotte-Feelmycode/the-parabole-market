@@ -8,31 +8,24 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
-import com.feelmycode.parabole.dto.EventSearchRequestDto;
 import com.feelmycode.parabole.dto.EventSearchResponseDto;
-import com.feelmycode.parabole.enumtype.EventStatus;
-import com.feelmycode.parabole.enumtype.EventType;
 import com.feelmycode.parabole.enumtype.PrizeType;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
-import com.feelmycode.parabole.repository.SellerRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,8 +34,6 @@ import org.springframework.util.StringUtils;
 public class EventService {
 
     private final EventRepository eventRepository;
-
-    private final SellerRepository sellerRepository;
 
     private final CouponRepository couponRepository;
 
