@@ -7,7 +7,7 @@ $ echo '{
   "productPrice" : 500,
   "productCategory" : "테스트",
   "productThumbnailImg" : "img.jpg"
-}' | http POST 'https://parabole.com:62062/api/v1/product' \
+}' | http POST 'https://parabole.com:58043/api/v1/product' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----

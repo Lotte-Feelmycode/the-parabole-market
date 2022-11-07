@@ -6,10 +6,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Sun, 06 Nov 2022 01:52:12 GMT
+Date: Mon, 07 Nov 2022 00:46:13 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 2437
+Content-Length: 4792
 
 {
   "success" : true,
@@ -57,6 +57,76 @@ Content-Length: 2437
       "productUpdatedAt" : "2022-11-03T20:10:18",
       "productDeletedAt" : null,
       "productIsDeleted" : false
+    }, {
+      "productId" : 14,
+      "productName" : "테스트",
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "productStatus" : 0,
+      "productRemains" : 30,
+      "productPrice" : 500,
+      "productCategory" : "테스트",
+      "productThumbnailImg" : "img.jpg",
+      "productCreatedAt" : "2022-11-06T21:52:23",
+      "productUpdatedAt" : "2022-11-06T21:52:23",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
+    }, {
+      "productId" : 15,
+      "productName" : "테스트",
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "productStatus" : 0,
+      "productRemains" : 30,
+      "productPrice" : 500,
+      "productCategory" : "테스트",
+      "productThumbnailImg" : "img.jpg",
+      "productCreatedAt" : "2022-11-06T21:52:24",
+      "productUpdatedAt" : "2022-11-06T21:52:24",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
+    }, {
+      "productId" : 16,
+      "productName" : "테스트",
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "productStatus" : 0,
+      "productRemains" : 30,
+      "productPrice" : 500,
+      "productCategory" : "테스트",
+      "productThumbnailImg" : "img.jpg",
+      "productCreatedAt" : "2022-11-06T22:07:38",
+      "productUpdatedAt" : "2022-11-06T22:07:38",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
+    }, {
+      "productId" : 17,
+      "productName" : "테스트",
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "productStatus" : 0,
+      "productRemains" : 30,
+      "productPrice" : 500,
+      "productCategory" : "테스트",
+      "productThumbnailImg" : "img.jpg",
+      "productCreatedAt" : "2022-11-06T22:07:39",
+      "productUpdatedAt" : "2022-11-06T22:07:39",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
+    }, {
+      "productId" : 19,
+      "productName" : "테스트",
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "productStatus" : 0,
+      "productRemains" : 30,
+      "productPrice" : 500,
+      "productCategory" : "테스트",
+      "productThumbnailImg" : "img.jpg",
+      "productCreatedAt" : "2022-11-06T22:08:33",
+      "productUpdatedAt" : "2022-11-06T22:08:33",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
     } ],
     "pageable" : {
       "sort" : {
@@ -67,12 +137,12 @@ Content-Length: 2437
       "offset" : 0,
       "pageSize" : 20,
       "pageNumber" : 0,
-      "unpaged" : false,
-      "paged" : true
+      "paged" : true,
+      "unpaged" : false
     },
-    "last" : true,
+    "totalElements" : 8,
     "totalPages" : 1,
-    "totalElements" : 3,
+    "last" : true,
     "size" : 20,
     "number" : 0,
     "sort" : {
@@ -80,8 +150,8 @@ Content-Length: 2437
       "sorted" : false,
       "unsorted" : true
     },
+    "numberOfElements" : 8,
     "first" : true,
-    "numberOfElements" : 3,
     "empty" : false
   }
 }

@@ -119,7 +119,7 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productCnt").type(JsonFieldType.NUMBER).description("주문한 상품 개수"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productRemain").description("남아있는 상품 재고"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productPrice").type(JsonFieldType.NUMBER).description("상품 총 가격"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice").description("상품 할인 가격"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg").description("상품 썸네일"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt").description("주문 수정 날짜"),
                     fieldWithPath("data.orderBySellerDtoList.[].couponDto").type(JsonFieldType.OBJECT).description("쿠폰 정보").optional(),

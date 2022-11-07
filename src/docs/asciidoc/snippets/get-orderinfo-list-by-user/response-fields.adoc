@@ -74,7 +74,7 @@
 |상품 총 가격
 
 |`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice+`
-|`+Number+`
+|`+Null+`
 |상품 할인 가격
 
 |`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg+`
@@ -82,7 +82,7 @@
 |상품 썸네일
 
 |`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt+`
-|`+Null+`
+|`+String+`
 |주문 수정 날짜
 
 |`+data.orderBySellerDtoList.[].couponDto+`

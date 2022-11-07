@@ -4,7 +4,7 @@ $ echo '{
   "userId" : 3,
   "orderInfoId" : 1,
   "orderState" : "BEFORE_PAY"
-}' | http PATCH 'https://parabole.com:65098/api/v1/orderinfo' \
+}' | http PATCH 'https://parabole.com:58089/api/v1/orderinfo' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----

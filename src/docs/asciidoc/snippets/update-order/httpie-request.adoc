@@ -8,7 +8,7 @@ $ echo '{
     "couponSerialNo" : "_쿠폰시리얼넘버_"
   } ],
   "orderPayState" : "NAVER_PAY"
-}' | http POST 'https://parabole.com:64201/api/v1/order' \
+}' | http POST 'https://parabole.com:52071/api/v1/order' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----
