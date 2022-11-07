@@ -1,0 +1,52 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|사용자 ID
+
+|`+userName+`
+|`+String+`
+|사용자 이름
+
+|`+userEmail+`
+|`+String+`
+|사용자 이메일
+
+|`+userPhone+`
+|`+String+`
+|사용자 전화번호
+
+|`+receiverName+`
+|`+String+`
+|받는사람 이름
+
+|`+receiverPhone+`
+|`+String+`
+|받는사람 전화번호
+
+|`+addressSimple+`
+|`+String+`
+|간단한 주소
+
+|`+addressDetail+`
+|`+String+`
+|상세 주소
+
+|`+deliveryComment+`
+|`+String+`
+|배송 메세지
+
+|`+orderState+`
+|`+String+`
+|주문 상태
+
+|`+orderInfoState+`
+|`+String+`
+|주문 배송 상태
+
+|`+payState+`
+|`+String+`
+|주문 결제 수단. {'CARD': '카드결제', 'BANK_TRANSFER': '실시간 계좌 이체', 'PHONE': '휴대폰 결제', 'VIRTUAL_ACCOUNT': '가상계좌', 'KAKAO_PAY': '카카오 페이', 'TOSS': '토스', 'WITHOUT_BANK': '무통장 입금', 'WITHOUT_BANK_PAY': '무통장 입금 결제 완료', 'NAVER_PAY': '네이버 페이', 'ERROR': '에러'}
+
+|===
