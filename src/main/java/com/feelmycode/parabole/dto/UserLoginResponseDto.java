@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class UserLoginResponseDto {
-    private Long id;
+    private Long userId;
     private String email;
     private String name;
     private String nickname;
@@ -22,9 +22,9 @@ public class UserLoginResponseDto {
     private String token;
 
     @Builder
-    public UserLoginResponseDto(Long id, String email, String name, String nickname, String phone,
+    public UserLoginResponseDto(Long userId, String email, String name, String nickname, String phone,
         String token, String imageUrl, String role, String authProvider) {
-        this.id = id;
+        this.userId = userId;
         this.email = email;
         this.name = name;
         this.nickname = nickname;
@@ -36,7 +36,7 @@ public class UserLoginResponseDto {
     }
 
     public UserLoginResponseDto(User user, String token) {
-        this.id = user.getId();
+        this.userId = user.getId();
         this.email = user.getEmail();
         this.name = user.getUsername();
         this.nickname = user.getNickname();

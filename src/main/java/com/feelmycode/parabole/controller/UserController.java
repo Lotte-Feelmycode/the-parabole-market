@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +30,6 @@ public class UserController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_USER", userService.getUser(userId).getId());
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ParaboleResponse> getUserInfo(@PathVariable("userId") Long userId) {
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
-            "마이페이지 사용자 개인정보 정상 출력", userService.getUserInfo(userId));
-    }
-
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getNonSellerUsers(@RequestParam(required = false) String userName) {
 
@@ -46,4 +39,10 @@ public class UserController {
             userService.getNonSellerUsers(getUserName));
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<ParaboleResponse> getUserInfo(@RequestAttribute Long userId) {
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
+            "사용자 정보 정상 출력", userService.getUserInfo(userId));
+    }
 }
