@@ -7,11 +7,11 @@
 
 |`+createdBy+`
 |`+String+`
-|이벤트 생성자
+|이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)
 
 |`+type+`
 |`+String+`
-|이벤트 유형
+|이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)
 
 |`+title+`
 |`+String+`
@@ -19,11 +19,11 @@
 
 |`+startAt+`
 |`+String+`
-|이벤트 시작 일시
+|이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+endAt+`
 |`+String+`
-|이벤트 종료 일시
+|이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+descript+`
 |`+String+`
@@ -31,15 +31,15 @@
 
 |`+eventImage+`
 |`+Object+`
-|이벤트 이미지
+|이벤트 이미지(URL)
 
 |`+eventImage.eventBannerImg+`
 |`+String+`
-|이벤트 배너 이미지
+|이벤트 배너 이미지(URL)
 
 |`+eventImage.eventDetailImg+`
 |`+String+`
-|이벤트 상세 이미지
+|이벤트 상세 이미지(URL)
 
 |`+eventPrizeCreateRequestDtos+`
 |`+Array+`
@@ -51,7 +51,7 @@
 
 |`+eventPrizeCreateRequestDtos.[].type+`
 |`+String+`
-|이벤트 경품 유형
+|이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )
 
 |`+eventPrizeCreateRequestDtos.[].stock+`
 |`+Number+`

@@ -23,11 +23,11 @@
 
 |`+data.[].createdBy+`
 |`+String+`
-|이벤트 생성자 유형
+|이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)
 
 |`+data.[].type+`
 |`+String+`
-|이벤트 유형
+|이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)
 
 |`+data.[].title+`
 |`+String+`
@@ -35,15 +35,15 @@
 
 |`+data.[].startAt+`
 |`+String+`
-|이벤트 시작 일시
+|이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.[].endAt+`
 |`+String+`
-|이벤트 종료 일시
+|이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.[].status+`
 |`+Number+`
-|이벤트 진행 상태
+|이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)
 
 |`+data.[].descript+`
 |`+String+`
@@ -51,14 +51,14 @@
 
 |`+data.[].eventImage+`
 |`+Object+`
-|이벤트 이미지 정보
+|이벤트 이미지(URL) 정보
 
 |`+data.[].eventImage.eventBannerImg+`
 |`+String+`
-|이벤트 배너 이미지
+|이벤트 배너 이미지(URL)
 
 |`+data.[].eventImage.eventDetailImg+`
 |`+String+`
-|이벤트 상세 이미지
+|이벤트 상세 이미지(URL)
 
 |===

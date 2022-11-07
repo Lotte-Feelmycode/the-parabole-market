@@ -1,6 +1,6 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:50667/api/v1/event/66' -i -X DELETE \
+$ curl 'https://parabole.com:56955/api/v1/event/100' -i -X DELETE \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
     -H 'Content-Type: application/json'
 ----

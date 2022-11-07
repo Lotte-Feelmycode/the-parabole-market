@@ -4,7 +4,7 @@ $ echo '{
   "userId" : 1,
   "createdBy" : "SELLER",
   "type" : "RAFFLE",
-  "title" : "이벤트 제목 BY REST DOCS",
+  "title" : "fasdsdsadCS",
   "startAt" : "2022-11-10 24:00:00",
   "endAt" : "2022-11-28 18:00:00",
   "descript" : "이벤트 설명 v2",
@@ -13,11 +13,11 @@ $ echo '{
     "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 72,
+    "id" : 130,
     "type" : "PRODUCT",
     "stock" : 40
   } ]
-}' | http POST 'https://parabole.com:50667/api/v1/event' \
+}' | http POST 'https://parabole.com:56955/api/v1/event' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
     'Content-Type:application/json'
 ----

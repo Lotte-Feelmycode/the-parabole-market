@@ -2,13 +2,13 @@
 |Parameter|Description
 
 |`+eventType+`
-|이벤트 타입
+|이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)
 
 |`+eventTitle+`
 |이벤트 이름
 
 |`+dateDiv+`
-|날짜 검색 구분
+|날짜 검색 구분 (0: 이벤트 시작일자 / 1: 이벤트 종료일자)
 
 |`+fromDateTime+`
 |검색 시작 일자
@@ -17,6 +17,6 @@
 |검색 종료 일자
 
 |`+eventStatus+`
-|이벤트 상태
+|이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)
 
 |===
