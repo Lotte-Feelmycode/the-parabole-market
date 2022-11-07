@@ -50,31 +50,31 @@ public class JwtUtils {
     public String extractUsername(String token) {
         final Claims claims = extractAllClaims(token);
         if (claims == null) return null;
-        else return claims.get("username",String.class);
+        else return claims.get("username", String.class);
     }
 
     public String extractRole(String token) {
         final Claims claims = extractAllClaims(token);
         if (claims == null) return null;
-        else return claims.get("role",String.class);
+        else return claims.get("role", String.class);
     }
 
     public Long extractSellerId(String token) {
         final Claims claims = extractAllClaims(token);
         if (claims == null) return null;
-        else return claims.get("sellerId",Long.class);
+        else return claims.get("sellerId", Long.class);
     }
 
     public String extractEmail(String token) {
         final Claims claims = extractAllClaims(token);
         if (claims == null) return null;
-        else return claims.get("email",String.class);
+        else return claims.get("email", String.class);
     }
 
     public Long extractUserId(String token) {
         final Claims claims = extractAllClaims(token);
         if (claims == null) return null;
-        else return claims.get("userId",Long.class);
+        else return claims.get("userId", Long.class);
     }
 
     public String generateToken(User user) {

@@ -34,13 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     jwtUtils.extractUserId(token), jwtUtils.extractRole(token), jwtUtils.extractSellerId(token));
 
                 Claims claims = jwtUtils.extractAllClaims(token);
-                request.setAttribute("userId", claims.get("userId",Long.class));
-                request.setAttribute("email", claims.get("email",String.class));
-                request.setAttribute("username", claims.get("username",String.class));
-                request.setAttribute("nickname", claims.get("nickname",String.class));
-                request.setAttribute("phone", claims.get("phone",String.class));
-                request.setAttribute("imageUrl", claims.get("imageUrl",String.class));
-                request.setAttribute("role", claims.get("role",String.class));
+                request.setAttribute("userId", claims.get("userId", Long.class));
+                request.setAttribute("email", claims.get("email", String.class));
+                request.setAttribute("username", claims.get("username", String.class));
+                request.setAttribute("nickname", claims.get("nickname", String.class));
+                request.setAttribute("phone", claims.get("phone", String.class));
+                request.setAttribute("imageUrl", claims.get("imageUrl", String.class));
+                request.setAttribute("role", claims.get("role", String.class));
                 if (claims.get("role", String.class).equals("ROLE_SELLER")) {
                     request.setAttribute("sellerId", Long.class);
                     request.setAttribute("sellerStorename", String.class);
@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             }
         } catch (Exception ex) {
-//            log.error("Could not set user authentication in security context", ex);
             log.error("Could not Extract Claims and set Request", ex);
         }
         filterChain.doFilter(request, response);

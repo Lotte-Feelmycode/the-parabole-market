@@ -39,8 +39,6 @@ public class AuthController {
                 .imageUrl("https://ssl.pstatic.net/static/cafe/cafe_pc/default/cafe_profile_77.png")
                 .role("ROLE_USER")
                 .authProvider("Home")
-//                .seller(null)
-//                .imageUrl(null)
                 .build();
 
             User newUser = userService.create(user);

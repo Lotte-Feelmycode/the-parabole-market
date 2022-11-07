@@ -32,14 +32,14 @@ public class UserController {
 
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getNonSellerUsers(@RequestParam(required = false) String userName) {
-
+        // 기능: 쿠폰을 사용자에게 배정시 사용
         String getUserName = StringUtil.controllerParamIsBlank(userName) ? "" : userName;
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 사용자 조회 성공",
             userService.getNonSellerUsers(getUserName));
     }
 
-    @GetMapping("/info")
+    @GetMapping
     public ResponseEntity<ParaboleResponse> getUserInfo(@RequestAttribute Long userId) {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
