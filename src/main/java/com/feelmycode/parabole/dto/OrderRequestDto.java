@@ -28,25 +28,15 @@ public class OrderRequestDto {
         this.orderPayState = orderPayState;
     }
 
-    public OrderRequestDto(Long userId, Long orderId,
-        List<OrderInfoRequestListDto> orderInfoRequestList, String userName, String userEmail,
-        String userPhone, String receiverName, String receiverPhone, String addressSimple,
-        String addressDetail, String deliveryComment, String orderState, String orderInfoState,
-        String orderPayState) {
-        this.userId = userId;
-        this.orderId = orderId;
-        this.orderInfoRequestList = orderInfoRequestList;
+    public void setOrderInfoState(String orderInfoState) {
+        this.orderInfoState = orderInfoState;
+    }
+
+    public OrderRequestDto setUserInfo(String userName, String userEmail, String userPhone) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
-        this.receiverName = receiverName;
-        this.receiverPhone = receiverPhone;
-        this.addressSimple = addressSimple;
-        this.addressDetail = addressDetail;
-        this.deliveryComment = deliveryComment;
-        this.orderState = orderState;
-        this.orderInfoState = orderInfoState;
-        this.orderPayState = orderPayState;
+        return this;
     }
 
 }
