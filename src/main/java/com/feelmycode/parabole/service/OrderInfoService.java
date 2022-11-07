@@ -144,7 +144,11 @@ public class OrderInfoService {
 
         for (OrderInfo orderInfo : orderInfoList) {
             Long sellerId = orderInfo.getSellerId();
-            getOrderInfoList[sellerIdMap.get(sellerId)].add(orderInfo.toDto());
+            OrderInfoResponseDto dto = orderInfo.toDto();
+            Product getProduct = productService.getProduct(orderInfo.getProductId());
+            dto.setProductThumbnailImg(getProduct.getThumbnailImg());
+            dto.setProductRemain(getProduct.getRemains());
+            getOrderInfoList[sellerIdMap.get(sellerId)].add(dto);
         }
 
         HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);

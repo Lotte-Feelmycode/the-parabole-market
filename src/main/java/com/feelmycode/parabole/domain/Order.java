@@ -1,6 +1,6 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
+import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.enumtype.OrderPayState;
 import com.feelmycode.parabole.enumtype.OrderState;
 import com.sun.istack.NotNull;
@@ -115,7 +115,7 @@ public class Order extends BaseEntity {
         this.setState(-1);
     }
 
-    public Order saveDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
+    public Order saveDeliveryInfo(OrderRequestDto deliveryDto) {
         this.userName = deliveryDto.getUserName();
         this.userEmail = deliveryDto.getUserEmail();
         this.userPhone = deliveryDto.getUserPhone();
@@ -124,7 +124,7 @@ public class Order extends BaseEntity {
         this.addressSimple = deliveryDto.getAddressSimple();
         this.addressDetail = deliveryDto.getAddressDetail();
         this.deliveryComment = deliveryDto.getDeliveryComment();
-        this.payState = OrderPayState.returnValueByName(deliveryDto.getPayState());
+        this.payState = OrderPayState.returnValueByName(deliveryDto.getOrderPayState());
         return this;
     }
 

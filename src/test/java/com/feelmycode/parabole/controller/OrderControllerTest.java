@@ -54,14 +54,16 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("주문 수정")
+    @DisplayName("주문 수정/저장")
     public void updateOrder() {
         List<OrderInfoRequestListDto> orderInfoRequestListDtoList = new ArrayList<>();
         List<Long> orderInfoList = new ArrayList<>();
         orderInfoList.add(1L);
         orderInfoList.add(2L);
         orderInfoRequestListDtoList.add(new OrderInfoRequestListDto(orderInfoList, "_쿠폰시리얼넘버_"));
-        OrderRequestDto dto = new OrderRequestDto(3L, 1L, orderInfoRequestListDtoList, "NAVER_PAY");
+        OrderRequestDto dto = new OrderRequestDto(3L, 1L, orderInfoRequestListDtoList, "김파라", "para@bole.com",
+            "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
+            "문앞에 두고 연락주세요", "PAY_COMPLETE", "DELIVERY", "TOSS");
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
@@ -82,37 +84,6 @@ public class OrderControllerTest {
             .when()
             .port(port)
             .post("/api/v1/order");
-
-        // Then
-        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-    }
-
-    @Test
-    @DisplayName("배송 정보 수정")
-    public void updateDelivery() {
-        OrderDeliveryUpdateRequestDto dto = new OrderDeliveryUpdateRequestDto(3L, "김파라", "para@bole.com",
-            "010-2345-6789", "김파라", "010-2345-6789", "광진구", "12-33",
-            "문앞에 두고 연락주세요", "PAY_COMPLETE", "DELIVERY", "TOSS");
-
-        Response resp = given(this.spec)
-            .accept(ContentType.JSON)
-            .body(dto)
-            .contentType(ContentType.JSON)
-            .filter(document("update-order-delivery",
-                preprocessRequest(modifyUris()
-                        .scheme("https")
-                        .host("parabole.com"),
-                    prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.NULL).description("주문 수정 정보")
-                )
-            ))
-            .when()
-            .port(port)
-            .patch("/api/v1/order");
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
