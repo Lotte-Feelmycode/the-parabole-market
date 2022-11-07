@@ -14,6 +14,7 @@ import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
+import com.feelmycode.parabole.global.error.exception.NotSellerException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
@@ -49,6 +50,10 @@ public class CouponService {
     public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
         User user = userRepository.findById(dto.getUserId())
             .orElseThrow(() -> new NoDataException());
+
+        if (!user.getRole().equals("ROLE_SELLER")) {
+            throw new NotSellerException();
+        }
         Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
             dto.getExpiresAt(), dto.getDetail(), dto.getCnt());
         couponRepository.save(coupon);
@@ -75,8 +80,11 @@ public class CouponService {
 
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
-        Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllValidCoupons(seller.getId());
+        User account = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
+        if (!account.getRole().equals("ROLE_SELLER")) {
+            throw new NotSellerException();
+        }
+        List<Coupon> couponList = couponRepository.findAllValidCoupons(account.getSeller().getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
                                             .map(CouponSellerResponseDto::new)

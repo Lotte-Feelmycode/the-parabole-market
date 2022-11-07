@@ -4,18 +4,18 @@ import com.feelmycode.parabole.domain.Coupon;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
+import com.feelmycode.parabole.dto.CouponCreateRequestDto;
+import com.feelmycode.parabole.dto.CouponCreateResponseDto;
+import com.feelmycode.parabole.dto.CouponInfoResponseDto;
+import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
+import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
-import com.feelmycode.parabole.global.error.exception.NoDataException;
+import com.feelmycode.parabole.global.error.exception.NoSuchAccountException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.UserCouponRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.service.CouponService;
-import com.feelmycode.parabole.dto.CouponInfoResponseDto;
-import com.feelmycode.parabole.dto.CouponCreateRequestDto;
-import com.feelmycode.parabole.dto.CouponCreateResponseDto;
-import com.feelmycode.parabole.dto.CouponSellerResponseDto;
-import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
 import java.util.ArrayList;
@@ -53,15 +53,13 @@ public class CouponController {
     @PostMapping("/new")
     public ResponseEntity<ParaboleResponse> addCoupon(@AuthenticationPrincipal Long userId,
         @RequestBody CouponCreateRequestDto dto) {
-
-        /** addCoupon, addUserCoupon 이 모두 발생한다. */
-        if(userService.getSeller(userId) != null){
-            CouponCreateResponseDto response = couponService.addCoupon(dto);
-            return ParaboleResponse.CommonResponse(HttpStatus.OK,
-                true, "쿠폰 등록 성공", response);
+        if (!userRepository.findById(userId).orElseThrow(() -> new NoSuchAccountException()).getRole()
+            .equals("ROLE_SELLER")) {
+            return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST,
+                false, "판매자가 아니라서 쿠폰 등록할 권한이 없습니다.");
         }
-        return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST,
-            false, "판매자가 아니라서 쿠폰 등록할 권한이 없습니다.");
+        CouponCreateResponseDto response = couponService.addCoupon(dto);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰 등록 성공", response);
     }
 
     @PostMapping("/giveout")
@@ -82,7 +80,7 @@ public class CouponController {
         List<User> userList = new ArrayList<>();
 
         for (Long id : getUserIdList) {
-            userList.add(userRepository.findById(id).orElseThrow(() -> new NoDataException()));
+            userList.add(userRepository.findById(id).orElseThrow(() -> new NoSuchAccountException()));
         }
 
         List<UserCoupon> userCouponList = coupon.getNotAssignedUserCouponList();
