@@ -55,6 +55,7 @@ public class ProductService {
         return new ProductDetailListResponseDto(new ProductDto(getProduct), productDetailList, getProduct.getSeller().getStoreName());
     }
 
+    @Transactional(readOnly = true)
     public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
         if(!storeName.equals("")) {
@@ -65,21 +66,21 @@ public class ProductService {
         Page<Product> data;
         if(!sellerId.equals(0L)) {
             if (category.equals("")) {
-                data = productRepository.findAllBySellerIdAndIsDeletedFalse(sellerId, pageable);
+                data = productRepository.findAllBySellerId(sellerId, pageable);
             } else {
-                data = productRepository.findAllBySellerIdAndCategoryAndIsDeletedFalse(sellerId, category,
+                data = productRepository.findAllBySellerIdAndCategory(sellerId, category,
                     pageable);
             }
         } else if(!productName.equals("")) {
             if (category.equals("")) {
-                data = productRepository.findAllByNameContainingAndIsDeletedFalse(productName, pageable);
+                data = productRepository.findAllByNameContaining(productName, pageable);
             } else {
-                data = productRepository.findAllByNameContainingAndCategoryAndIsDeletedFalse(productName, category, pageable);
+                data = productRepository.findAllByNameContainingAndCategory(productName, category, pageable);
             }
         } else if(category.equals("")) {
             data = productRepository.findAll(pageable);
         } else {
-            data = productRepository.findAllByCategoryAndIsDeletedFalse(category, pageable);
+            data = productRepository.findAllByCategory(category, pageable);
         }
 
         return data.map(ProductDto::new);

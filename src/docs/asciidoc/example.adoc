@@ -1,0 +1,28 @@
+:hardbreaks:
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+:toc: left
+
+= Product
+
+=== 상품 목록
+`*Request*`
+
+include::{snippets}/product-list/http-request.adoc[]
+
+`*Parameters*`
+
+include::{snippets}/product-list/request-parameters.adoc[]
+
+`*Response*`
+
+include::{snippets}/product-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{snippets}/product-list/response-fields.adoc[]
+
+'''
+

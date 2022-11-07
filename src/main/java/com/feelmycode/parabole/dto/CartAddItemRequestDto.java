@@ -23,12 +23,4 @@ public class CartAddItemRequestDto {
         this.cnt = cnt;
     }
 
-    @Override
-    public String toString() {
-        return "CartAddItemRequestDto{" +
-            "userId=" + userId +
-            ", productId=" + productId +
-            ", cnt=" + cnt +
-            '}';
-    }
 }

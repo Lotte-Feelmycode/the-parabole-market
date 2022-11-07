@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "success" : true,
-  "message" : "상품수량 수정",
-  "data" : null
-}
-----

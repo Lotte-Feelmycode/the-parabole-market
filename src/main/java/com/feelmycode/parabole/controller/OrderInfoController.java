@@ -5,7 +5,6 @@ import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
-import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.service.OrderInfoService;
@@ -58,8 +57,9 @@ public class OrderInfoController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
-        OrderResponseDto orderResponseDto = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderResponseDto);
+        log.info("Get Order List. userId: {}", userId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderInfoList);
     }
 
     @GetMapping("/seller")

@@ -11,9 +11,4 @@ public class OrderInfoSimpleDto {
     private Long productId;
     private Integer productCnt;
 
-    public OrderInfoSimpleDto(Long productId, Integer productCnt) {
-        this.productId = productId;
-        this.productCnt = productCnt;
-    }
-
 }

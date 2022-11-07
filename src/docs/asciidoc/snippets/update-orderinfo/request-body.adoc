@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "userId" : 3,
-  "orderInfoId" : 1,
-  "orderState" : "BEFORE_PAY"
-}
-----

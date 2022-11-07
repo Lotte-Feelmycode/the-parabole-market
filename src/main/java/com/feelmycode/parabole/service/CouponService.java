@@ -87,8 +87,8 @@ public class CouponService {
         List<Coupon> couponList = couponRepository.findAllValidCoupons(account.getSeller().getId());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
-            .map(CouponSellerResponseDto::new)
-            .collect(Collectors.toList());
+                                            .map(CouponSellerResponseDto::new)
+                                            .collect(Collectors.toList());
         return new PageImpl<>(dtos);
     }
 
@@ -104,7 +104,8 @@ public class CouponService {
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
 
-        List<UserCoupon> couponList = userCouponRepository.findAllValidUserCoupons(userId);        List<CouponUserResponseDto> dtos = new ArrayList<>();
+        List<UserCoupon> couponList =  userCouponRepository.findAllValidUserCoupons(userId);
+        List<CouponUserResponseDto> dtos = new ArrayList<>();
 
         if (couponList.isEmpty()) {
             throw new NoDataException();
@@ -116,10 +117,6 @@ public class CouponService {
                 nowSeller.getStoreName()));
         }
         return new PageImpl<>(dtos);
-    }
-
-    public UserCoupon getUserCouponBySerialNo(String serialNo) {
-        return userCouponRepository.findBySerialNo(serialNo);
     }
 
     public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
@@ -172,7 +169,6 @@ public class CouponService {
                 List<CouponInfoDto> rateCoupon = response.getRateCoupon();
                 rateCoupon.add(new CouponInfoDto(
                     couponInfo.getName(),
-                    userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
                     couponInfo.getDiscountValue()
@@ -184,7 +180,6 @@ public class CouponService {
                 List<CouponInfoDto> amountCoupon = response.getAmountCoupon();
                 amountCoupon.add(new CouponInfoDto(
                     couponInfo.getName(),
-                    userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
                     couponInfo.getDiscountValue()
@@ -217,10 +212,10 @@ public class CouponService {
         if (user == null) {
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰에 배정된 사용자가 없습니다. 사용자를 먼저 배정하세요.");
-        } else if (!user.getId().equals(userId)) {
+        } else if (!user.getId().equals(userId)){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "사용자의 쿠폰이 아닙니다. 타인의 쿠폰입니다.");
-        } else if (userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())) {
+        } else if(userCoupon.getCoupon().getExpiresAt().isBefore(LocalDateTime.now())){
             throw new ParaboleException(HttpStatus.BAD_REQUEST,
                 "쿠폰이 만료되어 사용할 수 없습니다.");
         } else {

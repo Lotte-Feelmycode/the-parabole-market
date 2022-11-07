@@ -1,7 +1,5 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.global.error.exception.NoDataException;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Entity
 @Table(name = "products")
@@ -94,18 +91,6 @@ public class Product extends BaseEntity {
         this.seller = seller;
     }
 
-    public void addRemains(Long remains) {
-        this.remains += remains;
-    }
-
-    public void removeRemains(Long remains) {
-        Long restRemains = this.remains - remains;
-        if (restRemains < 0) {
-            throw new NoDataException("수량이 부족합니다");
-        }
-        this.remains = restRemains;
-    }
-
     public Product setProduct(Product getProduct) {
         this.setName(getProduct.getName());
         this.setPrice(getProduct.getPrice());
@@ -151,17 +136,6 @@ public class Product extends BaseEntity {
         this.category = category;
         this.thumbnailImg = thumbnailImg;
         this.productDetailList = productDetailList;
-    }
-
-    public Product(String name, Long remain, Long price, String category) {
-        this.name = name;
-        this.remains = remain;
-        this.price = price;
-        this.category = category;
-    }
-
-    public Product(Long id) {
-        this.id = id;
     }
 
 }

@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "success" : false,
-  "message" : "결제할 상품을 추가할 수 없습니다.",
-  "data" : null
-}
-----

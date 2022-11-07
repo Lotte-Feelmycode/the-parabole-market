@@ -1,6 +1,0 @@
-[source,bash]
-----
-$ curl 'https://parabole.com:56085/api/v1/cart/delete?userId=3&cartItemId=154' -i -X DELETE \
-    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
-    -H 'Content-Type: application/json'
-----

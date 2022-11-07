@@ -3,7 +3,7 @@ package com.feelmycode.parabole.controller;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
-import com.feelmycode.parabole.dto.OrderRequestDto;
+import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.service.OrderInfoService;
 import com.feelmycode.parabole.service.OrderService;
@@ -31,11 +31,10 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderInfoService orderInfoService;
 
-    // 결제처리
     @PostMapping
-    public ResponseEntity<ParaboleResponse> updateOrder(@RequestBody OrderRequestDto orderUpdateRequestDto) {
+    public ResponseEntity<ParaboleResponse> updateOrder(@RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
         updateService.updateOrderState(orderUpdateRequestDto);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 결제 완료");
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 수정 완료");
     }
 
     @PatchMapping

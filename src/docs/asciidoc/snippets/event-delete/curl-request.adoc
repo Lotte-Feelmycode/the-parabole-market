@@ -1,6 +1,0 @@
-[source,bash]
-----
-$ curl 'https://parabole.com:57029/api/v1/event/102' -i -X DELETE \
-    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
-    -H 'Content-Type: application/json'
-----

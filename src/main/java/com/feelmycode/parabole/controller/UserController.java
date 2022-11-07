@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/role")
-    public ResponseEntity<ParaboleResponse> checkAccountRole(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> checkAccountRole(@AuthenticationPrincipal Long userId) {
 
         if (userService.isSeller(userId)) {
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "ROLE_SELLER", userService.getSeller(userId).getId());
@@ -38,6 +39,12 @@ public class UserController {
             userService.getNonSellerUsers(getUserName));
     }
 
+//    @GetMapping("/info")
+//    public ResponseEntity<ParaboleResponse> getUserInfo(@AuthenticationPrincipal Long userId) {
+//
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
+//            "사용자 정보 정상 출력", userService.getUserInfo(userId));
+//    }
     @GetMapping("/info")
     public ResponseEntity<ParaboleResponse> getUserInfo(@RequestAttribute Long userId) {
 

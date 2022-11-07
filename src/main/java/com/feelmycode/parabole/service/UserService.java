@@ -87,7 +87,7 @@ public class UserService {
         }
         return null;
     }
-
+    
 //    @Transactional
 //    public User signup(@NotNull UserSignupDto dto) {
 //
@@ -448,6 +448,7 @@ public class UserService {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
         return kakaoProfile;
     }
 

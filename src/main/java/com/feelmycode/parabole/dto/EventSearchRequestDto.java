@@ -15,14 +15,4 @@ public class EventSearchRequestDto {
     private LocalDateTime toDateTime;
     private EventStatus eventStatus;
 
-    public EventSearchRequestDto(EventType eventType, String eventTitle, Integer dateDiv,
-        LocalDateTime fromDateTime, LocalDateTime toDateTime, EventStatus eventStatus) {
-        this.eventType = eventType;
-        this.eventTitle = eventTitle;
-        this.dateDiv = dateDiv;
-        this.fromDateTime = fromDateTime;
-        this.toDateTime = toDateTime;
-        this.eventStatus = eventStatus;
-    }
-
 }
