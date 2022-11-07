@@ -22,23 +22,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "order_infos")
 public class OrderInfo extends BaseEntity {
 
-    @Override
-    public String toString() {
-        return "OrderInfo{" +
-            "id=" + id +
-            ", order=" + order +
-            ", userCoupon=" + userCoupon +
-            ", state=" + state +
-            ", productId=" + productId +
-            ", productName='" + productName + '\'' +
-            ", productCnt=" + productCnt +
-            ", productPrice=" + productPrice +
-            ", productDiscountPrice=" + productDiscountPrice +
-            ", sellerId=" + sellerId +
-            ", sellerStoreName='" + sellerStoreName + '\'' +
-            '}';
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_info_id")
