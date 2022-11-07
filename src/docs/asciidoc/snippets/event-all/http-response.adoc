@@ -1,0 +1,407 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 07 Nov 2022 03:13:43 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 14599
+
+{
+  "success" : true,
+  "message" : "이벤트 리스트 조회 성공",
+  "data" : [ {
+    "id" : 1,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "러버덕 할로윈 콘테스트",
+    "startAt" : "2022-10-11T00:00:00",
+    "endAt" : "2022-10-31T07:00:00",
+    "status" : 1,
+    "descript" : "러버덕 할로윈 콘테스트 2022",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshoplnk/12905/2/M001402/278229/P8CB1E6B4CAEFE2760EBE65F00A06849FBE13305B33EA0EC1AC9A578E79E7E109/file/dims/optimize",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P1B8BDC87A8EBE485D7E4C11436BCD0620D7AD633381B31FA5B53714620E734D9/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 1,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 1,
+      "productName" : "한우국밥",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 2,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 2,
+      "productName" : "돼지국밥",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 2,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "라페스타 세일 UP TO 80%",
+    "startAt" : "2022-10-09T00:00:00",
+    "endAt" : "2022-10-31T07:00:00",
+    "status" : 1,
+    "descript" : "LA FESTA를 즐기기 위한 준비",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshop/41845/PBA61D8ABA4A3AE91B28E7A34F3B6B909B64BD4E8ED5F75E669FF0832C32FACA1/file",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P550F79770C9B2A35CF9329CA0F879AE81999250ABBCE7452DAA18BF56D78364B/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 3,
+      "prizeType" : "COUPON",
+      "stock" : 100,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 1,
+      "couponDetail" : "3월 3일 쿠폰",
+      "type" : "AMOUNT",
+      "couponDiscountValue" : 5000,
+      "expiresAt" : "2022-11-30T00:00:00"
+    }, {
+      "eventPrizeId" : 4,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 4,
+      "productName" : "차돌 짬뽕 국밥 210gx6팩",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 5,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 56,
+      "prizeType" : "COUPON",
+      "stock" : 2,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 14,
+      "couponDetail" : "할로윈 이벤트 쿠폰",
+      "type" : "RATE",
+      "couponDiscountValue" : 10,
+      "expiresAt" : "2022-11-30T00:00:00"
+    } ]
+  }, {
+    "id" : 3,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "FCFS",
+    "title" : "LOTTE VIBE ON",
+    "startAt" : "2022-10-21T00:00:00",
+    "endAt" : "2022-10-21T07:00:00",
+    "status" : 1,
+    "descript" : "바로 이곳이 브랜드 컬렉션",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshop/43932/PE5649CB6BADF5069F7CD6125D126865125D9EDF5EFA6EAD420A61716312E2E5E/file",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 6,
+      "prizeType" : "PRODUCT",
+      "stock" : 10,
+      "productId" : 6,
+      "productName" : "물냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 7,
+      "prizeType" : "PRODUCT",
+      "stock" : 20,
+      "productId" : 7,
+      "productName" : "막국수",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 17,
+    "storeName" : "u11-s4's store",
+    "sellerId" : 4,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "카카오 T와 함께 하는 펫스티벌!",
+    "startAt" : "2022-10-21T21:00:00",
+    "endAt" : "2022-11-02T07:00:00",
+    "status" : 1,
+    "descript" : "카카오 T펫 X 롯데온이 함께 하는 펫스티벌!",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282434/P308B736482A8224CD0631309FAE17DB01163792DAB38EC6CD03C5BDC19EB63A7/file/dims/optimize",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P2035EDA8A67E77DD734303E9486E2C6947ABF2E188E19365ED95C2587DF8179C/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 34,
+      "prizeType" : "COUPON",
+      "stock" : 30,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 1,
+      "couponDetail" : "3월 3일 쿠폰",
+      "type" : "AMOUNT",
+      "couponDiscountValue" : 5000,
+      "expiresAt" : "2022-11-30T00:00:00"
+    }, {
+      "eventPrizeId" : 35,
+      "prizeType" : "PRODUCT",
+      "stock" : 30,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 18,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "비스포크 추첨증정",
+    "startAt" : "2022-10-19T22:00:00",
+    "endAt" : "2022-10-26T23:00:00",
+    "status" : 1,
+    "descript" : "요리하다 구매고객 비스포크 추첨 증정 행사",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282011/P85148A5C7FABAB042D95126A67DAB7D6C14E9502B82676811754E78209CBD91B/file/dims/optimize",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P305972B21565D707552257D357C0863ABAC4BC7267BE647AA23ADC076B782FFA/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 36,
+      "prizeType" : "PRODUCT",
+      "stock" : 30,
+      "productId" : 7,
+      "productName" : "막국수",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 37,
+      "prizeType" : "PRODUCT",
+      "stock" : 30,
+      "productId" : 6,
+      "productName" : "물냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 38,
+      "prizeType" : "PRODUCT",
+      "stock" : 30,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 20,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "45만원 상당 쿠폰",
+    "startAt" : "2022-10-21T09:00:00",
+    "endAt" : "2022-12-01T07:00:00",
+    "status" : 1,
+    "descript" : "지금만 드리는 혜택 놓치지마세요!",
+    "eventImage" : {
+      "eventBannerImg" : "https://cdn.class101.net/images/cd91f36c-e133-42ba-b410-0d146bccf574/2048xauto.webp",
+      "eventDetailImg" : "https://cdn.class101.net/images/cd91f36c-e133-42ba-b410-0d146bccf574/2048xauto.webp"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 42,
+      "prizeType" : "COUPON",
+      "stock" : 30,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 9,
+      "couponDetail" : "창사를 축하해요",
+      "type" : "RATE",
+      "couponDiscountValue" : 1000,
+      "expiresAt" : "2022-10-30T08:59:59"
+    }, {
+      "eventPrizeId" : 43,
+      "prizeType" : "PRODUCT",
+      "stock" : 30,
+      "productId" : 10,
+      "productName" : "레고 달 탐사 차량 (60348)",
+      "productImg" : "https://contents.lotteon.com/itemimage/LM/57/02/01/71/61/73/0_/00/1/LM5702017161730_001_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 25,
+    "storeName" : "u4-s2's store",
+    "sellerId" : 2,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "컬러피스 아이블렌더",
+    "startAt" : "2022-10-09T00:00:00",
+    "endAt" : "2022-10-21T07:00:00",
+    "status" : 2,
+    "descript" : "롯데온",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/ec/public/PD429DCCF0983EDE5D0D4BF88A9D2EA5BB65636605BB0078EC9BCAC43946BB68E/file/dims/optimize/dims/resizef/361x154",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P0B71AAF440E306FE404174C04FA071DA7C4F8980625B9B443BE7D088D2FA9BE6/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 50,
+      "prizeType" : "PRODUCT",
+      "stock" : 3,
+      "productId" : 2,
+      "productName" : "돼지국밥",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 28,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "ff",
+    "startAt" : "2022-10-01T21:18:00",
+    "endAt" : "2022-10-28T21:18:00",
+    "status" : 0,
+    "descript" : "ff",
+    "eventImage" : {
+      "eventBannerImg" : "dummyimage",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 55,
+      "prizeType" : "COUPON",
+      "stock" : 30,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 1,
+      "couponDetail" : "3월 3일 쿠폰",
+      "type" : "AMOUNT",
+      "couponDiscountValue" : 5000,
+      "expiresAt" : "2022-11-30T00:00:00"
+    } ]
+  }, {
+    "id" : 29,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "FCFS",
+    "title" : "선착순 이벤트",
+    "startAt" : "2022-10-31T19:00:00",
+    "endAt" : "2022-10-31T19:50:00",
+    "status" : 0,
+    "descript" : "선착순",
+    "eventImage" : {
+      "eventBannerImg" : "dummyimage",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 57,
+      "prizeType" : "PRODUCT",
+      "stock" : 10000,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  }, {
+    "id" : 31,
+    "storeName" : "u1-s1's store",
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "RAFFLE",
+    "title" : "JGHJGH",
+    "startAt" : "2022-10-26T17:44:00",
+    "endAt" : "2022-12-13T03:45:00",
+    "status" : 0,
+    "descript" : "JGHJGHJGHJG",
+    "eventImage" : {
+      "eventBannerImg" : "dummyimage",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 59,
+      "prizeType" : "PRODUCT",
+      "stock" : 16,
+      "productId" : 7,
+      "productName" : "막국수",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    } ]
+  } ]
+}
+----

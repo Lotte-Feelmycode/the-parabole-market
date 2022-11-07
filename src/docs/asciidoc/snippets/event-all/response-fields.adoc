@@ -1,0 +1,116 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Array+`
+|응답 정보
+
+|`+data.[].id+`
+|`+Number+`
+|이벤트 번호
+
+|`+data.[].storeName+`
+|`+String+`
+|셀러 스토어 이름
+
+|`+data.[].sellerId+`
+|`+Number+`
+|셀러 번호
+
+|`+data.[].createdBy+`
+|`+String+`
+|이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)
+
+|`+data.[].type+`
+|`+String+`
+|이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)
+
+|`+data.[].title+`
+|`+String+`
+|이벤트 제목
+
+|`+data.[].startAt+`
+|`+String+`
+|이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)
+
+|`+data.[].endAt+`
+|`+String+`
+|이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)
+
+|`+data.[].status+`
+|`+Number+`
+|이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)
+
+|`+data.[].descript+`
+|`+String+`
+|이벤트 상세 설명
+
+|`+data.[].eventImage+`
+|`+Object+`
+|이벤트 이미지(URL) 정보
+
+|`+data.[].eventImage.eventBannerImg+`
+|`+String+`
+|이벤트 배너 이미지(URL)
+
+|`+data.[].eventImage.eventDetailImg+`
+|`+String+`
+|이벤트 상세 이미지(URL)
+
+|`+data.[].eventPrizes+`
+|`+Array+`
+|이벤트 경품 정보
+
+|`+data.[].eventPrizes[].eventPrizeId+`
+|`+Number+`
+|이벤트 경품 번호
+
+|`+data.[].eventPrizes[].prizeType+`
+|`+String+`
+|이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )
+
+|`+data.[].eventPrizes[].stock+`
+|`+Number+`
+|상품 재고
+
+|`+data.[].eventPrizes.[].productId+`
+|`+Number+`
+|상품 아이디
+
+|`+data.[].eventPrizes[].productName+`
+|`+String+`
+|상품명
+
+|`+data.[].eventPrizes[].productImg+`
+|`+String+`
+|상품 이미지(URL)
+
+|`+data.[].eventPrizes[].couponId+`
+|`+Number+`
+|쿠폰 아이디
+
+|`+data.[].eventPrizes[].couponDetail+`
+|`+String+`
+|쿠폰 상세 설명
+
+|`+data.[].eventPrizes[].type+`
+|`+String+`
+|쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)
+
+|`+data.[].eventPrizes[].couponDiscountValue+`
+|`+Number+`
+|쿠폰 할인값
+
+|`+data.[].eventPrizes[].expiresAt+`
+|`+String+`
+|쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)
+
+|===

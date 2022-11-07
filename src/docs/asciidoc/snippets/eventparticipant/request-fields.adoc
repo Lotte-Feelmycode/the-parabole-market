@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|사용자 아이디
+
+|`+eventId+`
+|`+Number+`
+|이벤트 아이디
+
+|`+eventPrizeId+`
+|`+Number+`
+|이벤트 상품
+
+|===

@@ -1,0 +1,15 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:54098/api/v1/order' -i -X POST \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "userId" : 3,
+  "orderId" : 1,
+  "orderInfoRequestList" : [ {
+    "orderInfoIdList" : [ 1, 2 ],
+    "couponSerialNo" : "_쿠폰시리얼넘버_"
+  } ],
+  "orderPayState" : "NAVER_PAY"
+}'
+----

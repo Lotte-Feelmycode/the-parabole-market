@@ -1,0 +1,126 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "이벤트 응모 리스트 조회 성공",
+  "data" : [ {
+    "id" : 8,
+    "user" : {
+      "id" : 3,
+      "email" : "para@bole.com",
+      "name" : "김파라",
+      "nickname" : "더파라",
+      "phone" : "01082828585"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 3,
+      "prizeType" : "COUPON",
+      "stock" : 100,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 1,
+      "couponDetail" : "3월 3일 쿠폰",
+      "type" : "AMOUNT",
+      "couponDiscountValue" : 5000,
+      "expiresAt" : "2022-11-30T00:00:00"
+    }, {
+      "eventPrizeId" : 4,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 4,
+      "productName" : "차돌 짬뽕 국밥 210gx6팩",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 5,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 56,
+      "prizeType" : "COUPON",
+      "stock" : 2,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 14,
+      "couponDetail" : "할로윈 이벤트 쿠폰",
+      "type" : "RATE",
+      "couponDiscountValue" : 10,
+      "expiresAt" : "2022-11-30T00:00:00"
+    } ],
+    "eventTimeStartAt" : "2022-10-20T10:12:26.933502"
+  }, {
+    "id" : 16,
+    "user" : {
+      "id" : 4,
+      "email" : "useremail4@naver.com",
+      "name" : "username4",
+      "nickname" : "usernick4",
+      "phone" : "01044444444"
+    },
+    "eventPrizes" : [ {
+      "eventPrizeId" : 3,
+      "prizeType" : "COUPON",
+      "stock" : 100,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 1,
+      "couponDetail" : "3월 3일 쿠폰",
+      "type" : "AMOUNT",
+      "couponDiscountValue" : 5000,
+      "expiresAt" : "2022-11-30T00:00:00"
+    }, {
+      "eventPrizeId" : 4,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 4,
+      "productName" : "차돌 짬뽕 국밥 210gx6팩",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 5,
+      "prizeType" : "PRODUCT",
+      "stock" : 50,
+      "productId" : 5,
+      "productName" : "비빔냉면",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "couponId" : null,
+      "couponDetail" : null,
+      "type" : null,
+      "couponDiscountValue" : null,
+      "expiresAt" : null
+    }, {
+      "eventPrizeId" : 56,
+      "prizeType" : "COUPON",
+      "stock" : 2,
+      "productId" : null,
+      "productName" : null,
+      "productImg" : null,
+      "couponId" : 14,
+      "couponDetail" : "할로윈 이벤트 쿠폰",
+      "type" : "RATE",
+      "couponDiscountValue" : 10,
+      "expiresAt" : "2022-11-30T00:00:00"
+    } ],
+    "eventTimeStartAt" : "2022-10-31T12:13:34.531508"
+  } ]
+}
+----

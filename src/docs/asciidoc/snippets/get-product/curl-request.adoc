@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:56013/api/v1/product?productId=2' -i -X GET \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json'
+----

@@ -1,0 +1,12 @@
+[source,options="nowrap"]
+----
+{
+  "userId" : 3,
+  "orderId" : 1,
+  "orderInfoRequestList" : [ {
+    "orderInfoIdList" : [ 1, 2 ],
+    "couponSerialNo" : "_쿠폰시리얼넘버_"
+  } ],
+  "orderPayState" : "NAVER_PAY"
+}
+----

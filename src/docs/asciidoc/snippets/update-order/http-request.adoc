@@ -1,0 +1,18 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/order HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:54098
+Content-Length: 197
+
+{
+  "userId" : 3,
+  "orderId" : 1,
+  "orderInfoRequestList" : [ {
+    "orderInfoIdList" : [ 1, 2 ],
+    "couponSerialNo" : "_쿠폰시리얼넘버_"
+  } ],
+  "orderPayState" : "NAVER_PAY"
+}
+----

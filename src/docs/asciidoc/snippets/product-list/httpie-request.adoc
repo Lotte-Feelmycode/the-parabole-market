@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ http GET 'https://parabole.com:55988/api/v1/product/list?sellerId=1&storeName=&category=&productName=' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

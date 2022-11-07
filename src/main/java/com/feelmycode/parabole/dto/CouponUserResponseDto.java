@@ -22,7 +22,6 @@ public class CouponUserResponseDto {
         private LocalDateTime validAt;
         private LocalDateTime expiresAt;
 
-
         public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String sellerName) {
 
                 this.name = coupon.getName();
@@ -36,5 +35,4 @@ public class CouponUserResponseDto {
                 this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
         }
-
 }

@@ -1,0 +1,96 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메시지
+
+|`+data+`
+|`+Array+`
+|응답 정보
+
+|`+data.[].id+`
+|`+Number+`
+|응모 번호
+
+|`+data.[].user+`
+|`+Object+`
+|유저 정보
+
+|`+data.[].user.id+`
+|`+Number+`
+|유저 아이디
+
+|`+data.[].user.email+`
+|`+String+`
+|유저 이메일
+
+|`+data.[].user.name+`
+|`+String+`
+|유저 이름
+
+|`+data.[].user.nickname+`
+|`+String+`
+|유저 별명
+
+|`+data.[].user.phone+`
+|`+String+`
+|유저 핸드폰 번호
+
+|`+data.[].eventPrizes.[]+`
+|`+Array+`
+|유저 응모 상품 정보
+
+|`+data.[].eventPrizes.[].eventPrizeId+`
+|`+Number+`
+|이벤트 상품 아이디
+
+|`+data.[].eventPrizes.[].prizeType+`
+|`+String+`
+|이벤트 상품 타입
+
+|`+data.[].eventPrizes.[].stock+`
+|`+Number+`
+|이벤트 상품 재고
+
+|`+data.[].eventPrizes.[].productId+`
+|`+Number+`
+|상품 아이디
+
+|`+data.[].eventPrizes.[].productName+`
+|`+String+`
+|상품 이름
+
+|`+data.[].eventPrizes.[].productImg+`
+|`+String+`
+|상품 이미지
+
+|`+data.[].eventPrizes.[].couponId+`
+|`+Number+`
+|쿠폰 아이디
+
+|`+data.[].eventPrizes.[].couponDetail+`
+|`+String+`
+|쿠폰 상세
+
+|`+data.[].eventPrizes.[].type+`
+|`+String+`
+|쿠폰 타입
+
+|`+data.[].eventPrizes.[].couponDiscountValue+`
+|`+Number+`
+|쿠폰 할인량
+
+|`+data.[].eventPrizes.[].expiresAt+`
+|`+String+`
+|쿠폰 유효기간
+
+|`+data.[].eventTimeStartAt+`
+|`+String+`
+|이벤트 시작시간
+
+|===

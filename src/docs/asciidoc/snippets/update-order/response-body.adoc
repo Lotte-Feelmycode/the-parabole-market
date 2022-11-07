@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : false,
+  "message" : "해당 일련번호를 가지는 쿠폰이 존재하지 않습니다.",
+  "data" : null
+}
+----
