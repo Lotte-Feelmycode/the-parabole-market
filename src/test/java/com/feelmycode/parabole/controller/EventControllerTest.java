@@ -481,6 +481,54 @@ public class EventControllerTest {
     }
 
     @Test
+    @DisplayName("이벤트 스케쥴 조회")
+    public void getEventsforScheduler() {
+
+        // when
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .filter(document("event-scheduler",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("응답 정보"),
+                    fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("이벤트 번호"),
+                    fieldWithPath("data.[].sellerId").type(JsonFieldType.NUMBER)
+                        .description("셀러 번호"),
+                    fieldWithPath("data.[].createdBy").type(JsonFieldType.STRING)
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.[].type").type(JsonFieldType.STRING).description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
+                    fieldWithPath("data.[].title").type(JsonFieldType.STRING).description("이벤트 제목"),
+                    fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
+                    fieldWithPath("data.[].descript").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 설명"),
+                    fieldWithPath("data.[].eventImage").type(JsonFieldType.OBJECT)
+                        .description("이벤트 이미지(URL) 정보"),
+                    fieldWithPath("data.[].eventImage.eventBannerImg").type(JsonFieldType.STRING)
+                        .description("이벤트 배너 이미지(URL)"),
+                    fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 이미지(URL)")
+                )
+            ))
+            .when().get(BASIC_PATH + "/seller/scheduler");
+
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+    }
+
+    @Test
     @DisplayName("이벤트 취소")
     public void deleteEvent() {
 
