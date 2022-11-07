@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +39,14 @@ public class UserController {
             userService.getNonSellerUsers(getUserName));
     }
 
+//    @GetMapping("/info")
+//    public ResponseEntity<ParaboleResponse> getUserInfo(@AuthenticationPrincipal Long userId) {
+//
+//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
+//            "사용자 정보 정상 출력", userService.getUserInfo(userId));
+//    }
     @GetMapping("/info")
-    public ResponseEntity<ParaboleResponse> getUserInfo(@AuthenticationPrincipal Long userId) {
+    public ResponseEntity<ParaboleResponse> getUserInfo(@RequestAttribute Long userId) {
 
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true,
             "사용자 정보 정상 출력", userService.getUserInfo(userId));
