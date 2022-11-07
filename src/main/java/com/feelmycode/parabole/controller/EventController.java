@@ -87,6 +87,12 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 리스트 조회 성공", response);
     }
 
+    @GetMapping("/seller/scheduler")
+    public ResponseEntity<ParaboleResponse> getEventScheduler() {
+        List<EventSearchResponseDto> response = eventService.getEventsMonthAfter();
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 스케쥴러 조회 성공", response);
+    }
+
     @DeleteMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> cancelEvent(@PathVariable("eventId") Long eventId) {
         try {
