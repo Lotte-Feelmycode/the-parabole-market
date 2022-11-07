@@ -31,15 +31,4 @@ public class ProductRequestDto {
         return new Product(productName, productRemains, productPrice, productCategory, productThumbnailImg);
     }
 
-    @Override
-    public String toString() {
-        return "ProductRequestDto{" +
-            "userId=" + userId +
-            ", productName='" + productName + '\'' +
-            ", productRemains=" + productRemains +
-            ", productPrice=" + productPrice +
-            ", productCategory='" + productCategory + '\'' +
-            ", productThumbnailImg='" + productThumbnailImg + '\'' +
-            '}';
-    }
 }
