@@ -7,6 +7,7 @@ import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
+import com.feelmycode.parabole.dto.CouponDto;
 import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
@@ -136,6 +137,13 @@ public class CouponController {
         CouponInfoResponseDto response = couponService.getCouponInfo(couponSNo);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "쿠폰 정보 반환", response);
+    }
+
+    @GetMapping("/data")
+    public CouponDto getCouponData(@RequestParam Long couponId){
+        Coupon coupon = couponService.getCouponById(couponId);
+        CouponDto couponDto = new CouponDto(coupon.getId(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt());
+        return couponDto;
     }
 
     @PostMapping("/user/use")
