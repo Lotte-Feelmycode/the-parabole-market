@@ -58,7 +58,7 @@ public class CouponService {
         for (int i = 0; i < dto.getCnt(); i++) {
             coupon.addUserCoupon(new UserCoupon(coupon));
         }
-        return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), user.getUsername(), coupon.getType().getName(), coupon.getCnt());
     }
 
 //    public void giveoutUserCoupon(String couponSNo, Long userId) {
