@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductDetailService {
 
     private final ProductDetailRepository productDetailRepository;
-    private final SellerService sellerService;
 
     @Transactional
     public void createProductDetail(ProductDetail productDetail) {

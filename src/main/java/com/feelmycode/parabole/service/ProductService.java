@@ -10,11 +10,11 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,13 +27,10 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(ProductRequestDto dto) {
+        Product product = dto.toEntity();
         Long userId = dto.getUserId();
 
-        sellerService.getSellerByUserId(userId);
-
-        Product product = dto.dtoToEntity();
         product.setSeller(sellerService.getSellerByUserId(userId));
-
         return productRepository.save(product).getId();
     }
 
@@ -78,13 +75,13 @@ public class ProductService {
                 data = productRepository.findAllBySellerIdAndCategoryAndIsDeletedFalse(sellerId, category,
                     pageable);
             }
-        } else if(!productName.equals("")) {
+        } else if (!productName.equals("")) {
             if (category.equals("")) {
                 data = productRepository.findAllByNameContainingAndIsDeletedFalse(productName, pageable);
             } else {
                 data = productRepository.findAllByNameContainingAndCategoryAndIsDeletedFalse(productName, category, pageable);
             }
-        } else if(category.equals("")) {
+        } else if (category.equals("")) {
             data = productRepository.findAll(pageable);
         } else {
             data = productRepository.findAllByCategoryAndIsDeletedFalse(category, pageable);
