@@ -39,8 +39,7 @@ public class AwsS3Controller {
                 if(i == 0) {
                     productService.updateProductThumbnailImg(productId, imgUrl);
                 } else {
-                    productDetailService.createProductDetail(
-                        1L, new ProductDetail(productService.getProduct(productId), imgUrl, ""));
+                    productDetailService.createProductDetail(new ProductDetail(productService.getProduct(productId), imgUrl, ""));
                 }
             }
         }

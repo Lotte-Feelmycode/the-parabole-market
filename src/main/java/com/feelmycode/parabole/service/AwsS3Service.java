@@ -47,8 +47,7 @@ public class AwsS3Service {
 
         amazonS3.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
             .withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3.getUrl("parabole-bucket", fileName).toString();
-
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 
     private String createFileName(String originalFileName) { //파일이름 유니크하게

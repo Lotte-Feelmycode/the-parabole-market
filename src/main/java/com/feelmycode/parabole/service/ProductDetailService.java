@@ -1,8 +1,8 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.ProductDetail;
-import com.feelmycode.parabole.repository.ProductDetailRepository;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
+import com.feelmycode.parabole.repository.ProductDetailRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,7 @@ public class ProductDetailService {
     private final SellerService sellerService;
 
     @Transactional
-    public void createProductDetail(Long userId, ProductDetail productDetail) {
-        sellerService.getSellerByUserId(userId);
+    public void createProductDetail(ProductDetail productDetail) {
         productDetailRepository.save(productDetail);
     }
 
