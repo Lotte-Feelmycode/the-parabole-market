@@ -74,7 +74,7 @@ public class Product extends BaseEntity {
         this.category = category;
     }
 
-    private void setThumbnailImg(String thumbnailImg) {
+    public void setThumbnailImg(String thumbnailImg) {
         this.thumbnailImg = thumbnailImg;
     }
 

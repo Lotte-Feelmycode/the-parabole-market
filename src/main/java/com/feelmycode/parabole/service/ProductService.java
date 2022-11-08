@@ -39,6 +39,12 @@ public class ProductService {
     }
 
     @Transactional
+    public void updateProductThumbnailImg(Long productId, String thumbnailImg) {
+        Product getProduct = this.getProduct(productId);
+        getProduct.setThumbnailImg(thumbnailImg);
+    }
+
+    @Transactional
     public Long updateProduct(Long userId, Product product) {
         sellerService.getSellerByUserId(userId);
         Product getProduct = this.getProduct(product.getId());
