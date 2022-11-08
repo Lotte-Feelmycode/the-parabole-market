@@ -76,8 +76,8 @@ public class OrderControllerTest {
         request.put("orderPayState", "NAVER_PAY");
         request.put("receiverName", "김파라");
         request.put("receiverPhone", "010-2345-6789");
-        request.put("addressSimple", "광진구 12-33");
-        request.put("addressDetail", "광진구 12-33");
+        request.put("addressSimple", "광진구");
+        request.put("addressDetail", "12-33");
         request.put("deliveryComment", "문앞에 두고 연락주세요");
 
         // When
@@ -100,7 +100,7 @@ public class OrderControllerTest {
                     fieldWithPath("receiverName").type(JsonFieldType.STRING).description("받는사람 이름"),
                     fieldWithPath("receiverPhone").type(JsonFieldType.STRING).description("받는사람 전화번호"),
                     fieldWithPath("addressSimple").type(JsonFieldType.STRING).description("주소지"),
-                    fieldWithPath("addressDetail").type(JsonFieldType.STRING).description("상세 주소지(현재는 주소록API와 연결되지 않아 Simple/Detail을 동일하게 사용)"),
+                    fieldWithPath("addressDetail").type(JsonFieldType.STRING).description("상세 주소지"),
                     fieldWithPath("deliveryComment").type(JsonFieldType.STRING).description("배송 메세지"),
                     fieldWithPath("orderPayState").type(JsonFieldType.STRING).description("주문 결제 수단. {\'CARD\': \'카드결제\', \'BANK_TRANSFER\': \'실시간 계좌 이체\', \'PHONE\': \'휴대폰 결제\', \'VIRTUAL_ACCOUNT\': \'가상계좌\', \'KAKAO_PAY\': \'카카오 페이\', \'TOSS\': \'토스\', \'WITHOUT_BANK\': \'무통장 입금\', \'WITHOUT_BANK_PAY\': \'무통장 입금 결제 완료\', \'NAVER_PAY\': \'네이버 페이\', \'ERROR\': \'에러\'}")
                 ),
