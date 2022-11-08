@@ -1,5 +1,10 @@
 package com.feelmycode.parabole.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.NaverOauthToken;
+import com.feelmycode.parabole.domain.NaverProfile;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
@@ -15,11 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -32,6 +45,12 @@ public class UserService {
     private final CartService cartService;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Value("${sns.naver.client-id}")
+    private String naverClientId;
+    @Value("${sns.naver.client-secret}")
+    private String naverClientSecret;
+    @Value("${sns.naver.redirect-uri}")
+    private String naverRedirectUri;
 
     @Transactional
     public UserDto create(UserDto userDTO) {
@@ -116,6 +135,105 @@ public class UserService {
             throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
         }
         return dtos;
+    }
+
+    public NaverOauthToken getAccessTokenNaver(String code, String state) {
+
+        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("state", state);
+        params.add("client_id", naverClientId);
+        params.add("redirect_uri", naverRedirectUri);
+        params.add("client_secret", naverClientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> naverTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://nid.naver.com/oauth2.0/token",
+            HttpMethod.POST,
+            naverTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverOauthToken naverOauthToken = null;
+        try {
+            naverOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), NaverOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return naverOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenNaver(String token) {
+        NaverProfile profile = findProfileNaver(token);
+
+//        String name = new String(profile.getResponse().getName().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+//        String nickname = new String(profile.getResponse().getNickname().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+
+        User user = userRepository.findByEmail(profile.getResponse().getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.response.getId())
+                .imageUrl(profile.getResponse().getProfile_image())
+                .username(profile.getResponse().getName())
+                .nickname(profile.getResponse().getNickname())
+//                .username(name)
+//                .nickname(nickname)
+                .email(profile.getResponse().getEmail())
+                .authProvider("Naver")
+                .phone(profile.getResponse().getMobile())
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+
+        return UserLoginResponseDto.builder().userId(user.getId()).email(user.getEmail()).role(user.getRole())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).phone(user.getPhone())
+            .imageUrl(user.getImageUrl()).authProvider("Naver").build();
+    }
+
+    public NaverProfile findProfileNaver(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> naverProfileResponse = restTemplate.exchange(
+            "https://openapi.naver.com/v1/nid/me",
+            HttpMethod.GET,
+            naverProfileRequest,
+            String.class
+        );
+        log.info("naverProfileResponse RestTemplate{}",naverProfileResponse.toString());    // 한글 깨짐 발생
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        NaverProfile naverProfile = null;
+        try {
+            naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("naverProfileResponse RestTemplate{}",naverProfile.toString());            // 한글 정상
+
+        return naverProfile;
     }
 
 }
