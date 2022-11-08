@@ -23,7 +23,7 @@ public class OrderInfoResponseDto {
     private LocalDateTime updatedAt;
 
     public OrderInfoResponseDto(Long id, String state, Long userId, String userEmail, Long productId, String productName,
-        Integer productCnt, Long productPrice, Long productDiscountPrice, LocalDateTime productUpdatedAt) {
+        Integer productCnt, Long productPrice, Long productDiscountPrice, String productThumbnailImg, LocalDateTime productUpdatedAt) {
         this.id = id;
         this.state = state;
         this.userId = userId;
@@ -34,6 +34,7 @@ public class OrderInfoResponseDto {
         this.productPrice = productPrice;
         this.productDiscountPrice = productDiscountPrice;
         this.updatedAt = productUpdatedAt;
+        this.productThumbnailImg = productThumbnailImg;
     }
     
     public void setProductThumbnailImg(String productThumbnailImg) {

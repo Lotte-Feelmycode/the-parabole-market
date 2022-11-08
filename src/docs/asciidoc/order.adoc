@@ -17,6 +17,9 @@ endif::[]
 
 include::{resource-dir}/get-order-list/http-request.adoc[]
 
+`*Fields*`
+include::{resource-dir}/get-order-list/request-parameters.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/get-order-list/http-response.adoc[]
@@ -31,6 +34,10 @@ include::{resource-dir}/get-order-list/response-fields.adoc[]
 
 include::{resource-dir}/update-order/http-request.adoc[]
 
+`*Fields*`
+
+include::{resource-dir}/update-order/request-fields.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/update-order/http-response.adoc[]
@@ -39,20 +46,6 @@ include::{resource-dir}/update-order/http-response.adoc[]
 
 include::{resource-dir}/update-order/response-fields.adoc[]
 
-=== 주문 배달 수정
-
-`*Request*`
-
-include::{resource-dir}/update-order-delivery/http-request.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/update-order-delivery/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/update-order-delivery/response-fields.adoc[]
-
 == 주문 상세정보
 
 === 주문 상세정보 생성
@@ -60,6 +53,10 @@ include::{resource-dir}/update-order-delivery/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/create-orderinfo/http-request.adoc[]
+
+`*Request*`
+
+include::{resource-dir}/create-orderinfo/request-fields.adoc[]
 
 `*Response*`
 
@@ -75,6 +72,10 @@ include::{resource-dir}/create-orderinfo/response-fields.adoc[]
 
 include::{resource-dir}/get-orderinfo-list-by-user/http-request.adoc[]
 
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list-by-user/request-parameters.adoc[]
+
 `*Response*`
 
 include::{resource-dir}/get-orderinfo-list-by-user/http-response.adoc[]
@@ -88,6 +89,10 @@ include::{resource-dir}/get-orderinfo-list-by-user/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/get-orderinfo-list-by-seller/http-request.adoc[]
+
+`*Request*`
+
+include::{resource-dir}/get-orderinfo-list-by-seller/request-parameters.adoc[]
 
 `*Response*`
 

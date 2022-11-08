@@ -1,0 +1,48 @@
+|===
+|Path|Type|Description
+
+|`+userId+`
+|`+Number+`
+|사용자 ID
+
+|`+orderId+`
+|`+Number+`
+|주문 ID
+
+|`+orderInfoRequestList+`
+|`+Array+`
+|상세주문과 적용한 쿠폰 정보
+
+|`+orderInfoRequestList.[].orderInfoIdList+`
+|`+Array+`
+|상세주문 ID 리스트
+
+|`+orderInfoRequestList.[].couponSerialNo+`
+|`+String+`
+|쿠폰 시리얼 넘버
+
+|`+receiverName+`
+|`+String+`
+|받는사람 이름
+
+|`+receiverPhone+`
+|`+String+`
+|받는사람 전화번호
+
+|`+addressSimple+`
+|`+String+`
+|주소지
+
+|`+addressDetail+`
+|`+String+`
+|상세 주소지(현재는 주소록API와 연결되지 않아 Simple/Detail을 동일하게 사용)
+
+|`+deliveryComment+`
+|`+String+`
+|배송 메세지
+
+|`+orderPayState+`
+|`+String+`
+|주문 결제 수단. {'CARD': '카드결제', 'BANK_TRANSFER': '실시간 계좌 이체', 'PHONE': '휴대폰 결제', 'VIRTUAL_ACCOUNT': '가상계좌', 'KAKAO_PAY': '카카오 페이', 'TOSS': '토스', 'WITHOUT_BANK': '무통장 입금', 'WITHOUT_BANK_PAY': '무통장 입금 결제 완료', 'NAVER_PAY': '네이버 페이', 'ERROR': '에러'}
+
+|===

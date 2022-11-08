@@ -1,8 +1,8 @@
 [source,options="nowrap"]
 ----
 {
-  "success" : false,
-  "message" : "Required request parameter 'userId' for method parameter type Long is not present",
+  "success" : true,
+  "message" : "상품 생성",
   "data" : null
 }
 ----

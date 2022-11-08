@@ -1,18 +1,19 @@
 [source,http,options="nowrap"]
 ----
-HTTP/1.1 500 Internal Server Error
+HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 03 Nov 2022 07:55:45 GMT
-Connection: close
-Content-Length: 143
+Date: Mon, 07 Nov 2022 03:52:52 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 74
 
 {
-  "success" : false,
-  "message" : "Required request parameter 'userId' for method parameter type Long is not present",
+  "success" : true,
+  "message" : "상품 생성",
   "data" : null
 }
 ----

@@ -27,11 +27,11 @@
 
 |`+data.createdBy+`
 |`+String+`
-|이벤트 생성자 유형
+|이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)
 
 |`+data.type+`
 |`+String+`
-|이벤트 유형
+|이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)
 
 |`+data.title+`
 |`+String+`
@@ -39,15 +39,15 @@
 
 |`+data.startAt+`
 |`+String+`
-|이벤트 시작 일시
+|이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.endAt+`
 |`+String+`
-|이벤트 종료 일시
+|이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.status+`
 |`+Number+`
-|이벤트 진행 상태
+|이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)
 
 |`+data.descript+`
 |`+String+`
@@ -59,11 +59,11 @@
 
 |`+data.eventImage.eventBannerImg+`
 |`+String+`
-|이벤트 배너 이미지
+|이벤트 배너 이미지(URL)
 
 |`+data.eventImage.eventDetailImg+`
 |`+String+`
-|이벤트 상세 이미지
+|이벤트 상세 이미지(URL)
 
 |`+data.eventPrizes+`
 |`+Array+`
@@ -75,7 +75,7 @@
 
 |`+data.eventPrizes.[].prizeType+`
 |`+String+`
-|이벤트 경품 유형
+|이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )
 
 |`+data.eventPrizes.[].stock+`
 |`+Number+`
@@ -91,7 +91,7 @@
 
 |`+data.eventPrizes.[].productImg+`
 |`+String+`
-|상품 이미지
+|상품 이미지(URL)
 
 |`+data.eventPrizes.[].couponId+`
 |`+Null+`
@@ -103,7 +103,7 @@
 
 |`+data.eventPrizes.[].type+`
 |`+Null+`
-|쿠폰 할인 유형
+|쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)
 
 |`+data.eventPrizes.[].couponDiscountValue+`
 |`+Null+`
@@ -111,6 +111,6 @@
 
 |`+data.eventPrizes.[].expiresAt+`
 |`+Null+`
-|쿠폰 만료 일시
+|쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |===
