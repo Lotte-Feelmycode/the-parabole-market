@@ -4,15 +4,21 @@ buildscript {
     }
 }
 plugins {
-	id 'org.springframework.boot' version '2.7.3'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-	id 'java'
-	id 'org.asciidoctor.jvm.convert' version "3.3.2"
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+    id 'org.asciidoctor.jvm.convert' version "3.3.2"
 }
 
 group = 'com.feelmycode.parabole'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.3"
+    }
+}
 
 configurations {
     asciidoctorExtensions
@@ -36,6 +42,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
@@ -56,12 +64,13 @@ dependencies {
 }
 
 ext {
+    set('springCloudVersion', "2021.0.4")
     snippetsDir = file("./src/main/resources/snippets")
 }
 
 test {
     outputs.dir snippetsDir
-    useJUnitPlatform{
+    useJUnitPlatform {
         includeEngines 'junit-vintage'
     }
 }
