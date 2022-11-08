@@ -32,11 +32,10 @@ public class OrderRequestDto {
         this.orderInfoState = orderInfoState;
     }
 
-    public OrderRequestDto setUserInfo(String userName, String userEmail, String userPhone) {
+    public void setUserInfo(String userName, String userEmail, String userPhone) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userPhone = userPhone;
-        return this;
     }
 
 }

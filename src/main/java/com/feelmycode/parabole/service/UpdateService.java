@@ -76,7 +76,7 @@ public class UpdateService {
         }
 
         User getUser = userService.getUser(orderUpdateRequestDto.getUserId());
-        orderUpdateRequestDto = orderUpdateRequestDto.setUserInfo(getUser.getName(), getUser.getEmail(), getUser.getPhone());
+        orderUpdateRequestDto.setUserInfo(getUser.getName(), getUser.getEmail(), getUser.getPhone());
 
         if(order.getState() == -1) {
             order.setState(0);
