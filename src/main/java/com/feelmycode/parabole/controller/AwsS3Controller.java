@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,10 +33,15 @@ public class AwsS3Controller {
     public ResponseEntity<ParaboleResponse> uploadImage(@RequestParam() Long productId,
         @RequestPart("images") List<MultipartFile> multipartFile) throws Exception {
         if (multipartFile != null) {
-            for (MultipartFile file : multipartFile) {
+            for (int i = 0; i < multipartFile.size(); i++) {
+                MultipartFile file = multipartFile.get(i);
                 String imgUrl = awsS3Service.upload(file);
-                productDetailService.createProductDetail(
-                    1L, new ProductDetail(productService.getProduct(productId), imgUrl, ""));
+                if(i == 0) {
+                    productService.updateProductThumbnailImg(productId, imgUrl);
+                } else {
+                    productDetailService.createProductDetail(
+                        1L, new ProductDetail(productService.getProduct(productId), imgUrl, ""));
+                }
             }
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이미지 업로드");
