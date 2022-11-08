@@ -7,7 +7,6 @@ plugins {
 	id 'org.springframework.boot' version '2.7.3'
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
-//	id 'org.asciidoctor.convert' version '1.5.3'
 	id 'org.asciidoctor.jvm.convert' version "3.3.2"
 }
 
@@ -16,13 +15,13 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
+    asciidoctorExtensions
     all {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
     compileOnly {
         extendsFrom annotationProcessor
     }
-    asciidoctorExtensions
 }
 
 repositories {
@@ -31,6 +30,10 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'mysql:mysql-connector-java'
@@ -38,11 +41,13 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-//    asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     compileOnly 'org.projectlombok:lombok'
+
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -52,13 +57,15 @@ dependencies {
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    snippetsDir = file("./src/main/resources/snippets")
 }
 
-//asciidoctor {
-//    inputs.dir snippetsDir
-//    dependsOn test
-//}
+test {
+    outputs.dir snippetsDir
+    useJUnitPlatform{
+        includeEngines 'junit-vintage'
+    }
+}
 
 asciidoctor {
     dependsOn test
@@ -66,37 +73,23 @@ asciidoctor {
     inputs.dir snippetsDir
 }
 
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
+build {
+    dependsOn asciidoctor
+    copy {
+        from "./build/docs/asciidoc"
+        include '*.html'
+        into "./src/main/resources/static/docs/"
+    }
 }
 
 bootJar {
     dependsOn asciidoctor
-
     copy {
-        from "build/generated_snippets"
-        into "src/main/resources/static/docs/"
+        from "./build/docs/asciidoc"
+        include '*.html'
+        into "./src/main/resources/static/docs/"
     }
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-//openapi3 {
-//    server = 'http://localhost:8080'
-//    title = 'The Parabole'
-//    description = 'The Parabole API description'
-//    version = '0.1.0'
-//    format = 'yml'
-//    outputDirectory = "."
-//    outputFileNamePrefix = "swagger"
-//    copy {
-//        from "build/api-spec"
-//        into "src/main/resources/static/docs"
-//    }
-//}
 
 processResources.dependsOn('ymlSecurity')
 

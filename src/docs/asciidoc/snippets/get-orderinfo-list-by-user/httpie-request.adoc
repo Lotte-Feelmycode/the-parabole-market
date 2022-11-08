@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ http GET 'https://parabole.com:54870/api/v1/orderinfo?userId=3' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

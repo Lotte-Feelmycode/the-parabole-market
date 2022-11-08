@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 07 Nov 2022 03:16:42 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 83
+
+{
+  "success" : true,
+  "message" : "이벤트 등록 성공",
+  "data" : 105
+}
+----

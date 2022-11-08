@@ -1,0 +1,123 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 07 Nov 2022 03:48:05 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 4159
+
+{
+  "success" : true,
+  "message" : "모든 주문 정보 호출",
+  "data" : [ {
+    "id" : 134,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 16,
+    "productName" : "코스트코 할로우 밀크초콜릿 900g 대용량 CMOI 빅볼 할로윈캔디 수입간식",
+    "productCnt" : 5,
+    "productRemain" : 100,
+    "productPrice" : 23880,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v233849/LO/15/90/44/67/28/_1/59/04/46/72/9/LO1590446728_1590446729_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-20T19:40:30"
+  }, {
+    "id" : 137,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 3,
+    "productName" : "순대국밥",
+    "productCnt" : 4,
+    "productRemain" : 3000,
+    "productPrice" : 10000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v135732/LM/L0/00/00/44/87/51/7_/00/1/LML000004487517_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:22"
+  }, {
+    "id" : 138,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 2,
+    "productName" : "돼지국밥",
+    "productCnt" : 1,
+    "productRemain" : 500,
+    "productPrice" : 8000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+    "updatedAt" : "2022-10-27T15:59:23"
+  }, {
+    "id" : 139,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 1,
+    "productName" : "한우국밥",
+    "productCnt" : 5,
+    "productRemain" : 960,
+    "productPrice" : 10000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:23"
+  }, {
+    "id" : 140,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 8,
+    "productName" : "허쉬 후퍼스 할로윈기획(180G)",
+    "productCnt" : 8,
+    "productRemain" : 500,
+    "productPrice" : 9900,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v111403/LM/88/09/25/66/78/51/1_/00/1/LM8809256678511_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:23"
+  }, {
+    "id" : 141,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 9,
+    "productName" : "리터 스포트 초콜릿 헤이즐럿 (100G)",
+    "productCnt" : 4,
+    "productRemain" : 1000,
+    "productPrice" : 3000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v100801/LO/14/49/30/25/08/_1/44/93/02/50/9/LO1449302508_1449302509_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:23"
+  }, {
+    "id" : 142,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 10,
+    "productName" : "레고 달 탐사 차량 (60348)",
+    "productCnt" : 5,
+    "productRemain" : 10000,
+    "productPrice" : 44900,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/LM/57/02/01/71/61/73/0_/00/1/LM5702017161730_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:23"
+  }, {
+    "id" : 143,
+    "state" : "BEFORE_ORDER",
+    "userId" : 3,
+    "userEmail" : "para@bole.com",
+    "productId" : 7,
+    "productName" : "막국수",
+    "productCnt" : 1,
+    "productRemain" : 19984,
+    "productPrice" : 7000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-10-27T15:59:23"
+  } ]
+}
+----

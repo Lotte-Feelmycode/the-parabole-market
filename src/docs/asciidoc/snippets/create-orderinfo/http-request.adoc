@@ -1,0 +1,16 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/orderinfo HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:54870
+Content-Length: 96
+
+{
+  "orderInfoDto" : [ {
+    "productId" : 2,
+    "productCnt" : 1
+  } ],
+  "userId" : 1
+}
+----

@@ -1,0 +1,42 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 07 Nov 2022 03:52:52 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1029
+
+{
+  "success" : true,
+  "message" : "상품 상세 정보",
+  "data" : {
+    "product" : {
+      "productId" : 2,
+      "productName" : "돼지국밥",
+      "sellerId" : 2,
+      "storeName" : "u4-s2's store",
+      "productStatus" : 1,
+      "productRemains" : 500,
+      "productPrice" : 8000,
+      "productCategory" : "국밥",
+      "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "productCreatedAt" : "2022-10-06T16:52:06",
+      "productUpdatedAt" : "2022-10-06T16:52:06",
+      "productDeletedAt" : null,
+      "productIsDeleted" : false
+    },
+    "productDetail" : [ {
+      "productDetailId" : 2,
+      "productId" : 2,
+      "img" : "https://gi.esmplus.com/kgcbrand1/0329_%EC%8B%A0%EA%B7%9C%EB%93%B1%EB%A1%9D%EC%83%81%ED%92%88/100%ED%91%B8%EB%93%9C/kj_213_01.jpg",
+      "imgCaption" : "돼지국밥 상세이미지"
+    } ],
+    "storeName" : "u4-s2's store"
+  }
+}
+----

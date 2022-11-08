@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 07 Nov 2022 03:48:05 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 88
+
+{
+  "success" : true,
+  "message" : "주문 정보 저장 완료",
+  "data" : null
+}
+----

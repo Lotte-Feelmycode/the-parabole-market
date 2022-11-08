@@ -1,0 +1,12 @@
+[source,bash]
+----
+$ echo '{
+  "orderInfoDto" : [ {
+    "productId" : 2,
+    "productCnt" : 1
+  } ],
+  "userId" : 1
+}' | http POST 'https://parabole.com:54870/api/v1/orderinfo' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

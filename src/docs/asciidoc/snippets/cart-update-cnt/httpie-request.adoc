@@ -1,0 +1,11 @@
+[source,bash]
+----
+$ echo '{
+  "productId" : 3,
+  "cnt" : 10,
+  "userId" : 3,
+  "cartItemId" : 153
+}' | http PATCH 'https://parabole.com:56085/api/v1/cart/update/cnt' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

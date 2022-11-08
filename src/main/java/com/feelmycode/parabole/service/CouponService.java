@@ -58,7 +58,7 @@ public class CouponService {
         for (int i = 0; i < dto.getCnt(); i++) {
             coupon.addUserCoupon(new UserCoupon(coupon));
         }
-        return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), user.getUsername(), coupon.getType().getName(), coupon.getCnt());
     }
 
 //    public void giveoutUserCoupon(String couponSNo, Long userId) {
@@ -114,6 +114,10 @@ public class CouponService {
         return new PageImpl<>(dtos);
     }
 
+    public UserCoupon getUserCouponBySerialNo(String serialNo) {
+        return userCouponRepository.findBySerialNo(serialNo);
+    }
+
     public List<UserCoupon> getUserCouponByCouponId(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
         return coupon.getUserCoupons();
@@ -164,6 +168,7 @@ public class CouponService {
                 List<CouponInfoDto> rateCoupon = response.getRateCoupon();
                 rateCoupon.add(new CouponInfoDto(
                     couponInfo.getName(),
+                    userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
                     couponInfo.getDiscountValue()
@@ -175,6 +180,7 @@ public class CouponService {
                 List<CouponInfoDto> amountCoupon = response.getAmountCoupon();
                 amountCoupon.add(new CouponInfoDto(
                     couponInfo.getName(),
+                    userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
                     couponInfo.getDiscountValue()

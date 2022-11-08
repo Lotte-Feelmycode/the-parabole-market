@@ -4,16 +4,16 @@ import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
-import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
+import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
-import com.feelmycode.parabole.dto.OrderUpdateRequestDto;
+import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.enumtype.OrderPayState;
+import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CartItemRepository;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
-import com.feelmycode.parabole.repository.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,18 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateService {
 
     private final OrderInfoRepository orderInfoRepository;
-    private final OrderRepository orderRepository;
+    private final UserService userService;
     private final OrderInfoService orderInfoService;
     private final OrderService orderService;
     private final CartItemRepository cartItemRepository;
     private final CartService cartService;
-
-    @Transactional
-    public void updateDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
-        Order order = orderService.getOrder(deliveryDto.getUserId());
-        order.saveDeliveryInfo(deliveryDto);
-        updateOrderInfoState(new OrderInfoRequestDto(deliveryDto.getUserId(), deliveryDto.getOrderState()));
-    }
 
     @Transactional
     public void updateOrderInfoState(OrderInfoRequestDto orderInfoRequestDto) {
@@ -60,7 +53,7 @@ public class UpdateService {
                     info.setState(OrderInfoState.returnValueByName(orderInfoRequestDto.getOrderState()));
                 }
 
-                this.updateOrderState(new OrderUpdateRequestDto(
+                this.updateOrderState(new OrderRequestDto(
                     orderInfoRequestDto.getUserId(),
                     OrderPayState.returnNameByValue(order.getPayState())));
             }
@@ -70,12 +63,37 @@ public class UpdateService {
     }
 
     @Transactional
-    public void updateOrderState(OrderUpdateRequestDto orderUpdateRequestDto) {
+    public void updateOrderState(OrderRequestDto orderUpdateRequestDto) {
+
         Order order = orderService.getOrder(orderUpdateRequestDto.getUserId());
+
+        if(order == null) {
+            throw new NoDataException();
+        }
 
         if(order.getState() < 1) {
             order.setState(order.getState()+1);
         }
+
+        User getUser = userService.getUser(orderUpdateRequestDto.getUserId());
+        orderUpdateRequestDto.setUserInfo(getUser.getUsername(), getUser.getEmail(), getUser.getPhone());
+
+        if(order.getState() == -1) {
+            order.setState(0);
+        }
+
+        if(orderUpdateRequestDto.getOrderPayState().equals("BANK_TRANSFER") || orderUpdateRequestDto.getOrderPayState().equals("WITHOUT_BANK")) {
+            orderUpdateRequestDto.setOrderInfoState("BEFORE_PAY");
+        } else {
+            orderUpdateRequestDto.setOrderInfoState("PAY_COMPLETE");
+        }
+
+        order.saveDeliveryInfo(orderUpdateRequestDto);
+
+        this.updateOrderInfoState(new OrderInfoRequestDto(orderUpdateRequestDto.getUserId(), orderUpdateRequestDto.getOrderState()));
+
+        // 쿠폰정보를 orderInfo에 저장
+        orderInfoService.setCouponToOrderInfo(orderUpdateRequestDto);
 
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
         if (order.getState() == 0) {

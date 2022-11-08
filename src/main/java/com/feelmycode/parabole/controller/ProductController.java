@@ -1,9 +1,8 @@
 package com.feelmycode.parabole.controller;
 
-import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.ProductDetail;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductRequestDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +29,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class ProductController {
 
+    private final static int DEFAULT_SIZE = 20;
     private final ProductService productService;
     private final ProductDetailService productDetailService;
-    private final static int DEFAULT_SIZE = 20;
 
     // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
     // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
@@ -57,7 +55,7 @@ public class ProductController {
             }
         }
 
-        log.debug("getSellerId : {} / getStoreName : {} / getProductName : {} / getCategory : {} / getPageable : {}", getSellerId, getStoreName, getProductName, getCategory, pageable);
+        log.info("getProductList - getSellerId : {} / getStoreName : {} / getProductName : {} / getCategory : {} / getPageable : {}", getSellerId, getStoreName, getProductName, getCategory, pageable);
         Page<ProductDto> response = productService.getProductList(getSellerId, getStoreName,
             getProductName, getCategory, pageable);
 
@@ -65,23 +63,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody ProductDto product) {
-        productService.saveProduct(userId, product);
-        
+    public ResponseEntity<ParaboleResponse> createProduct(@RequestBody ProductRequestDto product) {
+        productService.saveProduct(product);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
-    }
-
-    @PostMapping("/detail")
-    public ResponseEntity<ParaboleResponse> createProductDetail(@RequestBody ProductDetail productDetail, @RequestParam Long userId) {
-        productDetailService.createProductDetail(userId, productDetail);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 상세 정보 추가");
-    }
-
-    @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
-        productService.updateProduct(userId, product);
-
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
     }
 
     @GetMapping
@@ -89,5 +73,12 @@ public class ProductController {
         ProductDetailListResponseDto response = productService.getProductDetail(productId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 상세 정보", response);
     }
-    
+
+    @GetMapping("/seller/list")
+    public ResponseEntity<ParaboleResponse> getProductBySellerId(@RequestParam Long userId, @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+        log.info("Get Product By Seller Id : {} ", userId);
+        Page<ProductDto> response = productService.getProductList(userId, "", "", "", pageable);
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);
+    }
+
 }

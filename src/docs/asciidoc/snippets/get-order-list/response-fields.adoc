@@ -1,0 +1,64 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Array+`
+|주문 정보
+
+|`+data.[].id+`
+|`+Number+`
+|상품 아이디
+
+|`+data.[].state+`
+|`+String+`
+|상품 명
+
+|`+data.[].userId+`
+|`+Number+`
+|사용자 아이디
+
+|`+data.[].userEmail+`
+|`+String+`
+|사용자 이메일
+
+|`+data.[].productId+`
+|`+Number+`
+|상품 ID
+
+|`+data.[].productName+`
+|`+String+`
+|상품 명
+
+|`+data.[].productCnt+`
+|`+Number+`
+|상품 개수
+
+|`+data.[].productRemain+`
+|`+Number+`
+|상품 재고
+
+|`+data.[].productPrice+`
+|`+Number+`
+|상품 가격
+
+|`+data.[].productDiscountPrice+`
+|`+Null+`
+|상품 할인 가격
+
+|`+data.[].productThumbnailImg+`
+|`+String+`
+|상품 썸네일 이미지
+
+|`+data.[].updatedAt+`
+|`+String+`
+|주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss
+
+|===

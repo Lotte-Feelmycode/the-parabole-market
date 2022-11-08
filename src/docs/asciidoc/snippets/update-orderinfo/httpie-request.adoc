@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ echo '{ }' | http PATCH 'https://parabole.com:54870/api/v1/orderinfo' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

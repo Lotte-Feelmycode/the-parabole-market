@@ -1,0 +1,27 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/event HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:57100
+Content-Length: 436
+
+{
+  "userId" : 1,
+  "createdBy" : "SELLER",
+  "type" : "RAFFLE",
+  "title" : "이벤트 등록 BY REST DOCS",
+  "startAt" : "2022-11-10 24:00:00",
+  "endAt" : "2022-11-28 18:00:00",
+  "descript" : "이벤트 설명 v2",
+  "eventImage" : {
+    "eventBannerImg" : "banner.url",
+    "eventDetailImg" : "detail.url"
+  },
+  "eventPrizeCreateRequestDtos" : [ {
+    "id" : 134,
+    "type" : "PRODUCT",
+    "stock" : 40
+  } ]
+}
+----

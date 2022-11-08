@@ -1,0 +1,100 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Object+`
+|반환하는 데이터 정보
+
+|`+data.product+`
+|`+Object+`
+|상품 정보
+
+|`+data.product.productId+`
+|`+Number+`
+|상품 ID
+
+|`+data.product.productName+`
+|`+String+`
+|상품 명
+
+|`+data.product.storeName+`
+|`+String+`
+|판매자 상호 이름
+
+|`+data.product.sellerId+`
+|`+Number+`
+|판매자 ID
+
+|`+data.product.storeName+`
+|`+String+`
+|판매자의 상호 이름
+
+|`+data.product.productStatus+`
+|`+Number+`
+|상품의 상태
+
+|`+data.product.productRemains+`
+|`+Number+`
+|상품 재고
+
+|`+data.product.productPrice+`
+|`+Number+`
+|상품 가격
+
+|`+data.product.productCategory+`
+|`+String+`
+|상품의 카테고리
+
+|`+data.product.productThumbnailImg+`
+|`+String+`
+|상품의 썸네일 이미지
+
+|`+data.product.productCreatedAt+`
+|`+String+`
+|상품의 생성 일자  (yyyy-MM-dd'T'HH:mm:ss
+
+|`+data.product.productUpdatedAt+`
+|`+String+`
+|상품의 수정 일자  (yyyy-MM-dd'T'HH:mm:ss
+
+|`+data.product.productDeletedAt+`
+|`+Null+`
+|상품의 삭제 일자  (yyyy-MM-dd'T'HH:mm:ss
+
+|`+data.product.productIsDeleted+`
+|`+Boolean+`
+|상품의 삭제 여부
+
+|`+data.productDetail+`
+|`+Array+`
+|상품 이미지 정보
+
+|`+data.productDetail.[].productDetailId+`
+|`+Number+`
+|상품 상세 ID
+
+|`+data.productDetail.[].productId+`
+|`+Number+`
+|상품 ID
+
+|`+data.productDetail.[].img+`
+|`+String+`
+|상품 이미지
+
+|`+data.productDetail.[].imgCaption+`
+|`+String+`
+|상품 이미지 상세 설명
+
+|`+data.storeName+`
+|`+String+`
+|상품을 판매자한 스토어 이름
+
+|===
