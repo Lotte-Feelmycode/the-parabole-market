@@ -30,18 +30,9 @@ public class AwsS3Controller {
     private final ProductDetailService productDetailService;
     private final ProductService productService;
 
-    /**
-     * Amazon S3에 이미지 업로드
-     *
-     * @return 성공 시 200 Success와 함께 업로드 된 파일의 파일명 리스트 반환
-     */
     @PostMapping
     public ResponseEntity<ParaboleResponse> uploadImage(@RequestParam() Long productId,
         @RequestPart("images") List<MultipartFile> multipartFile) throws Exception {
-        log.info("productId: {}", productId);
-
-        log.info("UPLOAD IMAGE size: {}", multipartFile == null ? 0 : multipartFile.size());
-//        log.info("UPLOAD IMAGE: {}", multipartFile);
         if (multipartFile != null) {
             for (MultipartFile file : multipartFile) {
                 String imgUrl = awsS3Service.upload(file);
@@ -52,14 +43,4 @@ public class AwsS3Controller {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이미지 업로드");
     }
 
-    /**
-     * Amazon S3에 이미지 업로드 된 파일을 삭제
-     *
-     * @return 성공 시 200 Success
-     */
-    @DeleteMapping
-    public ResponseEntity<ParaboleResponse> deleteImage(@RequestParam String fileName) {
-//        awsS3Service.deleteImage(fileName);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "파일 삭제");
-    }
 }
