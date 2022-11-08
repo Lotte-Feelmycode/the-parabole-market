@@ -27,7 +27,7 @@ public class ProductService {
 
     @Transactional
     public Long saveProduct(ProductRequestDto dto) {
-        Product product = dto.toEntity();
+        Product product = dto.dtoToEntity();
         Long userId = dto.getUserId();
 
         product.setSeller(sellerService.getSellerByUserId(userId));

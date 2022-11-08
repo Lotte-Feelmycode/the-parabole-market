@@ -32,9 +32,9 @@ public class EventController {
     private final EventService eventService;
     private final AwsS3Service awsS3Service;
 
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ParaboleResponse> createEvent(
-        @RequestPart @Valid EventCreateRequestDto eventDto, @RequestPart("images") List<MultipartFile> eventImages) {
+        @RequestPart("eventDtos") @Valid EventCreateRequestDto eventDto, @RequestPart("images") List<MultipartFile> eventImages) {
         Long eventId = -1L;
         try {
             String bannerImg = awsS3Service.upload(eventImages.get(0));
