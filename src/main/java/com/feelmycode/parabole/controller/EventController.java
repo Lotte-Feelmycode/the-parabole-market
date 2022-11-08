@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.dto.EventSearchRequestDto;
@@ -65,8 +66,8 @@ public class EventController {
         @RequestParam(required = false) String eventType,
         @RequestParam(required = false) String eventTitle,
         @RequestParam(required = false) Integer dateDiv,
-        @RequestParam(required = false) LocalDateTime fromDateTime,
-        @RequestParam(required = false) LocalDateTime toDateTime,
+        @RequestParam(required = false) @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss") LocalDateTime fromDateTime,
+        @RequestParam(required = false) @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss") LocalDateTime toDateTime,
         @RequestParam(required = false) Integer eventStatus
     ) {
         Integer getDateDiv = StringUtil.controllerParamIsBlank(dateDiv + "") ? -1 : dateDiv;
