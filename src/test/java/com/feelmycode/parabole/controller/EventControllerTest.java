@@ -123,9 +123,9 @@ public class EventControllerTest {
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
             seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 등록 BY REST DOCS", startAt, endAt,
-            "이벤트 설명 v2",
-            new EventImage("banner.url", "detail.url"), prizes
+            "이벤트 설명 v2", prizes
         );
+//        new EventImage("banner.url", "detail.url")
 
         String requestJson = null;
         try {
@@ -545,9 +545,9 @@ public class EventControllerTest {
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
             seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
-            "이벤트 설명 v2",
-            new EventImage("banner.url", "detail.url"), prizes
+            "이벤트 설명 v2", prizes
         );
+//        new EventImage("banner.url", "detail.url")
         Long eventId = eventService.createEvent(requestDto);
 
         Response resp = given(this.spec)

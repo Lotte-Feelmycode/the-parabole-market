@@ -110,7 +110,7 @@ public class eventServiceTest {
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            user.getId(), "SELLER", "RAFFLE", "이벤트 제목V2", startAt, endAt, "이벤트 설명 v2", new EventImage(), prizes
+            user.getId(), "SELLER", "RAFFLE", "이벤트 제목V2", startAt, endAt, "이벤트 설명 v2", prizes
         );
 
         //when

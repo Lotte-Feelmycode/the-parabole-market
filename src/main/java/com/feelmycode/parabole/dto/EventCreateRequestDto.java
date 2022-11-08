@@ -43,7 +43,7 @@ public class EventCreateRequestDto {
     private List<EventPrizeCreateRequestDto> eventPrizeCreateRequestDtos;
 
     public EventCreateRequestDto(Long userId, String createdBy, String type, String title,
-        LocalDateTime startAt, LocalDateTime endAt, String descript, EventImage eventImage,
+        LocalDateTime startAt, LocalDateTime endAt, String descript,
         List<EventPrizeCreateRequestDto> eventPrizeCreateRequestDtos) {
         this.userId = userId;
         this.createdBy = createdBy;
@@ -52,7 +52,10 @@ public class EventCreateRequestDto {
         this.startAt = startAt;
         this.endAt = endAt;
         this.descript = descript;
-        this.eventImage = eventImage;
         this.eventPrizeCreateRequestDtos = eventPrizeCreateRequestDtos;
+    }
+
+    public void setEventImage(String bannerImg, String detailImg) {
+        this.eventImage = new EventImage(bannerImg, detailImg);
     }
 }
