@@ -24,6 +24,7 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
@@ -34,6 +35,7 @@ import groovy.util.logging.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
@@ -89,6 +91,20 @@ public class EventControllerTest {
         mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
         mapper.setSerializationInclusion(Include.NON_NULL);
         return mapper.writeValueAsString(data);
+    }
+
+    private String getToken() {
+        final UserDto request = UserDto.builder().email("test@test.com").password("test").build();
+
+        final ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(ContentType.JSON).body(request)
+            .when()
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+
+        return response.body().jsonPath().get("data.token").toString();
     }
 
     @Before
@@ -342,20 +358,20 @@ public class EventControllerTest {
     public void getEventBySellerId() {
 
         // given
-        Long userId = 4L;
+        String token = getToken();
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
-            .port(port)
+            .header("Authorization", "Bearer " + token)
+            .port(port).log().all()
             .filter(document("event-sellerId",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                pathParameters(parameterWithName("userId").description("사용자 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -408,7 +424,7 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)")
                 )
-            )).when().get(BASIC_PATH + "/seller/{userId}", userId);
+            )).log().all().when().get(BASIC_PATH + "/seller");
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
