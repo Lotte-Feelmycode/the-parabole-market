@@ -3,16 +3,21 @@
 POST /api/v1/order HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: parabole.com:54098
-Content-Length: 197
+Host: parabole.com:54408
+Content-Length: 387
 
 {
-  "userId" : 3,
+  "addressSimple" : "광진구 12-33",
+  "receiverPhone" : "010-2345-6789",
+  "addressDetail" : "광진구 12-33",
   "orderId" : 1,
+  "orderPayState" : "NAVER_PAY",
+  "receiverName" : "김파라",
+  "deliveryComment" : "문앞에 두고 연락주세요",
   "orderInfoRequestList" : [ {
-    "orderInfoIdList" : [ 1, 2 ],
-    "couponSerialNo" : "_쿠폰시리얼넘버_"
+    "couponSerialNo" : "",
+    "orderInfoIdList" : [ 1, 2, 3 ]
   } ],
-  "orderPayState" : "NAVER_PAY"
+  "userId" : 3
 }
 ----

@@ -6,11 +6,13 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-import com.feelmycode.parabole.dto.OrderInfoListDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.global.util.StringUtil;
@@ -21,6 +23,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
 import java.util.List;
+import net.minidev.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -58,14 +61,16 @@ public class OrderInfoControllerTest {
     @DisplayName("상세 주문 생성")
     public void createOrderInfo() {
 
-        OrderInfoSimpleDto dto = new OrderInfoSimpleDto(1L, 1);
+        OrderInfoSimpleDto dto = new OrderInfoSimpleDto(2L, 1);
         List<OrderInfoSimpleDto> orderInfoDto = new ArrayList<>();
         orderInfoDto.add(dto);
-        OrderInfoListDto list = new OrderInfoListDto(1L, orderInfoDto);
 
+        JSONObject request = new JSONObject();
+        request.put("userId", 1);
+        request.put("orderInfoDto", orderInfoDto);
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
-            .body(list)
+            .body(request.toJSONString())
             .contentType(ContentType.JSON)
             .filter(document("create-orderinfo",
                 preprocessRequest(modifyUris()
@@ -73,6 +78,12 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
+                    fieldWithPath("orderInfoDto").type(JsonFieldType.ARRAY).description("주문 목록 리스트"),
+                    fieldWithPath("orderInfoDto.[].productId").type(JsonFieldType.NUMBER).description("주문 목록 리스트"),
+                    fieldWithPath("orderInfoDto.[].productCnt").type(JsonFieldType.NUMBER).description("주문 목록 리스트")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -100,41 +111,44 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("userId").description("사용자 ID")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").type(JsonFieldType.OBJECT).description("주문 정보"),
-                    fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.cnt").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList").type(JsonFieldType.ARRAY).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].sellerId").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].storeName").type(JsonFieldType.STRING).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos").type(JsonFieldType.ARRAY).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].id").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state").type(JsonFieldType.STRING).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userId").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userEmail").type(JsonFieldType.STRING).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productId").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productName").type(JsonFieldType.STRING).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productCnt").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productRemain").type(JsonFieldType.NULL).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productPrice").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg").type(JsonFieldType.NULL).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt").type(JsonFieldType.NULL).description("주문 정보"),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto").type(JsonFieldType.OBJECT).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon").type(JsonFieldType.ARRAY).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].couponName").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].serialNo").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].storeName").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].type").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon").type(JsonFieldType.ARRAY).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].couponName").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].serialNo").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].storeName").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].type").type(JsonFieldType.STRING).description("주문 정보").optional(),
-                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("주문 정보").optional()
+                    fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                    fieldWithPath("data.cnt").type(JsonFieldType.NUMBER).description("주문한 상품들의 총 개수"),
+                    fieldWithPath("data.orderBySellerDtoList").type(JsonFieldType.ARRAY).description("판매자별로 정렬된 상품 목록"),
+                    fieldWithPath("data.orderBySellerDtoList.[].sellerId").type(JsonFieldType.NUMBER).description("판매자 ID"),
+                    fieldWithPath("data.orderBySellerDtoList.[].storeName").type(JsonFieldType.STRING).description("판매자 상호 명"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos").type(JsonFieldType.ARRAY).description("주문한 상품 정보"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].id").type(JsonFieldType.NUMBER).description("상세 주문 ID"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state").type(JsonFieldType.STRING).description("상세 주문 상태. {\'BEFORE_PAY\': \'입금 전\', \'PAY_COMPLETE\': \'주문완료(결제)\', \'BEFORE_DELIVERY\': \'배송 준비\', \'DELIVERY\': \'배송 중\', \'DELIVERY_COMPLETE\': \'배송 완료\', \'BEFORE_ORDER\': \'주문 전\', \'ORDER_CANCEL\': \'주문 취소\', \'REFUND\': \'환불\', \'ERROR\': \'에러\'}"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userId").type(JsonFieldType.NUMBER).description("유저 ID"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userEmail").type(JsonFieldType.STRING).description("유저 이메일"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productName").type(JsonFieldType.STRING).description("상품 명"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productCnt").type(JsonFieldType.NUMBER).description("주문한 상품 개수"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productRemain").description("남아있는 상품 재고"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productPrice").type(JsonFieldType.NUMBER).description("상품 총 가격"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice").description("상품 할인 가격"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg").description("상품 썸네일"),
+                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt").description("주문 수정 날짜"),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto").type(JsonFieldType.OBJECT).description("쿠폰 정보(할인율 쿠폰:RATE, 금액 할인 쿠폰:AMOUNT)").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon").type(JsonFieldType.ARRAY).description("할인율 쿠폰 목록").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].serialNo").type(JsonFieldType.STRING).description("쿠폰 시리얼 넘버").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰을 발행한 판매자 상호 명").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(할인율)").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.rateCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("할인되는 퍼센티지").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon").type(JsonFieldType.ARRAY).description("금액 할인 쿠폰 목록").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].couponName").type(JsonFieldType.STRING).description("쿠폰 이름").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].serialNo").type(JsonFieldType.STRING).description("쿠폰 시리얼 넘버").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].storeName").type(JsonFieldType.STRING).description("쿠폰을 발행한 판매자 상호 명").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].type").type(JsonFieldType.STRING).description("쿠폰 타입(금액)").optional(),
+                    fieldWithPath("data.orderBySellerDtoList.[].couponDto.amountCoupon.[].discountValue").type(JsonFieldType.NUMBER).description("할인되는 금액").optional()
                     )
                 )
             )
@@ -159,12 +173,15 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("userId").description("사용자 ID(판매자)")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
                     fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("주문 상세정보 ID"),
-                    fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("주문 상태"),
+                    fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("주문 상태, {\'BEFORE_PAY\': \'주문 확정 전\', \'PAY_COMPLETE\': \'주문 확정\', \'DELIVERY_COMPLETE\': \'모든 배송 완료\'}"),
                     fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
                     fieldWithPath("data.[].userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
                     fieldWithPath("data.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
@@ -174,7 +191,7 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격").optional(),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.NULL).description("주문 수정일자")
+                    fieldWithPath("data.[].updatedAt").description("주문 수정일자 (yyyy-MM-dd'T'HH:mm:ss")
                 )
             ))
             .when()
@@ -190,9 +207,11 @@ public class OrderInfoControllerTest {
     public void updateOrderInfo() {
         OrderInfoRequestDto dto = new OrderInfoRequestDto(3L, 1L, "BEFORE_PAY");
 
+        JSONObject request = new JSONObject();
+
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
-            .body(dto)
+            .body(request.toJSONString())
             .contentType(ContentType.JSON)
             .filter(document("update-orderinfo",
                 preprocessRequest(modifyUris()
@@ -200,6 +219,9 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),

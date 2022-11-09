@@ -1,0 +1,81 @@
+:hardbreaks:
+ifndef::snippets[]
+:resource-dir: ./snippets
+endif::[]
+ifdef::snippets[]
+:resource-dir: ./src/docs/asciidoc/snippets
+endif::[]
+:toc: left
+
+= link:index.html[The Parabole]
+
+== 상품
+
+=== 상품 목록 조회(판매자)
+
+`*Request*`
+
+include::{resource-dir}/product-list-by-sellerId/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/product-list-by-sellerId/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/product-list-by-sellerId/response-fields.adoc[]
+
+
+=== 상품 정보 조회
+
+`*Request*`
+
+include::{resource-dir}/get-product/http-request.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-product/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-product/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-product/response-fields.adoc[]
+
+=== 상품 생성
+
+`*Request*`
+
+include::{resource-dir}/create-product/http-request.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/create-product/request-fields.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/create-product/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/create-product/response-fields.adoc[]
+
+=== 상품 목록 검색 및 조회
+
+`*Request*`
+
+include::{resource-dir}/product-list/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/product-list/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/product-list/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/product-list/response-fields.adoc[]

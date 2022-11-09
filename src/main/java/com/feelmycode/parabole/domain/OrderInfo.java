@@ -90,7 +90,7 @@ public class OrderInfo extends BaseEntity {
     public OrderInfoResponseDto toDto() {
         return new OrderInfoResponseDto(id, OrderInfoState.returnNameByValue(state), order.getUser().getId(),
             order.getUser().getEmail(), productId, productName, productCnt, productPrice,
-            productDiscountPrice, getUpdatedAt());
+            productDiscountPrice, "", getUpdatedAt());
     }
 
 }

@@ -10,6 +10,7 @@ endif::[]
 = link:index.html[The Parabole]
 
 == 이벤트
+
 === 이벤트 등록
 
 `*Request*`
@@ -96,6 +97,20 @@ include::{resource-dir}/event-search/http-response.adoc[]
 
 include::{resource-dir}/event-search/response-fields.adoc[]
 
+=== 이벤트 스케쥴 조회
+
+`*Request*`
+
+include::{resource-dir}/event-scheduler/http-request.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/event-scheduler/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/event-scheduler/response-fields.adoc[]
+
 === 이벤트 취소
 
 `*Request*`
@@ -135,6 +150,7 @@ include::{resource-dir}/eventparticipant/http-response.adoc[]
 include::{resource-dir}/eventparticipant/response-fields.adoc[]
 
 === 이벤트 응모 체크
+
 `*Request*`
 
 include::{resource-dir}/eventparticipant-check/http-request.adoc[]

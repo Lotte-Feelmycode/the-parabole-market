@@ -19,7 +19,7 @@
 
 |`+data.[].state+`
 |`+String+`
-|주문 상태
+|주문 상태, {'BEFORE_PAY': '주문 확정 전', 'PAY_COMPLETE': '주문 확정', 'DELIVERY_COMPLETE': '모든 배송 완료'}
 
 |`+data.[].userId+`
 |`+Number+`
@@ -58,7 +58,7 @@
 |상품 썸네일 이미지
 
 |`+data.[].updatedAt+`
-|`+Null+`
+|`+String+`
 |주문 수정일자
 
 |===

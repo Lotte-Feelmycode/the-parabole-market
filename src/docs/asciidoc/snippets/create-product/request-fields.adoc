@@ -1,25 +1,13 @@
 |===
 |Path|Type|Description
 
-|`+productId+`
-|`+Null+`
-|상품 Id
+|`+userId+`
+|`+Number+`
+|판매자 Id
 
 |`+productName+`
 |`+String+`
 |상품 이름
-
-|`+sellerId+`
-|`+Number+`
-|판매자 Id
-
-|`+storeName+`
-|`+String+`
-|판매자 스토어 이름
-
-|`+productStatus+`
-|`+Number+`
-|상품 상태
 
 |`+productRemains+`
 |`+Number+`
@@ -36,21 +24,5 @@
 |`+productThumbnailImg+`
 |`+String+`
 |상품 썸네일 이미지
-
-|`+productCreatedAt+`
-|`+Null+`
-|상품 생성 일자
-
-|`+productUpdatedAt+`
-|`+Null+`
-|상품 수정 일자
-
-|`+productDeletedAt+`
-|`+Null+`
-|상품 삭제 일자
-
-|`+productIsDeleted+`
-|`+Boolean+`
-|상품 삭제 여부
 
 |===

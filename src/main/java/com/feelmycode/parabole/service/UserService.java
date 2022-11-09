@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.NaverOauthToken;
 import com.feelmycode.parabole.domain.NaverProfile;
+import com.feelmycode.parabole.domain.GoogleOauthToken;
+import com.feelmycode.parabole.domain.GoogleProfile;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
@@ -51,6 +53,12 @@ public class UserService {
     private String naverClientSecret;
     @Value("${sns.naver.redirect-uri}")
     private String naverRedirectUri;
+    @Value("${sns.google.client-id}")
+    private String googleClientId;
+    @Value("${sns.google.client-secret}")
+    private String googleClientSecret;
+    @Value("${sns.google.redirect-uri}")
+    private String googleRedirectUri;
 
     @Transactional
     public UserDto create(UserDto userDTO) {
@@ -137,7 +145,98 @@ public class UserService {
         return dtos;
     }
 
-    public NaverOauthToken getAccessTokenNaver(String code, String state) {
+    public GoogleOauthToken getAccessTokenGoogle(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("code", code);
+        params.add("client_id", googleClientId);
+        params.add("client_secret", googleClientSecret);
+        params.add("redirect_uri", googleRedirectUri);
+        params.add("grant_type", "authorization_code");
+        HttpEntity<MultiValueMap<String, String>> googleTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://oauth2.googleapis.com/token",
+            HttpMethod.POST,
+            googleTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        GoogleOauthToken googleOauthToken = null;
+        try {
+            googleOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), GoogleOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        log.info(">>>>>>> googleOauthToken {}", googleOauthToken);
+        return googleOauthToken;
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenGoogle(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        GoogleProfile profile = findProfileGoogle(token);
+        log.info(" >>>>>>>>>>>> Google Profile {}", profile.toString());
+
+        User user = userRepository.findByEmail(profile.getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.getId())
+                .imageUrl(profile.getPicture())
+                .email(profile.getEmail())
+                .username(profile.getName())
+                .nickname(profile.getName())
+                .authProvider("Google")
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+        log.info(" >>>>>>>>>>>> Generated Custom Jwt token {}", userToken);
+
+        return UserLoginResponseDto.builder().userId(user.getId()).email(user.getEmail())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).role(user.getRole())
+            .imageUrl(user.getImageUrl()).authProvider("Google").build();
+    }
+
+    public GoogleProfile findProfileGoogle(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> googleProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> googleProfileResponse = restTemplate.exchange(
+            "https://www.googleapis.com/oauth2/v2/userinfo?alt=json",
+            HttpMethod.GET,
+            googleProfileRequest,
+            String.class
+        );
+        log.info("ResponseEntity<String> googleProfileResponse RestTemplate {}",googleProfileResponse.toString());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        GoogleProfile googleProfile = null;
+        try {
+            googleProfile = objectMapper.readValue(googleProfileResponse.getBody(), GoogleProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+//        log.info(" >>>>>>>>>>>> GoogleProfile Form {}", googleProfile.toString());
+        return googleProfile;
+    }
+    
+      public NaverOauthToken getAccessTokenNaver(String code, String state) {
 
         RestTemplate restTemplate = new RestTemplate();
 //        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -176,9 +275,6 @@ public class UserService {
     @Transactional
     public UserLoginResponseDto saveUserAndGetTokenNaver(String token) {
         NaverProfile profile = findProfileNaver(token);
-
-//        String name = new String(profile.getResponse().getName().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-//        String nickname = new String(profile.getResponse().getNickname().getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
         User user = userRepository.findByEmail(profile.getResponse().getEmail());
         if(user == null) {

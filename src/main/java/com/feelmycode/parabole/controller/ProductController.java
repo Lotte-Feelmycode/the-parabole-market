@@ -1,9 +1,10 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Product;
-import com.feelmycode.parabole.domain.ProductDetail;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductRequestDto;
+import com.feelmycode.parabole.dto.ProductResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
@@ -14,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,18 +64,19 @@ public class ProductController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품 전시", response);
     }
 
-    @PostMapping
-    public ResponseEntity<ParaboleResponse> createProduct(@RequestParam Long userId, @RequestBody ProductDto product) {
-        productService.saveProduct(userId, product);
-        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
+    @GetMapping("/data")
+    public ProductResponseDto getProducts(@RequestParam Long productId) {
+        Product response = productService.getProduct(productId);
+        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(),
+            response.getThumbnailImg());
+        return dto;
     }
 
-//    @PatchMapping
-//    public ResponseEntity<ParaboleResponse> updateProduct(@RequestParam Long userId, @RequestBody Product product) {
-//        productService.updateProduct(userId, product);
-//
-//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "상품정보 수정");
-//    }
+    @PostMapping
+    public ResponseEntity<ParaboleResponse> createProduct(@RequestBody ProductRequestDto product) {
+        productService.saveProduct(product);
+        return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성");
+    }
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getProduct(@RequestParam Long productId) {
