@@ -525,7 +525,7 @@ public class EventControllerTest {
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").description("응답 정보")
+                    fieldWithPath("data").description("이벤트 등록 가능 여부")
                 )
             )).log().all().when().get(BASIC_PATH + "/seller/check");
 
