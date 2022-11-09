@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -99,12 +100,11 @@ public class OrderInfoService {
         return changeEntityToDto(getOrderInfoList);
     }
 
-    // TODO: 잘 동작하는지 확인 후 stream으로 선택적으로 데이터 가져올 것
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
-//            .stream()
-//            .filter(state -> state.getState() != -1)
-//            .collect(Collectors.toList());
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
+            .stream()
+            .filter(state -> state.getState() > -1)
+            .collect(Collectors.toList());
         return changeEntityToDto(getOrderInfoList);
     }
 
