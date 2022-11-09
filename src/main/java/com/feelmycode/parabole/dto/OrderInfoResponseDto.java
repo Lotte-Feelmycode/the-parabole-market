@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.dto;
 
+import com.feelmycode.parabole.enumtype.OrderInfoState;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class OrderInfoResponseDto {
 
     private Long id;
-    private String state;
+    private OrderInfoState state;
     private Long userId;
     private String userEmail;
     private Long productId;
@@ -25,7 +26,7 @@ public class OrderInfoResponseDto {
     public OrderInfoResponseDto(Long id, String state, Long userId, String userEmail, Long productId, String productName,
         Integer productCnt, Long productPrice, Long productDiscountPrice, String productThumbnailImg, LocalDateTime productUpdatedAt) {
         this.id = id;
-        this.state = state;
+        this.state = OrderInfoState.returnValueByName(state);
         this.userId = userId;
         this.userEmail = userEmail;
         this.productId = productId;

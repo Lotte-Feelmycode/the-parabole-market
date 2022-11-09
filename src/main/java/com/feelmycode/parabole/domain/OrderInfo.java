@@ -37,7 +37,7 @@ public class OrderInfo extends BaseEntity {
 
     // 배송의 상태
     @Column(name = "order_info_state")
-    private Integer state;
+    private OrderInfoState state;
 
     @NotNull
     @Column(name = "product_id")
@@ -68,7 +68,11 @@ public class OrderInfo extends BaseEntity {
     private String sellerStoreName;
 
     public void setState(Integer state) {
-        this.state = state;
+        this.state = OrderInfoState.returnNameByValue(state);
+    }
+
+    public void setState(String state) {
+        this.state = OrderInfoState.returnValueByName(state);
     }
 
     public void setUserCoupon(UserCoupon userCoupon) {
@@ -88,7 +92,7 @@ public class OrderInfo extends BaseEntity {
     }
 
     public OrderInfoResponseDto toDto() {
-        return new OrderInfoResponseDto(id, OrderInfoState.returnNameByValue(state), order.getUser().getId(),
+        return new OrderInfoResponseDto(id, state.getState(), order.getUser().getId(),
             order.getUser().getEmail(), productId, productName, productCnt, productPrice,
             productDiscountPrice, "", getUpdatedAt());
     }

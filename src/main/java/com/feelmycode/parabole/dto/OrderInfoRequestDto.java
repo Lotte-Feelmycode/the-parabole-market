@@ -9,17 +9,17 @@ public class OrderInfoRequestDto {
 
     private Long userId;
     private Long orderInfoId;
-    private String orderState;
+    private OrderInfoState orderInfoState;
 
     public OrderInfoRequestDto(Long userId, Long orderInfoId, String orderState) {
         this.userId = userId;
         this.orderInfoId = orderInfoId;
-        this.orderState = orderState;
+        this.orderInfoState = OrderInfoState.returnValueByName(orderState);
     }
 
-    public OrderInfoRequestDto(Long userId, String orderState) {
+    public OrderInfoRequestDto(Long userId, String orderInfoState) {
         this.userId = userId;
-        this.orderState = orderState;
+        this.orderInfoState = OrderInfoState.returnValueByName(orderInfoState);
     }
 
 }
