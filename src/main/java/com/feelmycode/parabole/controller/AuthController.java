@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.KakaoOauthToken;
+import com.feelmycode.parabole.domain.NaverOauthToken;
 import com.feelmycode.parabole.domain.GoogleOauthToken;
 import com.feelmycode.parabole.dto.UserDto;
 import com.feelmycode.parabole.dto.UserLoginResponseDto;
@@ -62,6 +63,11 @@ public class AuthController {
             GoogleOauthToken googleOauthToken = userService.getAccessTokenGoogle(code);
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "구글 로그인 성공",
                 userService.saveUserAndGetTokenGoogle(googleOauthToken.getAccess_token()));
+        }
+        else if (provider.equals("naver")) {
+            NaverOauthToken naverOauthToken = userService.getAccessTokenNaver(code, state);
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "네이버 로그인 성공",
+                userService.saveUserAndGetTokenNaver(naverOauthToken.getAccess_token()));
         }
         else if (provider.equals("kakao")) {
             // 넘어온 인가 코드를 통해 access_token 발급
