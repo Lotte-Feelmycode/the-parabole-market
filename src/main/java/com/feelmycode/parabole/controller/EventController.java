@@ -2,10 +2,7 @@ package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
-import com.feelmycode.parabole.dto.EventSearchRequestDto;
 import com.feelmycode.parabole.dto.EventSearchResponseDto;
-import com.feelmycode.parabole.enumtype.EventStatus;
-import com.feelmycode.parabole.enumtype.EventType;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
@@ -36,6 +33,9 @@ public class EventController {
     public ResponseEntity<ParaboleResponse> createEvent(
         @RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
+        if (!eventService.canCreateEvent(eventDto.getUserId(), eventDto.getStartAt().toString())) {
+            throw new ParaboleException(HttpStatus.ALREADY_REPORTED, "이벤트 등록 실패");
+        }
         try {
             eventId = eventService.createEvent(eventDto);
         } catch (Exception e) {
@@ -44,7 +44,6 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "이벤트 등록 성공", eventId);
     }
 
-    // TODO: 셀러 스토어 정보 리턴값 추가
     @GetMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> getEvent(@PathVariable("eventId") Long eventId) {
         EventListResponseDto response = eventService.getEventByEventId(eventId);
@@ -52,7 +51,6 @@ public class EventController {
             response);
     }
 
-    // TODO: 조회조건+정렬조건 추가
     @GetMapping
     public ResponseEntity<ParaboleResponse> getEvent() {
         List<EventListResponseDto> response = eventService.getEventListResponseDto(
@@ -65,17 +63,19 @@ public class EventController {
         @RequestParam(required = false) String eventType,
         @RequestParam(required = false) String eventTitle,
         @RequestParam(required = false) Integer dateDiv,
-        @RequestParam(required = false) LocalDateTime fromDateTime,
-        @RequestParam(required = false) LocalDateTime toDateTime,
+        @RequestParam(required = false) String fromDateTime,
+        @RequestParam(required = false) String toDateTime,
         @RequestParam(required = false) Integer eventStatus
     ) {
         Integer getDateDiv = StringUtil.controllerParamIsBlank(dateDiv + "") ? -1 : dateDiv;
         String getEventType = StringUtil.controllerParamIsBlank(eventType) ? "" : eventType;
         String getEventTitle = StringUtil.controllerParamIsBlank(eventTitle) ? "" : eventTitle;
         Integer getEventStatus = StringUtil.controllerParamIsBlank(eventStatus + "") ? -1 : eventStatus;
+        LocalDateTime getFromDateTime = StringUtil.controllerParamIsBlank(fromDateTime) ? null : LocalDateTime.parse(fromDateTime);
+        LocalDateTime getToDateTime = StringUtil.controllerParamIsBlank(toDateTime) ? null : LocalDateTime.parse(fromDateTime);
 
         List<EventSearchResponseDto> response = eventService.getEventsSearch(
-            getEventType, getEventTitle, getDateDiv, fromDateTime, toDateTime, getEventStatus
+            getEventType, getEventTitle, getDateDiv, getFromDateTime, getToDateTime, getEventStatus
         );
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 검색 리스트 조회 성공", response);
     }
@@ -93,6 +93,18 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 스케쥴러 조회 성공", response);
     }
 
+
+    // TODO : userId Request Param => RequestAttribute로 변경
+    @GetMapping("/seller/check")
+    public ResponseEntity<ParaboleResponse> showIsAvailable(
+        @RequestParam("userId") Long userId, @RequestParam("inputDtm") String inputDate) {
+        if (!eventService.canCreateEvent(userId, inputDate)) {
+            return ParaboleResponse.CommonResponse(HttpStatus.ALREADY_REPORTED, true, "이벤트 등록 가능", false);
+        } else {
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 등록 가능", true);
+        }
+    }
+
     @DeleteMapping("/{eventId}")
     public ResponseEntity<ParaboleResponse> cancelEvent(@PathVariable("eventId") Long eventId) {
         try {
@@ -102,4 +114,5 @@ public class EventController {
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 취소 성공");
     }
+
 }
