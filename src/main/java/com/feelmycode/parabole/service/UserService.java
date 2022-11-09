@@ -3,6 +3,8 @@ package com.feelmycode.parabole.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.NaverOauthToken;
+import com.feelmycode.parabole.domain.NaverProfile;
 import com.feelmycode.parabole.domain.GoogleOauthToken;
 import com.feelmycode.parabole.domain.GoogleProfile;
 import com.feelmycode.parabole.domain.Seller;
@@ -45,6 +47,12 @@ public class UserService {
     private final CartService cartService;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Value("${sns.naver.client-id}")
+    private String naverClientId;
+    @Value("${sns.naver.client-secret}")
+    private String naverClientSecret;
+    @Value("${sns.naver.redirect-uri}")
+    private String naverRedirectUri;
     @Value("${sns.google.client-id}")
     private String googleClientId;
     @Value("${sns.google.client-secret}")
@@ -227,4 +235,101 @@ public class UserService {
 //        log.info(" >>>>>>>>>>>> GoogleProfile Form {}", googleProfile.toString());
         return googleProfile;
     }
+    
+      public NaverOauthToken getAccessTokenNaver(String code, String state) {
+
+        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("state", state);
+        params.add("client_id", naverClientId);
+        params.add("redirect_uri", naverRedirectUri);
+        params.add("client_secret", naverClientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> naverTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://nid.naver.com/oauth2.0/token",
+            HttpMethod.POST,
+            naverTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NaverOauthToken naverOauthToken = null;
+        try {
+            naverOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), NaverOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return naverOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenNaver(String token) {
+        NaverProfile profile = findProfileNaver(token);
+
+        User user = userRepository.findByEmail(profile.getResponse().getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.response.getId())
+                .imageUrl(profile.getResponse().getProfile_image())
+                .username(profile.getResponse().getName())
+                .nickname(profile.getResponse().getNickname())
+//                .username(name)
+//                .nickname(nickname)
+                .email(profile.getResponse().getEmail())
+                .authProvider("Naver")
+                .phone(profile.getResponse().getMobile())
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+
+        return UserLoginResponseDto.builder().userId(user.getId()).email(user.getEmail()).role(user.getRole())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).phone(user.getPhone())
+            .imageUrl(user.getImageUrl()).authProvider("Naver").build();
+    }
+
+    public NaverProfile findProfileNaver(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> naverProfileResponse = restTemplate.exchange(
+            "https://openapi.naver.com/v1/nid/me",
+            HttpMethod.GET,
+            naverProfileRequest,
+            String.class
+        );
+        log.info("naverProfileResponse RestTemplate{}",naverProfileResponse.toString());    // 한글 깨짐 발생
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        NaverProfile naverProfile = null;
+        try {
+            naverProfile = objectMapper.readValue(naverProfileResponse.getBody(), NaverProfile.class);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        log.info("naverProfileResponse RestTemplate{}",naverProfile.toString());            // 한글 정상
+
+        return naverProfile;
+    }
+
 }
