@@ -25,25 +25,6 @@ include::{resource-dir}/product-list-by-sellerId/http-response.adoc[]
 
 include::{resource-dir}/product-list-by-sellerId/response-fields.adoc[]
 
-
-=== 상품 정보 조회
-
-`*Request*`
-
-include::{resource-dir}/get-product/http-request.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/get-product/request-parameters.adoc[]
-
-`*Response*`
-
-include::{resource-dir}/get-product/http-response.adoc[]
-
-`*Fields*`
-
-include::{resource-dir}/get-product/response-fields.adoc[]
-
 === 상품 생성
 
 `*Request*`
@@ -61,6 +42,25 @@ include::{resource-dir}/create-product/http-response.adoc[]
 `*Fields*`
 
 include::{resource-dir}/create-product/response-fields.adoc[]
+
+=== 선택된 상품의 정보 조회
+
+`*Request*`
+
+include::{resource-dir}/get-product/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/get-product/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-product/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-product/response-fields.adoc[]
+
 
 === 상품 목록 검색 및 조회
 

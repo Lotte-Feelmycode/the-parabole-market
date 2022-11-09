@@ -85,6 +85,46 @@ public class CartControllerTest {
     }
 
     @Test
+    @DisplayName("장바구니 상품 추가")
+    public void test02_addProductInCart() {
+
+        // Given
+        JSONObject request = new JSONObject();
+        request.put("userId", 3L);
+        request.put("productId", 3L);
+        request.put("cnt", 3);
+
+        // When
+        Response resp = given(this.spec)
+            .body(request.toJSONString())
+            .contentType(ContentType.JSON)
+            .filter(
+                document(
+                    "cart-product-add",
+                    preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
+                        prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestFields(
+                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
+                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("수량")
+                    ),
+                    responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("응답 정보")
+                    )
+                )
+            )
+            .when()
+            .port(port)
+            .post("/api/v1/cart/product/add");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
+    }
+
+    @Test
     @DisplayName("장바구니 목록 조회")
     public void test01_cartList() {
 
@@ -155,29 +195,28 @@ public class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니 상품 추가")
-    public void test02_addProductInCart() {
+    @DisplayName("장바구니 상품 제거")
+    public void test04_deleteProductInCart() {
 
         // Given
-        JSONObject request = new JSONObject();
-        request.put("userId", 3L);
-        request.put("productId", 3L);
-        request.put("cnt", 3);
+        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
+        Long cartItemId = cartItemRepository.findByCartIdAndProductId(3L, 3L).get().getId();
 
         // When
         Response resp = given(this.spec)
-            .body(request.toJSONString())
+            .param("userId", 3L)
+            .param("cartItemId", cartItemId)
+            .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .filter(
                 document(
-                    "cart-product-add",
+                    "cart-delete",
                     preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
-                    requestFields(
-                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
-                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("수량")
+                    requestParameters(
+                        parameterWithName("userId").description("사용자 아이디"),
+                        parameterWithName("cartItemId").description("장바구니 상품 아이디")
                     ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
@@ -188,10 +227,10 @@ public class CartControllerTest {
             )
             .when()
             .port(port)
-            .post("/api/v1/cart/product/add");
+            .delete("/api/v1/cart/delete");
 
         // Then
-        Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
     @Test
@@ -234,45 +273,6 @@ public class CartControllerTest {
             .when()
             .port(port)
             .patch("/api/v1/cart/update/cnt");
-
-        // Then
-        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-    }
-
-    @Test
-    @DisplayName("장바구니 상품 제거")
-    public void test04_deleteProductInCart() {
-
-        // Given
-        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
-
-        // When
-        Response resp = given(this.spec)
-            .param("userId", 3L)
-            .param("cartItemId", cartItemRepository.findByCartIdAndProductId(3L,
-                3L).get().getId())
-            .accept(ContentType.JSON)
-            .contentType(ContentType.JSON)
-            .filter(
-                document(
-                    "cart-delete",
-                    preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
-                        prettyPrint()),
-                    preprocessResponse(prettyPrint()),
-                    requestParameters(
-                        parameterWithName("userId").description("사용자 아이디"),
-                        parameterWithName("cartItemId").description("장바구니 상품 아이디")
-                    ),
-                    responseFields(
-                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
-                        fieldWithPath("data").type(JsonFieldType.NULL).description("응답 정보")
-                    )
-                )
-            )
-            .when()
-            .port(port)
-            .delete("/api/v1/cart/delete");
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
