@@ -38,12 +38,6 @@ public class OrderController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 결제 완료");
     }
 
-    @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateDelivery(@RequestBody OrderDeliveryUpdateRequestDto updateDto) {
-        updateService.updateDeliveryInfo(updateDto);
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 저장 완료");
-    }
-
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderList(@RequestParam Long userId) {
         List<Order> orderList = orderService.getOrderList(userId);

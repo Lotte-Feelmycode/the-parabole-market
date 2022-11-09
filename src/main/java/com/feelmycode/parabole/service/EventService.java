@@ -186,6 +186,30 @@ public class EventService {
     }
 
     /**
+     * 이벤트 등록 가능 여부 체크
+     */
+    public Boolean canCreateEvent(Long userId, String dateParam) {
+        LocalDateTime inputDtm = LocalDateTime.parse(dateParam);
+        eventRepository.findAllByStartAtBetweenAndIsDeleted(inputDtm, inputDtm.plusMinutes(50), false)
+            .stream().filter(event -> event.getType().equals("FCFS"))
+            .findAny().ifPresent(event -> {
+                throw new ParaboleException(HttpStatus.ALREADY_REPORTED,
+                    "선택하신 시간에 이미 등록된 이벤트가 있습니다.");
+            });
+
+        Long sellerId = getSeller(userId).getId();
+        int dayOfWeek = inputDtm.getDayOfWeek().getValue();
+        eventRepository.findAllByStartAtBetweenAndIsDeleted(inputDtm.minusDays(dayOfWeek),
+                inputDtm.plusDays(6 - dayOfWeek), false)
+            .stream()
+            .filter(event -> event.getSeller().getId().equals(sellerId) && event.getType().equals("FCFS"))
+            .findAny().ifPresent(event -> {
+                throw new ParaboleException(HttpStatus.ALREADY_REPORTED,
+                    "선착순 이벤트는 일주일에 하나만 등록 가능합니다.");
+            });
+        return true;
+    }
+    /**
      * 이벤트 취소
      */
     @Transactional
@@ -214,7 +238,6 @@ public class EventService {
                 }
             }
             eventRepository.save(event);
-
 
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");

@@ -5,6 +5,7 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.ProductDetailDto;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.List;
@@ -26,7 +27,9 @@ public class ProductService {
     private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Long userId, ProductDto dto) {
+    public Long saveProduct(ProductRequestDto dto) {
+        Long userId = dto.getUserId();
+
         sellerService.getSellerByUserId(userId);
 
         Product product = dto.dtoToEntity();
