@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.controller;
 
+import com.feelmycode.parabole.domain.KakaoOauthToken;
 import com.feelmycode.parabole.domain.NaverOauthToken;
 import com.feelmycode.parabole.domain.GoogleOauthToken;
 import com.feelmycode.parabole.dto.UserDto;
@@ -58,15 +59,22 @@ public class AuthController {
 
         log.info(">> {} 서버로부터 받은 code :: {}", provider, code);
 
-        if (provider.equals("naver")) {
+        if (provider.equals("google")) {
+            GoogleOauthToken googleOauthToken = userService.getAccessTokenGoogle(code);
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "구글 로그인 성공",
+                userService.saveUserAndGetTokenGoogle(googleOauthToken.getAccess_token()));
+        }
+        else if (provider.equals("naver")) {
             NaverOauthToken naverOauthToken = userService.getAccessTokenNaver(code, state);
             return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "네이버 로그인 성공",
                 userService.saveUserAndGetTokenNaver(naverOauthToken.getAccess_token()));
         }
-        else if (provider.equals("google")) {
-            GoogleOauthToken googleOauthToken = userService.getAccessTokenGoogle(code);
-            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "구글 로그인 성공",
-                userService.saveUserAndGetTokenGoogle(googleOauthToken.getAccess_token()));
+        else if (provider.equals("kakao")) {
+            // 넘어온 인가 코드를 통해 access_token 발급
+            KakaoOauthToken kakaoOauthToken = userService.getAccessTokenKakao(code);
+            // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성하고 생성한 JWT 를 dto에 담아서 반환
+            return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "카카오 로그인 성공",
+                userService.saveUserAndGetTokenKakao(kakaoOauthToken.getAccess_token()));
         }
 
         return ParaboleResponse.CommonResponse(HttpStatus.BAD_REQUEST, false, "소셜 로그인 실패");

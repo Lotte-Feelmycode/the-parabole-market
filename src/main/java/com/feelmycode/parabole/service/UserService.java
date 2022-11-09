@@ -1,6 +1,9 @@
 package com.feelmycode.parabole.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.feelmycode.parabole.domain.KakaoOauthToken;
+import com.feelmycode.parabole.domain.KakaoProfile;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.NaverOauthToken;
@@ -47,6 +50,12 @@ public class UserService {
     private final CartService cartService;
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    @Value("${sns.kakao.client-id}")
+    private String kakaoClientId;
+//    @Value("${sns.kakao.client-secret}")
+//    private String kakaoClientSecret;
+    @Value("${sns.kakao.redirect-uri}")
+    private String kakaoRedirectUri;
     @Value("${sns.naver.client-id}")
     private String naverClientId;
     @Value("${sns.naver.client-secret}")
@@ -145,7 +154,7 @@ public class UserService {
         return dtos;
     }
 
-    public GoogleOauthToken getAccessTokenGoogle(String code) {
+        public GoogleOauthToken getAccessTokenGoogle(String code) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -236,7 +245,7 @@ public class UserService {
         return googleProfile;
     }
     
-      public NaverOauthToken getAccessTokenNaver(String code, String state) {
+    public NaverOauthToken getAccessTokenNaver(String code, String state) {
 
         RestTemplate restTemplate = new RestTemplate();
 //        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -332,4 +341,92 @@ public class UserService {
         return naverProfile;
     }
 
+    public KakaoOauthToken getAccessTokenKakao(String code) {     // (3) fe->be인가 코드 전달, (4) be->카카오 인가코드로 엑세스 토큰 요청
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("code", code);
+        params.add("client_id", kakaoClientId);
+        params.add("redirect_uri", kakaoRedirectUri);
+//        params.add("client_secret", kakaoClientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+            new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> accessTokenResponse = restTemplate.exchange(
+            "https://kauth.kakao.com/oauth/token",
+            HttpMethod.POST,
+            kakaoTokenRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoOauthToken kakaoOauthToken = null;
+        try {
+            kakaoOauthToken = objectMapper.readValue(accessTokenResponse.getBody(), KakaoOauthToken.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return kakaoOauthToken;                 // (5) 카카오 -> be 로 발급해준 accessToken
+    }
+
+    @Transactional
+    public UserLoginResponseDto saveUserAndGetTokenKakao(String token) { // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
+        KakaoProfile profile = findProfileKakao(token);
+        log.info(">>>>>>>>>>>> KakaoProfile sent from Kakao (Before Custom) {}", profile.toString());
+
+        User user = userRepository.findByEmail(profile.getKakao_account().getEmail());
+        if(user == null) {
+            user = User.builder()
+//                .id(profile.getId())
+                .imageUrl(profile.getKakao_account().getProfile().getProfile_image_url())
+                .username(profile.getKakao_account().getProfile().getNickname())
+                .nickname(profile.getKakao_account().getProfile().getNickname())
+                .email(profile.getKakao_account().getEmail())
+                .authProvider("Kakao")
+                .role("ROLE_USER").build();
+
+            userRepository.save(user);
+        }
+        String userToken =  jwtUtils.generateToken(user);
+
+        return UserLoginResponseDto.builder().userId(user.getId()).email(user.getEmail())
+            .name(user.getUsername()).nickname(user.getNickname()).token(userToken).role(user.getRole())
+            .imageUrl(user.getImageUrl()).authProvider("Kakao").build();
+
+    }
+
+    public KakaoProfile findProfileKakao(String token) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + token); //(1-4)
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> kakaoProfileResponse = restTemplate.exchange(
+            "https://kapi.kakao.com/v2/user/me",
+            HttpMethod.POST,
+            kakaoProfileRequest,
+            String.class
+        );
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+        try {
+            kakaoProfile = objectMapper.readValue(kakaoProfileResponse.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return kakaoProfile;
+    }
+    
 }
