@@ -78,6 +78,10 @@ public class User extends BaseEntity {
         return false;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public User(String email, String name,
         String nickname, String phone, String password) {
         this.email = email;

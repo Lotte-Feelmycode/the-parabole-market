@@ -29,7 +29,6 @@ public class Seller extends BaseEntity {
     private Long id;
 
     @JoinColumn(name = "user_id")
-    @NotNull
     @OneToOne
     private User user;
 
