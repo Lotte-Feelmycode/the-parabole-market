@@ -1,24 +1,24 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:64401/api/v1/event' -i -X POST \
+$ curl 'https://parabole.com:57100/api/v1/event' -i -X POST \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
-    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwic2VsbGVyU3RvcmVuYW1lIjoi642U7YyM65287JSo7J2YIOuniOy8kyIsInJvbGUiOiJST0xFX1NFTExFUiIsInNlbGxlcklkIjozLCJwaG9uZSI6IjAxMDc1OTE0NDk5IiwiaW1hZ2VVcmwiOiJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvY2FmZS9jYWZlX3BjL2RlZmF1bHQvY2FmZV9wcm9maWxlXzc3LnBuZyIsIm5pY2tuYW1lIjoi67O8656YIiwidXNlcklkIjoxMywiZW1haWwiOiJ0aGVwYXJhQGJvbGUuY29tIiwidXNlcm5hbWUiOiLrjZTtjIzrnbwiLCJpYXQiOjE2NjgwNTE0OTYsImV4cCI6MTY2ODEzNzg5Nn0._MKx_kcQqNaKPbjCwfyGo4Q25EDZd6ELxQy2_HeLk9I' \
     -H 'Content-Type: application/json' \
     -d '{
+  "userId" : 1,
   "createdBy" : "SELLER",
   "type" : "RAFFLE",
-  "title" : "온앤더뷰티 WEEK #홀리데이",
+  "title" : "이벤트 등록 BY REST DOCS",
   "startAt" : "2022-11-10 24:00:00",
   "endAt" : "2022-11-28 18:00:00",
-  "descript" : "(테스트 데이터) 온앤더뷰티 클럽 무료 가입하시고 모든 혜택 다 받으세요!",
+  "descript" : "이벤트 설명 v2",
   "eventImage" : {
-    "eventBannerImg" : "https://parabole.com/37797830/200992989-418d48c0-c4b5-4c4a-900a-4d276a69bbee.png",
-    "eventDetailImg" : "https://parabole.com/ec/public/PB3A422605368BC507455563F5A4D5FB94A8367FB6EAE4F344DE10DBECB1833FC/file"
+    "eventBannerImg" : "banner.url",
+    "eventDetailImg" : "detail.url"
   },
   "eventPrizeCreateRequestDtos" : [ {
-    "id" : 34,
+    "id" : 134,
     "type" : "PRODUCT",
-    "stock" : 5
+    "stock" : 40
   } ]
 }'
 ----

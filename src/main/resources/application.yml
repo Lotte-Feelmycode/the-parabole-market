@@ -11,6 +11,11 @@ spring:
     active: dev
   application:
     name: parabole
+
+cloud:
+  aws:
+    stack:
+      auto: false
     
 eureka:
   instance:

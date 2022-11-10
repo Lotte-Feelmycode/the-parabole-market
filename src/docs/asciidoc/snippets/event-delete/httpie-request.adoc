@@ -1,7 +1,6 @@
 [source,bash]
 ----
-$ http DELETE 'https://parabole.com:64401/api/v1/event/23' \
+$ http DELETE 'https://parabole.com:57029/api/v1/event/102' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
-    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwic2VsbGVyU3RvcmVuYW1lIjoi642U7YyM65287JSo7J2YIOuniOy8kyIsInJvbGUiOiJST0xFX1NFTExFUiIsInNlbGxlcklkIjozLCJwaG9uZSI6IjAxMDc1OTE0NDk5IiwiaW1hZ2VVcmwiOiJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvY2FmZS9jYWZlX3BjL2RlZmF1bHQvY2FmZV9wcm9maWxlXzc3LnBuZyIsIm5pY2tuYW1lIjoi67O8656YIiwidXNlcklkIjoxMywiZW1haWwiOiJ0aGVwYXJhQGJvbGUuY29tIiwidXNlcm5hbWUiOiLrjZTtjIzrnbwiLCJpYXQiOjE2NjgwNTE0OTUsImV4cCI6MTY2ODEzNzg5NX0.cNISbn2elKlm0cpbh8cQaIf1rV9mO23ihOVZutsjtjk' \
     'Content-Type:application/json'
 ----

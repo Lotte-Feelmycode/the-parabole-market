@@ -4,152 +4,38 @@ HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Cache-Control: no-cache, no-store, max-age=0, must-revalidate
-Pragma: no-cache
-Expires: 0
-X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 10 Nov 2022 03:38:15 GMT
+Date: Mon, 07 Nov 2022 03:13:42 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 4702
+Content-Length: 1225
 
 {
   "success" : true,
   "message" : "이벤트 리스트 조회 성공",
   "data" : [ {
-    "id" : 16,
-    "storeName" : "더파라씨의 마켓",
-    "sellerId" : 3,
+    "id" : 25,
+    "storeName" : "u4-s2's store",
+    "sellerId" : 2,
     "createdBy" : "SELLER",
     "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
+    "title" : "컬러피스 아이블렌더",
+    "startAt" : "2022-10-09T00:00:00",
+    "endAt" : "2022-10-21T07:00:00",
+    "status" : 2,
+    "descript" : "롯데온",
     "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
+      "eventBannerImg" : "https://contents.lotteon.com/ec/public/PD429DCCF0983EDE5D0D4BF88A9D2EA5BB65636605BB0078EC9BCAC43946BB68E/file/dims/optimize/dims/resizef/361x154",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P0B71AAF440E306FE404174C04FA071DA7C4F8980625B9B443BE7D088D2FA9BE6/file"
     },
     "eventPrizes" : [ {
-      "eventPrizeId" : 10,
+      "eventPrizeId" : 50,
       "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 27,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 18,
-    "storeName" : "더파라씨의 마켓",
-    "sellerId" : 3,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "온앤더뷰티 WEEK #홀리데이",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 1,
-    "descript" : "온앤더뷰티 클럽 무료 가입하시고 모든 혜택 다 받으세요!",
-    "eventImage" : {
-      "eventBannerImg" : "https://user-images.githubusercontent.com/37797830/200992989-418d48c0-c4b5-4c4a-900a-4d276a69bbee.png",
-      "eventDetailImg" : "https://contents.lotteon.com/ec/public/PB3A422605368BC507455563F5A4D5FB94A8367FB6EAE4F344DE10DBECB1833FC/file"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 12,
-      "prizeType" : "PRODUCT",
-      "stock" : 5,
-      "productId" : 19,
-      "productName" : "UHD 파우더 세트 (+디럭스1종 증정)\n",
-      "productImg" : "https://contents.lotteon.com/itemimage/_v084812/LE/12/05/50/86/83/_1/23/01/77/65/3/LE1205508683_1230177653_1.jpg/dims/resizef/554X554",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    }, {
-      "eventPrizeId" : 13,
-      "prizeType" : "PRODUCT",
-      "stock" : 100,
-      "productId" : 21,
-      "productName" : "[입생로랑] NEW 리브르 르 퍼퓸 출시! 외 BEST ITEM\n",
-      "productImg" : "https://contents.lotteon.com/itemimage/_v112224/LE/13/19/77/16/99/bndl_img/LE1319771699_1.jpg/dims/resizef/554X554",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    }, {
-      "eventPrizeId" : 14,
-      "prizeType" : "PRODUCT",
-      "stock" : 500,
-      "productId" : 20,
-      "productName" : "에뛰드 컬 픽스 마스카라 + 픽서 + 리무버",
-      "productImg" : "https://contents.lotteon.com/itemimage/_v085542/LO/19/38/93/69/20/_1/93/89/36/92/1/LO1938936920_1938936921_1.jpg/dims/resizef/554X554",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 19,
-    "storeName" : "더파라씨의 마켓",
-    "sellerId" : 3,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 15,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 29,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
-      "couponId" : null,
-      "couponDetail" : null,
-      "type" : null,
-      "couponDiscountValue" : null,
-      "expiresAt" : null
-    } ]
-  }, {
-    "id" : 21,
-    "storeName" : "더파라씨의 마켓",
-    "sellerId" : 3,
-    "createdBy" : "SELLER",
-    "type" : "RAFFLE",
-    "title" : "이벤트 제목 BY REST DOCS",
-    "startAt" : "2022-11-10T00:00:00",
-    "endAt" : "2022-11-28T18:00:00",
-    "status" : 0,
-    "descript" : "이벤트 설명 v2",
-    "eventImage" : {
-      "eventBannerImg" : "banner.url",
-      "eventDetailImg" : "detail.url"
-    },
-    "eventPrizes" : [ {
-      "eventPrizeId" : 17,
-      "prizeType" : "PRODUCT",
-      "stock" : 40,
-      "productId" : 31,
-      "productName" : "이벤트 테스트 상품",
-      "productImg" : "thumb.img",
+      "stock" : 3,
+      "productId" : 2,
+      "productName" : "돼지국밥",
+      "productImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
       "couponId" : null,
       "couponDetail" : null,
       "type" : null,

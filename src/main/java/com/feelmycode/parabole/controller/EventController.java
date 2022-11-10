@@ -6,6 +6,7 @@ import com.feelmycode.parabole.dto.EventSearchResponseDto;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
+import com.feelmycode.parabole.service.AwsS3Service;
 import com.feelmycode.parabole.service.EventService;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,10 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,16 +31,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class EventController {
 
     private final EventService eventService;
+    private final AwsS3Service awsS3Service;
 
-    @PostMapping
+    @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<ParaboleResponse> createEvent(
         @RequestAttribute("userId") Long userId,
-        @RequestBody @Valid EventCreateRequestDto eventDto) {
+        @RequestPart("eventDtos") @Valid EventCreateRequestDto eventDto,
+        @RequestPart("images") List<MultipartFile> eventImages) {
         Long eventId = -1L;
         if (!eventService.canCreateEvent(userId, eventDto.getStartAt().toString())) {
             throw new ParaboleException(HttpStatus.ALREADY_REPORTED, "이벤트 등록 실패");
         }
         try {
+            String bannerImg = awsS3Service.upload(eventImages.get(0));
+            String detailImg = awsS3Service.upload(eventImages.get(1));
+            eventDto.setEventImage(bannerImg, detailImg);
+
             eventId = eventService.createEvent(userId, eventDto);
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");

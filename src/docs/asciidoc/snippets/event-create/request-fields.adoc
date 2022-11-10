@@ -1,6 +1,10 @@
 |===
 |Path|Type|Description
 
+|`+userId+`
+|`+Number+`
+|사용자 아이디
+
 |`+createdBy+`
 |`+String+`
 |이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)

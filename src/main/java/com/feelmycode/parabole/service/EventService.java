@@ -228,7 +228,6 @@ public class EventService {
                     product.addRemains(Long.valueOf(eventPrize.getStock()));
                 } else {
                     log.info("취소하려는 이벤트의 쿠폰 정보가 없습니다");
-
                     Coupon coupon = couponRepository.findById(eventPrize.getCoupon().getId())
                         .orElseThrow(
                             () -> new ParaboleException(HttpStatus.NOT_FOUND,
