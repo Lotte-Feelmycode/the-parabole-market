@@ -91,6 +91,8 @@ public class UserService {
             .build();
         User newUser = userRepository.save(user);
 
+        cartService.createCart(newUser.getId());
+
         return UserDto.builder()
             .id(newUser.getId())
             .name(newUser.getUsername())
