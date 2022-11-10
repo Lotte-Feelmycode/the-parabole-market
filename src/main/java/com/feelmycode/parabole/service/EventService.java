@@ -76,10 +76,10 @@ public class EventService {
     // TODO: JWT 처리 후 userId 처리
     // TODO: @Valid
     @Transactional
-    public Long createEvent(EventCreateRequestDto eventDto) {
+    public Long createEvent(Long userId, EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
-        Seller seller = getSeller(eventDto.getUserId());
+        Seller seller = getSeller(userId);
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
@@ -211,11 +211,14 @@ public class EventService {
             event.cancel();
             for (EventPrize eventPrize : event.getEventPrizes()) {
                 if (eventPrize.getPrizeType().equals(PrizeType.PRODUCT.getCode())) {
+                    log.info("취소하려는 이벤트의 경품 정보가 없습니다");
                     Product product = productRepository.findById(eventPrize.getProduct().getId())
                         .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
                             "취소하려는 이벤트의 경품 정보가 없습니다"));
                     product.addRemains(Long.valueOf(eventPrize.getStock()));
                 } else {
+                    log.info("취소하려는 이벤트의 쿠폰 정보가 없습니다");
+
                     Coupon coupon = couponRepository.findById(eventPrize.getCoupon().getId())
                         .orElseThrow(
                             () -> new ParaboleException(HttpStatus.NOT_FOUND,
@@ -229,7 +232,7 @@ public class EventService {
 
 
         } catch (Exception e) {
-            throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");
+            throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

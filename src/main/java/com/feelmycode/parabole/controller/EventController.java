@@ -35,10 +35,11 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<ParaboleResponse> createEvent(
+        @RequestAttribute("userId") Long userId,
         @RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
         try {
-            eventId = eventService.createEvent(eventDto);
+            eventId = eventService.createEvent(userId, eventDto);
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");
         }
@@ -95,7 +96,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<ParaboleResponse> cancelEvent(@PathVariable("eventId") Long eventId) {
+    public ResponseEntity<ParaboleResponse> cancelEvent(@RequestAttribute("userId") Long userId, @PathVariable("eventId") Long eventId) {
         try {
             eventService.cancelEvent(eventId);
         } catch (Exception e) {
