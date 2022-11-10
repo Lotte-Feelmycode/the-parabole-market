@@ -31,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,7 @@ public class CouponController {
     private final static int DEFAULT_SIZE = 20;
 
     @PostMapping("/create")
-    public ResponseEntity<ParaboleResponse> addCoupon(
+    public ResponseEntity<ParaboleResponse> addCoupon(@RequestAttribute Long userId,
                                     @RequestBody CouponCreateRequestDto dto) {
 
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
@@ -94,9 +95,8 @@ public class CouponController {
             true, "사용자에게 쿠폰 배정 성공");
     }
 
-
     @GetMapping("/seller/list")
-    public ResponseEntity<ParaboleResponse> getSellerCouponList(@RequestParam Long sellerId) {
+    public ResponseEntity<ParaboleResponse> getSellerCouponList(@RequestAttribute Long sellerId) {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
@@ -106,7 +106,7 @@ public class CouponController {
     }
 
     @GetMapping("/user/list")
-    public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestAttribute Long userId) {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
@@ -116,7 +116,7 @@ public class CouponController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ParaboleResponse> getCouponList(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getCouponList(@RequestAttribute Long userId) {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
@@ -147,9 +147,10 @@ public class CouponController {
     }
 
     @PostMapping("/user/use")
-    public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestBody CouponUseAndAssignRequestDto dto) {
+    public ResponseEntity<ParaboleResponse> useUserCoupon(@RequestAttribute Long userId,
+        @RequestBody CouponUseAndAssignRequestDto dto) {
 
-        couponService.useUserCoupon(dto.getCouponSNo(), dto.getUserId());
+        couponService.useUserCoupon(dto.getCouponSNo(), userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
     }
 }
