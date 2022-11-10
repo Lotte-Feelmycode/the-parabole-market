@@ -35,7 +35,7 @@ public class EventController {
         @RequestAttribute("userId") Long userId,
         @RequestBody @Valid EventCreateRequestDto eventDto) {
         Long eventId = -1L;
-        if (!eventService.canCreateEvent(eventDto.getUserId(), eventDto.getStartAt().toString())) {
+        if (!eventService.canCreateEvent(userId, eventDto.getStartAt().toString())) {
             throw new ParaboleException(HttpStatus.ALREADY_REPORTED, "이벤트 등록 실패");
         }
         try {
@@ -95,11 +95,9 @@ public class EventController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이벤트 스케쥴러 조회 성공", response);
     }
 
-
-    // TODO : userId Request Param => RequestAttribute로 변경
     @GetMapping("/seller/check")
     public ResponseEntity<ParaboleResponse> showIsAvailable(
-        @RequestParam("userId") Long userId, @RequestParam("inputDtm") String inputDate) {
+        @RequestAttribute("userId") Long userId, @RequestParam("inputDtm") String inputDate) {
         if (!eventService.canCreateEvent(userId, inputDate)) {
             return ParaboleResponse.CommonResponse(HttpStatus.ALREADY_REPORTED, true, "이벤트 등록 가능", false);
         } else {

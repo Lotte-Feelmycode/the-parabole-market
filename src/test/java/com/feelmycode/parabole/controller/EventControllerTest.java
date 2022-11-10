@@ -459,11 +459,11 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .param("eventType", "")
+            .param("eventType", eventType)
             .param("eventTitle", "")
-            .param("dateDiv", dateDiv)
-            .param("fromDateTime", fromDateTime)
-            .param("toDateTime", toDateTime)
+            .param("dateDiv", "")
+            .param("fromDateTime", "")
+            .param("toDateTime", "")
             .param("eventStatus", "")
             .filter(document("event-search",
                 preprocessRequest(modifyUris()
@@ -521,15 +521,18 @@ public class EventControllerTest {
     public void showIsAvailable() {
 
         // given
-        Long userId = 1L;
-        String inputDtm = "2022-11-09T15:00:00";
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
+        Long userId = jwtUtils.extractUserId(token);
+
+        String inputDtm = "2022-11-11T15:00:00";
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .param("userId", userId)
+            .header("Authorization", "Bearer " + token)
             .param("inputDtm", inputDtm)
             .filter(document("event-create-check",
                 preprocessRequest(modifyUris()
@@ -538,7 +541,6 @@ public class EventControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestParameters(
-                    parameterWithName("userId").description("사용자 아이디"),
                     parameterWithName("inputDtm").description("조회 시작 일시 (yyyy-MM-ddTHH:mm:ss)")
                 ),
                 responseFields(
