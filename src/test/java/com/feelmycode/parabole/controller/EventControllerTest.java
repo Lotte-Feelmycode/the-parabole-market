@@ -450,17 +450,20 @@ public class EventControllerTest {
         // given
         String eventType = "RAFFLE";
         String eventTitle = "러버덕";
+        Integer dateDiv = 0;
+        String fromDateTime = "2022-11-02T15:00:00";
+        String toDateTime = "2022-11-30T15:00:00";
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .param("eventType", eventType)
-            .param("eventTitle", eventTitle)
-            .param("dateDiv", "")
-            .param("fromDateTime", "")
-            .param("toDateTime", "")
+            .param("eventType", "")
+            .param("eventTitle", "")
+            .param("dateDiv", dateDiv)
+            .param("fromDateTime", fromDateTime)
+            .param("toDateTime", toDateTime)
             .param("eventStatus", "")
             .filter(document("event-search",
                 preprocessRequest(modifyUris()
@@ -505,12 +508,50 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
                         .description("이벤트 상세 이미지(URL)")
                 )
-            ))
+            )).log().all()
             .when().get(BASIC_PATH + "/list");
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
     }
+
+
+    @Test
+    @DisplayName("이벤트 등록 가능 여부 확인")
+    public void showIsAvailable() {
+
+        // given
+        Long userId = 1L;
+        String inputDtm = "2022-11-09T15:00:00";
+
+        // when
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .param("userId", userId)
+            .param("inputDtm", inputDtm)
+            .filter(document("event-create-check",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("userId").description("사용자 아이디"),
+                    parameterWithName("inputDtm").description("조회 시작 일시 (yyyy-MM-ddTHH:mm:ss)")
+                ),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").description("이벤트 등록 가능 여부")
+                )
+            )).log().all().when().get(BASIC_PATH + "/seller/check");
+
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+    }
+
 
     @Test
     @DisplayName("이벤트 스케쥴 조회")

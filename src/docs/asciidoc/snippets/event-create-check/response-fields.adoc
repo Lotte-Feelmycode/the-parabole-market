@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Boolean+`
+|이벤트 등록 가능 여부
+
+|===

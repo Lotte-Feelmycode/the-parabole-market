@@ -26,12 +26,12 @@ public class EventCreateRequestDto {
     private String title;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss")
     @NotNull
     private LocalDateTime startAt;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss")
     @NotNull
     private LocalDateTime endAt;
 
