@@ -596,7 +596,7 @@ public class EventControllerTest {
             seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
             "이벤트 설명 v2", prizes
         );
-//        new EventImage("banner.url", "detail.url")
+
         Long eventId = eventService.createEvent(requestDto);
 
         Response resp = given(this.spec)
