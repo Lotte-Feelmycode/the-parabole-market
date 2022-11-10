@@ -24,6 +24,8 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.JwtUtils;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
@@ -34,6 +36,7 @@ import groovy.util.logging.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
@@ -70,6 +73,9 @@ public class EventControllerTest {
     private RequestSpecification spec;
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private EventService eventService;
     @Autowired
     EventRepository eventRepository;
@@ -91,6 +97,19 @@ public class EventControllerTest {
         return mapper.writeValueAsString(data);
     }
 
+    private String getToken(final UserDto request) {
+
+        final ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(ContentType.JSON).body(request)
+            .when()
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+
+        return response.body().jsonPath().get("data.token").toString();
+    }
+
     @Before
     public void setUp() {
         RestAssured.port = port;
@@ -104,12 +123,8 @@ public class EventControllerTest {
     public void createEvent() throws JSONException {
 
         // given
-        // user, seller 있다고 가정
-//        User user = userRepository.save(
-//            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
-//        Seller seller = new Seller("event Store Name", "3245918723");
-//        user.setSeller(seller);
-//        sellerRepository.save(seller);
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
 
         LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
         LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
@@ -120,10 +135,11 @@ public class EventControllerTest {
         productRepository.save(product);
 
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
-        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
+        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 5));
+
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 등록 BY REST DOCS", startAt, endAt,
-            "이벤트 설명 v2", prizes
+            "SELLER", "RAFFLE", "온앤더뷰티 WEEK #홀리데이", startAt, endAt,
+            "(테스트 데이터) 온앤더뷰티 클럽 무료 가입하시고 모든 혜택 다 받으세요!", prizes
         );
         EventImage eventImage = new EventImage("banner.url", "detail.url");
 
@@ -136,6 +152,7 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
+            .header("Authorization", "Bearer " + token)
             .filter(document("event-create",
                 preprocessRequest(modifyUris()
                         .scheme("https")
@@ -344,12 +361,14 @@ public class EventControllerTest {
     public void getEventBySellerId() {
 
         // given
-        Long userId = 4L;
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .port(port)
             .filter(document("event-sellerId",
                 preprocessRequest(modifyUris()
@@ -357,7 +376,6 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                pathParameters(parameterWithName("userId").description("사용자 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -412,7 +430,7 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
                         .description("쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)")
                 )
-            )).when().get(BASIC_PATH + "/seller/{userId}", userId);
+            )).when().get(BASIC_PATH + "/seller");
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
@@ -434,11 +452,11 @@ public class EventControllerTest {
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .param("eventType", "")
+            .param("eventType", eventType)
             .param("eventTitle", "")
-            .param("dateDiv", dateDiv)
-            .param("fromDateTime", fromDateTime)
-            .param("toDateTime", toDateTime)
+            .param("dateDiv", "")
+            .param("fromDateTime", "")
+            .param("toDateTime", "")
             .param("eventStatus", "")
             .filter(document("event-search",
                 preprocessRequest(modifyUris()
@@ -496,15 +514,18 @@ public class EventControllerTest {
     public void showIsAvailable() {
 
         // given
-        Long userId = 1L;
-        String inputDtm = "2022-11-09T15:00:00";
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
+        Long userId = jwtUtils.extractUserId(token);
+
+        String inputDtm = "2022-11-11T15:00:00";
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
-            .param("userId", userId)
+            .header("Authorization", "Bearer " + token)
             .param("inputDtm", inputDtm)
             .filter(document("event-create-check",
                 preprocessRequest(modifyUris()
@@ -513,7 +534,6 @@ public class EventControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestParameters(
-                    parameterWithName("userId").description("사용자 아이디"),
                     parameterWithName("inputDtm").description("조회 시작 일시 (yyyy-MM-ddTHH:mm:ss)")
                 ),
                 responseFields(
@@ -582,8 +602,12 @@ public class EventControllerTest {
     public void deleteEvent() {
 
         // given
-        LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
-        LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
+        Long userId = jwtUtils.extractUserId(token);
+
+        LocalDateTime startAt = LocalDateTime.parse("2022-12-10T00:00:00", ISO_LOCAL_DATE_TIME);
+        LocalDateTime endAt = LocalDateTime.parse("2022-12-28T18:00:00", ISO_LOCAL_DATE_TIME);
 
         Seller seller = sellerRepository.findById(1L).orElseThrow();
         Product product = new Product(seller, 1, 50L, "CATEGORY", "thumb.img", "이벤트 테스트 상품",
@@ -593,16 +617,17 @@ public class EventControllerTest {
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
+            "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
             "이벤트 설명 v2", prizes
         );
 
-        Long eventId = eventService.createEvent(requestDto);
+        Long eventId = eventService.createEvent(userId, requestDto);
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
+            .header("Authorization", "Bearer " + token)
             .filter(document("event-delete",
                 preprocessRequest(modifyUris()
                         .scheme("https")
