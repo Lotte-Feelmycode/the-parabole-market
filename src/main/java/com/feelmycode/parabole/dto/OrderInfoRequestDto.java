@@ -1,5 +1,6 @@
 package com.feelmycode.parabole.dto;
 
+import com.feelmycode.parabole.enumtype.OrderInfoState;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,11 +16,6 @@ public class OrderInfoRequestDto {
         this.userId = userId;
         this.orderInfoId = orderInfoId;
         this.orderInfoState = OrderInfoState.returnValueByName(orderState);
-    }
-
-    public OrderInfoRequestDto(Long userId, String orderInfoState) {
-        this.userId = userId;
-        this.orderInfoState = OrderInfoState.returnValueByName(orderInfoState);
     }
 
 }

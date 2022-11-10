@@ -12,7 +12,6 @@ import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
-import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
@@ -93,7 +92,6 @@ public class OrderInfoService {
             .allMatch(dto -> dto.getState().getValue() > 5);
     }
 
-    // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoListByUserId(Long userId) {
         Order order = orderService.getOrder(userId);
         if(order == null || order.getId() == 0)

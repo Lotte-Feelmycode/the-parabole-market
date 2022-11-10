@@ -22,9 +22,9 @@ public class OrderRequestDto {
     private String addressSimple;
     private String addressDetail;
     private String deliveryComment;
-    private String orderState;
-    private String orderInfoState;
-    private String orderPayState;
+    private OrderState orderState;
+    private OrderInfoState orderInfoState;
+    private OrderPayState orderPayState;
 
     public OrderRequestDto(Long userId, String orderPayState) {
         this.userId = userId;
