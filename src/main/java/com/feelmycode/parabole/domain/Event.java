@@ -105,7 +105,6 @@ public class Event extends BaseEntity implements Serializable {
         }
     }
 
-    // TODO : 이벤트 수정 및 재고관리 로직 추가
     /**
      * 이벤트 취소(삭제)
      */

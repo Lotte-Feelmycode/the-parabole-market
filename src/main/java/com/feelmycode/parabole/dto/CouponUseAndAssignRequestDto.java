@@ -6,11 +6,9 @@ import lombok.Getter;
 public class CouponUseAndAssignRequestDto {
 
     private String couponSNo;
-    private Long userId;
 
-    public CouponUseAndAssignRequestDto(String couponSNo, Long userId) {
+    public CouponUseAndAssignRequestDto(String couponSNo) {
         this.couponSNo = couponSNo;
-        this.userId = userId;
     }
 
 }

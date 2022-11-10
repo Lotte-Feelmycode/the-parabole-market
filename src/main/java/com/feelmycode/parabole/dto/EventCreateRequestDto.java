@@ -16,8 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventCreateRequestDto {
 
-    private Long userId;
-
     @NotNull
     private String createdBy;
 
@@ -28,12 +26,12 @@ public class EventCreateRequestDto {
     private String title;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss")
     @NotNull
     private LocalDateTime startAt;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd kk:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'kk:mm:ss")
     @NotNull
     private LocalDateTime endAt;
 
@@ -42,17 +40,19 @@ public class EventCreateRequestDto {
     private EventImage eventImage;
     private List<EventPrizeCreateRequestDto> eventPrizeCreateRequestDtos;
 
-    public EventCreateRequestDto(Long userId, String createdBy, String type, String title,
-        LocalDateTime startAt, LocalDateTime endAt, String descript, EventImage eventImage,
+    public EventCreateRequestDto(String createdBy, String type, String title,
+        LocalDateTime startAt, LocalDateTime endAt, String descript,
         List<EventPrizeCreateRequestDto> eventPrizeCreateRequestDtos) {
-        this.userId = userId;
         this.createdBy = createdBy;
         this.type = type;
         this.title = title;
         this.startAt = startAt;
         this.endAt = endAt;
         this.descript = descript;
-        this.eventImage = eventImage;
         this.eventPrizeCreateRequestDtos = eventPrizeCreateRequestDtos;
+    }
+
+    public void setEventImage(String bannerImg, String detailImg) {
+        this.eventImage = new EventImage(bannerImg, detailImg);
     }
 }

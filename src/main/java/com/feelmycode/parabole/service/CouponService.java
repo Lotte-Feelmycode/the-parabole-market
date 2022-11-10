@@ -46,8 +46,8 @@ public class CouponService {
     private final UserCouponRepository userCouponRepository;
 
     @Transactional
-    public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
-        User user = userRepository.findById(dto.getUserId())
+    public CouponCreateResponseDto addCoupon(Long userId, @NotNull CouponCreateRequestDto dto) {
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new NoDataException());
 
         Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),

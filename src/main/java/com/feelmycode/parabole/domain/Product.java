@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.domain;
 
 import com.feelmycode.parabole.global.error.exception.NoDataException;
-import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @Entity
 @Table(name = "products")
@@ -74,7 +72,7 @@ public class Product extends BaseEntity {
         this.category = category;
     }
 
-    private void setThumbnailImg(String thumbnailImg) {
+    public void setThumbnailImg(String thumbnailImg) {
         this.thumbnailImg = thumbnailImg;
     }
 

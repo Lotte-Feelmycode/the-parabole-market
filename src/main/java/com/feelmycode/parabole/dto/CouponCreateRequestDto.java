@@ -7,7 +7,6 @@ import lombok.Getter;
 public class CouponCreateRequestDto {
 
         private String name;
-        private Long userId;
         private Integer type;
         private Integer discountValue;
         private LocalDateTime validAt;

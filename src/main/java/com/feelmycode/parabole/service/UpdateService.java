@@ -38,7 +38,7 @@ public class UpdateService {
     private final CartService cartService;
 
     @Transactional
-    public void updateOrderInfoState(OrderInfoRequestDto orderInfoRequestDto) {
+    public void updateOrderInfoState(Long userId, OrderInfoRequestDto orderInfoRequestDto) {
         try {
             OrderInfo getOrderInfo = orderInfoRepository.findById(orderInfoRequestDto.getOrderInfoId())
                 .orElseThrow(() -> new NoDataException());
@@ -47,7 +47,6 @@ public class UpdateService {
             orderInfoRepository.save(getOrderInfo);
 
             // 모든 상품이 배송완료일 때 주문이 완료되었다고 처리
-            Long userId = orderInfoRequestDto.getUserId();
             if (orderInfoService.isDeliveryComplete(userId)) {
                 Order order = orderService.getOrder(userId);
 
@@ -57,8 +56,7 @@ public class UpdateService {
                     info.setState(orderInfoRequestDto.getOrderInfoState().getValue());
                 }
 
-                this.updateOrderState(new OrderRequestDto(
-                    orderInfoRequestDto.getUserId(),
+                this.updateOrderState(userId, new OrderRequestDto(
                     order.getPayState().getState()));
             }
         } catch (Exception e) {
@@ -67,8 +65,8 @@ public class UpdateService {
     }
 
     @Transactional
-    public void updateOrderState(OrderRequestDto orderUpdateRequestDto) {
-        Order order = orderService.getOrder(orderUpdateRequestDto.getUserId());
+    public void updateOrderState(Long userId, OrderRequestDto orderUpdateRequestDto) {
+        Order order = orderService.getOrder(userId);
 
         if(order == null) {
             throw new NoDataException();
@@ -81,7 +79,7 @@ public class UpdateService {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 배송완료된 상품입니다.");
         }
 
-        User getUser = userService.getUser(orderUpdateRequestDto.getUserId());
+        User getUser = userService.getUser(userId);
         orderUpdateRequestDto.setUserInfo(getUser.getUsername(), getUser.getEmail());
 
         if(orderUpdateRequestDto.getOrderPayState().equals(OrderPayState.BANK_TRANSFER) || orderUpdateRequestDto.getOrderPayState().equals(OrderPayState.WITHOUT_BANK)) {
@@ -97,16 +95,16 @@ public class UpdateService {
                 throw new NoDataException();
             }
             for(Long orderInfoId : orderInfoRequestList.getOrderInfoIdList()) {
-                this.updateOrderInfoState(new OrderInfoRequestDto(orderUpdateRequestDto.getUserId(), orderInfoId, orderUpdateRequestDto.getOrderInfoState().getState()));
+                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, orderUpdateRequestDto.getOrderInfoState().getState()));
             }
         }
 
         // 쿠폰정보를 orderInfo에 저장
-        orderInfoService.setCouponToOrderInfo(orderUpdateRequestDto);
+        orderInfoService.setCouponToOrderInfo(userId, orderUpdateRequestDto);
 
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
         if (order.getState().getValue() == 0) {
-            Cart getCart = cartService.getCart(orderUpdateRequestDto.getUserId());
+            Cart getCart = cartService.getCart(userId);
 
             List<CartItem> cartItemList = cartItemRepository.findAllByCartId(getCart.getId());
 
@@ -114,8 +112,7 @@ public class UpdateService {
                 return;
             }
 
-            List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(
-                orderUpdateRequestDto.getUserId());
+            List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
 
             List<Long> cartIdList = cartItemList.stream()
                 .filter(item -> orderInfoList.stream().anyMatch(

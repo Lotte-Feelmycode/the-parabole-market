@@ -12,7 +12,6 @@ public class OrderInfoResponseDto {
 
     private Long id;
     private OrderInfoState state;
-    private Long userId;
     private String userEmail;
     private Long productId;
     private String productName;
@@ -23,11 +22,10 @@ public class OrderInfoResponseDto {
     private String productThumbnailImg;
     private LocalDateTime updatedAt;
 
-    public OrderInfoResponseDto(Long id, String state, Long userId, String userEmail, Long productId, String productName,
+    public OrderInfoResponseDto(Long id, String state, String userEmail, Long productId, String productName,
         Integer productCnt, Long productPrice, Long productDiscountPrice, String productThumbnailImg, LocalDateTime productUpdatedAt) {
         this.id = id;
         this.state = OrderInfoState.returnValueByName(state);
-        this.userId = userId;
         this.userEmail = userEmail;
         this.productId = productId;
         this.productName = productName;
