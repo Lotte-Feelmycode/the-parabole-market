@@ -111,6 +111,24 @@ include::{resource-dir}/event-scheduler/http-response.adoc[]
 
 include::{resource-dir}/event-scheduler/response-fields.adoc[]
 
+=== 이벤트 등록 가능여부 확인
+
+`*Request*`
+
+include::{resource-dir}/event-create-check/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/event-create-check/request-parameters.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/event-create-check/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/event-create-check/response-fields.adoc[]
+
 === 이벤트 취소
 
 `*Request*`
