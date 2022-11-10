@@ -127,8 +127,6 @@ public class EventControllerTest {
         );
         EventImage eventImage = new EventImage("banner.url", "detail.url");
 
-//        String requestJson = null;
-
         net.minidev.json.JSONObject jsonObject = new net.minidev.json.JSONObject();
         jsonObject.put("eventDtos", requestDto);
         jsonObject.put("image", eventImage);
