@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,11 +26,11 @@ public class AwsS3Service {
     @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
     @Value("${cloud.aws.credentials.secretKey}")
-    private static String secretKey;
+    private String secretKey;
     @Value("${cloud.aws.region.static}")
-    private static String region;
+    private String region;
     @Value("${cloud.aws.s3.bucket}")
-    private static String bucket;
+    private String bucket;
 
     @PostConstruct
     public void setS3Client() {
