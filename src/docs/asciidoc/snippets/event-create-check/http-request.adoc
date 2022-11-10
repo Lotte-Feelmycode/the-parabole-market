@@ -1,8 +1,9 @@
 [source,http,options="nowrap"]
 ----
-GET /api/v1/event/seller/check?userId=1&inputDtm=2022-11-09T15%3A00%3A00 HTTP/1.1
+GET /api/v1/event/seller/check?inputDtm=2022-11-11T15%3A00%3A00 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwic2VsbGVyU3RvcmVuYW1lIjoi642U7YyM65287JSo7J2YIOuniOy8kyIsInJvbGUiOiJST0xFX1NFTExFUiIsInNlbGxlcklkIjozLCJwaG9uZSI6IjAxMDc1OTE0NDk5IiwiaW1hZ2VVcmwiOiJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvY2FmZS9jYWZlX3BjL2RlZmF1bHQvY2FmZV9wcm9maWxlXzc3LnBuZyIsIm5pY2tuYW1lIjoi67O8656YIiwidXNlcklkIjoxMywiZW1haWwiOiJ0aGVwYXJhQGJvbGUuY29tIiwidXNlcm5hbWUiOiLrjZTtjIzrnbwiLCJpYXQiOjE2NjgwNTg4OTgsImV4cCI6MTY2ODE0NTI5OH0.-hwrfPjulVwsdHuefJAcjt0RnAxVFwSru-pgqCgT5jw
 Content-Type: application/json
-Host: parabole.com:55898
+Host: parabole.com:52416
 
 ----

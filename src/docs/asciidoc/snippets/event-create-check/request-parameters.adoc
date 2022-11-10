@@ -1,9 +1,6 @@
 |===
 |Parameter|Description
 
-|`+userId+`
-|사용자 아이디
-
 |`+inputDtm+`
 |조회 시작 일시 (yyyy-MM-ddTHH:mm:ss)
 

@@ -1,6 +1,7 @@
 [source,bash]
 ----
-$ curl 'https://parabole.com:57029/api/v1/event/seller/4' -i -X GET \
+$ curl 'https://parabole.com:64401/api/v1/event/seller' -i -X GET \
     -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwic2VsbGVyU3RvcmVuYW1lIjoi642U7YyM65287JSo7J2YIOuniOy8kyIsInJvbGUiOiJST0xFX1NFTExFUiIsInNlbGxlcklkIjozLCJwaG9uZSI6IjAxMDc1OTE0NDk5IiwiaW1hZ2VVcmwiOiJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvY2FmZS9jYWZlX3BjL2RlZmF1bHQvY2FmZV9wcm9maWxlXzc3LnBuZyIsIm5pY2tuYW1lIjoi67O8656YIiwidXNlcklkIjoxMywiZW1haWwiOiJ0aGVwYXJhQGJvbGUuY29tIiwidXNlcm5hbWUiOiLrjZTtjIzrnbwiLCJpYXQiOjE2NjgwNTE0OTQsImV4cCI6MTY2ODEzNzg5NH0.ocm8S4rzJMWTViy8bjurbCO86ncP2WbFofy8rKfdtG0' \
     -H 'Content-Type: application/json'
 ----
