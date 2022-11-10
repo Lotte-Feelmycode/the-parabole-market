@@ -64,8 +64,6 @@ public class EventService {
     /**
      * 이벤트 생성
      */
-    // TODO: JWT 처리 후 userId 처리
-    // TODO: @Valid
     @Transactional
     public Long createEvent(Long userId, EventCreateRequestDto eventDto) {
 
