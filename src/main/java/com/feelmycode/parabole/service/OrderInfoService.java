@@ -62,7 +62,7 @@ public class OrderInfoService {
     }
 
     @Transactional
-    public void setCouponToOrderInfo(OrderRequestDto orderDto) {
+    public void setCouponToOrderInfo(Long userId, OrderRequestDto orderDto) {
         List<OrderInfoRequestListDto> orderInfoDto = orderDto.getOrderInfoRequestList();
         for(OrderInfoRequestListDto dto : orderInfoDto) {
             if(dto.getCouponSerialNo().equals("") || dto.getCouponSerialNo() == null)
@@ -71,7 +71,7 @@ public class OrderInfoService {
             for(Long id : orderInfoId) {
                 OrderInfo getOrderInfo = orderInfoRepository.findById(id)
                     .orElseThrow(() -> new NoDataException());
-                couponService.useUserCoupon(dto.getCouponSerialNo(), orderDto.getUserId());
+                couponService.useUserCoupon(dto.getCouponSerialNo(), userId);
                 UserCoupon getUserCoupon = couponService.getUserCouponBySerialNo(dto.getCouponSerialNo());
                 getOrderInfo.setUserCoupon(getUserCoupon);
             }

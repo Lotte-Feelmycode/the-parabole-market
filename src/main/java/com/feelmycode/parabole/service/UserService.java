@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.KakaoOauthToken;
 import com.feelmycode.parabole.domain.KakaoProfile;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.feelmycode.parabole.domain.NaverOauthToken;
 import com.feelmycode.parabole.domain.NaverProfile;
 import com.feelmycode.parabole.domain.GoogleOauthToken;

@@ -211,7 +211,6 @@ public class ProductControllerTest {
                         fieldWithPath("productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                         fieldWithPath("productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
                         fieldWithPath("productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지")
-
                     ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),

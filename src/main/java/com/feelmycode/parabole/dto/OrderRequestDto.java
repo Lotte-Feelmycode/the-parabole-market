@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderRequestDto {
 
-    private Long userId;
     private Long orderId;
     private List<OrderInfoRequestListDto> orderInfoRequestList;
     private String userName;
@@ -26,8 +25,7 @@ public class OrderRequestDto {
     private OrderInfoState orderInfoState;
     private OrderPayState orderPayState;
 
-    public OrderRequestDto(Long userId, String orderPayState) {
-        this.userId = userId;
+    public OrderRequestDto(String orderPayState) {
         this.orderPayState = OrderPayState.returnValueByName(orderPayState);
     }
 
@@ -37,10 +35,6 @@ public class OrderRequestDto {
 
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
-    }
-
-    public void setOrderInfoState(String orderInfoState) {
-        this.orderInfoState = OrderInfoState.returnValueByName(orderInfoState);
     }
 
     public void setOrderInfoState(OrderInfoState orderInfoState) {
