@@ -94,23 +94,23 @@
 |상품 이미지(URL)
 
 |`+data.[].eventPrizes[].couponId+`
-|`+Number+`
+|`+Null+`
 |쿠폰 아이디
 
 |`+data.[].eventPrizes[].couponDetail+`
-|`+String+`
+|`+Null+`
 |쿠폰 상세 설명
 
 |`+data.[].eventPrizes[].type+`
-|`+String+`
+|`+Null+`
 |쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)
 
 |`+data.[].eventPrizes[].couponDiscountValue+`
-|`+Number+`
+|`+Null+`
 |쿠폰 할인값
 
 |`+data.[].eventPrizes[].expiresAt+`
-|`+String+`
+|`+Null+`
 |쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)
 
 |===
