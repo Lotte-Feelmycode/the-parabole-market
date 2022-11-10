@@ -31,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -157,5 +159,12 @@ public class CouponController {
 
         couponService.useUserCoupon(dto.getCouponSNo(), userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
+    }
+
+    @PatchMapping("/{couponId}/stock/{stock}")
+    public Boolean setProductRemains(@PathVariable("couponId") Long couponId,
+        @PathVariable("stock") Integer stock) {
+        log.info("Set Coupon Remains By Event Server : {} ", couponId);
+        return couponService.setCouponStock(couponId, stock);
     }
 }
