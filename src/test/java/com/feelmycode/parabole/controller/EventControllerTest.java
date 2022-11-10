@@ -114,7 +114,6 @@ public class EventControllerTest {
         LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
         LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
 
-        System.out.println("START AT: "+ startAt+", END AT: "+endAt);
         Seller seller = sellerRepository.findById(1L).orElseThrow();
         Product product = new Product(seller, 1, 50L, "CATEGORY", "thumb.img", "이벤트 테스트 상품",
             50000L);
@@ -134,7 +133,6 @@ public class EventControllerTest {
         jsonObject.put("eventDtos", requestDto);
         jsonObject.put("image", eventImage);
 
-        System.out.println(jsonObject);
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
