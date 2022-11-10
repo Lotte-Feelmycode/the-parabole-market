@@ -10,6 +10,7 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -48,6 +50,22 @@ public class ProductService {
         productRepository.save(getProduct);
         return product.getId();
     }
+
+    @Transactional
+    public Boolean setProductRemains(Long productId, Long stock) {
+        Product getProduct = this.getProduct(productId);
+        try {
+            if (stock < 0) {
+                getProduct.removeRemains(stock * -1);
+            } else {
+                getProduct.addRemains(stock);
+            }
+            productRepository.save(getProduct);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return true;
+    };
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
