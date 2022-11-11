@@ -4,107 +4,43 @@ HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 07 Nov 2022 03:52:52 GMT
+Date: Wed, 09 Nov 2022 01:14:40 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 3847
+Content-Length: 1118
 
 {
   "success" : true,
   "message" : "판매자가 등록한 상품 목록",
   "data" : {
     "content" : [ {
-      "productId" : 5,
-      "productName" : "비빔냉면",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 1,
-      "productRemains" : 10,
-      "productPrice" : 5000,
-      "productCategory" : "면",
-      "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-      "productCreatedAt" : "2022-10-06T16:52:06",
-      "productUpdatedAt" : "2022-10-28T10:38:43",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 6,
-      "productName" : "물냉면",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 1,
-      "productRemains" : 30000,
-      "productPrice" : 6000,
-      "productCategory" : "면",
-      "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
-      "productCreatedAt" : "2022-10-06T16:52:06",
-      "productUpdatedAt" : "2022-10-28T15:23:15",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 7,
-      "productName" : "막국수",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 1,
-      "productRemains" : 19984,
-      "productPrice" : 7000,
-      "productCategory" : "면",
-      "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-      "productCreatedAt" : "2022-10-06T16:52:06",
-      "productUpdatedAt" : "2022-10-28T12:42:24",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 66,
+      "productId" : 34,
       "productName" : "테스트",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
-      "productStatus" : 1,
+      "productStatus" : 0,
       "productRemains" : 30,
       "productPrice" : 500,
       "productCategory" : "테스트",
       "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-03T17:38:55",
-      "productUpdatedAt" : "2022-11-03T17:38:55",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 67,
-      "productName" : "테스트",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 1,
-      "productRemains" : 30,
-      "productPrice" : 500,
-      "productCategory" : "테스트",
-      "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-03T17:39:43",
-      "productUpdatedAt" : "2022-11-03T17:39:43",
-      "productDeletedAt" : null,
-      "productIsDeleted" : false
-    }, {
-      "productId" : 68,
-      "productName" : "테스트",
-      "sellerId" : 1,
-      "storeName" : "u1-s1's store",
-      "productStatus" : 1,
-      "productRemains" : 30,
-      "productPrice" : 500,
-      "productCategory" : "테스트",
-      "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-03T17:44:38",
-      "productUpdatedAt" : "2022-11-03T17:44:38",
+      "productCreatedAt" : "2022-11-09T10:07:33",
+      "productUpdatedAt" : "2022-11-09T10:07:33",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     } ],
     "pageable" : {
       "sort" : {
         "empty" : true,
-        "unsorted" : true,
-        "sorted" : false
+        "sorted" : false,
+        "unsorted" : true
       },
       "offset" : 0,
       "pageNumber" : 0,
@@ -112,18 +48,18 @@ Content-Length: 3847
       "unpaged" : false,
       "paged" : true
     },
-    "last" : true,
+    "totalElements" : 1,
     "totalPages" : 1,
-    "totalElements" : 6,
+    "last" : true,
     "size" : 20,
     "number" : 0,
     "sort" : {
       "empty" : true,
-      "unsorted" : true,
-      "sorted" : false
+      "sorted" : false,
+      "unsorted" : true
     },
+    "numberOfElements" : 1,
     "first" : true,
-    "numberOfElements" : 6,
     "empty" : false
   }
 }

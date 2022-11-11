@@ -26,7 +26,7 @@ public class OrderService {
     public List<Order> getOrderList(Long userId) {
         List<Order> orderList = orderRepository.findAllByUserId(userId)
             .stream()
-            .filter(order -> order.getState() != -1)
+            .filter(order -> order.getState().getValue() > -1)
             .collect(Collectors.toList());
         return orderList;
     }
@@ -48,7 +48,7 @@ public class OrderService {
         if (order == null) {
             return;
         }
-        if (order.getState() < 0) {
+        if (order.getState().getValue() < 0) {
             this.deleteOrder(order.getId());
         }
     }

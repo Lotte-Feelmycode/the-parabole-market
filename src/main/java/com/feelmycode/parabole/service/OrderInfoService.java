@@ -12,7 +12,6 @@ import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
 import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
-import com.feelmycode.parabole.enumtype.OrderInfoState;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
@@ -21,6 +20,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -62,14 +62,16 @@ public class OrderInfoService {
     }
 
     @Transactional
-    public void setCouponToOrderInfo(OrderRequestDto orderDto) {
+    public void setCouponToOrderInfo(Long userId, OrderRequestDto orderDto) {
         List<OrderInfoRequestListDto> orderInfoDto = orderDto.getOrderInfoRequestList();
         for(OrderInfoRequestListDto dto : orderInfoDto) {
+            if(dto.getCouponSerialNo().equals("") || dto.getCouponSerialNo() == null)
+                return;
             List<Long> orderInfoId = dto.getOrderInfoIdList();
             for(Long id : orderInfoId) {
                 OrderInfo getOrderInfo = orderInfoRepository.findById(id)
                     .orElseThrow(() -> new NoDataException());
-                couponService.useUserCoupon(dto.getCouponSerialNo(), orderDto.getUserId());
+                couponService.useUserCoupon(dto.getCouponSerialNo(), userId);
                 UserCoupon getUserCoupon = couponService.getUserCouponBySerialNo(dto.getCouponSerialNo());
                 getOrderInfo.setUserCoupon(getUserCoupon);
             }
@@ -87,10 +89,9 @@ public class OrderInfoService {
     public boolean isDeliveryComplete(Long userId) {
         List<OrderInfoResponseDto> orderInfoResponseDtoList = getOrderInfoListByUserId(userId);
         return orderInfoResponseDtoList.stream()
-            .allMatch(dto -> OrderInfoState.returnValueByName(dto.getState()) > 5);
+            .allMatch(dto -> dto.getState().getValue() > 5);
     }
 
-    // TODO: 자동으로 상품에 적용할 수 있는 최대 쿠폰을 적용할 수 있게 하기
     public List<OrderInfoResponseDto> getOrderInfoListByUserId(Long userId) {
         Order order = orderService.getOrder(userId);
         if(order == null || order.getId() == 0)
@@ -99,12 +100,11 @@ public class OrderInfoService {
         return changeEntityToDto(getOrderInfoList);
     }
 
-    // TODO: 잘 동작하는지 확인 후 stream으로 선택적으로 데이터 가져올 것
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
-        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId);
-//            .stream()
-//            .filter(state -> state.getState() != -1)
-//            .collect(Collectors.toList());
+        List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
+            .stream()
+            .filter(state -> state.getState().getValue() > -1)
+            .collect(Collectors.toList());
         return changeEntityToDto(getOrderInfoList);
     }
 

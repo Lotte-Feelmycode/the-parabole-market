@@ -8,8 +8,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -56,7 +54,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    @DisplayName("주문 저장/수정")
+    @DisplayName("주문 저장/결제")
     public void updateOrder() {
 
         // Given
@@ -147,7 +145,7 @@ public class OrderControllerTest {
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격").optional(),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.STRING).description("주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss").optional()
+                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.STRING).description("주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss)").optional()
                 )
             ))
             .when()

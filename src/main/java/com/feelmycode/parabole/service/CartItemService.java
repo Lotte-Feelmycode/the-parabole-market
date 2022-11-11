@@ -36,8 +36,8 @@ public class CartItemService {
     private final CouponService couponService;
 
     @Transactional
-    public void addItem(CartAddItemRequestDto dto) {
-        Cart cart = cartService.getCart(dto.getUserId());
+    public void addItem(Long userId, CartAddItemRequestDto dto) {
+        Cart cart = cartService.getCart(userId);
 
         Product product = productService.getProduct(dto.getProductId());
         if(product.getRemains() < dto.getCnt()) {
@@ -47,9 +47,8 @@ public class CartItemService {
         if(cartItemRepository.findByCartIdAndProductId(cart.getId(), product.getId()).isPresent()){
             CartItem cartItem = cartItemRepository.findByCartIdAndProductId(
                 cart.getId(), product.getId()).get();
-            updateItem(new CartItemUpdateRequestDto(
-                cartItem.getId(), cartItem.getProduct().getId(), dto.getUserId(),
-                dto.getCnt()));
+            updateItem(userId, new CartItemUpdateRequestDto(
+                cartItem.getId(), cartItem.getProduct().getId(), dto.getCnt()));
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 등록된 상품입니다.");
         }
 
@@ -63,7 +62,7 @@ public class CartItemService {
     }
 
     @Transactional
-    public void updateItem(CartItemUpdateRequestDto cartItemDto) {
+    public void updateItem(Long userId, CartItemUpdateRequestDto cartItemDto) {
         CartItem currentCartItem = getCartItem(cartItemDto.getCartItemId());
         Product product = currentCartItem.getProduct();
 

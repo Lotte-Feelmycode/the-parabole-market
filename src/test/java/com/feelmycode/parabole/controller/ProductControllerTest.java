@@ -92,9 +92,9 @@ public class ProductControllerTest {
                         fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                         fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
                         fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
-                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자  (yyyy-MM-dd'T'HH:mm:ss"),
-                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자  (yyyy-MM-dd'T'HH:mm:ss"),
-                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
+                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자 (yyyy-MM-dd'T'HH:mm:ss)"),
+                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자 (yyyy-MM-dd'T'HH:mm:ss)"),
+                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자 (yyyy-MM-dd'T'HH:mm:ss)").optional(),
                         fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
@@ -130,7 +130,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("상품 정보 가져오기")
+    @DisplayName("선택된 상품 정보 가져오기")
     public void getProduct() {
         Response resp = given(this.spec)
             .param("productId", 2)
@@ -160,8 +160,8 @@ public class ProductControllerTest {
                     fieldWithPath("data.product.productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.product.productCategory").type(JsonFieldType.STRING).description("상품의 카테고리"),
                     fieldWithPath("data.product.productThumbnailImg").type(JsonFieldType.STRING).description("상품의 썸네일 이미지"),
-                    fieldWithPath("data.product.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자  (yyyy-MM-dd'T'HH:mm:ss"),
-                    fieldWithPath("data.product.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자  (yyyy-MM-dd'T'HH:mm:ss"),
+                    fieldWithPath("data.product.productCreatedAt").type(JsonFieldType.STRING).description("상품의 생성 일자 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.product.productUpdatedAt").type(JsonFieldType.STRING).description("상품의 수정 일자 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.product.productDeletedAt").description("상품의 삭제 일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
                     fieldWithPath("data.product.productIsDeleted").type(JsonFieldType.BOOLEAN).description("상품의 삭제 여부").optional(),
                     fieldWithPath("data.productDetail").type(JsonFieldType.ARRAY).description("상품 이미지 정보"),
@@ -180,15 +180,11 @@ public class ProductControllerTest {
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
     }
 
-    /*
-    TODO: 상품생성하는 코드에서 500에러 발생.
-          parameter로 userId를 받고 requestBody를 받는데 두 가지가 공존할 수 없는 문제.
-     */
     @Test
     @DisplayName("상품 생성")
     public void createProduct() {
-        ProductRequestDto p = new ProductRequestDto(1L, "테스트", 30L, 500L, "테스트", "img.jpg");
-        Long productId = productService.saveProduct(p);
+        ProductRequestDto p = new ProductRequestDto("테스트", 30L, 500L, "테스트", "img.jpg");
+        Long productId = productService.saveProduct(1L, p);
 
         JSONObject request = new JSONObject();
         request.put("userId", 1);
@@ -268,9 +264,9 @@ public class ProductControllerTest {
                         fieldWithPath("data.content.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                         fieldWithPath("data.content.[].productCategory").type(JsonFieldType.STRING).description("상품 카테고리"),
                         fieldWithPath("data.content.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일"),
-                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자  (yyyy-MM-dd'T'HH:mm:ss"),
-                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자  (yyyy-MM-dd'T'HH:mm:ss"),
-                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자  (yyyy-MM-dd'T'HH:mm:ss").optional(),
+                        fieldWithPath("data.content.[].productCreatedAt").type(JsonFieldType.STRING).description("생성일자 (yyyy-MM-dd'T'HH:mm:ss)"),
+                        fieldWithPath("data.content.[].productUpdatedAt").type(JsonFieldType.STRING).description("수정일자 (yyyy-MM-dd'T'HH:mm:ss)"),
+                        fieldWithPath("data.content.[].productDeletedAt").description("삭제일자 (yyyy-MM-dd'T'HH:mm:ss)").optional(),
                         fieldWithPath("data.content.[].productIsDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
                         fieldWithPath("data.pageable").type(JsonFieldType.OBJECT).description("페이징 변수"),
                         fieldWithPath("data.pageable.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
