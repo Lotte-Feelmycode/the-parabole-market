@@ -42,10 +42,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request.setAttribute("imageUrl", claims.get("imageUrl", String.class));
                 request.setAttribute("role", claims.get("role", String.class));
                 if (claims.get("role", String.class).equals("ROLE_SELLER")) {
-                    request.setAttribute("sellerId", Long.class);
-                    request.setAttribute("sellerStorename", String.class);
+                    request.setAttribute("sellerId", claims.get("sellerId", Long.class));
+                    request.setAttribute("sellerStorename", claims.get("sellerStorename", String.class));
                 }
-                request.setAttribute("authProvider", String.class);
+                request.setAttribute("authProvider", claims.get("authProvider", String.class));
+
 
             }
         } catch (Exception ex) {
