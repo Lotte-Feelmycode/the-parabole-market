@@ -51,7 +51,7 @@ public class CouponService {
             .orElseThrow(() -> new NoDataException());
 
         Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
-            dto.getExpiresAt(), dto.getMaxDiscountAmount(), dto.getMinPaymentAmount(), dto.getDetail(), dto.getCnt());
+            dto.getExpiresAt(), dto.getDetail(), dto.getCnt());
 
         couponRepository.save(coupon);
 
