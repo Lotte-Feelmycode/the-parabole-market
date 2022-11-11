@@ -183,8 +183,8 @@ public class ProductControllerTest {
     @Test
     @DisplayName("상품 생성")
     public void createProduct() {
-        ProductRequestDto p = new ProductRequestDto(1L, "테스트", 30L, 500L, "테스트", "img.jpg");
-        Long productId = productService.saveProduct(p);
+        ProductRequestDto p = new ProductRequestDto("테스트", 30L, 500L, "테스트", "img.jpg");
+        Long productId = productService.saveProduct(1L, p);
 
         JSONObject request = new JSONObject();
         request.put("userId", 1);

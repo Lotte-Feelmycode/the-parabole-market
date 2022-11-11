@@ -205,7 +205,7 @@ public class OrderInfoControllerTest {
     @Test
     @DisplayName("상세 주문 수정")
     public void updateOrderInfo() {
-        OrderInfoRequestDto dto = new OrderInfoRequestDto(3L, 1L, "BEFORE_PAY");
+        OrderInfoRequestDto dto = new OrderInfoRequestDto(1L, "BEFORE_PAY");
 
         JSONObject request = new JSONObject();
 

@@ -199,7 +199,7 @@ public class CartControllerTest {
     public void test04_deleteProductInCart() {
 
         // Given
-        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
+        cartItemService.addItem(3L, new CartAddItemRequestDto(3L, 3));
         Long cartItemId = cartItemRepository.findByCartIdAndProductId(3L, 3L).get().getId();
 
         // When
@@ -238,7 +238,7 @@ public class CartControllerTest {
     public void test03_updateProductCnt() {
 
         // Given
-        cartItemService.addItem(new CartAddItemRequestDto(3L, 3L, 3));
+        cartItemService.addItem(3L, new CartAddItemRequestDto(3L, 3));
         JSONObject request = new JSONObject();
         request.put("cartItemId", cartItemRepository.findByCartIdAndProductId(3L,
             3L).get().getId());
