@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Order extends BaseEntity {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
@@ -83,11 +84,11 @@ public class Order extends BaseEntity {
     // TODO: enum으로 처리하기
     @NotNull
     @Column(name = "order_state")
-    private Integer state;
+    private OrderState state;
 
     @NotNull
     @Column(name = "order_pay_state")
-    private Integer payState;
+    private OrderPayState payState;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
@@ -96,12 +97,16 @@ public class Order extends BaseEntity {
             .sum();
     }
 
+    public void setPayState(String payState) {
+        this.payState = OrderPayState.returnValueByName(payState);
+    }
+
     public void setState(String state) {
-        this.state = OrderState.returnValueByName(state).getValue();
+        this.state = OrderState.returnValueByName(state);
     }
 
     public void setState(Integer value) {
-        this.state = value;
+        this.state = OrderState.returnNameByValue(value);
     }
 
     private void setDeliveryFee(Long orderDeliveryFee) {
@@ -115,8 +120,8 @@ public class Order extends BaseEntity {
         this.addressSimple = "";
         this.addressDetail = "";
         this.deliveryComment = "";
-        this.state = -99;
-        this.payState = -99;
+        this.state = OrderState.ERROR;
+        this.payState = OrderPayState.ERROR;
         this.setState(-1);
     }
 
@@ -129,7 +134,7 @@ public class Order extends BaseEntity {
         this.addressSimple = deliveryDto.getAddressSimple();
         this.addressDetail = deliveryDto.getAddressDetail();
         this.deliveryComment = deliveryDto.getDeliveryComment();
-        this.payState = OrderPayState.returnValueByName(deliveryDto.getOrderPayState());
+        this.payState = deliveryDto.getOrderPayState();
         return this;
     }
 

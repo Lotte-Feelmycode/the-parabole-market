@@ -14,11 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -33,13 +32,13 @@ public class OrderController {
 
     // 결제처리
     @PostMapping
-    public ResponseEntity<ParaboleResponse> updateOrder(@RequestBody OrderRequestDto orderUpdateRequestDto) {
-        updateService.updateOrderState(orderUpdateRequestDto);
+    public ResponseEntity<ParaboleResponse> updateOrder(@RequestAttribute("userId") Long userId, @RequestBody OrderRequestDto orderUpdateRequestDto) {
+        updateService.updateOrderState(userId, orderUpdateRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 결제 완료");
     }
 
     @GetMapping
-    public ResponseEntity<ParaboleResponse> getOrderList(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getOrderList(@RequestAttribute("userId") Long userId) {
         List<Order> orderList = orderService.getOrderList(userId);
         List<OrderInfoResponseDto> orderInfoResponseDtoList = orderInfoService.getOrderInfoListByUserId(orderList);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "모든 주문 정보 호출", orderInfoResponseDtoList);

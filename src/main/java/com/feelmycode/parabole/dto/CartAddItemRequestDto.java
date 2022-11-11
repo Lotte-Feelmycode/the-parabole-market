@@ -9,26 +9,14 @@ import lombok.NoArgsConstructor;
 public class CartAddItemRequestDto {
 
     @NotNull
-    private Long userId;
-
-    @NotNull
     private Long productId;
 
     @NotNull
     private Integer cnt;
 
-    public CartAddItemRequestDto(Long productId, Long userId, Integer cnt) {
+    public CartAddItemRequestDto(Long productId, Integer cnt) {
         this.productId = productId;
-        this.userId = userId;
         this.cnt = cnt;
     }
 
-    @Override
-    public String toString() {
-        return "CartAddItemRequestDto{" +
-            "userId=" + userId +
-            ", productId=" + productId +
-            ", cnt=" + cnt +
-            '}';
-    }
 }

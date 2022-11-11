@@ -20,9 +20,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -41,13 +41,13 @@ public class OrderInfoController {
     // TODO: order paging
     // TODO: userCoupon 정보 가져오기
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestBody OrderInfoListDto orderInfoListDto) {
+    public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestAttribute("userId") Long userId, @RequestBody OrderInfoListDto orderInfoListDto) {
         try {
-            orderService.checkOrderState(orderInfoListDto.getUserId());
-            orderService.createOrder(new Order(userService.getUser(orderInfoListDto.getUserId()), DELIVERY_FEE));
+            orderService.checkOrderState(userId);
+            orderService.createOrder(new Order(userService.getUser(userId), DELIVERY_FEE));
 
             for (OrderInfoSimpleDto orderInfo : orderInfoListDto.getOrderInfoDto()) {
-                orderInfoService.saveOrderInfo(orderInfoListDto.getUserId(), orderInfo);
+                orderInfoService.saveOrderInfo(userId, orderInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,21 +57,21 @@ public class OrderInfoController {
     }
 
     @GetMapping
-    public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getOrderInfoList(@RequestAttribute("userId") Long userId) {
         OrderResponseDto orderResponseDto = orderInfoService.getOrderInfoGroupBySellerIdOrderByIdDesc(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "주문 정보 목록 조회", orderResponseDto);
     }
 
     @GetMapping("/seller")
-    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestParam Long userId) {
+    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestAttribute("userId") Long userId) {
         log.info("Seller Id: {} ", userId);
         List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회",orderInfoList);
     }
 
     @PatchMapping
-    public ResponseEntity<ParaboleResponse> updateOrderInfo(@RequestBody OrderInfoRequestDto orderInfoRequestDto) {
-        updateService.updateOrderInfoState(orderInfoRequestDto);
+    public ResponseEntity<ParaboleResponse> updateOrderInfo(@RequestAttribute("userId") Long userId, @RequestBody OrderInfoRequestDto orderInfoRequestDto) {
+        updateService.updateOrderInfoState(userId, orderInfoRequestDto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자의 상세 주문 배송 정보 수정");
     }
 

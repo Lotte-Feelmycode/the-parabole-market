@@ -16,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,8 +74,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ParaboleResponse> createProduct(@RequestBody ProductRequestDto product) {
-        Long productId = productService.saveProduct(product);
+    public ResponseEntity<ParaboleResponse> createProduct(@RequestAttribute("userId") Long userId, @RequestBody ProductRequestDto product) {
+        Long productId = productService.saveProduct(userId, product);
         return ParaboleResponse.CommonResponse(HttpStatus.CREATED, true, "상품 생성", productId);
     }
 
@@ -85,7 +86,7 @@ public class ProductController {
     }
 
     @GetMapping("/seller/list")
-    public ResponseEntity<ParaboleResponse> getProductBySellerId(@RequestParam Long userId, @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+    public ResponseEntity<ParaboleResponse> getProductBySellerId(@RequestAttribute Long userId, @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
         log.info("Get Product By Seller Id : {} ", userId);
         Page<ProductDto> response = productService.getProductList(userId, "", "", "", pageable);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);

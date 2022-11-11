@@ -23,28 +23,11 @@ public enum OrderPayState {
     private final String state;
     private final Integer value;
 
-    public static Integer returnValueByName(String state) {
+    public static OrderPayState returnValueByName(String state) {
         return Arrays.stream(values())
             .filter(orderPayState -> orderPayState.state.equals(state))
-            .map(orderPayState -> orderPayState.value)
-            .findFirst()
-            .orElse(-99);
-
-//        for (OrderPayState value : values()) {
-//            if (value.state.equals(state)) {
-//                return value.value;
-//            }
-//        }
-//        return -99;
-    }
-
-    // TODO: Stream으로 구현하기
-    public static String returnNameByValue(Integer value) {
-        return Arrays.stream(values())
-            .filter(orderPayState -> orderPayState.value.toString().equals(value.toString()))
-            .map(orderPayState -> orderPayState.state)
-            .findFirst()
-            .orElse("ERROR");
+            .findAny()
+            .orElse(ERROR);
     }
 
 }

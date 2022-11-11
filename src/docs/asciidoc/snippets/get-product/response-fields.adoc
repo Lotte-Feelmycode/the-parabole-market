@@ -59,11 +59,11 @@
 
 |`+data.product.productCreatedAt+`
 |`+String+`
-|상품의 생성 일자  (yyyy-MM-dd'T'HH:mm:ss
+|상품의 생성 일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.product.productUpdatedAt+`
 |`+String+`
-|상품의 수정 일자  (yyyy-MM-dd'T'HH:mm:ss
+|상품의 수정 일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.product.productDeletedAt+`
 |`+Null+`

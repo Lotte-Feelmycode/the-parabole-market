@@ -8,17 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductRequestDto {
 
-    private Long userId;
     private String productName;
     private Long productRemains;
     private Long productPrice;
     private String productCategory;
     private String productThumbnailImg;
 
-    public ProductRequestDto(Long userId, String productName, Long productRemains,
+    public ProductRequestDto(String productName, Long productRemains,
         Long productPrice,
         String productCategory, String productThumbnailImg) {
-        this.userId = userId;
         this.productName = productName;
         this.productRemains = productRemains;
         this.productPrice = productPrice;
