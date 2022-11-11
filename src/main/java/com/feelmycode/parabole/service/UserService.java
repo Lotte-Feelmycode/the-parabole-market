@@ -204,7 +204,7 @@ public class UserService {
                 .authProvider("Google")
                 .role("ROLE_USER").build();
 
-            userRepository.save(user);
+            cartService.createCart(userRepository.save(user).getId());
         }
         String userToken =  jwtUtils.generateToken(user);
         log.info(" >>>>>>>>>>>> Generated Custom Jwt token {}", userToken);
@@ -300,7 +300,7 @@ public class UserService {
                 .phone(profile.getResponse().getMobile())
                 .role("ROLE_USER").build();
 
-            userRepository.save(user);
+            cartService.createCart(userRepository.save(user).getId());
         }
         String userToken =  jwtUtils.generateToken(user);
 
@@ -392,7 +392,7 @@ public class UserService {
                 .authProvider("Kakao")
                 .role("ROLE_USER").build();
 
-            userRepository.save(user);
+            cartService.createCart(userRepository.save(user).getId());
         }
         String userToken =  jwtUtils.generateToken(user);
 
