@@ -49,7 +49,7 @@ public class CouponController {
     private final static int DEFAULT_PAGE = 0;
     private final static int DEFAULT_SIZE = 20;
 
-    @PostMapping("/create")
+    @PostMapping("/new")
     public ResponseEntity<ParaboleResponse> addCoupon(@RequestAttribute Long sellerId,
                                     @RequestBody CouponCreateRequestDto dto) {
 
