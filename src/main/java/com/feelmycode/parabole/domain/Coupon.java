@@ -132,10 +132,14 @@ public class Coupon extends BaseEntity implements Serializable {
     }
 
     public void setCouponForEvent(Integer inputStock) {
-        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setEventEnrolled);
+        userCoupons.stream().limit(inputStock)
+            .filter(userCoupon -> userCoupon.getUseState().equals(CouponUseState.NotUsed))
+            .forEach(UserCoupon::setEventEnrolled);
     }
 
     public void cancelCouponEvent(Integer inputStock) {
-        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setNotUsed);
+        userCoupons.stream().limit(inputStock)
+            .filter(userCoupon -> userCoupon.getUseState().equals(CouponUseState.EventEnrolled))
+            .forEach(UserCoupon::setNotUsed);
     }
 }
