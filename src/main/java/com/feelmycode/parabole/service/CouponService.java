@@ -72,6 +72,22 @@ public class CouponService {
 //        userCoupon.setUser(user);
 //    }
 
+    @Transactional
+    public Boolean setCouponStock(Long couponId, Integer stock) {
+        Coupon getCoupon = this.getCouponById(couponId);
+        try {
+            if (stock < 0) {
+                getCoupon.setCouponForEvent(stock * -1);
+            } else {
+                getCoupon.cancelCouponEvent(stock);
+            }
+            couponRepository.save(getCoupon);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return true;
+    }
+
     public Coupon getCouponById(Long couponId) {
         return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());
     }

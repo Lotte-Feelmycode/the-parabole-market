@@ -12,6 +12,7 @@ import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
+import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.global.api.ParaboleResponse;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -30,6 +31,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +57,7 @@ public class CouponController {
 
     @PostMapping("/create")
     public ResponseEntity<ParaboleResponse> addCoupon(@RequestAttribute Long userId,
-                                    @RequestBody CouponCreateRequestDto dto) {
+        @RequestBody CouponCreateRequestDto dto) {
 
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
         CouponCreateResponseDto response = couponService.addCoupon(userId, dto);
@@ -100,7 +103,8 @@ public class CouponController {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponListBySellerId(sellerId);
+        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponListBySellerId(
+            sellerId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "셀러 쿠폰 목록", sellerCouponList);
     }
@@ -120,13 +124,14 @@ public class CouponController {
 
         Pageable getPageable = PageRequest.of(DEFAULT_PAGE, DEFAULT_SIZE);
 
-        if(userService.isSeller(userId)){
+        if (userService.isSeller(userId)) {
             Page<CouponUserResponseDto> userCouponList = couponService.getUserCouponList(userId);
             return ParaboleResponse.CommonResponse(HttpStatus.OK,
                 true, "유저 쿠폰 목록", userCouponList);
         }
         Seller seller = sellerService.getSellerByUserId(userId);
-        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponList(seller.getId());
+        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponList(
+            seller.getId());
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
             true, "셀러 쿠폰 목록", sellerCouponList);
     }
@@ -140,9 +145,11 @@ public class CouponController {
     }
 
     @GetMapping("/data")
-    public CouponDto getCouponData(@RequestParam Long couponId){
+    public CouponDto getCouponData(@RequestParam Long couponId) {
         Coupon coupon = couponService.getCouponById(couponId);
-        CouponDto couponDto = new CouponDto(coupon.getId(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt());
+        CouponDto couponDto = new CouponDto(coupon.getId(), coupon.getName(),
+            CouponType.returnNameByValue(coupon.getType().getValue()), coupon.getDetail(),
+            coupon.getDiscountValue(), coupon.getExpiresAt());
         return couponDto;
     }
 
@@ -152,5 +159,12 @@ public class CouponController {
 
         couponService.useUserCoupon(dto.getCouponSNo(), userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
+    }
+
+    @PatchMapping("/{couponId}/stock/{stock}")
+    public Boolean setProductRemains(@PathVariable("couponId") Long couponId,
+        @PathVariable("stock") Integer stock) {
+        log.info("Set Coupon Remains By Event Server : {} ", couponId);
+        return couponService.setCouponStock(couponId, stock);
     }
 }
