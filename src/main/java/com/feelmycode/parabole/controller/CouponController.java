@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.controller;
 
 import com.feelmycode.parabole.domain.Coupon;
+import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.domain.UserCoupon;
 import com.feelmycode.parabole.dto.CouponAssignRequestDto;
