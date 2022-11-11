@@ -24,8 +24,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,11 +50,11 @@ public class CouponController {
     private final static int DEFAULT_SIZE = 20;
 
     @PostMapping("/create")
-    public ResponseEntity<ParaboleResponse> addCoupon(@RequestAttribute Long userId,
+    public ResponseEntity<ParaboleResponse> addCoupon(@RequestAttribute Long sellerId,
                                     @RequestBody CouponCreateRequestDto dto) {
 
         /** addCoupon, addUserCoupon 이 모두 발생한다. */
-        CouponCreateResponseDto response = couponService.addCoupon(userId, dto);
+        CouponCreateResponseDto response = couponService.addCoupon(sellerId, dto);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰 등록 성공", response);
     }
 
