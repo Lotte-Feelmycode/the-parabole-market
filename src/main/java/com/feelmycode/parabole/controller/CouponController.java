@@ -106,6 +106,15 @@ public class CouponController {
             true, "셀러 쿠폰 목록", sellerCouponList);
     }
 
+    @GetMapping("/store")
+    public ResponseEntity<ParaboleResponse> getSellerCouponListNoAuth(@RequestParam Long sellerId) {
+
+        Page<CouponSellerResponseDto> sellerCouponList = couponService.getSellerCouponListBySellerId(sellerId);
+
+        return ParaboleResponse.CommonResponse(HttpStatus.OK,
+            true, "셀러 쿠폰 목록", sellerCouponList);
+    }
+
     @GetMapping("/user/list")
     public ResponseEntity<ParaboleResponse> getUserCouponList(@RequestAttribute Long userId) {
 
