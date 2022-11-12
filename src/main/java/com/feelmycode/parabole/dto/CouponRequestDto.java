@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 public class CouponRequestDto {
 
     private Long sellerId;
-    private Long totalFee;
+    private Integer totalFee;
 
-    public CouponRequestDto(Long sellerId, Long totalFee) {
+    public CouponRequestDto(Long sellerId, Integer totalFee) {
         this.sellerId = sellerId;
         this.totalFee = totalFee;
     }

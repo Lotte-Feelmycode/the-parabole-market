@@ -155,7 +155,7 @@ public class CouponService {
     public List<CouponInfoDto> getCouponListByDiscountValue(Long userId, CouponRequestDto couponRequestDto) {
 
         Long sellerId = couponRequestDto.getSellerId();
-        Long totalFee = couponRequestDto.getTotalFee();
+        Integer totalFee = couponRequestDto.getTotalFee();
 
         List<UserCoupon> couponList = userCouponRepository.findAllByUserId(userId);
 
@@ -166,8 +166,8 @@ public class CouponService {
         Collections.sort(getCouponListBySellerId, new Comparator<UserCoupon>() {
             @Override
             public int compare(UserCoupon coupon1, UserCoupon coupon2) {
-                Long discountO1 = discountValue(coupon1, totalFee);
-                Long discountO2 = discountValue(coupon2, totalFee);
+                Integer discountO1 = discountValue(coupon1, totalFee);
+                Integer discountO2 = discountValue(coupon2, totalFee);
                 return -Long.compare(discountO1, discountO2);
             }
         });
@@ -180,88 +180,17 @@ public class CouponService {
         return couponListDto;
     }
 
-    public Long discountValue(UserCoupon userCoupon, Long value) {
+    public Integer discountValue(UserCoupon userCoupon, Integer value) {
         Coupon coupon = userCoupon.getCoupon();
         CouponType type = coupon.getType();
         if(type == CouponType.RATE) {
-            return (value *= 100-coupon.getDiscountValue())/100;
+            return (value *= coupon.getDiscountValue())/100;
         }
-        return value -= coupon.getDiscountValue();
-    }
-
-    // userId를 기준으로 쿠폰들을 묶음
-    public HashMap<Long, CouponResponseDto> getCouponMapByUserId(Long userId) {
-
-        Comparator<UserCoupon> coupon = (c1, c2) -> {
-            if (c1.getCoupon().getType() == c2.getCoupon().getType()) {
-                return -Integer.compare(c1.getCoupon().getDiscountValue(),
-                    c2.getCoupon().getDiscountValue());
-            }
-            return 1;
-        };
-
-        List<UserCoupon> couponInfoList = userCouponRepository.findAllByUserId(userId)
-            .stream()
-            .filter(userCoupon -> userCoupon.getUseState() == CouponUseState.NotUsed)
-            .sorted(Comparator.comparing(userCoupon -> userCoupon.getCoupon().getType()))
-            .sorted(coupon)
-            .collect(Collectors.toList());
-
-        HashMap<Long, CouponResponseDto> couponMap = new HashMap<>();
-
-        for (UserCoupon userCoupon : couponInfoList) {
-
-            Long sellerId = userCoupon.getCoupon().getSeller().getId();
-            Coupon couponInfo = userCoupon.getCoupon();
-
-            CouponResponseDto response = null;
-            if(couponMap.containsKey(sellerId)) {
-                response = couponMap.get(sellerId);
-            } else {
-                response = new CouponResponseDto();
-            }
-
-            if (couponInfo.getType() == CouponType.RATE) {            // RATE TYPE
-                List<CouponInfoDto> rateCoupon = response.getRateCoupon();
-                rateCoupon.add(new CouponInfoDto(
-                    couponInfo.getName(),
-                    userCoupon.getSerialNo(),
-                    couponInfo.getSeller().getStoreName(),
-                    couponInfo.getType().getName(),
-                    couponInfo.getDiscountValue(),
-                    0L
-                ));
-
-                couponMap.put(sellerId, response.setRateCoupon(rateCoupon));
-            }
-            else if(couponInfo.getType() == CouponType.AMOUNT){            // AMOUNT TYPE
-                List<CouponInfoDto> amountCoupon = response.getAmountCoupon();
-                amountCoupon.add(new CouponInfoDto(
-                    couponInfo.getName(),
-                    userCoupon.getSerialNo(),
-                    couponInfo.getSeller().getStoreName(),
-                    couponInfo.getType().getName(),
-                    couponInfo.getDiscountValue(),
-                    0L
-                ));
-
-                couponMap.put(sellerId, response.setAmountCoupon(amountCoupon));
-            }
-            else {
-                log.info("잘못된 쿠폰 정보가 저장되어있습니다. userCoupon_id : {} / CouponType : {}", userCoupon.getId(), userCoupon.getCoupon().getType());
-                throw new ParaboleException(HttpStatus.NOT_FOUND, "잘못된 쿠폰 정보가 저장되어있습니다.");
-            }
-        }
-
-        if (couponMap.isEmpty()) {
-            return new HashMap<>();
-        }
-        return couponMap;
+        return coupon.getDiscountValue();
     }
 
     @Transactional
     public void useUserCoupon(String couponSNo, Long userId) {
-
         UserCoupon userCoupon = userCouponRepository.findBySerialNo(couponSNo);
         if (userCoupon == null) {
             throw new ParaboleException(HttpStatus.NOT_FOUND,

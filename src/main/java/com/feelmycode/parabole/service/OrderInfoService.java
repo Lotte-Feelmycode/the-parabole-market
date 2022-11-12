@@ -16,6 +16,7 @@ import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -175,6 +176,14 @@ public class OrderInfoService {
             responseDto.setProductRemain(getProduct.getRemains());
             orderInfoResponseDtoList.add(responseDto);
         }
+
+        Collections.sort(orderInfoResponseDtoList, new Comparator<OrderInfoResponseDto>() {
+            @Override
+            public int compare(OrderInfoResponseDto o1, OrderInfoResponseDto o2) {
+                return -Long.compare(o1.getId(), o2.getId());
+            }
+        });
+
         return orderInfoResponseDtoList;
     }
 

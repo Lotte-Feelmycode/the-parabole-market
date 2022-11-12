@@ -10,9 +10,9 @@ public class CouponInfoDto {
     private String storeName;
     private String type;
     private Integer discountValue;
-    private Long totalFee;
+    private Integer totalFee;
 
-    public CouponInfoDto(String couponName, String serialNo, String storeName, String type, Integer discountValue, Long totalFee) {
+    public CouponInfoDto(String couponName, String serialNo, String storeName, String type, Integer discountValue, Integer totalFee) {
         this.couponName = couponName;
         this.serialNo = serialNo;
         this.storeName = storeName;
