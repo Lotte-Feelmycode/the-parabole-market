@@ -10,13 +10,15 @@ public class CouponInfoDto {
     private String storeName;
     private String type;
     private Integer discountValue;
+    private Long totalFee;
 
-    public CouponInfoDto(String couponName, String serialNo, String storeName, String type, Integer discountValue) {
+    public CouponInfoDto(String couponName, String serialNo, String storeName, String type, Integer discountValue, Long totalFee) {
         this.couponName = couponName;
         this.serialNo = serialNo;
         this.storeName = storeName;
         this.type = type;
         this.discountValue = discountValue;
+        this.totalFee = totalFee;
     }
 
 }

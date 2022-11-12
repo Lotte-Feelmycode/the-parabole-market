@@ -151,27 +151,16 @@ public class OrderInfoService {
             getOrderInfoList[sellerIdMap.get(sellerId)].add(dto);
         }
 
-        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
-
         List<OrderBySellerDto> orderBySellerDtoList = new ArrayList<>();
 
         HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for (Long sellerId : sellerIdMap.keySet()) {
             if (checkContainsSellerId.add(sellerId)) {
-                if (couponList.isEmpty()) {
-                    orderBySellerDtoList.add(
-                        new OrderBySellerDto(sellerId,
-                            sellerService.getSellerBySellerId(sellerId).getStoreName(),
-                            getOrderInfoList[sellerIdMap.get(sellerId)],
-                            new CouponResponseDto()));
-                } else {
-                    orderBySellerDtoList.add(
-                        new OrderBySellerDto(sellerId,
-                            sellerService.getSellerBySellerId(sellerId).getStoreName(),
-                            getOrderInfoList[sellerIdMap.get(sellerId)],
-                            couponList.get(sellerId)));
-                }
+                orderBySellerDtoList.add(
+                    new OrderBySellerDto(sellerId,
+                        sellerService.getSellerBySellerId(sellerId).getStoreName(),
+                        getOrderInfoList[sellerIdMap.get(sellerId)]));
             }
         }
         return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);

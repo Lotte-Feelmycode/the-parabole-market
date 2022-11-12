@@ -8,6 +8,7 @@ import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponInfoDto;
 import com.feelmycode.parabole.dto.CouponInfoResponseDto;
+import com.feelmycode.parabole.dto.CouponRequestDto;
 import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
@@ -23,6 +24,7 @@ import com.feelmycode.parabole.repository.UserRepository;
 import com.sun.istack.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -150,6 +152,44 @@ public class CouponService {
         return new CouponInfoResponseDto(coupon.getType().getName(), coupon.getDiscountValue());
     }
 
+    public List<CouponInfoDto> getCouponListByDiscountValue(Long userId, CouponRequestDto couponRequestDto) {
+
+        Long sellerId = couponRequestDto.getSellerId();
+        Long totalFee = couponRequestDto.getTotalFee();
+
+        List<UserCoupon> couponList = userCouponRepository.findAllByUserId(userId);
+
+        List<UserCoupon> getCouponListBySellerId = couponList.stream()
+            .filter(coupon -> coupon.getCoupon().getSeller().getId() == sellerId)
+            .collect(Collectors.toList());
+
+        Collections.sort(getCouponListBySellerId, new Comparator<UserCoupon>() {
+            @Override
+            public int compare(UserCoupon coupon1, UserCoupon coupon2) {
+                Long discountO1 = discountValue(coupon1, totalFee);
+                Long discountO2 = discountValue(coupon2, totalFee);
+                return -Long.compare(discountO1, discountO2);
+            }
+        });
+
+        List<CouponInfoDto> couponListDto = getCouponListBySellerId.stream()
+            .map(coupon -> new CouponInfoDto(coupon.getCoupon().getName(), coupon.getSerialNo(),
+                coupon.getCoupon().getSeller().getStoreName(), coupon.getCoupon().getType().getName(), coupon.getCoupon().getDiscountValue(), discountValue(coupon, totalFee)))
+            .collect(Collectors.toList());
+
+        return couponListDto;
+    }
+
+    public Long discountValue(UserCoupon userCoupon, Long value) {
+        Coupon coupon = userCoupon.getCoupon();
+        CouponType type = coupon.getType();
+        if(type == CouponType.RATE) {
+            return (value *= 100-coupon.getDiscountValue())/100;
+        }
+        return value -= coupon.getDiscountValue();
+    }
+
+    // userId를 기준으로 쿠폰들을 묶음
     public HashMap<Long, CouponResponseDto> getCouponMapByUserId(Long userId) {
 
         Comparator<UserCoupon> coupon = (c1, c2) -> {
@@ -188,7 +228,8 @@ public class CouponService {
                     userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
-                    couponInfo.getDiscountValue()
+                    couponInfo.getDiscountValue(),
+                    0L
                 ));
 
                 couponMap.put(sellerId, response.setRateCoupon(rateCoupon));
@@ -200,7 +241,8 @@ public class CouponService {
                     userCoupon.getSerialNo(),
                     couponInfo.getSeller().getStoreName(),
                     couponInfo.getType().getName(),
-                    couponInfo.getDiscountValue()
+                    couponInfo.getDiscountValue(),
+                    0L
                 ));
 
                 couponMap.put(sellerId, response.setAmountCoupon(amountCoupon));
