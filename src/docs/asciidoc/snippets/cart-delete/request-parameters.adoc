@@ -1,9 +1,6 @@
 |===
 |Parameter|Description
 
-|`+userId+`
-|사용자 아이디
-
 |`+cartItemId+`
 |장바구니 상품 아이디
 
