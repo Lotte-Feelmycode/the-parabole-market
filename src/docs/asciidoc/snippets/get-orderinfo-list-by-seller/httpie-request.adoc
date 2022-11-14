@@ -1,6 +1,7 @@
 [source,bash]
 ----
-$ http GET 'https://parabole.com:54870/api/v1/orderinfo/seller?userId=1' \
+$ http GET 'https://parabole.com:50973/api/v1/orderinfo/seller' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwicGhvbmUiOiIwMTA1Nzc4NTAyMyIsIm5pY2tuYW1lIjoidGVzdCIsInVzZXJJZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNjY4Mzg2OTk1LCJleHAiOjE2Njg0NzMzOTV9.XeU2dMQGTcbuIclfNABC32HinKP-b0EDwa0RoCU2KEM' \
     'Content-Type:application/json'
 ----

@@ -117,13 +117,12 @@ public class OrderInfoService {
 
         Long cnt = 0L;
 
-        Order order = orderService.getOrder(userId);
+        List<OrderInfo> orderInfoList = orderInfoRepository.findAllBySellerId(userId);
 
-        if(order == null)
+        if(orderInfoList == null || orderInfoList.isEmpty())
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문 내역이 없습니다.");
 
-        List<OrderInfo> orderInfoList = getOrderInfoListByOrderId(order.getId())
-            .stream()
+        orderInfoList.stream()
             .sorted(Comparator.comparing(OrderInfo::getProductId).reversed())
             .toList();
 
@@ -164,7 +163,7 @@ public class OrderInfoService {
                         getOrderInfoList[sellerIdMap.get(sellerId)]));
             }
         }
-        return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);
+        return new OrderResponseDto(0L, cnt, orderBySellerDtoList);
     }
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {

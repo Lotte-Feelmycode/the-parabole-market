@@ -1,10 +1,6 @@
 |===
 |Path|Type|Description
 
-|`+userId+`
-|`+Number+`
-|사용자 ID
-
 |`+orderInfoDto+`
 |`+Array+`
 |주문 목록 리스트

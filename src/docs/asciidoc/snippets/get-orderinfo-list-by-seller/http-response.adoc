@@ -4,42 +4,70 @@ HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 07 Nov 2022 03:39:07 GMT
+Date: Mon, 14 Nov 2022 00:49:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1091
+Content-Length: 1966
 
 {
   "success" : true,
   "message" : "판매자의 상품 주문 정보 목록 조회",
   "data" : [ {
-    "id" : 143,
-    "state" : "BEFORE_ORDER",
-    "userId" : 3,
-    "userEmail" : "para@bole.com",
-    "productId" : 7,
-    "productName" : "막국수",
-    "productCnt" : 1,
-    "productRemain" : 19984,
-    "productPrice" : 7000,
-    "productDiscountPrice" : null,
-    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
-    "updatedAt" : "2022-10-27T15:59:23"
+    "id" : 4,
+    "state" : "PAY_COMPLETE",
+    "userEmail" : "skyblue5023@naver.com",
+    "productId" : 4,
+    "productName" : "머리국밥",
+    "productCnt" : 3,
+    "productRemain" : 2000,
+    "productPrice" : 24000,
+    "productDiscountPrice" : 22000,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v150049/LM/L0/00/00/48/36/17/2_/00/1/LML000004836172_001_1.jpg/dims/resizef/554X554",
+    "updatedAt" : null
   }, {
-    "id" : 169,
-    "state" : "BEFORE_PAY",
-    "userId" : 3,
-    "userEmail" : "para@bole.com",
+    "id" : 3,
+    "state" : "PAY_COMPLETE",
+    "userEmail" : "skyblue5023@naver.com",
     "productId" : 5,
     "productName" : "비빔냉면",
-    "productCnt" : 1,
-    "productRemain" : 10,
-    "productPrice" : 5000,
-    "productDiscountPrice" : null,
+    "productCnt" : 3,
+    "productRemain" : 10000,
+    "productPrice" : 33000,
+    "productDiscountPrice" : 30000,
     "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-    "updatedAt" : "2022-11-07T12:23:32"
+    "updatedAt" : null
+  }, {
+    "id" : 2,
+    "state" : "PAY_COMPLETE",
+    "userEmail" : "skyblue5023@naver.com",
+    "productId" : 2,
+    "productName" : "돼지국밥",
+    "productCnt" : 3,
+    "productRemain" : 500,
+    "productPrice" : 24000,
+    "productDiscountPrice" : 22000,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+    "updatedAt" : null
+  }, {
+    "id" : 1,
+    "state" : "PAY_COMPLETE",
+    "userEmail" : "skyblue5023@naver.com",
+    "productId" : 1,
+    "productName" : "한우국밥",
+    "productCnt" : 3,
+    "productRemain" : 1000,
+    "productPrice" : 33000,
+    "productDiscountPrice" : 30000,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+    "updatedAt" : null
   } ]
 }
 ----
