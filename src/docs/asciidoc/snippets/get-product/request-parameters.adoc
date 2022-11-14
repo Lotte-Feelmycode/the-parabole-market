@@ -1,7 +1,0 @@
-|===
-|Parameter|Description
-
-|`+productId+`
-|상품 ID
-
-|===

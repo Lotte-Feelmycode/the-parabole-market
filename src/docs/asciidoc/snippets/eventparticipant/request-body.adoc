@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "eventId" : 2,
-  "eventPrizeId" : 1,
-  "userId" : 6
-}
-----
