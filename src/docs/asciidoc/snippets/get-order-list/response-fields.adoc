@@ -21,10 +21,6 @@
 |`+String+`
 |상품 명
 
-|`+data.[].userId+`
-|`+Number+`
-|사용자 아이디
-
 |`+data.[].userEmail+`
 |`+String+`
 |사용자 이메일
@@ -50,7 +46,7 @@
 |상품 가격
 
 |`+data.[].productDiscountPrice+`
-|`+Null+`
+|`+Number+`
 |상품 할인 가격
 
 |`+data.[].productThumbnailImg+`
@@ -59,6 +55,6 @@
 
 |`+data.[].updatedAt+`
 |`+String+`
-|주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss
+|주문 생성 일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |===

@@ -8,17 +8,17 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
-import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
+import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.JwtUtils;
 import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,6 @@ public class OrderInfoControllerTest {
 
     private RequestSpecification spec;
 
-
     @Before
     public void setUp() {
         RestAssured.port = port;
@@ -57,20 +57,32 @@ public class OrderInfoControllerTest {
             .build();
     }
 
+    private String getToken(final UserDto request) {
+        final ExtractableResponse<Response> response = given()
+            .contentType(ContentType.JSON).body(request)
+            .when()
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+        return response.body().jsonPath().get("data.token").toString();
+    }
+
     @Test
     @DisplayName("상세 주문 생성")
     public void createOrderInfo() {
+        UserDto userDto = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(userDto);
 
         OrderInfoSimpleDto dto = new OrderInfoSimpleDto(2L, 1);
         List<OrderInfoSimpleDto> orderInfoDto = new ArrayList<>();
         orderInfoDto.add(dto);
 
         JSONObject request = new JSONObject();
-        request.put("userId", 1);
         request.put("orderInfoDto", orderInfoDto);
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(request.toJSONString())
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .filter(document("create-orderinfo",
                 preprocessRequest(modifyUris()
@@ -79,7 +91,6 @@ public class OrderInfoControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
-                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
                     fieldWithPath("orderInfoDto").type(JsonFieldType.ARRAY).description("주문 목록 리스트"),
                     fieldWithPath("orderInfoDto.[].productId").type(JsonFieldType.NUMBER).description("주문 목록 리스트"),
                     fieldWithPath("orderInfoDto.[].productCnt").type(JsonFieldType.NUMBER).description("주문 목록 리스트")
@@ -101,9 +112,14 @@ public class OrderInfoControllerTest {
     @Test
     @DisplayName("상세 주문 목록(사용자)")
     public void getOrderInfoList() {
+
+        // given
+        UserDto userDto = UserDto.builder().email("1111").password("1111").build();
+        String token = getToken(userDto);
+
         Response resp = given(this.spec)
-            .param("userId", 3L)
             .accept(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .filter(document("get-orderinfo-list-by-user",
                 preprocessRequest(modifyUris()
@@ -111,9 +127,6 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("userId").description("사용자 ID")
-                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -126,7 +139,6 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos").type(JsonFieldType.ARRAY).description("주문한 상품 정보"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].id").type(JsonFieldType.NUMBER).description("상세 주문 ID"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state").type(JsonFieldType.STRING).description("상세 주문 상태. {\'BEFORE_PAY\': \'입금 전\', \'PAY_COMPLETE\': \'주문완료(결제)\', \'BEFORE_DELIVERY\': \'배송 준비\', \'DELIVERY\': \'배송 중\', \'DELIVERY_COMPLETE\': \'배송 완료\', \'BEFORE_ORDER\': \'주문 전\', \'ORDER_CANCEL\': \'주문 취소\', \'REFUND\': \'환불\', \'ERROR\': \'에러\'}"),
-                    fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userId").type(JsonFieldType.NUMBER).description("유저 ID"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userEmail").type(JsonFieldType.STRING).description("유저 이메일"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                     fieldWithPath("data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productName").type(JsonFieldType.STRING).description("상품 명"),
@@ -163,9 +175,14 @@ public class OrderInfoControllerTest {
     @Test
     @DisplayName("상세 주문 목록(판매자)")
     public void getOrderInfoListBySeller() {
+
+        // given
+        UserDto userDto = UserDto.builder().email("test@test.com").password("test").build();
+        String token = getToken(userDto);
+
         Response resp = given(this.spec)
-            .param("userId", 1L)
             .accept(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .filter(document("get-orderinfo-list-by-seller",
                 preprocessRequest(modifyUris()
@@ -173,16 +190,12 @@ public class OrderInfoControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
-                requestParameters(
-                    parameterWithName("userId").description("사용자 ID(판매자)")
-                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보").optional(),
                     fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("주문 상세정보 ID"),
                     fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("주문 상태, {\'BEFORE_PAY\': \'주문 확정 전\', \'PAY_COMPLETE\': \'주문 확정\', \'DELIVERY_COMPLETE\': \'모든 배송 완료\'}"),
-                    fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
                     fieldWithPath("data.[].userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
                     fieldWithPath("data.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                     fieldWithPath("data.[].productName").type(JsonFieldType.STRING).description("상품 명"),
@@ -191,7 +204,7 @@ public class OrderInfoControllerTest {
                     fieldWithPath("data.[].productPrice").type(JsonFieldType.NUMBER).description("상품 가격"),
                     fieldWithPath("data.[].productDiscountPrice").type(JsonFieldType.NUMBER).description("상품 할인 가격").optional(),
                     fieldWithPath("data.[].productThumbnailImg").type(JsonFieldType.STRING).description("상품 썸네일 이미지"),
-                    fieldWithPath("data.[].updatedAt").description("주문 수정일자 (yyyy-MM-dd'T'HH:mm:ss)")
+                    fieldWithPath("data.[].updatedAt").type(JsonFieldType.STRING).description("주문 수정일자 (yyyy-MM-dd'T'HH:mm:ss)").optional()
                 )
             ))
             .when()
@@ -205,14 +218,20 @@ public class OrderInfoControllerTest {
     @Test
     @DisplayName("상세 주문 수정")
     public void updateOrderInfo() {
-        OrderInfoRequestDto dto = new OrderInfoRequestDto(1L, "BEFORE_PAY");
+
+        // given
+        UserDto userDto = UserDto.builder().email("test@test.com").password("test").build();
+        String token = getToken(userDto);
 
         JSONObject request = new JSONObject();
+        request.put("orderInfoId", 11L);
+        request.put("orderState", "DELIVERY");
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(request.toJSONString())
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .filter(document("update-orderinfo",
                 preprocessRequest(modifyUris()
                         .scheme("https")
@@ -220,7 +239,8 @@ public class OrderInfoControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
-
+                    fieldWithPath("orderInfoId").type(JsonFieldType.NUMBER).description("주문 상세 ID"),
+                    fieldWithPath("orderState").type(JsonFieldType.STRING).description("주문 상태")
                 ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),

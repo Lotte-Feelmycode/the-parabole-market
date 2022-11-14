@@ -117,8 +117,6 @@ public class CartItemService {
             getItemList[sellerIdMap.get(key)].add(new CartItemDto(item));
         }
 
-        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
-
         List<CartBySellerDto> cartBySellerDtoList = new ArrayList<>();
 
         HashSet<Long> checkContainsSellerId = new HashSet<>();
@@ -127,24 +125,11 @@ public class CartItemService {
             Long sellerId = Long.parseLong(key.split("\\$")[0]);
             String storeName = key.split("\\$")[1];
             if(checkContainsSellerId.add(sellerId)) {
-                if(couponList.isEmpty()) {
-                    cartBySellerDtoList.add(
-                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
-                            new CouponResponseDto()));
-                } else {
-                    cartBySellerDtoList.add(
-                        new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)],
-                            couponList.get(sellerId)));
-                }
+                cartBySellerDtoList.add(
+                    new CartBySellerDto(sellerId, storeName, getItemList[sellerIdMap.get(key)]));
             }
         }
         
-        for(CartBySellerDto dto : cartBySellerDtoList){
-            if(dto.getCouponDto() == null) {
-                dto.makeNotNullResponseDto();
-            }
-        }
-
         return new CartResponseDto(cart.getId(), cnt, cartBySellerDtoList);
     }
 

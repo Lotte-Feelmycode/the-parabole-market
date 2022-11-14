@@ -21,10 +21,6 @@
 |`+String+`
 |주문 상태, {'BEFORE_PAY': '주문 확정 전', 'PAY_COMPLETE': '주문 확정', 'DELIVERY_COMPLETE': '모든 배송 완료'}
 
-|`+data.[].userId+`
-|`+Number+`
-|사용자 ID
-
 |`+data.[].userEmail+`
 |`+String+`
 |사용자 이메일
@@ -59,6 +55,6 @@
 
 |`+data.[].updatedAt+`
 |`+String+`
-|주문 수정일자
+|주문 수정일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |===

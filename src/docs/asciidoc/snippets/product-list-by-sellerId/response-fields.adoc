@@ -62,7 +62,7 @@
 |수정일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.content.[].productDeletedAt+`
-|`+Null+`
+|`+String+`
 |삭제일자 (yyyy-MM-dd'T'HH:mm:ss)
 
 |`+data.content.[].productIsDeleted+`

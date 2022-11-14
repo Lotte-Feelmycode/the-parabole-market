@@ -3,7 +3,6 @@
 {
   "productThumbnailImg" : "img.jpg",
   "productRemains" : 30,
-  "userId" : 1,
   "productName" : "테스트",
   "productPrice" : 500,
   "productCategory" : "테스트"

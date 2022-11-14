@@ -17,9 +17,6 @@ endif::[]
 
 include::{resource-dir}/get-order-list/http-request.adoc[]
 
-`*Fields*`
-include::{resource-dir}/get-order-list/request-parameters.adoc[]
-
 `*Response*`
 
 include::{resource-dir}/get-order-list/http-response.adoc[]
@@ -72,10 +69,6 @@ include::{resource-dir}/create-orderinfo/response-fields.adoc[]
 
 include::{resource-dir}/get-orderinfo-list-by-user/http-request.adoc[]
 
-`*Request*`
-
-include::{resource-dir}/get-orderinfo-list-by-user/request-parameters.adoc[]
-
 `*Response*`
 
 include::{resource-dir}/get-orderinfo-list-by-user/http-response.adoc[]
@@ -89,10 +82,6 @@ include::{resource-dir}/get-orderinfo-list-by-user/response-fields.adoc[]
 `*Request*`
 
 include::{resource-dir}/get-orderinfo-list-by-seller/http-request.adoc[]
-
-`*Request*`
-
-include::{resource-dir}/get-orderinfo-list-by-seller/request-parameters.adoc[]
 
 `*Response*`
 

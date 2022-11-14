@@ -1,6 +1,7 @@
 package com.feelmycode.parabole.service;
 
 import com.feelmycode.parabole.domain.Order;
+import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.repository.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,12 @@ public class OrderService {
             .collect(Collectors.toList());
         return orderList;
     }
+
+    public Order getOrderByOrderId(Long orderId) {
+        return orderRepository.findById(orderId)
+            .orElseThrow(() -> new NoDataException());
+    }
+
     @Transactional
     public Order getOrder(Long userId) {
         Order getOrder = null;

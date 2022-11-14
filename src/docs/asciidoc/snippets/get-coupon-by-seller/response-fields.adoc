@@ -1,0 +1,40 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공 여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Array+`
+|응답 정보
+
+|`+data.[].couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.[].serialNo+`
+|`+String+`
+|쿠폰 시리얼 넘버
+
+|`+data.[].storeName+`
+|`+String+`
+|판매자 스토어 이름
+
+|`+data.[].type+`
+|`+String+`
+|쿠폰 타입(RATE: 할인율, AMOUN: 할인금액)
+
+|`+data.[].discountValue+`
+|`+Number+`
+|할인 금액
+
+|`+data.[].totalFee+`
+|`+Number+`
+|할인되는 금액
+
+|===

@@ -1,4 +1,0 @@
-[source,options="nowrap"]
-----
-{"success":true,"message":"응모가 완료 되었습니다","data":null}
-----

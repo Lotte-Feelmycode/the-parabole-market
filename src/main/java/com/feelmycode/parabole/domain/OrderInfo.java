@@ -75,6 +75,10 @@ public class OrderInfo extends BaseEntity {
         this.state = OrderInfoState.returnValueByName(state);
     }
 
+    public void setState(OrderInfoState state) {
+        this.state = state;
+    }
+
     public void setUserCoupon(UserCoupon userCoupon) {
         this.userCoupon = userCoupon;
     }

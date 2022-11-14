@@ -1,10 +1,6 @@
 |===
 |Path|Type|Description
 
-|`+userId+`
-|`+Number+`
-|판매자 Id
-
 |`+productName+`
 |`+String+`
 |상품 이름

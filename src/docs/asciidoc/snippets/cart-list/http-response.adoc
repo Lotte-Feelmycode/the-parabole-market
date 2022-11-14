@@ -12,43 +12,57 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Tue, 08 Nov 2022 12:22:57 GMT
+Date: Sat, 12 Nov 2022 10:35:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1104
+Content-Length: 1738
 
 {
   "success" : true,
   "message" : "seller로 grouping한 장바구니 상품",
   "data" : {
-    "cartId" : 2,
-    "cnt" : 1,
+    "cartId" : 1,
+    "cnt" : 2,
     "cartBySellerDtoList" : [ {
       "sellerId" : 2,
       "storeName" : "u4-s2's store",
       "cartItemDtoList" : [ {
-        "cartItemId" : 7,
+        "cartItemId" : 21,
         "product" : {
           "productId" : 3,
-          "productName" : "돼지국밥",
+          "productName" : "순대국밥",
           "sellerId" : 2,
           "storeName" : "u4-s2's store",
           "productStatus" : 1,
-          "productRemains" : 500,
-          "productPrice" : 8000,
+          "productRemains" : 3000,
+          "productPrice" : 10000,
           "productCategory" : "국밥",
-          "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-          "productCreatedAt" : "2022-11-03T20:10:18",
-          "productUpdatedAt" : "2022-11-03T20:10:18",
+          "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v135732/LM/L0/00/00/44/87/51/7_/00/1/LML000004487517_001_1.jpg/dims/resizef/554X554",
+          "productCreatedAt" : "2022-11-10T21:17:08",
+          "productUpdatedAt" : "2022-11-10T21:17:08",
           "productDeletedAt" : null,
           "productIsDeleted" : false
         },
         "count" : 3
-      } ],
-      "couponDto" : {
-        "rateCoupon" : [ ],
-        "amountCoupon" : [ ]
-      }
+      }, {
+        "cartItemId" : 12,
+        "product" : {
+          "productId" : 1,
+          "productName" : "한우국밥",
+          "sellerId" : 2,
+          "storeName" : "u4-s2's store",
+          "productStatus" : 1,
+          "productRemains" : 1000,
+          "productPrice" : 10000,
+          "productCategory" : "국밥",
+          "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v160519/LO/19/58/30/24/39/_1/95/83/02/44/0/LO1958302439_1958302440_1.jpg/dims/resizef/554X554",
+          "productCreatedAt" : "2022-11-10T21:17:07",
+          "productUpdatedAt" : "2022-11-10T21:17:07",
+          "productDeletedAt" : null,
+          "productIsDeleted" : false
+        },
+        "count" : 1
+      } ]
     } ]
   }
 }

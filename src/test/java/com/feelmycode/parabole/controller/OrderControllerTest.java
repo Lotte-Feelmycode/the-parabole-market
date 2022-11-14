@@ -12,10 +12,13 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 import com.feelmycode.parabole.dto.OrderInfoRequestListDto;
+import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.JwtUtils;
 import com.feelmycode.parabole.global.util.StringUtil;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -45,6 +49,9 @@ public class OrderControllerTest {
 
     private RequestSpecification spec;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Before
     public void setUp() {
         RestAssured.port = port;
@@ -53,13 +60,25 @@ public class OrderControllerTest {
             .build();
     }
 
+    private String getToken(final UserDto request) {
+        final ExtractableResponse<Response> response = given()
+            .contentType(ContentType.JSON).body(request)
+            .when()
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+        return response.body().jsonPath().get("data.token").toString();
+    }
+
     @Test
     @DisplayName("주문 저장/결제")
     public void updateOrder() {
 
         // Given
+        UserDto userDto = UserDto.builder().email("1111").password("1111").build();
+        String token = getToken(userDto);
+
         JSONObject request = new JSONObject();
-        request.put("userId", 3);
         request.put("orderId", 1);
 
         List<Long> orderInfoIdList = new ArrayList<>();
@@ -82,6 +101,7 @@ public class OrderControllerTest {
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .body(request.toJSONString())
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .filter(document("update-order",
                 preprocessRequest(modifyUris()
@@ -90,7 +110,6 @@ public class OrderControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestFields(
-                    fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 ID"),
                     fieldWithPath("orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
                     fieldWithPath("orderInfoRequestList").type(JsonFieldType.ARRAY).description("상세주문과 적용한 쿠폰 정보"),
                     fieldWithPath("orderInfoRequestList.[].orderInfoIdList").type(JsonFieldType.ARRAY).description("상세주문 ID 리스트"),
@@ -120,10 +139,15 @@ public class OrderControllerTest {
     @Test
     @DisplayName("주문 목록")
     public void getOrderList() {
+
+        // given
+        UserDto userDto = UserDto.builder().email("1111").password("1111").build();
+        String token = getToken(userDto);
+
         Response resp = given(this.spec)
-            .param("userId", 3L)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .filter(document("get-order-list",
                 preprocessRequest(modifyUris()
                         .scheme("https")
@@ -136,7 +160,6 @@ public class OrderControllerTest {
                     fieldWithPath("data").type(JsonFieldType.ARRAY).description("주문 정보"),
                     fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("상품 아이디"),
                     fieldWithPath("data.[].state").type(JsonFieldType.STRING).description("상품 명"),
-                    fieldWithPath("data.[].userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
                     fieldWithPath("data.[].userEmail").type(JsonFieldType.STRING).description("사용자 이메일"),
                     fieldWithPath("data.[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                     fieldWithPath("data.[].productName").type(JsonFieldType.STRING).description("상품 명"),

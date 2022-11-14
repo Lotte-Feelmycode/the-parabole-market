@@ -12,35 +12,35 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 09 Nov 2022 01:14:40 GMT
+Date: Mon, 14 Nov 2022 01:02:31 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1118
+Content-Length: 2437
 
 {
   "success" : true,
   "message" : "판매자가 등록한 상품 목록",
   "data" : {
     "content" : [ {
-      "productId" : 34,
-      "productName" : "테스트",
+      "productId" : 5,
+      "productName" : "비빔냉면",
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
-      "productStatus" : 0,
-      "productRemains" : 30,
-      "productPrice" : 500,
-      "productCategory" : "테스트",
-      "productThumbnailImg" : "img.jpg",
-      "productCreatedAt" : "2022-11-09T10:07:33",
-      "productUpdatedAt" : "2022-11-09T10:07:33",
+      "productStatus" : 1,
+      "productRemains" : 10000,
+      "productPrice" : 5000,
+      "productCategory" : "면",
+      "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+      "productCreatedAt" : "2022-11-14T09:47:35",
+      "productUpdatedAt" : "2022-11-14T09:47:35",
       "productDeletedAt" : null,
       "productIsDeleted" : false
     } ],
     "pageable" : {
       "sort" : {
         "empty" : true,
-        "sorted" : false,
-        "unsorted" : true
+        "unsorted" : true,
+        "sorted" : false
       },
       "offset" : 0,
       "pageNumber" : 0,
@@ -48,18 +48,18 @@ Content-Length: 1118
       "unpaged" : false,
       "paged" : true
     },
-    "totalElements" : 1,
-    "totalPages" : 1,
     "last" : true,
+    "totalElements" : 3,
+    "totalPages" : 1,
     "size" : 20,
     "number" : 0,
     "sort" : {
       "empty" : true,
-      "sorted" : false,
-      "unsorted" : true
+      "unsorted" : true,
+      "sorted" : false
     },
-    "numberOfElements" : 1,
     "first" : true,
+    "numberOfElements" : 3,
     "empty" : false
   }
 }

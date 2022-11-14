@@ -3,6 +3,6 @@
 {
   "success" : true,
   "message" : "상품 생성",
-  "data" : null
+  "data" : 9
 }
 ----

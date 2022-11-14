@@ -14,7 +14,9 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 import com.feelmycode.parabole.domain.CartItem;
-import com.feelmycode.parabole.dto.CartAddItemRequestDto;
+import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.JwtUtils;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CartItemRepository;
 import com.feelmycode.parabole.repository.CartRepository;
 import com.feelmycode.parabole.service.CartItemService;
@@ -22,6 +24,7 @@ import com.feelmycode.parabole.service.CartService;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.util.Optional;
@@ -50,12 +53,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CartControllerTest {
 
-    String outputDirectory = "./src/docs/asciidoc/snippets";
 
     @LocalServerPort
     int port;
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
 
     private RequestSpecification spec;
 
@@ -71,6 +73,9 @@ public class CartControllerTest {
     @Autowired
     CartRepository cartRepository;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Before
     public void setUp() {
         RestAssured.port = port;
@@ -79,49 +84,18 @@ public class CartControllerTest {
             .build();
 
         // Given
-        Optional<CartItem> cartItemOptional = cartItemRepository.findByCartIdAndProductId(3L,
-            3L);
+        Optional<CartItem> cartItemOptional = cartItemRepository.findByCartIdAndProductId(3L, 3L);
         cartItemOptional.ifPresent(cartItem -> cartItemRepository.deleteById(cartItem.getId()));
     }
 
-    @Test
-    @DisplayName("장바구니 상품 추가")
-    public void test02_addProductInCart() {
-
-        // Given
-        JSONObject request = new JSONObject();
-        request.put("userId", 3L);
-        request.put("productId", 3L);
-        request.put("cnt", 3);
-
-        // When
-        Response resp = given(this.spec)
-            .body(request.toJSONString())
-            .contentType(ContentType.JSON)
-            .filter(
-                document(
-                    "cart-product-add",
-                    preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
-                        prettyPrint()),
-                    preprocessResponse(prettyPrint()),
-                    requestFields(
-                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
-                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("수량")
-                    ),
-                    responseFields(
-                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                        fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
-                        fieldWithPath("data").type(JsonFieldType.NULL).description("응답 정보")
-                    )
-                )
-            )
+    private String getToken(final UserDto request) {
+        final ExtractableResponse<Response> response = given()
+            .contentType(ContentType.JSON).body(request)
             .when()
-            .port(port)
-            .post("/api/v1/cart/product/add");
-
-        // Then
-        Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+        return response.body().jsonPath().get("data.token").toString();
     }
 
     @Test
@@ -129,21 +103,20 @@ public class CartControllerTest {
     public void test01_cartList() {
 
         // Given
+        UserDto userDto = UserDto.builder().email("test@test.com").password("test").build();
+        String token = getToken(userDto);
 
         // When
         Response resp = given(this.spec)
-            .param("userId", "3")
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .filter(
                 document(
                     "cart-list",
                     preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
-                    requestParameters(
-                        parameterWithName("userId").description("사용자 아이디")
-                    ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
@@ -195,28 +168,31 @@ public class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니 상품 제거")
-    public void test04_deleteProductInCart() {
+    @DisplayName("장바구니 상품 추가")
+    public void test02_addProductInCart() {
 
         // Given
-        cartItemService.addItem(3L, new CartAddItemRequestDto(3L, 3));
-        Long cartItemId = cartItemRepository.findByCartIdAndProductId(3L, 3L).get().getId();
+        UserDto userDto = UserDto.builder().email("1111").password("1111").build();
+        String token = getToken(userDto);
+
+        JSONObject request = new JSONObject();
+        request.put("productId", 3L);
+        request.put("cnt", 3);
 
         // When
         Response resp = given(this.spec)
-            .param("userId", 3L)
-            .param("cartItemId", cartItemId)
-            .accept(ContentType.JSON)
+            .body(request.toJSONString())
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .filter(
                 document(
-                    "cart-delete",
+                    "cart-product-add",
                     preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
                         prettyPrint()),
                     preprocessResponse(prettyPrint()),
-                    requestParameters(
-                        parameterWithName("userId").description("사용자 아이디"),
-                        parameterWithName("cartItemId").description("장바구니 상품 아이디")
+                    requestFields(
+                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
+                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("수량")
                     ),
                     responseFields(
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
@@ -227,10 +203,10 @@ public class CartControllerTest {
             )
             .when()
             .port(port)
-            .delete("/api/v1/cart/delete");
+            .post("/api/v1/cart/product/add");
 
         // Then
-        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+        Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
     }
 
     @Test
@@ -238,18 +214,20 @@ public class CartControllerTest {
     public void test03_updateProductCnt() {
 
         // Given
-        cartItemService.addItem(3L, new CartAddItemRequestDto(3L, 3));
+        UserDto userDto = UserDto.builder().email("test@test.com").password("test").build();
+        String token = getToken(userDto);
+        Long userId = jwtUtils.extractUserId(token);
+
         JSONObject request = new JSONObject();
-        request.put("cartItemId", cartItemRepository.findByCartIdAndProductId(3L,
-            3L).get().getId());
+        request.put("cartItemId", cartItemRepository.findByCartIdAndProductId(11L, 3L).get().getId());
         request.put("productId", 3L);
-        request.put("userId", 3L);
         request.put("cnt", 10);
 
         // When
         Response resp = given(this.spec)
             .body(request.toJSONString())
             .accept(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .contentType(ContentType.JSON)
             .filter(
                 document(
@@ -260,7 +238,6 @@ public class CartControllerTest {
                     requestFields(
                         fieldWithPath("cartItemId").type(JsonFieldType.NUMBER).description("장바구니 아이템 아이디"),
                         fieldWithPath("productId").type(JsonFieldType.NUMBER).description("상품 아이디"),
-                        fieldWithPath("userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
                         fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("수량")
                     ),
                     responseFields(
@@ -273,6 +250,47 @@ public class CartControllerTest {
             .when()
             .port(port)
             .patch("/api/v1/cart/update/cnt");
+
+        // Then
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+    }
+
+    @Test
+    @DisplayName("장바구니 상품 제거")
+    public void test04_deleteProductInCart() {
+
+        // Given
+        UserDto userDto = UserDto.builder().email("1111").password("1111").build();
+        String token = getToken(userDto);
+
+//        cartItemService.addItem(userId, new CartAddItemRequestDto(3L, 3));
+        Long cartItemId = cartItemRepository.findByCartIdAndProductId(11L, 3L).get().getId();
+
+        // When
+        Response resp = given(this.spec)
+            .param("cartItemId", cartItemId)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
+            .filter(
+                document(
+                    "cart-delete",
+                    preprocessRequest(modifyUris().scheme("https").host("parabole.com"),
+                        prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    requestParameters(
+                        parameterWithName("cartItemId").description("장바구니 상품 아이디")
+                    ),
+                    responseFields(
+                        fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("응답 정보")
+                    )
+                )
+            )
+            .when()
+            .port(port)
+            .delete("/api/v1/cart/delete");
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
