@@ -1,0 +1,17 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "기본 회원가입 성공",
+  "data" : {
+    "id" : 14,
+    "email" : "user0@naver.com",
+    "name" : "user",
+    "nickname" : "nickname",
+    "phone" : "01022222222",
+    "token" : null,
+    "password" : null,
+    "passwordConfirmation" : null
+  }
+}
+----

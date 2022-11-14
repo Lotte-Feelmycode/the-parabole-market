@@ -1,0 +1,19 @@
+[source,http,options="nowrap"]
+----
+POST /api/v1/auth/signin HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:51044
+Content-Length: 189
+
+{
+  "id" : null,
+  "email" : "testest@naver.com",
+  "name" : null,
+  "nickname" : null,
+  "phone" : null,
+  "token" : null,
+  "password" : "test",
+  "passwordConfirmation" : null
+}
+----

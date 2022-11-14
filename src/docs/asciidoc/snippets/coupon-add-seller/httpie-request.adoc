@@ -1,0 +1,15 @@
+[source,bash]
+----
+$ echo '{
+  "name" : "크리스마스 기념 쿠폰",
+  "type" : 2,
+  "discountValue" : 2000,
+  "validAt" : [ 2022, 9, 16, 0, 0 ],
+  "expiresAt" : [ 2022, 11, 30, 0, 0 ],
+  "detail" : "행복한 크리스마스 되세요",
+  "cnt" : 5
+}' | http POST 'https://parabole.com:62673/api/v1/coupon/new' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJHb29nbGUiLCJzZWxsZXJTdG9yZW5hbWUiOiJ1c2VyM-ydgCB1c2VySWQ37J24642wIHNlbGxlcuqwgCDrkKDqsbDsl5DsmpQiLCJyb2xlIjoiUk9MRV9TRUxMRVIiLCJzZWxsZXJJZCI6MSwiaW1hZ2VVcmwiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UxV0ZqRTJ3cUpkVm9hZVlBdzFDeHlDR3EzUE9IM2g4UVJDOEMyTDJnPXM5Ni1jIiwibmlja25hbWUiOiJkMCIsInVzZXJJZCI6MSwiZW1haWwiOiJqdWwxMjIzMDEwM0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImQwIiwiaWF0IjoxNjY4NDA3NDA2LCJleHAiOjE2Njg0OTM4MDZ9.8dgALqu-aITO5KVDfZREj7rjBsVPqckxO00Yul_nl1g' \
+    'Content-Type:application/json'
+----

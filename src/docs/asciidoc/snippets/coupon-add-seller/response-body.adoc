@@ -1,0 +1,14 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "쿠폰 등록 성공",
+  "data" : {
+    "couponId" : 10,
+    "couponName" : "크리스마스 기념 쿠폰",
+    "sellerStorename" : "user3은 userId7인데 seller가 될거에요",
+    "type" : "AMOUNT",
+    "cnt" : 5
+  }
+}
+----

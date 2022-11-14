@@ -1,0 +1,13 @@
+[source,options="nowrap"]
+----
+{
+  "id" : null,
+  "email" : "user0@naver.com",
+  "name" : "user",
+  "nickname" : "nickname",
+  "phone" : "01022222222",
+  "token" : null,
+  "password" : "password",
+  "passwordConfirmation" : "password"
+}
+----

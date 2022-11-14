@@ -95,8 +95,10 @@ public class UserService {
 
         return UserDto.builder()
             .id(newUser.getId())
+            .email(newUser.getEmail())
             .name(newUser.getUsername())
             .nickname(newUser.getNickname())
+            .phone(newUser.getPhone())
             .build();       // welcome page 위한 부분
     }
 

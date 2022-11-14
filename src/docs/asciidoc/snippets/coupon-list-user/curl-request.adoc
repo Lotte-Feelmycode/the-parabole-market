@@ -1,0 +1,7 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:54221/api/v1/coupon/user/list' -i -X GET \
+    -H 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwidXNlcklkIjoxMCwiZW1haWwiOiJ1c2V0dGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2ODQwNDYwOCwiZXhwIjoxNjY4NDkxMDA4fQ.5IV_gq4Lx-KTAih1XMP47WgYLWjtX-_LVeY3BUlICco' \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Content-Type: application/json'
+----

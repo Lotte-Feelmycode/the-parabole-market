@@ -1,0 +1,9 @@
+[source,http,options="nowrap"]
+----
+GET /api/v1/coupon/user/list HTTP/1.1
+authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwidXNlcklkIjoxMCwiZW1haWwiOiJ1c2V0dGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2ODQwNDYwOCwiZXhwIjoxNjY4NDkxMDA4fQ.5IV_gq4Lx-KTAih1XMP47WgYLWjtX-_LVeY3BUlICco
+Accept: application/json, application/javascript, text/javascript, text/json
+Content-Type: application/json
+Host: parabole.com:54221
+
+----
