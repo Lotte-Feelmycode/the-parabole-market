@@ -118,9 +118,7 @@ public class AuthControllerTest {
     @DisplayName("기본 로그인")
     public void signin() {
 
-        User newUser = userRepository.save(
-            new User().builder().email("testest@naver.com").password("test").build());
-        UserDto dto = UserDto.builder().email(newUser.getEmail()).password(newUser.getPassword()).build();
+        UserDto dto = UserDto.builder().email("test@test.com").password("test").build();
 
         Response resp = given(this.spec)
             .body(dto)
@@ -136,21 +134,25 @@ public class AuthControllerTest {
                         fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                         fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 정보").optional(),
-                        fieldWithPath("data.id").type(JsonFieldType.NUMBER)
+                        fieldWithPath("data.userId").type(JsonFieldType.NUMBER)
                             .description("유저 ID").optional(),
                         fieldWithPath("data.token").type(JsonFieldType.STRING).description("사용자 토큰").optional(),
                         fieldWithPath("data.email").type(JsonFieldType.STRING)
                             .description("이메일").optional(),
+                        fieldWithPath("data.imageUrl").type(JsonFieldType.STRING)
+                            .description("프로필 url").optional(),
+                        fieldWithPath("data.role").type(JsonFieldType.STRING)
+                            .description("계정 역할").optional(),
+                        fieldWithPath("data.authProvider").type(JsonFieldType.STRING)
+                            .description("정보 제공자").optional(),
+                        fieldWithPath("data.sellerId").type(JsonFieldType.NUMBER)
+                            .description("사용자 ID").optional(),
                         fieldWithPath("data.name").type(JsonFieldType.STRING)
                             .description("사용자명").optional(),
                         fieldWithPath("data.nickname").type(JsonFieldType.STRING)
                             .description("닉네임").optional(),
                         fieldWithPath("data.phone").type(JsonFieldType.STRING)
-                            .description("휴대전화").optional(),
-                        fieldWithPath("data.password").type(JsonFieldType.STRING)
-                            .description("비밀번호").optional(),
-                        fieldWithPath("data.passwordConfirmation").type(JsonFieldType.STRING)
-                            .description("비밀번호 재확인").optional()
+                            .description("휴대전화").optional()
                     )
                 )
             )
@@ -160,7 +162,6 @@ public class AuthControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-        userRepository.delete(newUser);
     }
 
 }

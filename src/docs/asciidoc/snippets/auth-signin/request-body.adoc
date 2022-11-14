@@ -2,7 +2,7 @@
 ----
 {
   "id" : null,
-  "email" : "testest@naver.com",
+  "email" : "test@test.com",
   "name" : null,
   "nickname" : null,
   "phone" : null,

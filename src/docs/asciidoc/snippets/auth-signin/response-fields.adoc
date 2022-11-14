@@ -13,7 +13,7 @@
 |`+Object+`
 |응답 정보
 
-|`+data.id+`
+|`+data.userId+`
 |`+Number+`
 |유저 ID
 
@@ -24,6 +24,22 @@
 |`+data.email+`
 |`+String+`
 |이메일
+
+|`+data.imageUrl+`
+|`+String+`
+|프로필 url
+
+|`+data.role+`
+|`+String+`
+|계정 역할
+
+|`+data.authProvider+`
+|`+String+`
+|정보 제공자
+
+|`+data.sellerId+`
+|`+Number+`
+|사용자 ID
 
 |`+data.name+`
 |`+String+`
