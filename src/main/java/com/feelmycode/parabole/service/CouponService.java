@@ -119,18 +119,22 @@ public class CouponService {
     }
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
+        // TODO: (NOT TODO BUT NOTICE) 함수 새로 만들지 않고 기존 함수를 '현시점 기준 사용 가능한 쿠폰 목록' 반환으로 수정하였음.
 
-        List<UserCoupon> couponList = userCouponRepository.findAllByUserId(userId);
+        List<UserCoupon> couponListAll = userCouponRepository.findAllByUserId(userId);
+        List<UserCoupon> validList = couponListAll.stream()
+            .filter(userCoupon -> userCoupon.getUseState().equals(CouponUseState.NotUsed)
+                && userCoupon.getCoupon().getValidAt().isBefore(LocalDateTime.now())
+                && userCoupon.getCoupon().getExpiresAt().isAfter(LocalDateTime.now()))
+            .collect(Collectors.toList());
+
         List<CouponUserResponseDto> dtos = new ArrayList<>();
 
-        if (couponList.isEmpty()) {
+        if (validList.isEmpty()) {
             throw new NoDataException();
         }
-        for (UserCoupon i : couponList) {
-            Coupon nowCoupon = i.getCoupon();
-            Seller nowSeller = nowCoupon.getSeller();
-            dtos.add(new CouponUserResponseDto(nowCoupon, i,
-                nowSeller.getStoreName()));
+        for (UserCoupon userCoupon : validList) {
+            dtos.add(new CouponUserResponseDto(userCoupon.getCoupon(), userCoupon, userCoupon.getCoupon().getSeller().getStoreName()));
         }
         return new PageImpl<>(dtos);
     }

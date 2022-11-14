@@ -22,6 +22,7 @@ import com.feelmycode.parabole.repository.UserRepository;
 import com.feelmycode.parabole.service.CouponService;
 import com.feelmycode.parabole.service.SellerService;
 import com.feelmycode.parabole.service.UserService;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -90,6 +91,7 @@ public class CouponController {
         } else {
             for (int i = 0; i < userList.size(); i++) {
                 userCouponList.get(i).setUser(userList.get(i));
+                userCouponList.get(i).setAcquiredDate(LocalDateTime.now());
             }
             userCouponRepository.saveAll(userCouponList);
         }
@@ -120,7 +122,7 @@ public class CouponController {
 
         Page<CouponUserResponseDto> userCouponList = couponService.getUserCouponList(userId);
         return ParaboleResponse.CommonResponse(HttpStatus.OK,
-            true, "유저 쿠폰 목록", userCouponList);
+            true, "현재 시간 기준으로 미사용 상태 유효한 유저 쿠폰 목록", userCouponList);
     }
 
     @GetMapping("/list")
