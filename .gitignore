@@ -226,6 +226,8 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+# REST DOCS HTML
+*.html
 
 target
 **/*.properties
