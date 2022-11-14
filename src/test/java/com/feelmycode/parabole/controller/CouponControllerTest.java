@@ -6,6 +6,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
@@ -29,6 +30,10 @@ import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import com.feelmycode.parabole.dto.UserDto;
+import io.restassured.response.ExtractableResponse;
+import net.minidev.json.JSONObject;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,13 +62,16 @@ public class CouponControllerTest {
 
     @Autowired
     private CouponService couponService;
+    
     @Autowired
     private CouponRepository couponRepository;
+    
     @Autowired
     private UserRepository userRepository;
+    
     @Autowired
     private SellerRepository sellerRepository;
-
+    
     @Autowired
     private JwtUtils jwtUtils;
 
@@ -74,7 +82,6 @@ public class CouponControllerTest {
                 documentationConfiguration(this.restDocumentation))
             .build();
     }
-
 
     @Test
     @DisplayName("유저: 보유한 쿠폰 목록 조회")

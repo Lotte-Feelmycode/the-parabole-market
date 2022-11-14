@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "success" : true,
-  "message" : "이벤트 등록 가능",
-  "data" : true
-}
-----

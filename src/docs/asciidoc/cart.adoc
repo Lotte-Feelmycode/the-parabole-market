@@ -17,10 +17,6 @@ endif::[]
 
 include::{resource-dir}/cart-list/http-request.adoc[]
 
-`*Parameters*`
-
-include::{resource-dir}/cart-list/request-parameters.adoc[]
-
 `*Response*`
 
 include::{resource-dir}/cart-list/http-response.adoc[]

@@ -1,10 +1,6 @@
 |===
 |Path|Type|Description
 
-|`+userId+`
-|`+Number+`
-|사용자 ID
-
 |`+orderId+`
 |`+Number+`
 |주문 ID
@@ -35,7 +31,7 @@
 
 |`+addressDetail+`
 |`+String+`
-|상세 주소지(현재는 주소록API와 연결되지 않아 Simple/Detail을 동일하게 사용)
+|상세 주소지
 
 |`+deliveryComment+`
 |`+String+`

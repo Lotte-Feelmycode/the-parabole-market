@@ -2,14 +2,15 @@
 ----
 POST /api/v1/order HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwicm9sZSI6IlJPTEVfVVNFUiIsInBob25lIjoiMTExMSIsImltYWdlVXJsIjoiaHR0cHM6Ly9zc2wucHN0YXRpYy5uZXQvc3RhdGljL2NhZmUvY2FmZV9wYy9kZWZhdWx0L2NhZmVfcHJvZmlsZV83Ny5wbmciLCJuaWNrbmFtZSI6IjExMTExIiwidXNlcklkIjoxMSwiZW1haWwiOiIxMTExIiwidXNlcm5hbWUiOiIxMTExMSIsImlhdCI6MTY2ODI0OTE3NSwiZXhwIjoxNjY4MzM1NTc1fQ.eBPvfUJ9kUKMD4uCzGI7c-Tx48NxIzklUAyIMBz44ec
 Content-Type: application/json
-Host: parabole.com:54408
-Content-Length: 387
+Host: parabole.com:56468
+Content-Length: 354
 
 {
-  "addressSimple" : "광진구 12-33",
+  "addressSimple" : "광진구",
   "receiverPhone" : "010-2345-6789",
-  "addressDetail" : "광진구 12-33",
+  "addressDetail" : "12-33",
   "orderId" : 1,
   "orderPayState" : "NAVER_PAY",
   "receiverName" : "김파라",
@@ -17,7 +18,6 @@ Content-Length: 387
   "orderInfoRequestList" : [ {
     "couponSerialNo" : "",
     "orderInfoIdList" : [ 1, 2, 3 ]
-  } ],
-  "userId" : 3
+  } ]
 }
 ----

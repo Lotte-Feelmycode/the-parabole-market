@@ -1,8 +1,8 @@
 [source,options="nowrap"]
 ----
 {
-  "success" : false,
-  "message" : "주문정보를 수정하는 중 문제가 발생했습니다.",
+  "success" : true,
+  "message" : "사용자의 상세 주문 배송 정보 수정",
   "data" : null
 }
 ----

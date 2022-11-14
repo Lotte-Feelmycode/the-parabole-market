@@ -1,8 +1,0 @@
-[source,http,options="nowrap"]
-----
-GET /api/v1/event/seller/check?userId=1&inputDtm=2022-11-09T15%3A00%3A00 HTTP/1.1
-Accept: application/json, application/javascript, text/javascript, text/json
-Content-Type: application/json
-Host: parabole.com:55898
-
-----

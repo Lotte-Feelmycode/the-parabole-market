@@ -1,0 +1,36 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "사용자 11 님이 1 판매자한테 사용할 수 있는 쿠폰 목록입니다.",
+  "data" : [ {
+    "couponName" : "20퍼센트 할인해드립니다!",
+    "serialNo" : "caef1d00-b423-4814-8fa0-41e5781b07f0",
+    "storeName" : "u1-s1's store",
+    "type" : "RATE",
+    "discountValue" : 17,
+    "totalFee" : 8500
+  }, {
+    "couponName" : "20퍼센트 할인해드립니다!",
+    "serialNo" : "7f36ca0b-4240-4d7f-8d9c-a1397ef24aea",
+    "storeName" : "u1-s1's store",
+    "type" : "RATE",
+    "discountValue" : 17,
+    "totalFee" : 8500
+  }, {
+    "couponName" : "할로윈 기념 쿠폰",
+    "serialNo" : "3y43h4h4-bebc-4557-a296-4b1e710d51a5",
+    "storeName" : "u1-s1's store",
+    "type" : "RATE",
+    "discountValue" : 10,
+    "totalFee" : 5000
+  }, {
+    "couponName" : "할로윈 기념 쿠폰",
+    "serialNo" : "gd43t4h3-4242-1234-34g2-l3k4l2k3j42l",
+    "storeName" : "u1-s1's store",
+    "type" : "RATE",
+    "discountValue" : 10,
+    "totalFee" : 5000
+  } ]
+}
+----

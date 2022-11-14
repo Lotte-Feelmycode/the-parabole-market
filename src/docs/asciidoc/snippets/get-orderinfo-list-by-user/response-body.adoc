@@ -4,160 +4,24 @@
   "success" : true,
   "message" : "주문 정보 목록 조회",
   "data" : {
-    "orderId" : 93,
-    "cnt" : 9,
+    "orderId" : 7,
+    "cnt" : 1,
     "orderBySellerDtoList" : [ {
       "sellerId" : 1,
       "storeName" : "u1-s1's store",
       "orderInfoResponseDtos" : [ {
-        "id" : 169,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 5,
-        "productName" : "비빔냉면",
+        "id" : 13,
+        "state" : "DELIVERY",
+        "userEmail" : "1111",
+        "productId" : 7,
+        "productName" : "막국수",
         "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 5000,
+        "productRemain" : 20000,
+        "productPrice" : 7000,
         "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      } ],
-      "couponDto" : null
-    }, {
-      "sellerId" : 2,
-      "storeName" : "u4-s2's store",
-      "orderInfoResponseDtos" : [ {
-        "id" : 172,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 4,
-        "productName" : "차돌 짬뽕 국밥 210gx6팩",
-        "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 12000,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      }, {
-        "id" : 170,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 3,
-        "productName" : "순대국밥",
-        "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 10000,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      }, {
-        "id" : 173,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 2,
-        "productName" : "돼지국밥",
-        "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 8000,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      }, {
-        "id" : 171,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 1,
-        "productName" : "한우국밥",
-        "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 10000,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      } ],
-      "couponDto" : {
-        "rateCoupon" : [ {
-          "couponName" : "u4=s2 의 쿠폰",
-          "serialNo" : "76fb092c-2c7a-4e7c-911a-1b3f93e4f88a",
-          "storeName" : "u4-s2's store",
-          "type" : "RATE",
-          "discountValue" : 10
-        } ],
-        "amountCoupon" : [ {
-          "couponName" : "쉿! 비밀이야",
-          "serialNo" : "b9e9682a-d7c7-418c-b16a-37748f89b213",
-          "storeName" : "u4-s2's store",
-          "type" : "AMOUNT",
-          "discountValue" : 100
-        } ]
-      }
-    }, {
-      "sellerId" : 3,
-      "storeName" : "u7-s3's store",
-      "orderInfoResponseDtos" : [ {
-        "id" : 166,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 14,
-        "productName" : "엠엔엠 개별포장 초콜렛 945 x 1 유치원 방과 후 간식",
-        "productCnt" : 7,
-        "productRemain" : null,
-        "productPrice" : 27990,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      }, {
-        "id" : 167,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 9,
-        "productName" : "리터 스포트 초콜릿 헤이즐럿 (100G)",
-        "productCnt" : 1,
-        "productRemain" : null,
-        "productPrice" : 3000,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      }, {
-        "id" : 168,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 8,
-        "productName" : "허쉬 후퍼스 할로윈기획(180G)",
-        "productCnt" : 3,
-        "productRemain" : null,
-        "productPrice" : 9900,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      } ],
-      "couponDto" : null
-    }, {
-      "sellerId" : 4,
-      "storeName" : "u11-s4's store",
-      "orderInfoResponseDtos" : [ {
-        "id" : 165,
-        "state" : "BEFORE_PAY",
-        "userId" : 3,
-        "userEmail" : "para@bole.com",
-        "productId" : 12,
-        "productName" : "레고 휴가용 캠핑밴 (60283)",
-        "productCnt" : 9,
-        "productRemain" : null,
-        "productPrice" : 29900,
-        "productDiscountPrice" : null,
-        "productThumbnailImg" : null,
-        "updatedAt" : "2022-11-07T12:23:32"
-      } ],
-      "couponDto" : null
+        "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+        "updatedAt" : "2022-11-11T20:59:34"
+      } ]
     } ]
   }
 }

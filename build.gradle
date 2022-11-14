@@ -108,3 +108,7 @@ task ymlSecurity(type: Copy) {
     include '*.yml'
     into './src/main/resources'
 }
+
+clean {
+    delete "./src/main/resources/static/", "docs"
+}

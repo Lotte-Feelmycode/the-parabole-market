@@ -1,6 +1,0 @@
-[source,http,options="nowrap"]
-----
-GET /api/v1/event/seller/participant/2 HTTP/1.1
-Host: parabole.com:59768
-
-----

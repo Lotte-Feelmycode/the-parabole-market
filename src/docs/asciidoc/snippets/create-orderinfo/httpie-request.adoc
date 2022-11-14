@@ -4,9 +4,9 @@ $ echo '{
   "orderInfoDto" : [ {
     "productId" : 2,
     "productCnt" : 1
-  } ],
-  "userId" : 1
-}' | http POST 'https://parabole.com:54870/api/v1/orderinfo' \
+  } ]
+}' | http POST 'https://parabole.com:59712/api/v1/orderinfo' \
     'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwic2VsbGVyU3RvcmVuYW1lIjoi642U7YyM65287JSo7J2YIOuniOy8kyIsInJvbGUiOiJST0xFX1NFTExFUiIsInNlbGxlcklkIjozLCJwaG9uZSI6IjAxMDQyNzIzODg4IiwiaW1hZ2VVcmwiOiJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvY2FmZS9jYWZlX3BjL2RlZmF1bHQvY2FmZV9wcm9maWxlXzc3LnBuZyIsIm5pY2tuYW1lIjoi642U7YyM652867O8656YIiwidXNlcklkIjo5LCJlbWFpbCI6InRoZXBhcmFAYm9sZS5jb20iLCJ1c2VybmFtZSI6IuuNlO2MjOudvCIsImlhdCI6MTY2ODI1MDA5MSwiZXhwIjoxNjY4MzM2NDkxfQ.-7yvSHGX7A2iSJt9lezSWe4XirkLSsv3ytV5Vl4QR4o' \
     'Content-Type:application/json'
 ----

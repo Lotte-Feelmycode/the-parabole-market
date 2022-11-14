@@ -43,13 +43,14 @@ public class UpdateService {
             OrderInfo getOrderInfo = orderInfoRepository.findById(orderInfoRequestDto.getOrderInfoId())
                 .orElseThrow(() -> new NoDataException());
 
-            getOrderInfo.setState(orderInfoRequestDto.getOrderInfoState().getValue());
+            getOrderInfo.setState(orderInfoRequestDto.getOrderInfoState());
             orderInfoRepository.save(getOrderInfo);
 
             // 모든 상품이 배송완료일 때 주문이 완료되었다고 처리
-            if (orderInfoService.isDeliveryComplete(userId)) {
-                Order order = orderService.getOrder(userId);
+            Order order = orderService.getOrderByOrderId(getOrderInfo.getOrder().getId());
 
+            User user = userService.getUser(order.getUser().getId());
+            if (orderInfoService.isDeliveryComplete(user.getId())) {
                 List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
 
                 for (OrderInfo info : getOrderInfoList) {

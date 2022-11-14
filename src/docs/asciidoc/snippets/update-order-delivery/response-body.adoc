@@ -1,8 +1,0 @@
-[source,options="nowrap"]
-----
-{
-  "success" : true,
-  "message" : "주문 정보 저장 완료",
-  "data" : null
-}
-----

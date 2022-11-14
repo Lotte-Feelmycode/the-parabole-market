@@ -1,0 +1,29 @@
+:hardbreaks:
+ifndef::snippets[]
+:resource-dir: ./snippets
+endif::[]
+ifdef::snippets[]
+:resource-dir: ./src/docs/asciidoc/snippets
+endif::[]
+:toc: left
+
+= link:index.html[The Parabole]
+
+== 쿠폰
+
+=== 사용할 수 있는 쿠폰 목록 조회
+`*Request*`
+
+include::{resource-dir}/get-coupon-by-seller/http-request.adoc[]
+
+`*Parameters*`
+
+include::{resource-dir}/get-coupon-by-seller/request-fields.adoc[]
+
+`*Response*`
+
+include::{resource-dir}/get-coupon-by-seller/http-response.adoc[]
+
+`*Fields*`
+
+include::{resource-dir}/get-coupon-by-seller/response-fields.adoc[]

@@ -9,6 +9,7 @@ import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponDto;
 import com.feelmycode.parabole.dto.CouponInfoResponseDto;
+import com.feelmycode.parabole.dto.CouponRequestDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUseAndAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
@@ -159,4 +160,10 @@ public class CouponController {
         log.info("Set Coupon Remains By Event Server : {} ", couponId);
         return couponService.setCouponStock(couponId, stock);
     }
+
+    @GetMapping
+    public ResponseEntity<ParaboleResponse> getCouponGroupBySeller(@RequestAttribute Long userId, @RequestBody CouponRequestDto couponRequestDto) {
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자 "+userId+" 님이 "+couponRequestDto.getSellerId()+" 판매자한테 사용할 수 있는 쿠폰 목록입니다.", couponService.getCouponListByDiscountValue(userId, couponRequestDto));
+    }
+
 }

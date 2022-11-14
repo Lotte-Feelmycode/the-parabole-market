@@ -16,6 +16,7 @@ import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.OrderInfoRepository;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -116,13 +117,12 @@ public class OrderInfoService {
 
         Long cnt = 0L;
 
-        Order order = orderService.getOrder(userId);
+        List<OrderInfo> orderInfoList = orderInfoRepository.findAllBySellerId(userId);
 
-        if(order == null)
+        if(orderInfoList == null || orderInfoList.isEmpty())
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문 내역이 없습니다.");
 
-        List<OrderInfo> orderInfoList = getOrderInfoListByOrderId(order.getId())
-            .stream()
+        orderInfoList.stream()
             .sorted(Comparator.comparing(OrderInfo::getProductId).reversed())
             .toList();
 
@@ -151,30 +151,19 @@ public class OrderInfoService {
             getOrderInfoList[sellerIdMap.get(sellerId)].add(dto);
         }
 
-        HashMap<Long, CouponResponseDto> couponList = couponService.getCouponMapByUserId(userId);
-
         List<OrderBySellerDto> orderBySellerDtoList = new ArrayList<>();
 
         HashSet<Long> checkContainsSellerId = new HashSet<>();
 
         for (Long sellerId : sellerIdMap.keySet()) {
             if (checkContainsSellerId.add(sellerId)) {
-                if (couponList.isEmpty()) {
-                    orderBySellerDtoList.add(
-                        new OrderBySellerDto(sellerId,
-                            sellerService.getSellerBySellerId(sellerId).getStoreName(),
-                            getOrderInfoList[sellerIdMap.get(sellerId)],
-                            new CouponResponseDto()));
-                } else {
-                    orderBySellerDtoList.add(
-                        new OrderBySellerDto(sellerId,
-                            sellerService.getSellerBySellerId(sellerId).getStoreName(),
-                            getOrderInfoList[sellerIdMap.get(sellerId)],
-                            couponList.get(sellerId)));
-                }
+                orderBySellerDtoList.add(
+                    new OrderBySellerDto(sellerId,
+                        sellerService.getSellerBySellerId(sellerId).getStoreName(),
+                        getOrderInfoList[sellerIdMap.get(sellerId)]));
             }
         }
-        return new OrderResponseDto(order.getId(), cnt, orderBySellerDtoList);
+        return new OrderResponseDto(0L, cnt, orderBySellerDtoList);
     }
 
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {
@@ -186,6 +175,14 @@ public class OrderInfoService {
             responseDto.setProductRemain(getProduct.getRemains());
             orderInfoResponseDtoList.add(responseDto);
         }
+
+        Collections.sort(orderInfoResponseDtoList, new Comparator<OrderInfoResponseDto>() {
+            @Override
+            public int compare(OrderInfoResponseDto o1, OrderInfoResponseDto o2) {
+                return -Long.compare(o1.getId(), o2.getId());
+            }
+        });
+
         return orderInfoResponseDtoList;
     }
 

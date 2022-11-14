@@ -1,4 +1,12 @@
 |===
 |Path|Type|Description
 
+|`+orderInfoId+`
+|`+Number+`
+|주문 상세 ID
+
+|`+orderState+`
+|`+String+`
+|주문 상태
+
 |===

@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+sellerId+`
+|`+Number+`
+|조회할 쿠폰의 판매자 ID
+
+|`+totalFee+`
+|`+Number+`
+|총 금액
+
+|===
