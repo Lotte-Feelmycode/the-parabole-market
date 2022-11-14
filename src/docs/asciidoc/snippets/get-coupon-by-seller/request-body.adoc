@@ -1,0 +1,7 @@
+[source,options="nowrap"]
+----
+{
+  "sellerId" : 1,
+  "totalFee" : 50000
+}
+----

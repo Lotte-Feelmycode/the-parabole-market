@@ -1,0 +1,14 @@
+[source,http,options="nowrap"]
+----
+GET /api/v1/coupon HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwicm9sZSI6IlJPTEVfVVNFUiIsInBob25lIjoiMTExMSIsImltYWdlVXJsIjoiaHR0cHM6Ly9zc2wucHN0YXRpYy5uZXQvc3RhdGljL2NhZmUvY2FmZV9wYy9kZWZhdWx0L2NhZmVfcHJvZmlsZV83Ny5wbmciLCJuaWNrbmFtZSI6IjExMTExIiwidXNlcklkIjoxMSwiZW1haWwiOiIxMTExIiwidXNlcm5hbWUiOiIxMTExMSIsImlhdCI6MTY2ODI0OTIwNSwiZXhwIjoxNjY4MzM1NjA1fQ.EWl2qD84cSdEiQ26J6eVO_EYKSVJpnORWgELXKWP6Oo
+Content-Type: application/json
+Host: parabole.com:56647
+Content-Length: 45
+
+{
+  "sellerId" : 1,
+  "totalFee" : 50000
+}
+----

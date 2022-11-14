@@ -172,7 +172,7 @@ public class CouponController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getCouponGroupBySeller(@RequestAttribute Long userId, @RequestBody CouponRequestDto couponRequestDto) {
-        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, couponRequestDto.getSellerId()+" 판매자가 사용할 수 있는 쿠폰 목록입니다.", couponService.getCouponListByDiscountValue(userId, couponRequestDto));
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "사용자 "+userId+" 님이 "+couponRequestDto.getSellerId()+" 판매자한테 사용할 수 있는 쿠폰 목록입니다.", couponService.getCouponListByDiscountValue(userId, couponRequestDto));
     }
 
 }
