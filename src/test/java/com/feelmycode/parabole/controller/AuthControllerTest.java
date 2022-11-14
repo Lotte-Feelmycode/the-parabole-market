@@ -12,6 +12,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CartRepository;
 import com.feelmycode.parabole.repository.UserRepository;
 import io.restassured.RestAssured;
@@ -37,14 +38,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AuthControllerTest {
 
-    String outputDirectory = "./src/docs/asciidoc/snippets";
-
     @LocalServerPort
     int port;
 
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
-
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
     private RequestSpecification spec;
     @Autowired
     private UserRepository userRepository;

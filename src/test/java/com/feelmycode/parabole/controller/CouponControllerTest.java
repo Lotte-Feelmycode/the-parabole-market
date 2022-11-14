@@ -16,6 +16,7 @@ import com.feelmycode.parabole.dto.CouponAssignRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateRequestDto;
 import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.global.util.JwtUtils;
+import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserRepository;
@@ -46,13 +47,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CouponControllerTest {
 
-    String outputDirectory = "./src/docs/asciidoc/snippets";
-
     @LocalServerPort
     int port;
 
     @Rule
-    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(outputDirectory);
+    public JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation(StringUtil.ASCII_DOC_OUTPUT_DIR);
 
     private RequestSpecification spec;
 
