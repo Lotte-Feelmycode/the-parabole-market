@@ -1,0 +1,24 @@
+|===
+|Path|Type|Description
+
+|`+productName+`
+|`+String+`
+|상품 이름
+
+|`+productRemains+`
+|`+Number+`
+|상품 재고
+
+|`+productPrice+`
+|`+Number+`
+|상품 가격
+
+|`+productCategory+`
+|`+String+`
+|상품 카테고리
+
+|`+productThumbnailImg+`
+|`+String+`
+|상품 썸네일 이미지
+
+|===

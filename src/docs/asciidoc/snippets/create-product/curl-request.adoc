@@ -1,0 +1,14 @@
+[source,bash]
+----
+$ curl 'https://parabole.com:53574/api/v1/product' -i -X POST \
+    -H 'Accept: application/json, application/javascript, text/javascript, text/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwicGhvbmUiOiIwMTA1Nzc4NTAyMyIsIm5pY2tuYW1lIjoidGVzdCIsInVzZXJJZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNjY4Mzg3NzUyLCJleHAiOjE2Njg0NzQxNTJ9.iHLnUa1kJQyBckPxiGrCmWL3sWWFHArTZvTlVPvI7pA' \
+    -H 'Content-Type: application/json' \
+    -d '{
+  "productThumbnailImg" : "img.jpg",
+  "productRemains" : 30,
+  "productName" : "테스트",
+  "productPrice" : 500,
+  "productCategory" : "테스트"
+}'
+----
