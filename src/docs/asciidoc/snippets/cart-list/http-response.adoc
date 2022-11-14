@@ -4,52 +4,52 @@ HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Mon, 31 Oct 2022 12:49:12 GMT
+Date: Tue, 08 Nov 2022 12:22:57 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 1253
+Content-Length: 1104
 
 {
   "success" : true,
   "message" : "seller로 grouping한 장바구니 상품",
-  "data" : [ [ ], [ {
-    "sellerId" : 2,
-    "storeName" : "u4-s2's store",
-    "getItemList" : [ {
-      "cartItemId" : 98,
-      "product" : {
-        "productId" : 2,
-        "productName" : "돼지국밥",
-        "sellerId" : 2,
-        "storeName" : "u4-s2's store",
-        "productStatus" : 1,
-        "productRemains" : 500,
-        "productPrice" : 8000,
-        "productCategory" : "국밥",
-        "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
-        "productCreatedAt" : "2022-10-06T16:52:06",
-        "productUpdatedAt" : "2022-10-06T16:52:06",
-        "productDeletedAt" : null,
-        "productIsDeleted" : false
-      },
-      "count" : 1
-    } ],
-    "couponDto" : {
-      "rateCoupon" : [ {
-        "couponName" : "u4=s2 의 쿠폰",
-        "storeName" : "u4-s2's store",
-        "type" : "RATE",
-        "discountValue" : 10
+  "data" : {
+    "cartId" : 2,
+    "cnt" : 1,
+    "cartBySellerDtoList" : [ {
+      "sellerId" : 2,
+      "storeName" : "u4-s2's store",
+      "cartItemDtoList" : [ {
+        "cartItemId" : 7,
+        "product" : {
+          "productId" : 3,
+          "productName" : "돼지국밥",
+          "sellerId" : 2,
+          "storeName" : "u4-s2's store",
+          "productStatus" : 1,
+          "productRemains" : 500,
+          "productPrice" : 8000,
+          "productCategory" : "국밥",
+          "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v000644/LM/88/01/04/52/90/96/6_/00/1/LM8801045290966_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+          "productCreatedAt" : "2022-11-03T20:10:18",
+          "productUpdatedAt" : "2022-11-03T20:10:18",
+          "productDeletedAt" : null,
+          "productIsDeleted" : false
+        },
+        "count" : 3
       } ],
-      "amountCoupon" : [ {
-        "couponName" : "쉿! 비밀이야",
-        "storeName" : "u4-s2's store",
-        "type" : "AMOUNT",
-        "discountValue" : 100
-      } ]
-    }
-  } ] ]
+      "couponDto" : {
+        "rateCoupon" : [ ],
+        "amountCoupon" : [ ]
+      }
+    } ]
+  }
 }
 ----

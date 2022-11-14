@@ -4,15 +4,21 @@ buildscript {
     }
 }
 plugins {
-	id 'org.springframework.boot' version '2.7.3'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-	id 'java'
-	id 'org.asciidoctor.jvm.convert' version "3.3.2"
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+    id 'org.asciidoctor.jvm.convert' version "3.3.2"
 }
 
 group = 'com.feelmycode.parabole'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.3"
+    }
+}
 
 configurations {
     asciidoctorExtensions
@@ -30,17 +36,27 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'mysql:mysql-connector-java'
     implementation 'junit:junit:4.13.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     compileOnly 'org.projectlombok:lombok'
+
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -50,12 +66,13 @@ dependencies {
 }
 
 ext {
-    snippetsDir = file("./src/docs/asciidoc/snippets")
+    set('springCloudVersion', "2021.0.4")
+    snippetsDir = file("./src/main/resources/snippets")
 }
 
 test {
     outputs.dir snippetsDir
-    useJUnitPlatform{
+    useJUnitPlatform {
         includeEngines 'junit-vintage'
     }
 }

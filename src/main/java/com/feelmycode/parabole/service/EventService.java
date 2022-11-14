@@ -8,30 +8,24 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventListResponseDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
-import com.feelmycode.parabole.dto.EventSearchRequestDto;
 import com.feelmycode.parabole.dto.EventSearchResponseDto;
-import com.feelmycode.parabole.enumtype.EventStatus;
-import com.feelmycode.parabole.enumtype.EventType;
 import com.feelmycode.parabole.enumtype.PrizeType;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
-import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
-import com.feelmycode.parabole.repository.SellerRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.persistence.criteria.CriteriaBuilder.In;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,8 +34,6 @@ import org.springframework.util.StringUtils;
 public class EventService {
 
     private final EventRepository eventRepository;
-
-    private final SellerRepository sellerRepository;
 
     private final CouponRepository couponRepository;
 
@@ -72,13 +64,11 @@ public class EventService {
     /**
      * 이벤트 생성
      */
-    // TODO: JWT 처리 후 userId 처리
-    // TODO: @Valid
     @Transactional
-    public Long createEvent(EventCreateRequestDto eventDto) {
+    public Long createEvent(Long userId, EventCreateRequestDto eventDto) {
 
         // 엔티티 조회
-        Seller seller = getSeller(eventDto.getUserId());
+        Seller seller = getSeller(userId);
 
         // 이벤트-경품정보 생성
         List<EventPrize> eventPrizeList = new ArrayList<>();
@@ -152,9 +142,6 @@ public class EventService {
         List<Integer> statuses =
             eventStatus < 0 ? Arrays.asList(0, 1, 2) : Arrays.asList(eventStatus);
 
-
-        System.out.println("eventStatus" + eventStatus);
-        System.out.println("statues "+ statuses);
         if (dateDiv > -1) {
             eventList = dateDiv < 1
                 ? eventRepository.findAllByStartAtBetweenAndIsDeleted(fromDateTime, toDateTime,
@@ -181,8 +168,45 @@ public class EventService {
         return eventRepository.findAllByIsDeleted(false);
     }
 
-    // TODO : 이벤트 수정
+    /**
+     * 이벤트 조회 (셀러 오피스 이벤트 목록 조회용)
+     */
+    public List<EventSearchResponseDto> getEventsMonthAfter() {
+        LocalDateTime nowDate = LocalDateTime.now();
+        LocalDateTime monthAfterDate = nowDate.plusMonths(1L);
+        return eventRepository.findAllByStartAtBetweenAndIsDeleted(nowDate,
+                monthAfterDate, false)
+            .stream()
+            .filter(event -> event.getType().equals("FCFS"))
+            .sorted(Comparator.comparing(Event::getStartAt))
+            .map(EventSearchResponseDto::new)
+            .collect(Collectors.toList());
+    }
 
+    /**
+     * 이벤트 등록 가능 여부 체크
+     */
+    public Boolean canCreateEvent(Long userId, String dateParam) {
+        LocalDateTime inputDtm = LocalDateTime.parse(dateParam);
+        eventRepository.findAllByStartAtBetweenAndIsDeleted(inputDtm, inputDtm.plusMinutes(50), false)
+            .stream().filter(event -> event.getType().equals("FCFS"))
+            .findAny().ifPresent(event -> {
+                throw new ParaboleException(HttpStatus.ALREADY_REPORTED,
+                    "선택하신 시간에 이미 등록된 이벤트가 있습니다.");
+            });
+
+        Long sellerId = getSeller(userId).getId();
+        int dayOfWeek = inputDtm.getDayOfWeek().getValue();
+        eventRepository.findAllByStartAtBetweenAndIsDeleted(inputDtm.minusDays(dayOfWeek),
+                inputDtm.plusDays(6 - dayOfWeek), false)
+            .stream()
+            .filter(event -> event.getSeller().getId().equals(sellerId) && event.getType().equals("FCFS"))
+            .findAny().ifPresent(event -> {
+                throw new ParaboleException(HttpStatus.ALREADY_REPORTED,
+                    "선착순 이벤트는 일주일에 하나만 등록 가능합니다.");
+            });
+        return true;
+    }
     /**
      * 이벤트 취소
      */
@@ -197,11 +221,13 @@ public class EventService {
             event.cancel();
             for (EventPrize eventPrize : event.getEventPrizes()) {
                 if (eventPrize.getPrizeType().equals(PrizeType.PRODUCT.getCode())) {
+                    log.info("취소하려는 이벤트의 경품 정보가 없습니다");
                     Product product = productRepository.findById(eventPrize.getProduct().getId())
                         .orElseThrow(() -> new ParaboleException(HttpStatus.NOT_FOUND,
                             "취소하려는 이벤트의 경품 정보가 없습니다"));
                     product.addRemains(Long.valueOf(eventPrize.getStock()));
                 } else {
+                    log.info("취소하려는 이벤트의 쿠폰 정보가 없습니다");
                     Coupon coupon = couponRepository.findById(eventPrize.getCoupon().getId())
                         .orElseThrow(
                             () -> new ParaboleException(HttpStatus.NOT_FOUND,
@@ -213,9 +239,8 @@ public class EventService {
             }
             eventRepository.save(event);
 
-
         } catch (Exception e) {
-            throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, "이벤트 등록 실패");
+            throw new ParaboleException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }

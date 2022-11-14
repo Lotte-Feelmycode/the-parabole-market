@@ -1,9 +1,7 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
-import com.feelmycode.parabole.service.SellerService;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -62,14 +60,6 @@ public class Coupon extends BaseEntity implements Serializable {
     @NotNull
     private LocalDateTime expiresAt;
 
-    @Column(name = "coupon_max_discount_amount")
-    @NotNull
-    private Long maxDiscountAmount;
-
-    @Column(name = "coupon_min_payment_amount")
-    @NotNull
-    private Long minPaymentAmount;
-
     @Column(name = "coupon_details")
     @NotNull
     private String detail;
@@ -81,13 +71,8 @@ public class Coupon extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "coupon", cascade = CascadeType.ALL)
     private List<UserCoupon> userCoupons = new ArrayList<>();
 
-//    public void setSeller(Seller seller) {
-//        this.seller = seller;
-//    }
-
     public Coupon(String name, Seller seller, CouponType type, Integer discountValue,
-        LocalDateTime validAt, LocalDateTime expiresAt,
-        Long maxDiscountAmount, Long minPaymentAmount, String detail, Integer cnt) {
+        LocalDateTime validAt, LocalDateTime expiresAt, String detail, Integer cnt) {
 
         this.name = name;
         this.seller = seller;
@@ -95,8 +80,6 @@ public class Coupon extends BaseEntity implements Serializable {
         this.discountValue = discountValue;
         this.validAt = validAt;
         this.expiresAt = expiresAt;
-        this.maxDiscountAmount = maxDiscountAmount;
-        this.minPaymentAmount = minPaymentAmount;
         this.detail = detail;
         this.cnt = cnt;
     }
@@ -149,10 +132,14 @@ public class Coupon extends BaseEntity implements Serializable {
     }
 
     public void setCouponForEvent(Integer inputStock) {
-        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setEventEnrolled);
+        userCoupons.stream().limit(inputStock)
+            .filter(userCoupon -> userCoupon.getUseState().equals(CouponUseState.NotUsed))
+            .forEach(UserCoupon::setEventEnrolled);
     }
 
     public void cancelCouponEvent(Integer inputStock) {
-        userCoupons.stream().limit(inputStock).forEach(UserCoupon::setNotUsed);
+        userCoupons.stream().limit(inputStock)
+            .filter(userCoupon -> userCoupon.getUseState().equals(CouponUseState.EventEnrolled))
+            .forEach(UserCoupon::setNotUsed);
     }
 }

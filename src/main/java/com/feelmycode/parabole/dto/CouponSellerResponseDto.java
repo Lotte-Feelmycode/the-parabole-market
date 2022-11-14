@@ -14,11 +14,7 @@ public class CouponSellerResponseDto {
         private String name;
         private Integer type;
         private Integer discountValue;
-        private LocalDateTime createdAt;
-        private LocalDateTime validAt;
         private LocalDateTime expiresAt;
-        private Long maxDiscountAmount;
-        private Long minPaymentAmount;
         private String detail;
         private Integer cnt;
         private Integer remains;
@@ -28,11 +24,7 @@ public class CouponSellerResponseDto {
                 this.name = coupon.getName();
                 this.type = coupon.getType().getValue();
                 this.discountValue = coupon.getDiscountValue();
-                this.createdAt = coupon.getCreatedAt();
-                this.validAt = coupon.getValidAt();
                 this.expiresAt = coupon.getExpiresAt();
-                this.maxDiscountAmount = coupon.getMaxDiscountAmount();
-                this.minPaymentAmount = coupon.getMinPaymentAmount();
                 this.detail = coupon.getDetail();
                 this.cnt = coupon.getCnt();
                 this.remains = coupon.getNotAssignedUserCouponList().size();

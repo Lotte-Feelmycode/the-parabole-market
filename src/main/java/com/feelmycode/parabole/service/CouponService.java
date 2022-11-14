@@ -14,6 +14,7 @@ import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
+import com.feelmycode.parabole.global.error.exception.NotSellerException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.CouponRepository;
 import com.feelmycode.parabole.repository.SellerRepository;
@@ -46,19 +47,19 @@ public class CouponService {
     private final UserCouponRepository userCouponRepository;
 
     @Transactional
-    public CouponCreateResponseDto addCoupon(@NotNull CouponCreateRequestDto dto) {
-        User user = userRepository.findById(dto.getUserId())
-            .orElseThrow(() -> new NoDataException());
+    public CouponCreateResponseDto addCoupon(Long sellerId, @NotNull CouponCreateRequestDto dto) {
 
-        Coupon coupon = new Coupon(dto.getName(), user.getSeller(), CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
-            dto.getExpiresAt(), dto.getMaxDiscountAmount(), dto.getMinPaymentAmount(), dto.getDetail(), dto.getCnt());
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NotSellerException());
+
+        Coupon coupon = new Coupon(dto.getName(), seller, CouponType.returnNameToValue(dto.getType()), dto.getDiscountValue(), dto.getValidAt(),
+            dto.getExpiresAt(), dto.getDetail(), dto.getCnt());
 
         couponRepository.save(coupon);
 
         for (int i = 0; i < dto.getCnt(); i++) {
             coupon.addUserCoupon(new UserCoupon(coupon));
         }
-        return new CouponCreateResponseDto(coupon.getName(), user.getName(), coupon.getType().getName(), coupon.getCnt());
+        return new CouponCreateResponseDto(coupon.getName(), seller.getStoreName(), coupon.getType().getName(), coupon.getCnt());
     }
 
 //    public void giveoutUserCoupon(String couponSNo, Long userId) {
@@ -71,6 +72,22 @@ public class CouponService {
 //        User user = userRepository.findById(userId).orElseThrow(() -> new NoDataException());
 //        userCoupon.setUser(user);
 //    }
+
+    @Transactional
+    public Boolean setCouponStock(Long couponId, Integer stock) {
+        Coupon getCoupon = this.getCouponById(couponId);
+        try {
+            if (stock < 0) {
+                getCoupon.setCouponForEvent(stock * -1);
+            } else {
+                getCoupon.cancelCouponEvent(stock);
+            }
+            couponRepository.save(getCoupon);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return true;
+    }
 
     public Coupon getCouponById(Long couponId) {
         return couponRepository.findById(couponId).orElseThrow(() -> new NoDataException());

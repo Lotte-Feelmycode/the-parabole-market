@@ -7,8 +7,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
@@ -22,6 +24,8 @@ import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.EventCreateRequestDto;
 import com.feelmycode.parabole.dto.EventPrizeCreateRequestDto;
+import com.feelmycode.parabole.dto.UserDto;
+import com.feelmycode.parabole.global.util.JwtUtils;
 import com.feelmycode.parabole.repository.EventPrizeRepository;
 import com.feelmycode.parabole.repository.EventRepository;
 import com.feelmycode.parabole.repository.ProductRepository;
@@ -32,6 +36,7 @@ import groovy.util.logging.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import java.time.LocalDateTime;
@@ -68,6 +73,9 @@ public class EventControllerTest {
     private RequestSpecification spec;
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private EventService eventService;
     @Autowired
     EventRepository eventRepository;
@@ -89,6 +97,18 @@ public class EventControllerTest {
         return mapper.writeValueAsString(data);
     }
 
+    private String getToken(final UserDto request) {
+
+        final ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(ContentType.JSON).body(request)
+            .when()
+            .post("/api/v1/auth/signin")
+            .then()
+            .extract();
+
+        return response.body().jsonPath().get("data.token").toString();
+    }
 
     @Before
     public void setUp() {
@@ -98,18 +118,13 @@ public class EventControllerTest {
             .build();
     }
 
-
     @Test
     @DisplayName("이벤트 등록")
     public void createEvent() throws JSONException {
 
         // given
-        // user, seller 있다고 가정
-//        User user = userRepository.save(
-//            new User("eventTest@mail.com", "eventTest", "eventNickname", "010-3354-3342", "1234"));
-//        Seller seller = new Seller("event Store Name", "3245918723");
-//        user.setSeller(seller);
-//        sellerRepository.save(seller);
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
 
         LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
         LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
@@ -120,37 +135,60 @@ public class EventControllerTest {
         productRepository.save(product);
 
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
-        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
-        EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
-            "이벤트 설명 v2",
-            new EventImage("banner.url", "detail.url"), prizes
-        );
+        prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 5));
 
-        String requestJson = null;
-        try {
-            requestJson = toJsonString(requestDto);
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
-        }
+        EventCreateRequestDto requestDto = new EventCreateRequestDto(
+            "SELLER", "RAFFLE", "온앤더뷰티 WEEK #홀리데이", startAt, endAt,
+            "(테스트 데이터) 온앤더뷰티 클럽 무료 가입하시고 모든 혜택 다 받으세요!", prizes
+        );
+        EventImage eventImage = new EventImage("banner.url", "detail.url");
+
+        net.minidev.json.JSONObject jsonObject = new net.minidev.json.JSONObject();
+        jsonObject.put("eventDtos", requestDto);
+        jsonObject.put("image", eventImage);
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
+            .header("Authorization", "Bearer " + token)
             .filter(document("event-create",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("eventDtos").type(JsonFieldType.OBJECT).description("생성할 이벤트 정보"),
+                    fieldWithPath("eventDtos.userId").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                    fieldWithPath("eventDtos.createdBy").type(JsonFieldType.STRING).description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("eventDtos.type").type(JsonFieldType.STRING).description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
+                    fieldWithPath("eventDtos.title").type(JsonFieldType.STRING).description("이벤트 제목"),
+                    fieldWithPath("eventDtos.startAt").type(JsonFieldType.OBJECT).description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("eventDtos.endAt").type(JsonFieldType.OBJECT).description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("eventDtos.descript").type(JsonFieldType.STRING).description("이벤트 설명"),
+                    fieldWithPath("eventDtos.eventImage").type(JsonFieldType.NULL).description("이벤트 이미지(multipart로 따로 받아옴)"),
+                    fieldWithPath("image").type(JsonFieldType.OBJECT).description("이벤트 이미지(URL)"),
+                    fieldWithPath("image.eventBannerImg").type(JsonFieldType.STRING)
+                        .description("이벤트 배너 이미지(URL)"),
+                    fieldWithPath("image.eventDetailImg").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 이미지(URL)"),
+                    fieldWithPath("eventDtos.eventPrizeCreateRequestDtos").type(JsonFieldType.ARRAY)
+                        .description("이벤트 경품 정보"),
+                    fieldWithPath("eventDtos.eventPrizeCreateRequestDtos.[].id").type(JsonFieldType.NUMBER)
+                        .description("이벤트 경품 ID"),
+                    fieldWithPath("eventDtos.eventPrizeCreateRequestDtos.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )"),
+                    fieldWithPath("eventDtos.eventPrizeCreateRequestDtos.[].stock").type(JsonFieldType.NUMBER)
+                        .description("이벤트 경품 재고")
+                ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
                     fieldWithPath("data").description("이벤트 번호")
                 )))
-            .body(requestJson).log().all()
+            .body(jsonObject.toJSONString())
             .when().post(BASIC_PATH);
 
         Assertions.assertEquals(HttpStatus.CREATED.value(), resp.statusCode());
@@ -184,6 +222,7 @@ public class EventControllerTest {
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("eventId").description("이벤트 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
@@ -193,28 +232,30 @@ public class EventControllerTest {
                         .description("셀러 스토어 이름"),
                     fieldWithPath("data.sellerId").type(JsonFieldType.NUMBER).description("셀러 번호"),
                     fieldWithPath("data.createdBy").type(JsonFieldType.STRING)
-                        .description("이벤트 생성자 유형"),
-                    fieldWithPath("data.type").type(JsonFieldType.STRING).description("이벤트 유형"),
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.type").type(JsonFieldType.STRING)
+                        .description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
                     fieldWithPath("data.title").type(JsonFieldType.STRING).description("이벤트 제목"),
                     fieldWithPath("data.startAt").type(JsonFieldType.STRING)
-                        .description("이벤트 시작 일시"),
-                    fieldWithPath("data.endAt").type(JsonFieldType.STRING).description("이벤트 종료 일시"),
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.endAt").type(JsonFieldType.STRING)
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.status").type(JsonFieldType.NUMBER)
-                        .description("이벤트 진행 상태"),
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
                     fieldWithPath("data.descript").type(JsonFieldType.STRING)
                         .description("이벤트 상세 설명"),
                     fieldWithPath("data.eventImage").type(JsonFieldType.OBJECT)
                         .description("이벤트 이미지 정보"),
                     fieldWithPath("data.eventImage.eventBannerImg").type(JsonFieldType.STRING)
-                        .description("이벤트 배너 이미지"),
+                        .description("이벤트 배너 이미지(URL)"),
                     fieldWithPath("data.eventImage.eventDetailImg").type(JsonFieldType.STRING)
-                        .description("이벤트 상세 이미지"),
+                        .description("이벤트 상세 이미지(URL)"),
                     fieldWithPath("data.eventPrizes").type(JsonFieldType.ARRAY)
                         .description("이벤트 경품 정보"),
                     fieldWithPath("data.eventPrizes.[].eventPrizeId").type(JsonFieldType.NUMBER)
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.eventPrizes.[].prizeType").type(JsonFieldType.STRING)
-                        .description("이벤트 경품 유형"),
+                        .description("이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )"),
                     fieldWithPath("data.eventPrizes.[].stock").optional()
                         .description("상품 재고"),
                     fieldWithPath("data.eventPrizes.[].productId").optional()
@@ -222,16 +263,17 @@ public class EventControllerTest {
                     fieldWithPath("data.eventPrizes.[].productName").optional()
                         .description("상품명"),
                     fieldWithPath("data.eventPrizes.[].productImg").optional()
-                        .description("상품 이미지"),
+                        .description("상품 이미지(URL)"),
                     fieldWithPath("data.eventPrizes.[].couponId").optional()
                         .description("쿠폰 아이디"),
                     fieldWithPath("data.eventPrizes.[].couponDetail").optional()
                         .description("쿠폰 상세 설명").optional(),
                     fieldWithPath("data.eventPrizes.[].type")
-                        .description("쿠폰 할인 유형").optional(),
-                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").optional().description("쿠폰 할인값"),
+                        .description("쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)").optional(),
+                    fieldWithPath("data.eventPrizes.[].couponDiscountValue").optional()
+                        .description("쿠폰 할인값"),
                     fieldWithPath("data.eventPrizes.[].expiresAt").optional()
-                        .description("쿠폰 만료 일시")
+                        .description("쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)")
                 )
             )).when().get(BASIC_PATH + "/{eventId}", eventId);
 
@@ -265,29 +307,30 @@ public class EventControllerTest {
                     fieldWithPath("data.[].sellerId").type(JsonFieldType.NUMBER)
                         .description("셀러 번호"),
                     fieldWithPath("data.[].createdBy").type(JsonFieldType.STRING)
-                        .description("이벤트 생성자 유형"),
-                    fieldWithPath("data.[].type").type(JsonFieldType.STRING).description("이벤트 유형"),
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
                     fieldWithPath("data.[].title").type(JsonFieldType.STRING).description("이벤트 제목"),
                     fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
-                        .description("이벤트 시작 일시"),
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
-                        .description("이벤트 종료 일시"),
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
-                        .description("이벤트 진행 상태"),
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
                     fieldWithPath("data.[].descript").type(JsonFieldType.STRING)
                         .description("이벤트 상세 설명"),
                     fieldWithPath("data.[].eventImage").type(JsonFieldType.OBJECT)
-                        .description("이벤트 이미지 정보"),
+                        .description("이벤트 이미지(URL) 정보"),
                     fieldWithPath("data.[].eventImage.eventBannerImg").type(JsonFieldType.STRING)
-                        .description("이벤트 배너 이미지"),
+                        .description("이벤트 배너 이미지(URL)"),
                     fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
-                        .description("이벤트 상세 이미지"),
+                        .description("이벤트 상세 이미지(URL)"),
                     fieldWithPath("data.[].eventPrizes").type(JsonFieldType.ARRAY)
                         .description("이벤트 경품 정보"),
                     fieldWithPath("data.[].eventPrizes[].eventPrizeId").type(JsonFieldType.NUMBER)
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.[].eventPrizes[].prizeType").type(JsonFieldType.STRING)
-                        .description("이벤트 경품 유형"),
+                        .description("이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON )"),
                     fieldWithPath("data.[].eventPrizes[].stock").optional()
                         .description("상품 재고"),
                     fieldWithPath("data.[].eventPrizes.[].productId").optional()
@@ -295,16 +338,18 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].productName").optional()
                         .description("상품명"),
                     fieldWithPath("data.[].eventPrizes[].productImg").optional()
-                        .description("상품 이미지"),
+                        .description("상품 이미지(URL)"),
                     fieldWithPath("data.[].eventPrizes[].couponId").optional()
                         .description("쿠폰 아이디"),
                     fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
-                    fieldWithPath("data.[].eventPrizes[].type").description("쿠폰 할인 유형").optional(),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
-                        "쿠폰 할인값"),
+                    fieldWithPath("data.[].eventPrizes[].type").description(
+                        "쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)").optional(),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional()
+                        .description(
+                            "쿠폰 할인값"),
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
-                        .description("쿠폰 만료 일시")
+                        .description("쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)")
                 )
             )).when().get(BASIC_PATH);
 
@@ -316,12 +361,14 @@ public class EventControllerTest {
     public void getEventBySellerId() {
 
         // given
-        Long userId = 11L;
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
 
         // when
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
+            .header("Authorization", "Bearer " + token)
             .port(port)
             .filter(document("event-sellerId",
                 preprocessRequest(modifyUris()
@@ -339,29 +386,30 @@ public class EventControllerTest {
                     fieldWithPath("data.[].sellerId").type(JsonFieldType.NUMBER)
                         .description("셀러 번호"),
                     fieldWithPath("data.[].createdBy").type(JsonFieldType.STRING)
-                        .description("이벤트 생성자 유형"),
-                    fieldWithPath("data.[].type").type(JsonFieldType.STRING).description("이벤트 유형"),
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
                     fieldWithPath("data.[].title").type(JsonFieldType.STRING).description("이벤트 제목"),
                     fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
-                        .description("이벤트 시작 일시"),
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
-                        .description("이벤트 종료 일시"),
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
-                        .description("이벤트 진행 상태"),
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
                     fieldWithPath("data.[].descript").type(JsonFieldType.STRING)
                         .description("이벤트 상세 설명"),
                     fieldWithPath("data.[].eventImage").type(JsonFieldType.OBJECT)
-                        .description("이벤트 이미지 정보"),
+                        .description("이벤트 이미지(URL) 정보"),
                     fieldWithPath("data.[].eventImage.eventBannerImg").type(JsonFieldType.STRING)
-                        .description("이벤트 배너 이미지"),
+                        .description("이벤트 배너 이미지(URL)"),
                     fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
-                        .description("이벤트 상세 이미지"),
+                        .description("이벤트 상세 이미지(URL)"),
                     fieldWithPath("data.[].eventPrizes").type(JsonFieldType.ARRAY)
                         .description("이벤트 경품 정보"),
                     fieldWithPath("data.[].eventPrizes[].eventPrizeId").type(JsonFieldType.NUMBER)
                         .description("이벤트 경품 번호"),
                     fieldWithPath("data.[].eventPrizes[].prizeType").type(JsonFieldType.STRING)
-                        .description("이벤트 경품 유형"),
+                        .description("이벤트 경품 유형 (상품: PRODUCT /쿠폰: COUPON)"),
                     fieldWithPath("data.[].eventPrizes[].stock").optional()
                         .description("상품 재고"),
                     fieldWithPath("data.[].eventPrizes.[].productId").optional()
@@ -369,18 +417,20 @@ public class EventControllerTest {
                     fieldWithPath("data.[].eventPrizes[].productName").optional()
                         .description("상품명"),
                     fieldWithPath("data.[].eventPrizes[].productImg").optional()
-                        .description("상품 이미지"),
+                        .description("상품 이미지(URL)"),
                     fieldWithPath("data.[].eventPrizes[].couponId").optional()
                         .description("쿠폰 아이디"),
                     fieldWithPath("data.[].eventPrizes[].couponDetail").optional()
                         .description("쿠폰 상세 설명"),
-                    fieldWithPath("data.[].eventPrizes[].type").optional().description("쿠폰 할인 유형"),
-                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional().description(
-                        "쿠폰 할인값"),
+                    fieldWithPath("data.[].eventPrizes[].type").optional()
+                        .description("쿠폰 할인 유형 (할인율: RATE / 할인금액: AMOUNT)"),
+                    fieldWithPath("data.[].eventPrizes[].couponDiscountValue").optional()
+                        .description(
+                            "쿠폰 할인값"),
                     fieldWithPath("data.[].eventPrizes[].expiresAt").optional()
-                        .description("쿠폰 만료 일시")
+                        .description("쿠폰 만료 일시 (yyyy-MM-dd'T'HH:mm:ss)")
                 )
-            )).when().get(BASIC_PATH + "/seller/{userId}", userId);
+            )).when().get(BASIC_PATH + "/seller");
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
@@ -393,6 +443,9 @@ public class EventControllerTest {
         // given
         String eventType = "RAFFLE";
         String eventTitle = "러버덕";
+        Integer dateDiv = 0;
+        String fromDateTime = "2022-11-02T15:00:00";
+        String toDateTime = "2022-11-30T15:00:00";
 
         // when
         Response resp = given(this.spec)
@@ -400,7 +453,7 @@ public class EventControllerTest {
             .contentType(ContentType.JSON)
             .port(port)
             .param("eventType", eventType)
-            .param("eventTitle", eventTitle)
+            .param("eventTitle", "")
             .param("dateDiv", "")
             .param("fromDateTime", "")
             .param("toDateTime", "")
@@ -412,12 +465,14 @@ public class EventControllerTest {
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
                 requestParameters(
-                    parameterWithName("eventType").description("이벤트 타입"),
+                    parameterWithName("eventType").description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
                     parameterWithName("eventTitle").description("이벤트 이름"),
-                    parameterWithName("dateDiv").description("날짜 검색 구분"),
+                    parameterWithName("dateDiv").description(
+                        "날짜 검색 구분 (0: 이벤트 시작일자 / 1: 이벤트 종료일자)"),
                     parameterWithName("fromDateTime").description("검색 시작 일자"),
                     parameterWithName("toDateTime").description("검색 종료 일자"),
-                    parameterWithName("eventStatus").description("이벤트 상태")
+                    parameterWithName("eventStatus").description(
+                        "이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)")
                 ),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
@@ -427,29 +482,118 @@ public class EventControllerTest {
                     fieldWithPath("data.[].sellerId").type(JsonFieldType.NUMBER)
                         .description("셀러 번호"),
                     fieldWithPath("data.[].createdBy").type(JsonFieldType.STRING)
-                        .description("이벤트 생성자 유형"),
-                    fieldWithPath("data.[].type").type(JsonFieldType.STRING).description("이벤트 유형"),
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
                     fieldWithPath("data.[].title").type(JsonFieldType.STRING).description("이벤트 제목"),
                     fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
-                        .description("이벤트 시작 일시"),
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
-                        .description("이벤트 종료 일시"),
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
                     fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
-                        .description("이벤트 진행 상태"),
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
                     fieldWithPath("data.[].descript").type(JsonFieldType.STRING)
                         .description("이벤트 상세 설명"),
                     fieldWithPath("data.[].eventImage").type(JsonFieldType.OBJECT)
-                        .description("이벤트 이미지 정보"),
+                        .description("이벤트 이미지(URL) 정보"),
                     fieldWithPath("data.[].eventImage.eventBannerImg").type(JsonFieldType.STRING)
-                        .description("이벤트 배너 이미지"),
+                        .description("이벤트 배너 이미지(URL)"),
                     fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
-                        .description("이벤트 상세 이미지")
+                        .description("이벤트 상세 이미지(URL)")
                 )
-            ))
+            )).log().all()
             .when().get(BASIC_PATH + "/list");
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-        System.out.println(resp.prettyPrint());
+
+    }
+
+
+    @Test
+    @DisplayName("이벤트 등록 가능 여부 확인")
+    public void showIsAvailable() {
+
+        // given
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
+        Long userId = jwtUtils.extractUserId(token);
+
+        String inputDtm = "2022-11-11T15:00:00";
+
+        // when
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .header("Authorization", "Bearer " + token)
+            .param("inputDtm", inputDtm)
+            .filter(document("event-create-check",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("inputDtm").description("조회 시작 일시 (yyyy-MM-ddTHH:mm:ss)")
+                ),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").description("이벤트 등록 가능 여부")
+                )
+            )).log().all().when().get(BASIC_PATH + "/seller/check");
+
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
+
+    }
+
+
+    @Test
+    @DisplayName("이벤트 스케쥴 조회")
+    public void getEventsforScheduler() {
+
+        // when
+        Response resp = given(this.spec)
+            .accept(ContentType.JSON)
+            .contentType(ContentType.JSON)
+            .port(port)
+            .filter(document("event-scheduler",
+                preprocessRequest(modifyUris()
+                        .scheme("https")
+                        .host("parabole.com"),
+                    prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("응답 정보"),
+                    fieldWithPath("data.[].id").type(JsonFieldType.NUMBER).description("이벤트 번호"),
+                    fieldWithPath("data.[].sellerId").type(JsonFieldType.NUMBER)
+                        .description("셀러 번호"),
+                    fieldWithPath("data.[].createdBy").type(JsonFieldType.STRING)
+                        .description("이벤트 생성자 (관리자:ADMIN / 판매자:SELLER)"),
+                    fieldWithPath("data.[].type").type(JsonFieldType.STRING)
+                        .description("이벤트 유형 (RAFFLE:추첨 / FCFS:선착순)"),
+                    fieldWithPath("data.[].title").type(JsonFieldType.STRING).description("이벤트 제목"),
+                    fieldWithPath("data.[].startAt").type(JsonFieldType.STRING)
+                        .description("이벤트 시작 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.[].endAt").type(JsonFieldType.STRING)
+                        .description("이벤트 종료 일시 (yyyy-MM-dd'T'HH:mm:ss)"),
+                    fieldWithPath("data.[].status").type(JsonFieldType.NUMBER)
+                        .description("이벤트 진행 상태 (0: 진행전 / 1: 진행중 / 2: 종료)"),
+                    fieldWithPath("data.[].descript").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 설명"),
+                    fieldWithPath("data.[].eventImage").type(JsonFieldType.OBJECT)
+                        .description("이벤트 이미지(URL) 정보"),
+                    fieldWithPath("data.[].eventImage.eventBannerImg").type(JsonFieldType.STRING)
+                        .description("이벤트 배너 이미지(URL)"),
+                    fieldWithPath("data.[].eventImage.eventDetailImg").type(JsonFieldType.STRING)
+                        .description("이벤트 상세 이미지(URL)")
+                )
+            ))
+            .when().get(BASIC_PATH + "/seller/scheduler");
+
+        Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
     }
 
@@ -458,8 +602,12 @@ public class EventControllerTest {
     public void deleteEvent() {
 
         // given
-        LocalDateTime startAt = LocalDateTime.parse("2022-11-10T00:00:00", ISO_LOCAL_DATE_TIME);
-        LocalDateTime endAt = LocalDateTime.parse("2022-11-28T18:00:00", ISO_LOCAL_DATE_TIME);
+        UserDto request = UserDto.builder().email("thepara@bole.com").password("1234").build();
+        String token = getToken(request);
+        Long userId = jwtUtils.extractUserId(token);
+
+        LocalDateTime startAt = LocalDateTime.parse("2022-12-10T00:00:00", ISO_LOCAL_DATE_TIME);
+        LocalDateTime endAt = LocalDateTime.parse("2022-12-28T18:00:00", ISO_LOCAL_DATE_TIME);
 
         Seller seller = sellerRepository.findById(1L).orElseThrow();
         Product product = new Product(seller, 1, 50L, "CATEGORY", "thumb.img", "이벤트 테스트 상품",
@@ -469,28 +617,29 @@ public class EventControllerTest {
         List<EventPrizeCreateRequestDto> prizes = new ArrayList<>();
         prizes.add(new EventPrizeCreateRequestDto(product.getId(), "PRODUCT", 40));
         EventCreateRequestDto requestDto = new EventCreateRequestDto(
-            seller.getUser().getId(), "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
-            "이벤트 설명 v2",
-            new EventImage("banner.url", "detail.url"), prizes
+            "SELLER", "RAFFLE", "이벤트 제목 BY REST DOCS", startAt, endAt,
+            "이벤트 설명 v2", prizes
         );
-        Long eventId = eventService.createEvent(requestDto);
+
+        Long eventId = eventService.createEvent(userId, requestDto);
 
         Response resp = given(this.spec)
             .accept(ContentType.JSON)
             .contentType(ContentType.JSON)
             .port(port)
+            .header("Authorization", "Bearer " + token)
             .filter(document("event-delete",
                 preprocessRequest(modifyUris()
                         .scheme("https")
                         .host("parabole.com"),
                     prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                pathParameters(parameterWithName("eventId").description("이벤트 아이디")),
                 responseFields(
                     fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                     fieldWithPath("message").type(JsonFieldType.STRING).description("메세지"),
-                    fieldWithPath("data").description("이벤트 번호")
+                    fieldWithPath("data").description("null")
                 )))
-            .log().all()
             .when().delete(BASIC_PATH + "/{eventId}", eventId);
 
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
@@ -501,7 +650,6 @@ public class EventControllerTest {
         eventRepository.delete(eventRepository.findById(eventId).orElseThrow());
         productRepository.delete(product);
 
+
     }
-
-
 }

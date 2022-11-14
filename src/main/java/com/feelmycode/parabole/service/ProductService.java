@@ -5,20 +5,22 @@ import com.feelmycode.parabole.domain.Seller;
 import com.feelmycode.parabole.dto.ProductDetailDto;
 import com.feelmycode.parabole.dto.ProductDetailListResponseDto;
 import com.feelmycode.parabole.dto.ProductDto;
+import com.feelmycode.parabole.dto.ProductRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @Service
 @Transactional(readOnly = true)
-
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -26,13 +28,17 @@ public class ProductService {
     private final SellerService sellerService;
 
     @Transactional
-    public Long saveProduct(Long userId, ProductDto dto) {
-        sellerService.getSellerByUserId(userId);
-
+    public Long saveProduct(Long userId, ProductRequestDto dto) {
         Product product = dto.dtoToEntity();
-        product.setSeller(sellerService.getSellerByUserId(userId));
 
+        product.setSeller(sellerService.getSellerByUserId(userId));
         return productRepository.save(product).getId();
+    }
+
+    @Transactional
+    public void updateProductThumbnailImg(Long productId, String thumbnailImg) {
+        Product getProduct = this.getProduct(productId);
+        getProduct.setThumbnailImg(thumbnailImg);
     }
 
     @Transactional
@@ -43,6 +49,22 @@ public class ProductService {
         productRepository.save(getProduct);
         return product.getId();
     }
+
+    @Transactional
+    public Boolean setProductRemains(Long productId, Long stock) {
+        Product getProduct = this.getProduct(productId);
+        try {
+            if (stock < 0) {
+                getProduct.removeRemains(stock * -1);
+            } else {
+                getProduct.addRemains(stock);
+            }
+            productRepository.save(getProduct);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return true;
+    };
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
@@ -70,13 +92,13 @@ public class ProductService {
                 data = productRepository.findAllBySellerIdAndCategoryAndIsDeletedFalse(sellerId, category,
                     pageable);
             }
-        } else if(!productName.equals("")) {
+        } else if (!productName.equals("")) {
             if (category.equals("")) {
                 data = productRepository.findAllByNameContainingAndIsDeletedFalse(productName, pageable);
             } else {
                 data = productRepository.findAllByNameContainingAndCategoryAndIsDeletedFalse(productName, category, pageable);
             }
-        } else if(category.equals("")) {
+        } else if (category.equals("")) {
             data = productRepository.findAll(pageable);
         } else {
             data = productRepository.findAllByCategoryAndIsDeletedFalse(category, pageable);

@@ -1,0 +1,36 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "이벤트 스케쥴러 조회 성공",
+  "data" : [ {
+    "id" : 3,
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "FCFS",
+    "title" : "LOTTE VIBE ON",
+    "startAt" : "2022-11-11T00:00:00",
+    "endAt" : "2022-11-11T00:50:00",
+    "status" : 1,
+    "descript" : "바로 이곳이 브랜드 컬렉션",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshop/43932/PE5649CB6BADF5069F7CD6125D126865125D9EDF5EFA6EAD420A61716312E2E5E/file",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P9E8EDB7D41DB776A67E68406C992D9DF67F36B5E94B8BA8B90A729A735707CE1/file"
+    }
+  }, {
+    "id" : 18,
+    "sellerId" : 1,
+    "createdBy" : "SELLER",
+    "type" : "FCFS",
+    "title" : "비스포크 추첨증정",
+    "startAt" : "2022-11-11T05:00:00",
+    "endAt" : "2022-11-11T05:50:00",
+    "status" : 1,
+    "descript" : "요리하다 구매고객 비스포크 추첨 증정 행사",
+    "eventImage" : {
+      "eventBannerImg" : "https://contents.lotteon.com/display/dshoplnk/12908/207/M000010/282011/P85148A5C7FABAB042D95126A67DAB7D6C14E9502B82676811754E78209CBD91B/file/dims/optimize",
+      "eventDetailImg" : "https://contents.lotteon.com/ec/public/P305972B21565D707552257D357C0863ABAC4BC7267BE647AA23ADC076B782FFA/file"
+    }
+  } ]
+}
+----

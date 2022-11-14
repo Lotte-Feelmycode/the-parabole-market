@@ -1,6 +1,6 @@
 package com.feelmycode.parabole.domain;
 
-import com.feelmycode.parabole.dto.OrderDeliveryUpdateRequestDto;
+import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.enumtype.OrderPayState;
 import com.feelmycode.parabole.enumtype.OrderState;
 import com.sun.istack.NotNull;
@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Slf4j
 public class Order extends BaseEntity {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,11 +84,11 @@ public class Order extends BaseEntity {
     // TODO: enum으로 처리하기
     @NotNull
     @Column(name = "order_state")
-    private Integer state;
+    private OrderState state;
 
     @NotNull
     @Column(name = "order_pay_state")
-    private Integer payState;
+    private OrderPayState payState;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
@@ -96,12 +97,16 @@ public class Order extends BaseEntity {
             .sum();
     }
 
+    public void setPayState(String payState) {
+        this.payState = OrderPayState.returnValueByName(payState);
+    }
+
     public void setState(String state) {
-        this.state = OrderState.returnValueByName(state).getValue();
+        this.state = OrderState.returnValueByName(state);
     }
 
     public void setState(Integer value) {
-        this.state = value;
+        this.state = OrderState.returnNameByValue(value);
     }
 
     private void setDeliveryFee(Long orderDeliveryFee) {
@@ -112,10 +117,15 @@ public class Order extends BaseEntity {
         this.user = user;
         this.setTotal(getOrderInfoList());
         this.deliveryFee = deliveryFee;
+        this.addressSimple = "";
+        this.addressDetail = "";
+        this.deliveryComment = "";
+        this.state = OrderState.ERROR;
+        this.payState = OrderPayState.ERROR;
         this.setState(-1);
     }
 
-    public Order saveDeliveryInfo(OrderDeliveryUpdateRequestDto deliveryDto) {
+    public Order saveDeliveryInfo(OrderRequestDto deliveryDto) {
         this.userName = deliveryDto.getUserName();
         this.userEmail = deliveryDto.getUserEmail();
         this.userPhone = deliveryDto.getUserPhone();
@@ -124,7 +134,7 @@ public class Order extends BaseEntity {
         this.addressSimple = deliveryDto.getAddressSimple();
         this.addressDetail = deliveryDto.getAddressDetail();
         this.deliveryComment = deliveryDto.getDeliveryComment();
-        this.payState = OrderPayState.returnValueByName(deliveryDto.getPayState());
+        this.payState = deliveryDto.getOrderPayState();
         return this;
     }
 

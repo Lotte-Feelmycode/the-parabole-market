@@ -12,18 +12,14 @@ public class CartItemUpdateRequestDto {
     private Long cartItemId;
 
     @NotNull
-    private Long userId;
-
-    @NotNull
     private Long productId;
 
     @NotNull
     private Integer cnt;
 
-    public CartItemUpdateRequestDto(Long cartItemId, Long productId, Long userId, Integer cnt) {
+    public CartItemUpdateRequestDto(Long cartItemId, Long productId, Integer cnt) {
         this.cartItemId = cartItemId;
         this.productId = productId;
-        this.userId = userId;
         this.cnt = cnt;
     }
 

@@ -24,12 +24,11 @@ public enum OrderState {
             .orElse(ERROR);
     }
 
-    public static String returnNameByValue(Integer value) {
+    public static OrderState returnNameByValue(Integer value) {
         return Arrays.stream(values())
             .filter(orderState -> orderState.value.toString().equals(value.toString()))
-            .map(orderState -> orderState.state)
-            .findFirst()
-            .orElse("ERROR");
+            .findAny()
+            .orElse(ERROR);
     }
 
 }
