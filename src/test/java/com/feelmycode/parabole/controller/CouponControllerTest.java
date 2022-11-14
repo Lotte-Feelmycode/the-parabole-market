@@ -81,7 +81,6 @@ public class CouponControllerTest {
     @DisplayName("유저: 보유한 쿠폰 목록 조회")
     public void couponListUser() {
 
-//        User user = userRepository.save(new User().builder().role("ROLE_USER").email("usettest@test.com").build());
         User user = userRepository.findById(10L).orElseThrow();
         String token = jwtUtils.generateToken(user);
 
@@ -162,7 +161,6 @@ public class CouponControllerTest {
 
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
-//        userRepository.delete(user);
     }
 
 
@@ -170,9 +168,7 @@ public class CouponControllerTest {
     @DisplayName("셀러: 발행한 쿠폰 목록 조회")
     public void couponListSeller() {
 
-        Seller seller100 = new Seller();
-        User user100 = new User().builder().seller(seller100).role("ROLE_SELLER").build();
-        String token = jwtUtils.generateToken(user100);
+        String token = jwtUtils.generateToken(userRepository.findById(1L).orElseThrow());
 
         // When
         Response resp = given(this.spec)
@@ -194,7 +190,7 @@ public class CouponControllerTest {
                             .description("쿠폰 ID").optional(),
                         fieldWithPath("data.content.[].name").type(JsonFieldType.STRING)
                             .description("쿠폰 이름").optional(),
-                        fieldWithPath("data.content.[].type").type(JsonFieldType.STRING)
+                        fieldWithPath("data.content.[].type").type(JsonFieldType.NUMBER)
                             .description("쿠폰 유형").optional(),
                         fieldWithPath("data.content.[].discountValue").type(JsonFieldType.NUMBER)
                             .description("할인 값(비율/금액)").optional(),
@@ -251,16 +247,12 @@ public class CouponControllerTest {
         // Then
         Assertions.assertEquals(HttpStatus.OK.value(), resp.statusCode());
 
-        userRepository.delete(user100);
-        sellerRepository.delete(seller100);
     }
 
     @Test
     @DisplayName("셀러 새로운 쿠폰 등록")
     public void addCoupon() {
 
-//        Seller seller100 = new Seller();
-//        User user100 = new User().builder().seller(seller100).role("ROLE_SELLER").build();
         String token = jwtUtils.generateToken(userRepository.findById(1L).orElseThrow());
 
         LocalDateTime validAt = LocalDateTime.parse("2022-09-16T00:00:00", DateTimeFormatter.ISO_LOCAL_DATE_TIME);

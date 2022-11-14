@@ -1,0 +1,68 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Nov 2022 07:25:12 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1197
+
+{
+  "success" : true,
+  "message" : "셀러 쿠폰 목록",
+  "data" : {
+    "content" : [ {
+      "couponId" : 1,
+      "name" : "할로윈 기념 쿠폰",
+      "type" : 1,
+      "discountValue" : 10,
+      "expiresAt" : "2022-11-06T08:59:59",
+      "detail" : "할로윈 쿠폰",
+      "cnt" : 10,
+      "remains" : 3
+    }, {
+      "couponId" : 3,
+      "name" : "10월 31일인데 쿠폰을 드립니다",
+      "type" : 1,
+      "discountValue" : 10,
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "할로윈 이벤트 쿠폰",
+      "cnt" : 3,
+      "remains" : 0
+    }, {
+      "couponId" : 7,
+      "name" : "크리스마스 기념 쿠폰",
+      "type" : 2,
+      "discountValue" : 2000,
+      "expiresAt" : "2022-11-30T00:00:00",
+      "detail" : "행복한 크리스마스 되세요",
+      "cnt" : 5,
+      "remains" : 5
+    } ],
+    "pageable" : "INSTANCE",
+    "last" : true,
+    "totalPages" : 1,
+    "totalElements" : 3,
+    "size" : 3,
+    "number" : 0,
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "first" : true,
+    "numberOfElements" : 3,
+    "empty" : false
+  }
+}
+----
