@@ -235,5 +235,6 @@ target
 /target/
 .idea
 .\.idea
+src/main/resources/static
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,gradle,macos,windows
