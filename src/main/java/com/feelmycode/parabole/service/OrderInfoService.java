@@ -90,7 +90,7 @@ public class OrderInfoService {
     public boolean isDeliveryComplete(Long userId) {
         List<OrderInfoResponseDto> orderInfoResponseDtoList = getOrderInfoListByUserId(userId);
         return orderInfoResponseDtoList.stream()
-            .allMatch(dto -> dto.getState().getValue() > 5);
+            .allMatch(dto -> dto.getState() > 5);
     }
 
     public List<OrderInfoResponseDto> getOrderInfoListByUserId(Long userId) {
@@ -104,7 +104,7 @@ public class OrderInfoService {
     public List<OrderInfoResponseDto> getOrderInfoListBySeller(Long sellerId) {
         List<OrderInfo> getOrderInfoList = orderInfoRepository.findAllBySellerId(sellerId)
             .stream()
-            .filter(state -> state.getState().getValue() > -1)
+            .filter(state -> state.getState() > -1)
             .collect(Collectors.toList());
         return changeEntityToDto(getOrderInfoList);
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class OrderInfoResponseDto {
 
     private Long id;
-    private OrderInfoState state;
+    private Integer state;
     private String userEmail;
     private Long productId;
     private String productName;
@@ -25,7 +25,7 @@ public class OrderInfoResponseDto {
     public OrderInfoResponseDto(Long id, String state, String userEmail, Long productId, String productName,
         Integer productCnt, Long productPrice, Long productDiscountPrice, String productThumbnailImg, LocalDateTime productUpdatedAt) {
         this.id = id;
-        this.state = OrderInfoState.returnValueByName(state);
+        this.state = OrderInfoState.returnValueByName(state).getValue();
         this.userEmail = userEmail;
         this.productId = productId;
         this.productName = productName;
