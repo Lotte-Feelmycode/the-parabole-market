@@ -9,7 +9,6 @@ import com.feelmycode.parabole.dto.CouponCreateResponseDto;
 import com.feelmycode.parabole.dto.CouponInfoDto;
 import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponRequestDto;
-import com.feelmycode.parabole.dto.CouponResponseDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
 import com.feelmycode.parabole.enumtype.CouponType;
@@ -26,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -98,7 +96,9 @@ public class CouponService {
     public Page<CouponSellerResponseDto> getSellerCouponList(Long userId) {
 
         Seller seller = userRepository.findById(userId).orElseThrow(() -> new NoDataException()).getSeller();
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+
+        List<Coupon> couponList = couponRepository.findAllBySellerIdAndExpiresAtAfter(
+            seller.getId(), LocalDateTime.now());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
             .map(CouponSellerResponseDto::new)
@@ -108,7 +108,9 @@ public class CouponService {
 
     public Page<CouponSellerResponseDto> getSellerCouponListBySellerId(Long sellerId) {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new NoDataException());
-        List<Coupon> couponList = couponRepository.findAllBySellerId(seller.getId());
+
+        List<Coupon> couponList = couponRepository.findAllBySellerIdAndExpiresAtAfter(
+            seller.getId(), LocalDateTime.now());
 
         List<CouponSellerResponseDto> dtos = couponList.stream()
             .map(CouponSellerResponseDto::new)

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface CouponRepository extends JpaRepository<Coupon, Long> {
     List<Coupon> findAllBySellerId(Long sellerId);
 
+    List<Coupon> findAllBySellerIdAndExpiresAtAfter(Long sellerId, LocalDateTime end);
+
     List<Coupon> findAllBySellerIdAndValidAtBeforeAndExpiresAtAfter(Long sellerId,
         LocalDateTime start, LocalDateTime end);
 

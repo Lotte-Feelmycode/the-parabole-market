@@ -84,6 +84,12 @@ public class Coupon extends BaseEntity implements Serializable {
         this.cnt = cnt;
     }
 
+    public Coupon(Seller seller, LocalDateTime validAt, LocalDateTime expiresAt) {
+        this.seller = seller;
+        this.validAt = validAt;
+        this.expiresAt = expiresAt;
+    }
+
     public void addUserCoupon(UserCoupon userCoupon) {
 //        userCoupon.setCoupon(this);
         this.userCoupons.add(userCoupon);
