@@ -34,3 +34,7 @@ link:event.html[Go To Event Page]
 == User (사용자)
 
 link:user.html[Go To Event Page]
+
+== Coupon (쿠폰)
+
+link:coupon.html[Go To Coupon Page]
