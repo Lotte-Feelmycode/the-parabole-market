@@ -134,7 +134,9 @@ public class CouponService {
             throw new NoDataException();
         }
         for (UserCoupon userCoupon : validList) {
-            dtos.add(new CouponUserResponseDto(userCoupon.getCoupon(), userCoupon, userCoupon.getCoupon().getSeller().getStoreName()));
+            Seller creator = userCoupon.getCoupon().getSeller();
+            dtos.add(new CouponUserResponseDto(userCoupon.getCoupon(), userCoupon,
+                creator.getStoreName(), creator.getId()));
         }
         return new PageImpl<>(dtos);
     }
