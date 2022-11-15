@@ -21,24 +21,24 @@ public class OrderRequestDto {
     private String addressSimple;
     private String addressDetail;
     private String deliveryComment;
-    private OrderState orderState;
-    private OrderInfoState orderInfoState;
-    private OrderPayState orderPayState;
+    private Integer orderState;
+    private Integer orderInfoState;
+    private Integer orderPayState;
 
     public OrderRequestDto(String orderPayState) {
-        this.orderPayState = OrderPayState.returnValueByName(orderPayState);
+        this.orderPayState = OrderPayState.returnValueByName(orderPayState).getValue();
     }
 
     public void setOrderState(String orderState) {
-        this.orderState = OrderState.returnValueByName(orderState);
+        this.orderState = OrderState.returnValueByName(orderState).getValue();
     }
 
     public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
+        this.orderState = orderState.getValue();
     }
 
     public void setOrderInfoState(OrderInfoState orderInfoState) {
-        this.orderInfoState = orderInfoState;
+        this.orderInfoState = orderInfoState.getValue();
     }
 
     public void setUserInfo(String userName, String userEmail) {

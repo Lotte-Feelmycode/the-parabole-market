@@ -54,7 +54,7 @@ public class UpdateService {
                 List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
 
                 for (OrderInfo info : getOrderInfoList) {
-                    info.setState(orderInfoRequestDto.getOrderInfoState().getValue());
+                    info.setState(orderInfoRequestDto.getOrderInfoState());
                 }
 
                 this.updateOrderState(userId, new OrderRequestDto(
@@ -96,7 +96,7 @@ public class UpdateService {
                 throw new NoDataException();
             }
             for(Long orderInfoId : orderInfoRequestList.getOrderInfoIdList()) {
-                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, orderUpdateRequestDto.getOrderInfoState().getState()));
+                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, OrderInfoState.returnNameByValue(orderUpdateRequestDto.getOrderInfoState()).getState()));
             }
         }
 
