@@ -12,17 +12,19 @@ public class CouponUserResponseDto {
         private String name;
         private String serialNo;
         private String storeName;
+        private Long sellerId;
         private String type;
         private Integer discountValue;
         private String useState;
         private LocalDateTime useDate;
         private LocalDateTime expiresAt;
 
-        public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String storeName) {
+        public CouponUserResponseDto(Coupon coupon, UserCoupon userCoupon, String storeName, Long sellerId) {
 
                 this.name = coupon.getName();
                 this.serialNo = userCoupon.getSerialNo();
                 this.storeName = storeName;
+                this.sellerId = sellerId;
                 this.type = coupon.getType().getName();
                 this.discountValue = coupon.getDiscountValue();
                 this.useState = userCoupon.getUseState().getState();
