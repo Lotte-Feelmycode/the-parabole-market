@@ -1,0 +1,10 @@
+[source,options="nowrap"]
+----
+{
+  "productThumbnailImg" : "img.jpg",
+  "productRemains" : 30,
+  "productName" : "테스트",
+  "productPrice" : 500,
+  "productCategory" : "테스트"
+}
+----

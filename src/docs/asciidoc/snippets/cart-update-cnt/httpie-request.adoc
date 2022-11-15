@@ -1,0 +1,11 @@
+[source,bash]
+----
+$ echo '{
+  "productId" : 3,
+  "cnt" : 10,
+  "cartItemId" : 24
+}' | http PATCH 'https://parabole.com:57164/api/v1/cart/update/cnt' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJzZWxsZXJTdG9yZW5hbWUiOiJ1MS1zMSdzIHN0b3JlIiwicm9sZSI6IlJPTEVfU0VMTEVSIiwic2VsbGVySWQiOjEsInBob25lIjoiMDEwNTc3ODUwMjMiLCJuaWNrbmFtZSI6InRlc3QiLCJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY2ODI0OTM1NiwiZXhwIjoxNjY4MzM1NzU2fQ.436Z2yY9zl50lEtyVmKezzUmIJogZ4OJA93P7fvhqhw' \
+    'Content-Type:application/json'
+----

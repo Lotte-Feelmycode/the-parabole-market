@@ -1,0 +1,31 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Nov 2022 07:22:48 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 238
+
+{
+  "success" : true,
+  "message" : "쿠폰 등록 성공",
+  "data" : {
+    "couponId" : 7,
+    "couponName" : "크리스마스 기념 쿠폰",
+    "sellerStorename" : "u1-s1's store",
+    "type" : "AMOUNT",
+    "cnt" : 5
+  }
+}
+----

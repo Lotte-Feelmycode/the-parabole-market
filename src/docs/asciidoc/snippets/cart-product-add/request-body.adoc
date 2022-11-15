@@ -1,0 +1,7 @@
+[source,options="nowrap"]
+----
+{
+  "productId" : 3,
+  "cnt" : 3
+}
+----

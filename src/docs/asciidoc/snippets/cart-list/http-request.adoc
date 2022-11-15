@@ -1,0 +1,9 @@
+[source,http,options="nowrap"]
+----
+GET /api/v1/cart/list HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzZWxsZXJTdG9yZW5hbWUiOiJ1MS1zMSdzIHN0b3JlIiwicm9sZSI6IlJPTEVfU0VMTEVSIiwic2VsbGVySWQiOjEsInBob25lIjoiMDEwNTc3ODUwMjMiLCJuaWNrbmFtZSI6InRlc3QiLCJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY2ODI0OTM1NSwiZXhwIjoxNjY4MzM1NzU1fQ.0kISp5IUej2eXVA3Ow4GG-3JxobzE7ldupZQeR1Zl8c
+Content-Type: application/json
+Host: parabole.com:57164
+
+----

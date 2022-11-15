@@ -1,0 +1,7 @@
+|===
+|Parameter|Description
+
+|`+cartItemId+`
+|장바구니 상품 아이디
+
+|===

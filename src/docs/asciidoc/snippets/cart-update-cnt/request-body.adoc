@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "productId" : 3,
+  "cnt" : 10,
+  "cartItemId" : 24
+}
+----

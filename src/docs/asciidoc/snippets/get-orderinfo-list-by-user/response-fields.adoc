@@ -1,0 +1,136 @@
+|===
+|Path|Type|Description
+
+|`+success+`
+|`+Boolean+`
+|성공여부
+
+|`+message+`
+|`+String+`
+|메세지
+
+|`+data+`
+|`+Object+`
+|주문 정보
+
+|`+data.orderId+`
+|`+Number+`
+|주문 ID
+
+|`+data.cnt+`
+|`+Number+`
+|주문한 상품들의 총 개수
+
+|`+data.orderBySellerDtoList+`
+|`+Array+`
+|판매자별로 정렬된 상품 목록
+
+|`+data.orderBySellerDtoList.[].sellerId+`
+|`+Number+`
+|판매자 ID
+
+|`+data.orderBySellerDtoList.[].storeName+`
+|`+String+`
+|판매자 상호 명
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos+`
+|`+Array+`
+|주문한 상품 정보
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].id+`
+|`+Number+`
+|상세 주문 ID
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].state+`
+|`+String+`
+|상세 주문 상태. {'BEFORE_PAY': '입금 전', 'PAY_COMPLETE': '주문완료(결제)', 'BEFORE_DELIVERY': '배송 준비', 'DELIVERY': '배송 중', 'DELIVERY_COMPLETE': '배송 완료', 'BEFORE_ORDER': '주문 전', 'ORDER_CANCEL': '주문 취소', 'REFUND': '환불', 'ERROR': '에러'}
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].userEmail+`
+|`+String+`
+|유저 이메일
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productId+`
+|`+Number+`
+|상품 ID
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productName+`
+|`+String+`
+|상품 명
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productCnt+`
+|`+Number+`
+|주문한 상품 개수
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productRemain+`
+|`+Number+`
+|남아있는 상품 재고
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productPrice+`
+|`+Number+`
+|상품 총 가격
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productDiscountPrice+`
+|`+Null+`
+|상품 할인 가격
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].productThumbnailImg+`
+|`+String+`
+|상품 썸네일
+
+|`+data.orderBySellerDtoList.[].orderInfoResponseDtos.[].updatedAt+`
+|`+String+`
+|주문 수정 날짜
+
+|`+data.orderBySellerDtoList.[].couponDto+`
+|`+Object+`
+|쿠폰 정보(할인율 쿠폰:RATE, 금액 할인 쿠폰:AMOUNT)
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon+`
+|`+Array+`
+|할인율 쿠폰 목록
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon.[].couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon.[].serialNo+`
+|`+String+`
+|쿠폰 시리얼 넘버
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon.[].storeName+`
+|`+String+`
+|쿠폰을 발행한 판매자 상호 명
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon.[].type+`
+|`+String+`
+|쿠폰 타입(할인율)
+
+|`+data.orderBySellerDtoList.[].couponDto.rateCoupon.[].discountValue+`
+|`+Number+`
+|할인되는 퍼센티지
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon+`
+|`+Array+`
+|금액 할인 쿠폰 목록
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon.[].couponName+`
+|`+String+`
+|쿠폰 이름
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon.[].serialNo+`
+|`+String+`
+|쿠폰 시리얼 넘버
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon.[].storeName+`
+|`+String+`
+|쿠폰을 발행한 판매자 상호 명
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon.[].type+`
+|`+String+`
+|쿠폰 타입(금액)
+
+|`+data.orderBySellerDtoList.[].couponDto.amountCoupon.[].discountValue+`
+|`+Number+`
+|할인되는 금액
+
+|===

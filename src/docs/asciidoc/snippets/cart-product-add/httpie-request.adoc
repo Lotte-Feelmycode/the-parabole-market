@@ -1,0 +1,9 @@
+[source,bash]
+----
+$ echo '{
+  "productId" : 3,
+  "cnt" : 3
+}' | http POST 'https://parabole.com:57164/api/v1/cart/product/add' \
+    'Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRoUHJvdmlkZXIiOiJIb21lIiwicm9sZSI6IlJPTEVfVVNFUiIsInBob25lIjoiMTExMSIsImltYWdlVXJsIjoiaHR0cHM6Ly9zc2wucHN0YXRpYy5uZXQvc3RhdGljL2NhZmUvY2FmZV9wYy9kZWZhdWx0L2NhZmVfcHJvZmlsZV83Ny5wbmciLCJuaWNrbmFtZSI6IjExMTExIiwidXNlcklkIjoxMSwiZW1haWwiOiIxMTExIiwidXNlcm5hbWUiOiIxMTExMSIsImlhdCI6MTY2ODI0OTM1NiwiZXhwIjoxNjY4MzM1NzU2fQ.dGOKB6YwuagqODlKkLAUg3lfsJbmTlBHK-ZxeHVhpZY' \
+    'Content-Type:application/json'
+----

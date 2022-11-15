@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+orderInfoDto+`
+|`+Array+`
+|주문 목록 리스트
+
+|`+orderInfoDto.[].productId+`
+|`+Number+`
+|주문 목록 리스트
+
+|`+orderInfoDto.[].productCnt+`
+|`+Number+`
+|주문 목록 리스트
+
+|===

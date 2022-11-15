@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "상품 생성",
+  "data" : 9
+}
+----

@@ -1,0 +1,15 @@
+[source,bash]
+----
+$ echo '{
+  "id" : null,
+  "email" : "test@test.com",
+  "name" : null,
+  "nickname" : null,
+  "phone" : null,
+  "token" : null,
+  "password" : "test",
+  "passwordConfirmation" : null
+}' | http POST 'https://parabole.com:55186/api/v1/auth/signin' \
+    'Accept:application/json, application/javascript, text/javascript, text/json' \
+    'Content-Type:application/json'
+----

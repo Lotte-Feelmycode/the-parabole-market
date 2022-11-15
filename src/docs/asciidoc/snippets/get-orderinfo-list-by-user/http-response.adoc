@@ -1,0 +1,45 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sat, 12 Nov 2022 10:48:13 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 772
+
+{
+  "success" : true,
+  "message" : "주문 정보 목록 조회",
+  "data" : {
+    "orderId" : 7,
+    "cnt" : 1,
+    "orderBySellerDtoList" : [ {
+      "sellerId" : 1,
+      "storeName" : "u1-s1's store",
+      "orderInfoResponseDtos" : [ {
+        "id" : 13,
+        "state" : "DELIVERY",
+        "userEmail" : "1111",
+        "productId" : 7,
+        "productName" : "막국수",
+        "productCnt" : 1,
+        "productRemain" : 20000,
+        "productPrice" : 7000,
+        "productDiscountPrice" : null,
+        "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+        "updatedAt" : "2022-11-11T20:59:34"
+      } ]
+    } ]
+  }
+}
+----

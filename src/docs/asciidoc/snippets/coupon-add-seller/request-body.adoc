@@ -1,0 +1,12 @@
+[source,options="nowrap"]
+----
+{
+  "name" : "크리스마스 기념 쿠폰",
+  "type" : 2,
+  "discountValue" : 2000,
+  "validAt" : [ 2022, 9, 16, 0, 0 ],
+  "expiresAt" : [ 2022, 11, 30, 0, 0 ],
+  "detail" : "행복한 크리스마스 되세요",
+  "cnt" : 5
+}
+----

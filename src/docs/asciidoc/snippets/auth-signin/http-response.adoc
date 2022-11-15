@@ -1,0 +1,36 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Nov 2022 06:48:47 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 597
+
+{
+  "success" : true,
+  "message" : "기본 로그인 성공",
+  "data" : {
+    "userId" : 1,
+    "email" : "test@test.com",
+    "name" : "test",
+    "nickname" : "test",
+    "phone" : "01057785023",
+    "imageUrl" : null,
+    "role" : "ROLE_USER",
+    "authProvider" : null,
+    "sellerId" : null,
+    "token" : "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiUk9MRV9VU0VSIiwicGhvbmUiOiIwMTA1Nzc4NTAyMyIsIm5pY2tuYW1lIjoidGVzdCIsInVzZXJJZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwidXNlcm5hbWUiOiJ0ZXN0IiwiaWF0IjoxNjY4NDA4NTI3LCJleHAiOjE2Njg0OTQ5Mjd9.s5Lz7Ym5MUk6ncALLqWcZC_RxkmaHZL_O5biNl8cHfo"
+  }
+}
+----

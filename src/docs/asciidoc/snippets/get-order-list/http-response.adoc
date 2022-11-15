@@ -1,0 +1,61 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sat, 12 Nov 2022 10:32:56 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1513
+
+{
+  "success" : true,
+  "message" : "모든 주문 정보 호출",
+  "data" : [ {
+    "id" : 12,
+    "state" : "BEFORE_ORDER",
+    "userEmail" : "1111",
+    "productId" : 9,
+    "productName" : " (23.4.28까지) 화이트 펄세이션 백스테이지 크림 (로즈) 50ml [기프티",
+    "productCnt" : 1,
+    "productRemain" : 1000,
+    "productPrice" : 9020,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v180155/LI/18/16/90/71/51/_1/LI1816907151_1_1.jpg",
+    "updatedAt" : "2022-11-11T16:07:38"
+  }, {
+    "id" : 11,
+    "state" : "BEFORE_ORDER",
+    "userEmail" : "1111",
+    "productId" : 7,
+    "productName" : "막국수",
+    "productCnt" : 1,
+    "productRemain" : 20000,
+    "productPrice" : 7000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v102012/LO/19/36/49/00/49/_1/93/64/90/05/0/LO1936490049_1936490050_1.jpg/dims/resizef/554X554",
+    "updatedAt" : "2022-11-11T15:23:14"
+  }, {
+    "id" : 10,
+    "state" : "BEFORE_ORDER",
+    "userEmail" : "1111",
+    "productId" : 5,
+    "productName" : "비빔냉면",
+    "productCnt" : 1,
+    "productRemain" : 10000,
+    "productPrice" : 5000,
+    "productDiscountPrice" : null,
+    "productThumbnailImg" : "https://contents.lotteon.com/itemimage/_v031650/LM/88/01/00/70/33/29/7_/00/1/LM8801007033297_001_1.jpg/dims/optimize/dims/resizemc/360x360",
+    "updatedAt" : "2022-11-11T15:23:14"
+  } ]
+}
+----

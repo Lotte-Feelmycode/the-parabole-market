@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+cartItemId+`
+|`+Number+`
+|장바구니 아이템 아이디
+
+|`+productId+`
+|`+Number+`
+|상품 아이디
+
+|`+cnt+`
+|`+Number+`
+|수량
+
+|===

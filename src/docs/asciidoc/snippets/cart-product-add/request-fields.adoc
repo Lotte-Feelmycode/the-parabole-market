@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+productId+`
+|`+Number+`
+|상품 아이디
+
+|`+cnt+`
+|`+Number+`
+|수량
+
+|===

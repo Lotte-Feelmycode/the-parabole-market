@@ -1,0 +1,40 @@
+:hardbreaks:
+ifndef::snippets[]
+:resource-dir: ./snippets
+endif::[]
+ifdef::snippets[]
+:resource-dir: ./src/docs/asciidoc/snippets
+endif::[]
+:toc: left
+
+= link:index.html[The Parabole]
+
+
+== Go To The Parabole Market (더 파라볼래 사이트로 이동)
+
+https://theParabole.show[Go To The Parabole Market (더 파라볼래 사이트로 이동)]
+
+
+== Product (상품)
+
+link:product.html[Go To Product Page]
+
+== Cart (장바구니)
+
+link:cart.html[Go To Cart Page]
+
+== Order (주문)
+
+link:order.html[Go To Order Page]
+
+== Event (이벤트)
+
+link:event.html[Go To Event Page]
+
+== User (사용자)
+
+link:user.html[Go To Event Page]
+
+== Coupon (쿠폰)
+
+link:coupon.html[Go To Coupon Page]

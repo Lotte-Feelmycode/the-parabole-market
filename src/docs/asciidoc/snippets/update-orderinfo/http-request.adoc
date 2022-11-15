@@ -1,0 +1,14 @@
+[source,http,options="nowrap"]
+----
+PATCH /api/v1/orderinfo HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzZWxsZXJTdG9yZW5hbWUiOiJ1MS1zMSdzIHN0b3JlIiwicm9sZSI6IlJPTEVfU0VMTEVSIiwic2VsbGVySWQiOjEsInBob25lIjoiMDEwNTc3ODUwMjMiLCJuaWNrbmFtZSI6InRlc3QiLCJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsInVzZXJuYW1lIjoidGVzdCIsImlhdCI6MTY2ODM4NTc0NCwiZXhwIjoxNjY4NDcyMTQ0fQ.um5zf-iwpn4qNuYXtpQmTpL23ugnCDvIaIepqzkDC3Q
+Content-Type: application/json
+Host: parabole.com:62750
+Content-Length: 56
+
+{
+  "orderInfoId" : 11,
+  "orderState" : "DELIVERY"
+}
+----
