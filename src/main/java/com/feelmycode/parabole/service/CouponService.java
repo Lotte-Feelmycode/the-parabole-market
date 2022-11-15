@@ -169,6 +169,7 @@ public class CouponService {
 
         List<UserCoupon> getCouponListBySellerId = couponList.stream()
             .filter(coupon -> coupon.getCoupon().getSeller().getId() == sellerId)
+            .filter(coupon -> coupon.getUseState() == CouponUseState.NotUsed)
             .collect(Collectors.toList());
 
         Collections.sort(getCouponListBySellerId, new Comparator<UserCoupon>() {
