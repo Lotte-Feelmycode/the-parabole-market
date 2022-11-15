@@ -1,7 +1,6 @@
 package com.feelmycode.parabole.dto;
 
 import com.feelmycode.parabole.enumtype.OrderInfoState;
-import com.feelmycode.parabole.enumtype.OrderPayState;
 import com.feelmycode.parabole.enumtype.OrderState;
 import java.util.List;
 import lombok.Getter;
@@ -21,24 +20,24 @@ public class OrderRequestDto {
     private String addressSimple;
     private String addressDetail;
     private String deliveryComment;
-    private Integer orderState;
-    private Integer orderInfoState;
-    private Integer orderPayState;
+    private String orderState;
+    private String orderInfoState;
+    private String orderPayState;
 
     public OrderRequestDto(String orderPayState) {
-        this.orderPayState = OrderPayState.returnValueByName(orderPayState).getValue();
+        this.orderPayState = orderPayState;
     }
 
     public void setOrderState(String orderState) {
-        this.orderState = OrderState.returnValueByName(orderState).getValue();
+        this.orderState = orderState;
     }
 
     public void setOrderState(OrderState orderState) {
-        this.orderState = orderState.getValue();
+        this.orderState = orderState.getState();
     }
 
     public void setOrderInfoState(OrderInfoState orderInfoState) {
-        this.orderInfoState = orderInfoState.getValue();
+        this.orderInfoState = orderInfoState.getState();
     }
 
     public void setUserInfo(String userName, String userEmail) {

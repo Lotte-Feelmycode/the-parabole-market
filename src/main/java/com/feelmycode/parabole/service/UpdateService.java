@@ -96,7 +96,7 @@ public class UpdateService {
                 throw new NoDataException();
             }
             for(Long orderInfoId : orderInfoRequestList.getOrderInfoIdList()) {
-                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, OrderInfoState.returnNameByValue(orderUpdateRequestDto.getOrderInfoState()).getState()));
+                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, OrderInfoState.returnValueByName(orderUpdateRequestDto.getOrderInfoState()).getState()));
             }
         }
 

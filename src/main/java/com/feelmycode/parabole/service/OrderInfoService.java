@@ -109,6 +109,20 @@ public class OrderInfoService {
         return changeEntityToDto(getOrderInfoList);
     }
 
+    public List<OrderInfoResponseDto> getOrderInfoListAlreadyOrdered(List<Order> orders) {
+        List<OrderInfo> orderInfoList = new ArrayList<>();
+
+        for(Order order : orders) {
+            if(order.getState() >= 0) {
+                orderInfoList.addAll(orderInfoRepository.findAllByOrderId(order.getId())
+                    .stream()
+                    .filter(orderInfo -> orderInfo.getState() > -1)
+                    .collect(Collectors.toList()));
+            }
+        }
+        return this.changeEntityToDto(orderInfoList);
+    }
+
     public List<OrderInfo> getOrderInfoListByOrderId(Long orderId) {
         return orderInfoRepository.findAllByOrderId(orderId);
     }
@@ -117,7 +131,9 @@ public class OrderInfoService {
 
         Long cnt = 0L;
 
-        List<OrderInfo> orderInfoList = orderInfoRepository.findAllBySellerId(userId);
+        Order order = orderService.getOrderByUserId(userId);
+
+        List<OrderInfo> orderInfoList = orderInfoRepository.findAllByOrderId(order.getId());
 
         if(orderInfoList == null || orderInfoList.isEmpty())
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "주문 내역이 없습니다.");
