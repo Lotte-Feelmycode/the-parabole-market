@@ -18,6 +18,7 @@ public class CartService {
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Long createCart(Long userId) {
         checkNoCart(userId);
         User user = userRepository.findById(userId).orElseThrow(() ->
