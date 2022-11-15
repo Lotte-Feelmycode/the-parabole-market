@@ -155,6 +155,24 @@ public class UserService {
         return dtos;
     }
 
+    public List<UserSearchDto> getUsers(String userName) {
+
+        List<User> list;
+        if (userName.equals("")) {
+            list = userRepository.findAll();
+        } else {
+            list = userRepository.findAllByUsernameContainsIgnoreCase(userName);
+        }
+        List<UserSearchDto> dtos = new ArrayList<>();
+        for (User u : list) {
+            dtos.add(new UserSearchDto(u.getId(), u.getUsername(), u.getEmail(), u.getPhone()));
+        }
+        if (dtos.isEmpty()) {
+            throw new ParaboleException(HttpStatus.NOT_FOUND, "사용자가 존재하지 않습니다.");
+        }
+        return dtos;
+    }
+
         public GoogleOauthToken getAccessTokenGoogle(String code) {
         RestTemplate restTemplate = new RestTemplate();
 

@@ -89,6 +89,9 @@ public class UserCoupon extends BaseEntity {
         this.useState = CouponUseState.NotUsed;
     }
 
+    public void setAcquiredDate(LocalDateTime acquiredDate) {
+        this.acquiredDate = acquiredDate;
+    }
 }
 
 
