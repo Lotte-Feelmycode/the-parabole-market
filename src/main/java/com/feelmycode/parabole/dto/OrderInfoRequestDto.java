@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class OrderInfoRequestDto {
 
     private Long orderInfoId;
-    private OrderInfoState orderInfoState;
+    private Integer orderInfoState;
 
     public OrderInfoRequestDto(Long orderInfoId, String orderState) {
         this.orderInfoId = orderInfoId;
-        this.orderInfoState = OrderInfoState.returnValueByName(orderState);
+        this.orderInfoState = OrderInfoState.returnValueByName(orderState).getValue();
     }
 
 }

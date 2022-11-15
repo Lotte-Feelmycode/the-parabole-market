@@ -40,7 +40,7 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<ParaboleResponse> getOrderList(@RequestAttribute("userId") Long userId) {
         List<Order> orderList = orderService.getOrderList(userId);
-        List<OrderInfoResponseDto> orderInfoResponseDtoList = orderInfoService.getOrderInfoListByUserId(orderList);
+        List<OrderInfoResponseDto> orderInfoResponseDtoList = orderInfoService.getOrderInfoListAlreadyOrdered(orderList);
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "모든 주문 정보 호출", orderInfoResponseDtoList);
     }
 }

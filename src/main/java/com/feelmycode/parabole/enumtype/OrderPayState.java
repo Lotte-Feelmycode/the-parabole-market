@@ -30,4 +30,11 @@ public enum OrderPayState {
             .orElse(ERROR);
     }
 
+    public static OrderPayState returnNameByValue(Integer value) {
+        return Arrays.stream(values())
+                .filter(orderPayState -> orderPayState.getValue() == value)
+                .findAny()
+                .orElse(ERROR);
+    }
+
 }

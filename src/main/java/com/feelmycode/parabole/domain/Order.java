@@ -84,11 +84,11 @@ public class Order extends BaseEntity {
     // TODO: enum으로 처리하기
     @NotNull
     @Column(name = "order_state")
-    private OrderState state;
+    private Integer state;
 
     @NotNull
     @Column(name = "order_pay_state")
-    private OrderPayState payState;
+    private Integer payState;
 
     private void setTotal(List<OrderInfo> orderInfoList) {
         this.total = orderInfoList
@@ -97,20 +97,12 @@ public class Order extends BaseEntity {
             .sum();
     }
 
-    public void setPayState(String payState) {
-        this.payState = OrderPayState.returnValueByName(payState);
-    }
-
     public void setState(String state) {
-        this.state = OrderState.returnValueByName(state);
+        this.state = OrderState.returnValueByName(state).getValue();
     }
 
     public void setState(Integer value) {
-        this.state = OrderState.returnNameByValue(value);
-    }
-
-    private void setDeliveryFee(Long orderDeliveryFee) {
-        this.deliveryFee = orderDeliveryFee;
+        this.state = value;
     }
 
     public Order(User user, Long deliveryFee) {
@@ -120,8 +112,8 @@ public class Order extends BaseEntity {
         this.addressSimple = "";
         this.addressDetail = "";
         this.deliveryComment = "";
-        this.state = OrderState.ERROR;
-        this.payState = OrderPayState.ERROR;
+        this.state = -1;
+        this.payState = -1;
         this.setState(-1);
     }
 
@@ -134,7 +126,7 @@ public class Order extends BaseEntity {
         this.addressSimple = deliveryDto.getAddressSimple();
         this.addressDetail = deliveryDto.getAddressDetail();
         this.deliveryComment = deliveryDto.getDeliveryComment();
-        this.payState = deliveryDto.getOrderPayState();
+        this.payState = OrderPayState.returnValueByName(deliveryDto.getOrderPayState()).getValue();
         return this;
     }
 

@@ -54,11 +54,11 @@ public class UpdateService {
                 List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
 
                 for (OrderInfo info : getOrderInfoList) {
-                    info.setState(orderInfoRequestDto.getOrderInfoState().getValue());
+                    info.setState(orderInfoRequestDto.getOrderInfoState());
                 }
 
                 this.updateOrderState(userId, new OrderRequestDto(
-                    order.getPayState().getState()));
+                    OrderPayState.returnNameByValue(order.getPayState()).getState()));
             }
         } catch (Exception e) {
             throw new ParaboleException(HttpStatus.UNAUTHORIZED, "주문정보를 수정하는 중 문제가 발생했습니다.");
@@ -73,8 +73,8 @@ public class UpdateService {
             throw new NoDataException();
         }
 
-        if(order.getState().getValue() < 2) {
-            order.setState(order.getState().getValue()+1);
+        if(order.getState() < 2) {
+            order.setState(order.getState()+1);
             orderUpdateRequestDto.setOrderState(OrderState.PAY_COMPLETE);
         } else {
             throw new ParaboleException(HttpStatus.BAD_REQUEST, "이미 배송완료된 상품입니다.");
@@ -96,7 +96,7 @@ public class UpdateService {
                 throw new NoDataException();
             }
             for(Long orderInfoId : orderInfoRequestList.getOrderInfoIdList()) {
-                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, orderUpdateRequestDto.getOrderInfoState().getState()));
+                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, OrderInfoState.returnValueByName(orderUpdateRequestDto.getOrderInfoState()).getState()));
             }
         }
 
@@ -104,7 +104,7 @@ public class UpdateService {
         orderInfoService.setCouponToOrderInfo(userId, orderUpdateRequestDto);
 
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
-        if (order.getState().getValue() == 0) {
+        if (order.getState() == 0) {
             Cart getCart = cartService.getCart(userId);
 
             List<CartItem> cartItemList = cartItemRepository.findAllByCartId(getCart.getId());
