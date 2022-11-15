@@ -1,0 +1,14 @@
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : "쿠폰 등록 성공",
+  "data" : {
+    "couponId" : 7,
+    "couponName" : "크리스마스 기념 쿠폰",
+    "sellerStorename" : "u1-s1's store",
+    "type" : "AMOUNT",
+    "cnt" : 5
+  }
+}
+----

@@ -1,0 +1,68 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Mon, 14 Nov 2022 05:43:29 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 1345
+
+{
+  "success" : true,
+  "message" : "유저 쿠폰 목록",
+  "data" : {
+    "content" : [ {
+      "name" : "API 수정하고 뿌리는 첫 쿠폰이라 이마리아",
+      "serialNo" : "d8d44509-ebeb-4ae0-bd3b-e735eed2dbf5",
+      "sellerName" : "newgo",
+      "type" : "AMOUNT",
+      "discountValue" : 10,
+      "useState" : "NOT_USED",
+      "useDate" : null,
+      "expiresAt" : "2022-09-30T00:00:00"
+    }, {
+      "name" : "API 수정하고 뿌리는 첫 쿠폰이라 이마리아",
+      "serialNo" : "84de6f72-a403-4ee2-8754-c1880355f1d2",
+      "sellerName" : "newgo",
+      "type" : "AMOUNT",
+      "discountValue" : 10,
+      "useState" : "NOT_USED",
+      "useDate" : null,
+      "expiresAt" : "2022-09-30T00:00:00"
+    }, {
+      "name" : "1",
+      "serialNo" : "9268b6cd-8db2-4862-ac6f-38cb1006500d",
+      "sellerName" : "newgo",
+      "type" : "RATE",
+      "discountValue" : 1,
+      "useState" : "NOT_USED",
+      "useDate" : null,
+      "expiresAt" : "2022-11-25T23:59:59"
+    } ],
+    "pageable" : "INSTANCE",
+    "last" : true,
+    "totalPages" : 1,
+    "totalElements" : 3,
+    "size" : 3,
+    "number" : 0,
+    "sort" : {
+      "empty" : true,
+      "unsorted" : true,
+      "sorted" : false
+    },
+    "first" : true,
+    "numberOfElements" : 3,
+    "empty" : false
+  }
+}
+----

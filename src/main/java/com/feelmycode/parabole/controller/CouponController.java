@@ -64,15 +64,6 @@ public class CouponController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰 등록 성공", response);
     }
 
-//    @PostMapping("/giveout")
-//    public ResponseEntity<ParaboleResponse> assignUserToUserCoupon(
-//        @RequestBody CouponUseAndAssignRequestDto dto) {
-//
-//        couponService.giveoutUserCoupon(dto.getCouponSNo(), dto.getUserId());
-//        return ParaboleResponse.CommonResponse(HttpStatus.OK,
-//            true, "쿠폰에 사용자가 배정되었습니다");
-//    }
-
     @PostMapping("/assign")
     public ResponseEntity<ParaboleResponse> assignCoupon(
         @RequestBody CouponAssignRequestDto dto) {
