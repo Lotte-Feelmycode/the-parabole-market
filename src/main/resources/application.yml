@@ -7,7 +7,7 @@ logging:
 
 spring:
   profiles:
-    active: dev
+    active: ${YML_STATUS}
   application:
     name: parabole
 
