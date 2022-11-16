@@ -4,13 +4,12 @@ import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
 import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.UserCoupon;
-import com.feelmycode.parabole.dto.CouponResponseDto;
+import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestListDto;
 import com.feelmycode.parabole.dto.OrderInfoResponseDto;
 import com.feelmycode.parabole.dto.OrderInfoSimpleDto;
 import com.feelmycode.parabole.dto.OrderRequestDto;
 import com.feelmycode.parabole.dto.OrderResponseDto;
-import com.feelmycode.parabole.dto.OrderBySellerDto;
 import com.feelmycode.parabole.dto.SellerDto;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
@@ -69,11 +68,11 @@ public class OrderInfoService {
             if(dto.getCouponSerialNo().equals("") || dto.getCouponSerialNo() == null)
                 return;
             List<Long> orderInfoId = dto.getOrderInfoIdList();
+            couponService.useUserCoupon(dto.getCouponSerialNo(), userId);
+            UserCoupon getUserCoupon = couponService.getUserCouponBySerialNo(dto.getCouponSerialNo());
             for(Long id : orderInfoId) {
                 OrderInfo getOrderInfo = orderInfoRepository.findById(id)
                     .orElseThrow(() -> new NoDataException());
-                couponService.useUserCoupon(dto.getCouponSerialNo(), userId);
-                UserCoupon getUserCoupon = couponService.getUserCouponBySerialNo(dto.getCouponSerialNo());
                 getOrderInfo.setUserCoupon(getUserCoupon);
             }
         }
