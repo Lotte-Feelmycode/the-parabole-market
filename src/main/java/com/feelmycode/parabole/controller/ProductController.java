@@ -96,7 +96,7 @@ public class ProductController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);
     }
 
-    @PatchMapping("/{productId}/stock/{stock}")
+    @GetMapping("/{productId}/stock/{stock}")
     public Boolean setProductRemains(@PathVariable("productId") Long productId,
         @PathVariable("stock") Integer stock) {
         log.info("Set Product Remains By Event Server : {} ", productId);

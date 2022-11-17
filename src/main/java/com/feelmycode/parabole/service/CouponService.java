@@ -222,6 +222,7 @@ public class CouponService {
             }
         }
         userCoupon.useCoupon();
+        userCouponRepository.save(userCoupon);
     }
 
 }
