@@ -38,9 +38,9 @@ public class AwsS3Controller {
                 String imgUrl = awsS3Service.upload(file);
                 if(i == 0) {
                     productService.updateProductThumbnailImg(productId, imgUrl);
-                } else {
-                    productDetailService.createProductDetail(new ProductDetail(productService.getProduct(productId), imgUrl, ""));
+                    continue;
                 }
+                productDetailService.createProductDetail(new ProductDetail(productService.getProduct(productId), imgUrl, ""));
             }
         }
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "이미지 업로드");
