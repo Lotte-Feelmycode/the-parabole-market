@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/api/v1/product")
 @Slf4j
 public class ProductController {
