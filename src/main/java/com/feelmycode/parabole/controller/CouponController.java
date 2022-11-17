@@ -156,8 +156,8 @@ public class CouponController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "쿠폰이 정상적으로 사용되었습니다.");
     }
 
-    @PatchMapping("/{couponId}/stock/{stock}")
-    public Boolean setProductRemains(@PathVariable("couponId") Long couponId,
+    @GetMapping("/{couponId}/stock/{stock}")
+    public Boolean setCouponRemains(@PathVariable("couponId") Long couponId,
         @PathVariable("stock") Integer stock) {
         log.info("Set Coupon Remains By Event Server : {} ", couponId);
         return couponService.setCouponStock(couponId, stock);

@@ -91,17 +91,19 @@ public class UpdateService {
 
         order.saveDeliveryInfo(orderUpdateRequestDto);
 
-        for(OrderInfoRequestListDto orderInfoRequestList : orderUpdateRequestDto.getOrderInfoRequestList()) {
-            if(orderInfoRequestList.getOrderInfoIdList() == null || orderInfoRequestList.getOrderInfoIdList().isEmpty()) {
-                throw new NoDataException();
-            }
-            for(Long orderInfoId : orderInfoRequestList.getOrderInfoIdList()) {
-                this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfoId, OrderInfoState.returnValueByName(orderUpdateRequestDto.getOrderInfoState()).getState()));
-            }
+        List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
+        if(!orderUpdateRequestDto.getOrderInfoRequestList().isEmpty()) {
+            orderInfoService.setCouponToOrderInfo(userId, orderUpdateRequestDto);
+            orderInfoList = orderInfoService.getOrderInfoListByOrderId(
+                orderUpdateRequestDto.getOrderId())
+                .stream()
+                .filter(orderInfo -> orderInfo.getUserCoupon() == null)
+                .collect(Collectors.toList());
         }
-
-        // 쿠폰정보를 orderInfo에 저장
-        orderInfoService.setCouponToOrderInfo(userId, orderUpdateRequestDto);
+        for(OrderInfo orderInfo : orderInfoList) {
+            this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfo.getId(),
+                orderUpdateRequestDto.getOrderInfoState()));
+        }
 
         // 주문이 완료 되었을 때 cart에 있는 아이템 삭제
         if (order.getState() == 0) {
@@ -113,10 +115,10 @@ public class UpdateService {
                 return;
             }
 
-            List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListByUserId(userId);
+            List<OrderInfoResponseDto> orderInfoResponseDtoList = orderInfoService.getOrderInfoListByUserId(userId);
 
             List<Long> cartIdList = cartItemList.stream()
-                .filter(item -> orderInfoList.stream().anyMatch(
+                .filter(item -> orderInfoResponseDtoList.stream().anyMatch(
                     orderInfo -> item.getProduct().getId().equals(orderInfo.getProductId())))
                 .map(CartItem::getId)
                 .collect(Collectors.toList());

@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,7 +95,7 @@ public class ProductController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 등록한 상품 목록", response);
     }
 
-    @PatchMapping("/{productId}/stock/{stock}")
+    @GetMapping("/{productId}/stock/{stock}")
     public Boolean setProductRemains(@PathVariable("productId") Long productId,
         @PathVariable("stock") Integer stock) {
         log.info("Set Product Remains By Event Server : {} ", productId);
