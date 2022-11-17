@@ -4,7 +4,7 @@ PROJECT_NAME="The Parabole"
 
 TODAY=$(date +"%Y%m%d")
 
-DEPLOY_PATH=/home/ec2-user
+DEPLOY_PATH=/home/ubuntu
 DEPLOY_JAR=parabole_be-01-prod-0.0.1-SNAPSHOT.jar
 DEPLOY_FILE=$DEPLOY_PATH/$DEPLOY_JAR
 
