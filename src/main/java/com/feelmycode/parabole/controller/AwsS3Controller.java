@@ -32,6 +32,7 @@ public class AwsS3Controller {
     @PostMapping
     public ResponseEntity<ParaboleResponse> uploadImage(@RequestParam() Long productId,
         @RequestPart("images") List<MultipartFile> multipartFile) throws Exception {
+        log.info("uploadImage start");
         if (multipartFile != null) {
             for (int i = 0; i < multipartFile.size(); i++) {
                 MultipartFile file = multipartFile.get(i);
