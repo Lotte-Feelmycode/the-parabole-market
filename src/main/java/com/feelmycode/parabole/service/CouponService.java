@@ -119,7 +119,6 @@ public class CouponService {
     }
 
     public Page<CouponUserResponseDto> getUserCouponList(Long userId) {
-        // TODO: (NOT TODO BUT NOTICE) 함수 새로 만들지 않고 기존 함수를 '현시점 기준 사용 가능한 쿠폰 목록' 반환으로 수정하였음.
 
         List<UserCoupon> couponListAll = userCouponRepository.findAllByUserId(userId);
         List<UserCoupon> validList = couponListAll.stream()

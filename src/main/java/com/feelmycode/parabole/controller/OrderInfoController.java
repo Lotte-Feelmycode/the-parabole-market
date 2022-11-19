@@ -38,8 +38,6 @@ public class OrderInfoController {
     private final UpdateService updateService;
     private final UserService userService;
 
-    // TODO: order paging
-    // TODO: userCoupon 정보 가져오기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestAttribute("userId") Long userId, @RequestBody OrderInfoListDto orderInfoListDto) {
         try {

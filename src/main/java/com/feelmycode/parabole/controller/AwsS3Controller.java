@@ -32,10 +32,15 @@ public class AwsS3Controller {
     @PostMapping
     public ResponseEntity<ParaboleResponse> uploadImage(@RequestParam() Long productId,
         @RequestPart("images") List<MultipartFile> multipartFile) throws Exception {
-        if (multipartFile != null) {
+        String imgUrl = "no_image.png";
+        if(multipartFile.isEmpty() || multipartFile.size() == 0) {
+            productService.updateProductThumbnailImg(productId, imgUrl);
+            productDetailService.createProductDetail(new ProductDetail(productService.getProduct(productId), imgUrl, ""));
+        }
+        else {
             for (int i = 0; i < multipartFile.size(); i++) {
                 MultipartFile file = multipartFile.get(i);
-                String imgUrl = awsS3Service.upload(file);
+                imgUrl = awsS3Service.upload(file);
                 if(i == 0) {
                     productService.updateProductThumbnailImg(productId, imgUrl);
                     continue;
