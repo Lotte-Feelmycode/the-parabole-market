@@ -4,7 +4,7 @@ PROJECT_NAME="The Parabole"
 
 TODAY=$(date +"%Y%m%d")
 
-DEPLOY_PATH=/home/ec2-user
+DEPLOY_PATH=/home/ubuntu
 DEPLOY_JAR=parabole_be-01-prod-0.0.1-SNAPSHOT.jar
 DEPLOY_FILE=$DEPLOY_PATH/$DEPLOY_JAR
 
@@ -33,6 +33,6 @@ else
 fi
 
 echo "> Deploy start : $DEPLOY_JAR"
-nohup java -jar $DEPLOY_FILE >> $LOG_FILE 2>$ERR_LOG_FILE &
+nohup java -jar -Duser.timezone=Asia/Seoul $DEPLOY_FILE >> $LOG_FILE 2>$ERR_LOG_FILE &
 
 echo "> End of run.sh" >> $LOG_FILE
