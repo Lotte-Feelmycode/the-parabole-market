@@ -42,18 +42,6 @@ public class UserController {
             userService.getUser(userId).getId());
     }
 
-    // TODO: Old version userlist in Coupon Assign Web-Page
-//    @GetMapping("/list")
-//    public ResponseEntity<ParaboleResponse> getNonSellerUsers(
-//        @RequestParam(required = false) String userName) {
-//        // 기능: 쿠폰을 사용자에게 배정시 사용
-//        String getUserName = StringUtil.controllerParamIsBlank(userName) ? "" : userName;
-//
-//        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자가 아닌 사용자 조회 성공",
-//            userService.getNonSellerUsers(getUserName));
-//    }
-
-    // TODO: New version userlist in Coupon Assign Web-Page
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getUsersByUsername(
         @RequestParam(required = false) String userName) {
