@@ -33,6 +33,6 @@ else
 fi
 
 echo "> Deploy start : $DEPLOY_JAR"
-nohup java -jar $DEPLOY_FILE >> $LOG_FILE 2>$ERR_LOG_FILE &
+nohup java -jar -Duser.timezone=Asia/Seoul $DEPLOY_FILE >> $LOG_FILE 2>$ERR_LOG_FILE &
 
 echo "> End of run.sh" >> $LOG_FILE
