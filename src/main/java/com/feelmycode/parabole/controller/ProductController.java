@@ -10,6 +10,7 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.service.ProductDetailService;
 import com.feelmycode.parabole.service.ProductService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
@@ -39,8 +40,6 @@ public class ProductController {
     private final ProductService productService;
     private final ProductDetailService productDetailService;
 
-    // TODO: DTO를 사용해서 parameter를 깔끔하게 받고 한번에 NULL처리를 해서 초기화하기
-    // +@ Valid를 custom해서 validation할 때 인터페이스 받아서 커스텀으로 초기화할 수도 있음
     @GetMapping("/list")
     public ResponseEntity<ParaboleResponse> getProductList(@RequestParam(required = false) String sellerId,
                                             @RequestParam(required = false) String storeName,
@@ -71,8 +70,7 @@ public class ProductController {
     @GetMapping("/data")
     public ProductResponseDto getProducts(@RequestParam Long productId) {
         Product response = productService.getProduct(productId);
-        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(),
-            response.getThumbnailImg());
+        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(), response.getThumbnailImg());
         return dto;
     }
 

@@ -81,8 +81,6 @@ public class Order extends BaseEntity {
     @Column(name = "order_delivery_fee")
     private Long deliveryFee;
 
-    // TODO: enum으로 처리하기
-    @NotNull
     @Column(name = "order_state")
     private Integer state;
 

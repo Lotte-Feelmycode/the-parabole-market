@@ -13,6 +13,7 @@ import com.feelmycode.parabole.service.OrderService;
 import com.feelmycode.parabole.service.UpdateService;
 import com.feelmycode.parabole.service.UserService;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,8 +39,6 @@ public class OrderInfoController {
     private final UpdateService updateService;
     private final UserService userService;
 
-    // TODO: order paging
-    // TODO: userCoupon 정보 가져오기
     @PostMapping
     public ResponseEntity<ParaboleResponse> createOrderInfo(@RequestAttribute("userId") Long userId, @RequestBody OrderInfoListDto orderInfoListDto) {
         try {
@@ -63,9 +62,12 @@ public class OrderInfoController {
     }
 
     @GetMapping("/seller")
-    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestAttribute("userId") Long userId) {
-        log.info("Seller Id: {} ", userId);
-        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(userId);
+    public ResponseEntity<ParaboleResponse> getOrderInfoBySeller(@RequestAttribute("sellerId") Long sellerId) {
+        log.info("Seller Id: {} ", sellerId);
+        List<OrderInfoResponseDto> orderInfoList = orderInfoService.getOrderInfoListBySeller(sellerId)
+            .stream()
+            .limit(100)
+            .collect(Collectors.toList());
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "판매자의 상품 주문 정보 목록 조회",orderInfoList);
     }
 
