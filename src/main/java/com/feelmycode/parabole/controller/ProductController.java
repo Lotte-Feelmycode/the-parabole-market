@@ -10,6 +10,7 @@ import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.global.util.StringUtil;
 import com.feelmycode.parabole.service.ProductDetailService;
 import com.feelmycode.parabole.service.ProductService;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.web.PageableDefault;
@@ -69,8 +70,7 @@ public class ProductController {
     @GetMapping("/data")
     public ProductResponseDto getProducts(@RequestParam Long productId) {
         Product response = productService.getProduct(productId);
-        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(),
-            response.getThumbnailImg());
+        ProductResponseDto dto = new ProductResponseDto(response.getId(), response.getName(), response.getThumbnailImg());
         return dto;
     }
 
