@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/v1/s3")
 public class AwsS3Controller {
 
