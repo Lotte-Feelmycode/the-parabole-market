@@ -4,6 +4,7 @@ import com.feelmycode.parabole.domain.Cart;
 import com.feelmycode.parabole.domain.CartItem;
 import com.feelmycode.parabole.domain.Order;
 import com.feelmycode.parabole.domain.OrderInfo;
+import com.feelmycode.parabole.domain.Product;
 import com.feelmycode.parabole.domain.User;
 import com.feelmycode.parabole.dto.OrderInfoRequestDto;
 import com.feelmycode.parabole.dto.OrderInfoRequestListDto;
@@ -36,6 +37,7 @@ public class UpdateService {
     private final OrderService orderService;
     private final CartItemRepository cartItemRepository;
     private final CartService cartService;
+    private final ProductService productService;
 
     @Transactional
     public void updateOrderInfoState(Long userId, OrderInfoRequestDto orderInfoRequestDto) {
@@ -50,11 +52,15 @@ public class UpdateService {
             Order order = orderService.getOrderByOrderId(getOrderInfo.getOrder().getId());
 
             User user = userService.getUser(order.getUser().getId());
+
             if (orderInfoService.isDeliveryComplete(user.getId())) {
                 List<OrderInfo> getOrderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
 
                 for (OrderInfo info : getOrderInfoList) {
                     info.setState(orderInfoRequestDto.getOrderInfoState());
+                    Long productId = info.getProductId();
+                    Product getProduct = productService.getProduct(productId);
+                    getProduct.removeRemains(Long.valueOf(info.getProductCnt()));
                 }
 
                 this.updateOrderState(userId, new OrderRequestDto(
@@ -89,16 +95,12 @@ public class UpdateService {
             orderUpdateRequestDto.setOrderInfoState(OrderInfoState.DELIVERY);
         }
 
+
         order.saveDeliveryInfo(orderUpdateRequestDto);
 
         List<OrderInfo> orderInfoList = orderInfoService.getOrderInfoListByOrderId(order.getId());
         if(!orderUpdateRequestDto.getOrderInfoRequestList().isEmpty()) {
             orderInfoService.setCouponToOrderInfo(userId, orderUpdateRequestDto);
-            orderInfoList = orderInfoService.getOrderInfoListByOrderId(
-                orderUpdateRequestDto.getOrderId())
-                .stream()
-                .filter(orderInfo -> orderInfo.getUserCoupon() == null)
-                .collect(Collectors.toList());
         }
         for(OrderInfo orderInfo : orderInfoList) {
             this.updateOrderInfoState(userId, new OrderInfoRequestDto(orderInfo.getId(),
