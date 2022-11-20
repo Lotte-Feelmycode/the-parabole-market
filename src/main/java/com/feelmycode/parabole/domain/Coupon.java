@@ -130,7 +130,7 @@ public class Coupon extends BaseEntity implements Serializable {
     public List<UserCoupon> getNotAssignedUserCouponList() {
         List<UserCoupon> list = new ArrayList<>();
         for (UserCoupon uc : userCoupons) {
-            if (uc.getUseState() == CouponUseState.NotUsed) {
+            if (uc.getUser() == null) {
                 list.add(uc);
             }
         }
