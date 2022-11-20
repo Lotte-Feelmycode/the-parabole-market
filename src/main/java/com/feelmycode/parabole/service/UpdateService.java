@@ -61,6 +61,7 @@ public class UpdateService {
                     Long productId = info.getProductId();
                     Product getProduct = productService.getProduct(productId);
                     getProduct.removeRemains(Long.valueOf(info.getProductCnt()));
+                    productService.updateProduct(userId, getProduct);
                 }
 
                 this.updateOrderState(userId, new OrderRequestDto(
