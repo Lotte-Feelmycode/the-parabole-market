@@ -11,6 +11,7 @@ import com.feelmycode.parabole.dto.CouponInfoResponseDto;
 import com.feelmycode.parabole.dto.CouponRequestDto;
 import com.feelmycode.parabole.dto.CouponSellerResponseDto;
 import com.feelmycode.parabole.dto.CouponUserResponseDto;
+import com.feelmycode.parabole.dto.CouponWithSellerStoreDto;
 import com.feelmycode.parabole.enumtype.CouponType;
 import com.feelmycode.parabole.enumtype.CouponUseState;
 import com.feelmycode.parabole.global.error.exception.NoDataException;
@@ -186,6 +187,23 @@ public class CouponService {
             .collect(Collectors.toList());
 
         return couponListDto;
+    }
+
+    public List<CouponWithSellerStoreDto> getCouponListByStoreName(String storeName) {
+        List<Coupon>  couponList = couponRepository.findAll()
+            .stream()
+            .filter(coupon -> coupon.getSeller().getStoreName().contains(storeName) || storeName.contains(coupon.getSeller().getStoreName()))
+            .collect(Collectors.toList());
+
+        if(couponList == null)
+            return new ArrayList<>();
+
+        Coupon dto = couponList.get(0);
+        return couponList.stream()
+            .filter(coupon -> !dto.getSeller().getStoreName().equals(coupon.getSeller().getStoreName()))
+            .map((Coupon coupon) -> new CouponWithSellerStoreDto(coupon.getId(), coupon.getName(), coupon.getType().getName(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt()))
+            .limit(3)
+            .collect(Collectors.toList());
     }
 
     public Integer discountValue(UserCoupon userCoupon, Integer value) {

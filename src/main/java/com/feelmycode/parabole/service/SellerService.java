@@ -8,6 +8,7 @@ import com.feelmycode.parabole.global.error.exception.NoDataException;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.SellerRepository;
 import com.feelmycode.parabole.repository.UserRepository;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,6 +52,10 @@ public class SellerService {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow(()
             -> new ParaboleException(HttpStatus.NOT_FOUND, "해당 판매자 Id로 조회되는 판매자가 존재하지 않습니다."));
         return new SellerDto(seller);
+    }
+
+    public List<Seller> getSellerList() {
+        return sellerRepository.findAll();
     }
 
 }

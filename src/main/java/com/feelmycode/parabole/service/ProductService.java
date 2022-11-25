@@ -8,7 +8,9 @@ import com.feelmycode.parabole.dto.ProductDto;
 import com.feelmycode.parabole.dto.ProductRequestDto;
 import com.feelmycode.parabole.global.error.exception.ParaboleException;
 import com.feelmycode.parabole.repository.ProductRepository;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -75,6 +77,24 @@ public class ProductService {
         Product getProduct = getProduct(productId);
         List<ProductDetailDto> productDetailList = productDetailService.getProductDetailList(productId).stream().map(ProductDetailDto::new).toList();
         return new ProductDetailListResponseDto(new ProductDto(getProduct), productDetailList, getProduct.getSeller().getStoreName());
+    }
+
+    public List<ProductDto> getProductListByStoreName(String storeName) {
+        List<Product> productList = productRepository.findAll()
+            .stream()
+            .filter(product -> product.getSeller().getStoreName().contains(storeName) || storeName.contains(product.getSeller().getStoreName()))
+            .limit(3)
+            .collect(Collectors.toList());
+
+        if(productList == null)
+            return new ArrayList<>();
+
+        Product dto = productList.get(0);
+        return productList.stream()
+            .filter(product -> !dto.getSeller().getStoreName().equals(product.getSeller().getStoreName()))
+            .map(ProductDto::new)
+            .limit(3)
+            .collect(Collectors.toList());
     }
 
     public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
