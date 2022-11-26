@@ -83,18 +83,26 @@ public class ProductService {
         List<Product> productList = productRepository.findAll()
             .stream()
             .filter(product -> product.getSeller().getStoreName().contains(storeName) || storeName.contains(product.getSeller().getStoreName()))
-            .limit(3)
             .collect(Collectors.toList());
 
         if(productList == null)
             return new ArrayList<>();
 
-        Product dto = productList.get(0);
-        return productList.stream()
-            .filter(product -> !dto.getSeller().getStoreName().equals(product.getSeller().getStoreName()))
-            .map(ProductDto::new)
-            .limit(3)
-            .collect(Collectors.toList());
+        String getStoreName = productList.get(0).getSeller().getStoreName();
+
+        List<ProductDto> result = new ArrayList<>();
+
+        for(int i = 0, idx = 0; i < productList.size(); i++) {
+            if(idx == 3)
+                break;
+            Product p = productList.get(0);
+            if(p.getSeller().getStoreName().equals(getStoreName)) {
+                idx++;
+                result.add(new ProductDto(p));
+            }
+        }
+
+        return result;
     }
 
     public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
