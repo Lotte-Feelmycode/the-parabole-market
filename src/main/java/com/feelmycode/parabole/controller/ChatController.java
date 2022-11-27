@@ -53,4 +53,8 @@ public class ChatController {
         return ParaboleResponse.CommonResponse(HttpStatus.OK, true, "총 주문 금액", orderInfoService.getOrderTotalByUserId(userId));
     }
 
+    @GetMapping("/product")
+    public ResponseEntity<ParaboleResponse> getProductPrice(@RequestParam String productName) {
+        return ParaboleResponse.CommonResponse(HttpStatus.OK, true, productName+"의 가격", productService.getProductPriceByProductName(productName));
+    }
 }

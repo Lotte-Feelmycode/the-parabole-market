@@ -106,6 +106,10 @@ public class ProductService {
         return result;
     }
 
+    public Long getProductPriceByProductName(String productName) {
+        return productRepository.findByProductName(productName).getPrice();
+    }
+
     public Page<ProductDto> getProductList(Long sellerId, String storeName, String productName, String category, Pageable pageable) {
 
         if(!storeName.equals("")) {
