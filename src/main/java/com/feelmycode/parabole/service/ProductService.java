@@ -79,7 +79,7 @@ public class ProductService {
         return new ProductDetailListResponseDto(new ProductDto(getProduct), productDetailList, getProduct.getSeller().getStoreName());
     }
 
-    public List<ProductDto> getProductListByStoreName(String storeName) {
+    public List<String> getProductListByStoreName(String storeName) {
         List<Product> productList = productRepository.findAll()
             .stream()
             .filter(product -> product.getSeller().getStoreName().contains(storeName) || storeName.contains(product.getSeller().getStoreName()))
@@ -90,15 +90,16 @@ public class ProductService {
 
         String getStoreName = productList.get(0).getSeller().getStoreName();
 
-        List<ProductDto> result = new ArrayList<>();
+//        List<ProductDto> result = new ArrayList<>();
+        List<String> result = new ArrayList<>();
 
         for(int i = 0, idx = 0; i < productList.size(); i++) {
             if(idx == 3)
                 break;
-            Product p = productList.get(0);
+            Product p = productList.get(i);
             if(p.getSeller().getStoreName().equals(getStoreName)) {
                 idx++;
-                result.add(new ProductDto(p));
+                result.add(p.getName());
             }
         }
 

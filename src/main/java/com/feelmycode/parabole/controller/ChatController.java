@@ -29,9 +29,9 @@ public class ChatController {
 
     @GetMapping
     public ResponseEntity<ParaboleResponse> getStoreNameList() {
-        List<SellerDto> sellerInfoList = sellerService.getSellerList()
+        List<String> sellerInfoList = sellerService.getSellerList()
             .stream()
-            .map(SellerDto::new)
+            .map((seller) -> seller.getStoreName())
             .limit(3)
             .collect(Collectors.toList());
 

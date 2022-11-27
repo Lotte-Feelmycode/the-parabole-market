@@ -189,7 +189,7 @@ public class CouponService {
         return couponListDto;
     }
 
-    public List<CouponWithSellerStoreDto> getCouponListByStoreName(String storeName) {
+    public List<String> getCouponListByStoreName(String storeName) {
         List<Coupon>  couponList = couponRepository.findAll()
             .stream()
             .filter(coupon -> coupon.getSeller().getStoreName().contains(storeName) || storeName.contains(coupon.getSeller().getStoreName()))
@@ -201,7 +201,8 @@ public class CouponService {
         Coupon dto = couponList.get(0);
         return couponList.stream()
             .filter(coupon -> !dto.getSeller().getStoreName().equals(coupon.getSeller().getStoreName()))
-            .map((Coupon coupon) -> new CouponWithSellerStoreDto(coupon.getId(), coupon.getName(), coupon.getType().getName(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt()))
+                .map((coupon) -> coupon.getName())
+//            .map((Coupon coupon) -> new CouponWithSellerStoreDto(coupon.getId(), coupon.getName(), coupon.getType().getName(), coupon.getDetail(), coupon.getDiscountValue(), coupon.getExpiresAt()))
             .limit(3)
             .collect(Collectors.toList());
     }
