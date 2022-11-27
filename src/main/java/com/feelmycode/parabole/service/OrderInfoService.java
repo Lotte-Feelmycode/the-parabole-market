@@ -181,6 +181,15 @@ public class OrderInfoService {
         return new OrderResponseDto(0L, cnt, orderBySellerDtoList);
     }
 
+    public Long getOrderTotalByUserId(Long userId) {
+        List<Order> orderList = orderService.getOrderList(userId);
+        List<OrderInfo> orderInfoList = new ArrayList<>();
+        for(Order order : orderList) {
+            orderInfoList.addAll(orderInfoRepository.findAllByOrderId(order.getId()));
+        }
+        return orderInfoList.stream().mapToLong((orderInfo) -> orderInfo.getProductPrice()).sum();
+    }
+
     public List<OrderInfoResponseDto> changeEntityToDto(List<OrderInfo> orderInfoList) {
         List<OrderInfoResponseDto> orderInfoResponseDtoList = new ArrayList<>();
         for (OrderInfo orderInfo : orderInfoList) {
