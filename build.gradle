@@ -36,17 +36,27 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    implementation group: 'org.springframework', name: 'spring-messaging', version: '5.3.18'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
+
+
     implementation 'mysql:mysql-connector-java'
+
     implementation 'junit:junit:4.13.1'
+
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
+
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
